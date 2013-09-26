@@ -1,0 +1,208 @@
+@charset "utf-8";
+/* CSS Document */
+
+/*------------------------------------*\
+  RESET
+\*------------------------------------*/
+html,body,div,span,applet,object,iframe,
+h1,h2,h3,h4,h5,h6,p,blockquote,pre,
+a,abbr,acronym,address,big,cite,code,
+del,dfn,em,img,ins,kbd,q,s,samp,
+small,strike,strong,sub,sup,tt,var,
+b,u,i,center,
+dl,dt,dd,ol,ul,li,
+fieldset,form,label,legend,
+table,caption,tbody,tfoot,thead,tr,th,td,
+article,aside,canvas,details,figcaption,figure,
+footer,header,hgroup,menu,nav,section,summary,
+time,mark,audio,video{
+  margin:0;
+  padding:0;
+  border:0;
+  outline:0;
+  font:inherit;
+}
+
+html{
+	height: 100%;
+	min-height: 100%;    
+}
+
+body {
+	height: 100%;
+	min-height: 100%;
+	background-color: white;	
+}
+
+#wrapper {
+	display:block;	
+	height: 100%;
+	min-height: 100%;
+}
+
+#header {
+	height: 20%;
+	min-height: 20%;
+	display:block;
+	background-color: #CCCCCC;
+}
+
+#title{
+	width: 100%;
+	text-align: center;
+	font-size: 3em;
+}
+
+#footer {
+	display:block;	
+	height: 5%;
+	min-height:5%;
+	display:block;
+	clear: both;
+	text-align: center;
+	background-color: #CCCCCC;
+	font-size: 1em;
+}
+
+#valpo {
+	height: 75%;
+	display:block;
+	clear: both;
+	background-color: #FFFFFF;
+	position: relative;
+}
+
+#vHeader {
+	display:block;
+	border: dashed;
+	height: 10%;
+}
+
+#vMain{
+	display:block;
+	height: 75%;
+}
+
+#vScenario{
+	width: 70%;
+	height: 100%;
+	float: left;
+	border: dashed;
+}
+
+#vNodes{
+	height: 10%;
+	widows: 100%;
+	background-color: white; overflow-x: hidden; overflow-y: hidden;	
+}
+
+#vDraw{
+	height: 89%;
+	width: 100%;
+	background-color: white; border: 1px solid black; overflow-x: hidden; overflow-y: scroll;
+}
+
+#vMessages{
+	width: 26%;
+	height: 100%;
+	min-height: 100%;
+	float: right;
+	border: dashed;
+}
+
+#vCommand{
+	height: 10%;
+	clear: both;
+	display:block;
+	border: dashed;
+}
+
+#Commands {
+}
+
+#Commands ul li {
+	display: inline-block;
+	margin-left: 25px;
+	margin-top: 4px;
+	margin-bottom: 5px;
+	margin-right: 10px;
+}
+
+#Commands input{
+  font-size: 1.5em;
+}
+
+@media screen and (max-width: 768px) {
+	#title{
+		font-size: 2.5em;
+	}
+
+	#vScenario{
+		width: 95%;
+		height: 100%;
+		float: left;
+		border: dashed;
+	}
+	
+	#vNodes{
+		height: 10%;
+		width: 100%;
+	}
+	
+	#vDraw{
+		height: 89%;
+		width: 100%;
+	}
+	
+	#vMessages{
+		display: none;
+	}
+	
+
+
+	#Commands input{
+	  font-size: 1.25em;
+	}
+
+}
+
+@media screen and (max-width: 550px) {
+	#header {
+		display: none;
+	}
+	
+	#footer {
+		display: none;
+	}
+	
+	#Commands ul li {
+		margin-left: 15px;
+		margin-top: 1px;
+		margin-right: 5px;
+	}	
+	
+	#Commands input{
+	  font-size: 1.0em;
+	}	
+	
+}
+
+@media screen and (max-width: 320px) {
+	#header {
+		display: none;
+	}
+	
+	#footer {
+		display: none;
+	}
+	
+	#Commands ul li {
+		margin-left: 5px;
+		margin-top: 1px;
+		margin-right: 5px;
+	}	
+	
+	#Commands input{
+	  font-size: 1.0em;
+	}	
+}
