@@ -17,7 +17,6 @@ function init(){
       scenario_schema=JSON.stringify(data);
       console.log("Scenario Schema");
       console.log(scenario_schema);
-      console.log("Scenario Schema Registered.");
    })
    .error(function() {
       alert("getJSON ERROR. SCHEMA.JSON is not valid json.");
