@@ -2,16 +2,9 @@
 
 var configModule = {
 		// Config properties
-		lang:"en",
-		listIdLang: ["en", "es"],
-		listCaptionLang: ["English", "Espanish"],
-		
+		lang:"es",
 		user:"basic",
-		
-		getLanguages:function(){
-			return this.listIdLang;
-		},
-  
+
 		getLang: function () {
 			console.log("configModule.getLang()");
 			return this.lang;

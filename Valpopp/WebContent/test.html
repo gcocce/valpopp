@@ -21,7 +21,7 @@ function eventWindowLoaded(e){
 }
 
 // Listen for the event 
-$( "body" ).on( "LanguageFileLoaded", eventLanguageFileLoaded);
+$(window).on( "LanguageFileLoaded", eventLanguageFileLoaded);
 
 
 function eventLanguageFileLoaded(e){
@@ -36,26 +36,35 @@ function eventLanguageFileLoaded(e){
 	//console.log(configModule.getLang());
 	
 	results+="User Mode: " + configModule.getUserMode() + "<br>";
-	results+="Available Languages: " + configModule.getLanguages() + "<br>";
 	results+="Default Language: " + configModule.getLang() + "<br>";
-	
 	
 	// Test Language Module
 
-	languageModule.initialize();
-	
-	results+="<br><br>Language Module: " + languageModule.getError() + "<br>";
-	
-	results+="<br>Language File:<br><br>";
-	
-	results+=languageModule.getFileContents() + "<br><br>";
-	
-	console.log(languageModule.getCaption("BUTTON_PAUSE"));
-	console.log(languageModule.getCaption("BUTTON_STOP"));
-	
-	results+="Some captions values:<br><br>";
-	results+="<p>"+languageModule.getCaption("BUTTON_PAUSE")+"</p>";
-	results+="<p>"+languageModule.getCaption("BUTTON_STOP")+"</p>";
+	if (languageModule.initialize()){
+		results+="<br><br>Language Module:<br>";
+		
+		results+="<br>Language File contents:<br><br>";
+		
+		results+= languageModule.getFileContents() + "<br><br>";
+		
+		results+="<br>Number of Available Languages: "+ languageModule.getNumberofLanguages() + "<br><br>";
+		
+		results+="<br>Number of Available Constants: "+ languageModule.getNumConstants() + "<br><br>";
+		
+		results+="<br>Available Languages: "+ languageModule.getAvailableLanguages() + "<br><br>";
+		
+		results+="<br>Current Selected Language: "+ languageModule.getCurrentLanguage() + "<br><br>";
+		
+		console.log(languageModule.getCaption("BUTTON_PAUSE"));
+		console.log(languageModule.getCaption("BUTTON_STOP"));
+		
+		results+="Some captions values:<br><br>";
+		results+="<p>"+languageModule.getCaption("BUTTON_PAUSE")+"</p>";
+		results+="<p>"+languageModule.getCaption("BUTTON_STOP")+"</p>";		
+		
+	}else{
+		results+="<br><br>Language Module Error: <br><br>" + languageModule.getError() + "<br>";
+	}
 
 
 	var div=document.getElementById("results");
