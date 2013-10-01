@@ -74,12 +74,12 @@ body {
 
 #vHeader {
 	display:block;
-	border: dashed;
+	border: 1px dashed;
 	height: 10%;
 }
 
 #vMain{
-	display:block;
+	display: block;
 	height: 75%;
 }
 
@@ -87,7 +87,7 @@ body {
 	width: 70%;
 	height: 100%;
 	float: left;
-	border: dashed;
+	border: 1px dashed;
 }
 
 #vNodes{
@@ -107,14 +107,14 @@ body {
 	height: 100%;
 	min-height: 100%;
 	float: right;
-	border: dashed;
+	border: 1px dashed;
 }
 
 #vCommand{
 	height: 10%;
 	clear: both;
 	display:block;
-	border: dashed;
+	border: 1px dashed;
 }
 
 #Commands {
@@ -141,7 +141,7 @@ body {
 		width: 95%;
 		height: 100%;
 		float: left;
-		border: dashed;
+		border: 1px dashed;
 	}
 	
 	#vNodes{
