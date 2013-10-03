@@ -69,7 +69,8 @@ var languageModule = (function () {
 	// Set another completion function for the request above
 	jqxhr.fail(function() {
 	  m_error="Error reading file!";
-	});	
+	});
+	
 
 	// Initialize Module
 	function doInitialization() {
@@ -123,10 +124,8 @@ var languageModule = (function () {
 					}
 				}
 			}
-			
 			console.log(captions);			
 		}
-		
 		
 		return true;
 	}
@@ -160,3 +159,25 @@ var languageModule = (function () {
 		}
 	};
 }());
+
+
+function eventLanguageFileLoaded(e){		
+	console.log("Language Module File Loaded Event");
+	
+	// Test Language Module
+	if (languageModule.initialize()){
+		console.log("Language Module Initialization Succed");
+		console.log("Selected Language: " + configModule.getLang());
+		
+
+	}else{
+		console.log("Language Module Error: " + languageModule.getError());
+		
+	}
+	
+	
+	// Create a new jQuery.Event object without the "new" operator.
+	var eventLanguageModuleInitiated = $.Event( "LanguageModuleInitiated" );
+	// Dispatch the event
+	$(window).trigger( eventLanguageModuleInitiated );	
+}	

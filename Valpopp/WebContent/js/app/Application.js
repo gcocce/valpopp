@@ -1,45 +1,182 @@
 
 
-window.addEventListener('load', eventWindowLoaded, false);
+console.log("Application Script");
 
-function eventWindowLoaded() {
-   init();
+//*************************************************************************
+// Application Constants
+
+function AppConstants(){
+	var STARTING=0;
+	var LOADED=1;
+	
+	var SCENARIO_SCHEMA="js/model/schema/scenario_schema.json";
+
+	this.STARTING=STARTING;
+	this.LOADED=LOADED;	
+	
+	this.SCENARIO_SCHEMA=SCENARIO_SCHEMA;
 }
 
-var scenario = null;
+
+var AppConstants= new AppConstants();
+
+
+//***************************************************************************
+// Variables and Objects for the Application
+
+// Application Global Variables
+var appState=AppConstants.STARTING;
+
+
+// Application Objects
 var scenario_schema=null;
-var scenario_obj=null;
 
-function init(){
-   console.log("Page Already loaded.");
+var scenario_model = null;
+var scenario_controller=null;
+var scenario_view=null;
 
-   // Load schema
-   jQuery.getJSON('schema_demo.json', function(data) {
-      scenario_schema=JSON.stringify(data);
-      console.log("Scenario Schema");
-      console.log(scenario_schema);
-   })
-   .error(function() {
-      alert("getJSON ERROR. SCHEMA.JSON is not valid json.");
-   });
-   
-   scenario = new Scenario();   
+
+
+
+//*******************************************************************************
+// Setup Section
+
+//Listen for the event 
+$(window).on( "load", eventWindowLoaded);
+
+//Listen for the event 
+$(window).on( "LanguageFileLoaded", eventLanguageFileLoaded);
+$(window).on( "LanguageModuleInitiated", initLayout);
+
+function eventWindowLoaded(e){
+	// Do something here when the html page is fully loaded
+	
+	
 }
+
+/* Every Thing that needs to be donne before running the application */
+function setupApplication(){
+   console.log("setupApplication");
    
+   // Check Config and Language Module state
+
+   
+   
+   // Load Scenario Schema
+   scenario_schema=new Schema();
+   
+   scenario_schema.loadSchema(SCENARIO_SCHEMA);
+
+   
+   
+   // Create Scenario Object
+   scenario = new Scenario();
+   
+   
+   
+   
+   
+   // Create Scenario View
+   
+   
+   
+   
+   
+   // Create Scenario Controller
+   
+   
+   
+   
+   
+   
+   // Create Listeners
+   
+   
+   
+}
+
+
+// Setup Layout When the Language Module Was Fully Loaded
+function initLayout(e){
+	removeProgressBar();
+	
+	// Enable buttons
+	var button=document.getElementById("bt_open");
+	button.disabled=false;
+	
+	button=document.getElementById("bt_settings");
+	button.disabled=false;	
+}
+
+function removeProgressBar(){
+	var div=document.getElementById("progress_bar");
+	div.parentNode.removeChild(div);
+	
+	
+	//Jquery mode
+	//$( ".hello" ).remove();
+}
+
+
+//**************************************************************************
+// Utility functions
+
+function settingsButton(){
+	
+	$("#dialog").show();
+	
+    $("#dialog").dialog({ 
+        modal: true, 
+        overlay: { 
+            opacity: 0.8, 
+            background: "black" 
+        } 
+    });	
+}
+
+
 function validate() {
-   console.log("Se ejecuta validate");
-   
-   var result= document.getElementById('result');
-   result.innerHTML = "";    
-   
-   var elfile=document.getElementById('file');
+ console.log("Se ejecuta validate");
+ 
+ var result= document.getElementById('result');
+ result.innerHTML = "";    
+ 
+ var elfile=document.getElementById('file');
 
-   if (!scenario.openFile(elfile)) {
-      var error=scenario.getError();
-      alert(error);    
-   }  
+ if (!scenario.openFile(elfile)) {
+    var error=scenario.getError();
+    alert(error);    
+ }  
 }
 
+
+
+
+
+//***************************************************************
+
+function setupEventListeners(){
+	window.addEventListener('load', eventWindowLoaded, false);	
+	
+	
+}
+
+
+
+
+
+//***************************************************************
+// Call back function for events
+
+
+
+
+
+
+
+
+// Deprecated and not used
+//***************************************************************************************
 function contenido() {
    console.log("Se ejecuta contenido");
       
@@ -55,40 +192,3 @@ function contenido() {
 
 
 //***************************************************************************************
-
-
-alert("I am working");
-
-function Car( model, year, miles ) {
-	  this.model = model;
-	  this.year = year;
-	  this.miles = miles;
-	  
-	  this.str=str;
-	  
-	  function str(){
-		  console.log(this.model + " has done " + this.miles + " miles");
-	  }
-}
-
-// Note here that we are using Object.prototype.newMethod rather than
-// Object.prototype so as to avoid redefining the prototype object
-
-Car.prototype.toString = function () {
-  return this.model + " has done " + this.miles + " miles";
-
-};
-
-// Usage:
-
-var civic = new Car( "Honda Civic", 2009, 20000 );
-
-var mondeo = new Car( "Ford Mondeo", 2010, 5000 );
-
- 
-
-console.log( civic.toString() );
-
-console.log( mondeo.toString() );
-
-civic.str();

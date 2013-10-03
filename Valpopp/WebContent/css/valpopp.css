@@ -102,6 +102,17 @@ body {
 	background-color: white; border: 1px solid black; overflow-x: hidden; overflow-y: scroll;
 }
 
+#progress_bar {
+    width: 100%;
+    position: relative;
+}
+
+#progress_bar img.loading_circle {
+    position: absolute;
+    top: 50%;  
+    left: 40%;
+}
+
 #vMessages{
 	width: 26%;
 	height: 100%;
@@ -130,6 +141,10 @@ body {
 
 #Commands input{
   font-size: 1.5em;
+}
+
+#Commands label{
+  font-size: 1.2em;
 }
 
 @media screen and (max-width: 768px) {

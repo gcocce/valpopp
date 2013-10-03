@@ -6,6 +6,8 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 	<link href="css/valpopp.css" rel="stylesheet" type="text/css" />
+	<link href="css/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" type="text/css" />
+
 
     <meta http-equiv="cache-control" content="max-age=0" />
     <meta http-equiv="cache-control" content="no-cache" />
@@ -22,22 +24,27 @@
     
     <!-- Valpo Application -->
     <div id="valpo">
+		<div id="dialog" style="display:none;">
+	       Lorem ipsum 
+	   </div>    
+	   
         <div id="vHeader">
             Valpo Header
         </div>
         <div id="vMain">
             <div id="vScenario">
                 <div id="vNodes">        
-		  <canvas id="Nodes" style="background-color: white; display: block;">
-			Your browser does not support HTML5 Canvas.
-		  </canvas>
+				  <canvas id="Nodes" style="background-color: white; display: block;">
+					Your browser does not support HTML5 Canvas.
+				  </canvas>
                 </div>
-		<div id="vDraw">
-		  <canvas id="MyCanvas" style="background-color: white; border: 2px; border-color: black; display: block;">
-			Your browser does not support HTML5 Canvas.
-		  </canvas>
-		</div>
-            </div>     
+				<div id="vDraw">
+					<div id="progress_bar"><img src="img/progress_bar.gif" class="loading_circle" alt="loading" /></div>
+				  <canvas id="MyCanvas" style="background-color: white; border: 2px; border-color: black; display: block;">
+					Your browser does not support HTML5 Canvas.
+				  </canvas>
+				</div>
+         	</div>     
             <div id="vMessages">
                 Messages
             </div>
@@ -46,9 +53,12 @@
         <div id="vCommand">
             <div id="Commands">
 		<ul>
-		    <li><input type="button" onclick='alert("Not yet!");' value="Open"></li>
-		    <li><input id="commandb" type="button" onclick='command();' value="Start"></li>
-		    <li><input type="button" onclick='stopScenario();' value="Stop"></li>
+		    <li><input id="bt_open" type="button" onclick='openButton();' value="Open" disabled></li>
+		    <li><input id="bt_play" type="button" onclick='PlayButton();' value="Start" disabled></li>
+		    <li><input id="bt_stop" type="button" onclick='stopButton();' value="Stop" disabled></li>
+		    <li><input id="bt_quiz" type="button" onclick='quizButton();' value="Quiz" disabled></li>
+		    <li><input id="bt_mode" type="checkbox" onclick='modeButton();' value="Continuous" disabled><label>Continuous Mode</label></li>
+		    <li><input id="bt_settings" type="button" onclick='settingsButton();' value="Settings" disabled></li>
 		</ul>
 	    </div>
         </div>    
@@ -60,16 +70,20 @@
    		<p>Here is the footer of the MOOC</p>
     </div>
 </div>
-<script type="text/javascript" src="lib/modernizr.js"></script>
 
-<script type="text/javascript" src="lib/jsv/uri/uri.js"></script>
-<script type="text/javascript" src="lib/jsv/uri/schemes/urn.js"></script>
-<script type="text/javascript" src="lib/jsv/jsv.js"></script>
-<script type="text/javascript" src="lib/jsv/json-schema-draft-03.js"></script>
-<script type="text/javascript" src="lib/jquery-1.10.2.js"></script>
-
-<script type="text/javascript" src="js/utils/FileHandler.js"></script>
-<script type="text/javascript" src="js/model/ScenarioModel.js"></script>
-<script type="text/javascript" src="js/app/Application.js"></script>
+	<script type="text/javascript" src="lib/modernizr.js"></script>	
+	<script type="text/javascript" src="lib/jquery-1.10.2.js"></script>	
+	<script type="text/javascript" src="lib/jquery-ui-1.10.3.custom.min.js"></script>	
+		
+	<script type="text/javascript" src="js/app/ConfigModule.js"></script>
+	<script type="text/javascript" src="strings/LanguageModule.js"></script>
+	<script type="text/javascript" src="js/utils/FileHandler.js"></script>
+	<script type="text/javascript" src="js/model/ScenarioModel.js"></script>
+	<script type="text/javascript" src="js/app/Application.js"></script>
+	
+	<script type="text/javascript" src="lib/jsv/uri/uri.js"></script>
+	<script type="text/javascript" src="lib/jsv/uri/schemes/urn.js"></script>
+	<script type="text/javascript" src="lib/jsv/jsv.js"></script>
+	<script type="text/javascript" src="lib/jsv/json-schema-draft-03.js"></script>
 </body>
 </html>
