@@ -12,13 +12,12 @@ var applicationView=new ApplicationView();
 //Create Scenario Controller
 var applicationController= new ApplicationController();
 
-
 //Scenario Objects
-var scenario_schema=null;
+var scenarioSchema = null;
 
-var scenario_model = null;
-var scenario_controller=null;
-var scenario_view=null;
+var scenarioModel = null;
+var scenarioController = null;
+var scenarioView = null;
 
 //Application Global Variables
 var appState=AppConstants.STARTING;
@@ -35,24 +34,30 @@ $(window).on( "load", setupApplication);
 function setupApplication(){
 	console.log("setupApplication called");
 	
-	console.log("appState:" + appState);
-	
-	console.log("languageModule.getState:" + languageModule.getState());
+	//console.log("appState:" + appState);
+	//console.log("languageModule.getState:" + languageModule.getState());
 
 	if (appState==AppConstants.STARTING){
 		appState=AppConstants.LOADED;
+	}else if (appState==AppConstants.INITIATED){
+		console.log("Application already Setup");
 	}
 
 	if(appState==AppConstants.LOADED && languageModule.getState()==languageModule.INITIALIZED){
 		console.log("setupApplication started");
 
 		// Load Scenario Schema
-		scenario_schema=new Schema();
-		scenario_schema.loadSchema(AppConstants.SCENARIO_SCHEMA);
+		scenarioSchema=new Schema();
+		scenarioSchema.loadSchema(AppConstants.SCENARIO_SCHEMA);
 
-		// Create Scenario Object
-		scenario = new Scenario();
-		scenario.loadScenarioRemoteFile(configModule.getDefaultScenario());
+		// Create Scenario View
+		scenarioView= new ScenarioView();
+		
+		// Create Scenario Controller
+		scenarioController= new ScenarioController();
+		
+		scenarioModel = new Scenario();
+		scenarioModel.loadScenarioRemoteFile(configModule.getDefaultScenario());
 
 		appState=AppConstants.INITIATED; 	
 		console.log("setupApplication Finised");
@@ -63,19 +68,3 @@ function setupApplication(){
 
 
 
-//**************************************************************************
-//Utility functions
-
-
-
-
-
-
-
-
-
-
-
-
-
-//***************************************************************************************

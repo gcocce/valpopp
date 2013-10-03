@@ -62,7 +62,7 @@ var languageModule = (function () {
 	
 		// Remove the header of the language file
 		lflines.shift();
-		console.log(lflines);
+		//console.log(lflines);
 			
 		// Dispatch the event
 		console.log("Language File Loaded Event Dispatched");
@@ -99,7 +99,7 @@ var languageModule = (function () {
 				}
 			}	
 			
-			console.log(captions);
+			//console.log(captions);
 			
 			// For each line in the Language File
 			for (var c=0; c < lflines.length; c++){
@@ -126,11 +126,11 @@ var languageModule = (function () {
 						captions[line[0]][langIdList[l-1]]=line[l];
 						
 						// For debugging purpose
-						console.log(captions[line[0]][langIdList[l-1]]);
+						//console.log(captions[line[0]][langIdList[l-1]]);
 					}
 				}
 			}
-			console.log(captions);			
+			//console.log(captions);			
 		}
 		
 		state=INITIALIZED;
@@ -151,7 +151,7 @@ var languageModule = (function () {
 		getError: function (){
 			return m_error;
 		},
-		getState:function(){
+		getState: function(){
 			return state;
 		},
 		getFileContents: function (){

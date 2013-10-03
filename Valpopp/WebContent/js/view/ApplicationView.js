@@ -41,21 +41,7 @@ function ApplicationView(){
 		button.disabled=false;	
 	}
 	
-	function activateScenarioCommands(e){
-		console.log("ApplicationView.activateScenarioCommands");
 
-		removeProgressBar();
-		
-		// Enable buttons
-		var button=document.getElementById("bt_play");
-		button.disabled=false;
-		
-		button=document.getElementById("bt_stop");
-		button.disabled=false;
-		
-		button=document.getElementById("bt_mode");
-		button.disabled=false;
-	}
 	
 	
 	

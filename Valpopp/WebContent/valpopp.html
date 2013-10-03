@@ -54,7 +54,7 @@
             <div id="Commands">
 		<ul>
 		    <li><input id="bt_open" type="button" onclick='applicationController.openButton();' value="Open" disabled></li>
-		    <li><input id="bt_play" type="button" onclick='applicationController.PlayButton();' value="Start" disabled></li>
+		    <li><input id="bt_play" type="button" onclick='applicationController.playButton();' value="Start" disabled></li>
 		    <li><input id="bt_stop" type="button" onclick='applicationController.stopButton();' value="Stop" disabled></li>
 		    <li><input id="bt_quiz" type="button" onclick='applicationController.quizButton();' value="Quiz" disabled></li>
 		    <li><input id="bt_mode" type="checkbox" onclick='applicationController.modeCheckbox();' value="Continuous" disabled><label>Continuous Mode</label></li>
@@ -76,7 +76,11 @@
 	<script type="text/javascript" src="lib/jquery-ui-1.10.3.custom.min.js"></script>	
 		
 	<script type="text/javascript" src="js/app/ConfigModule.js"></script>
-	<script type="text/javascript" src="js/model/schema/Schema.js"></script>	
+	
+	<script type="text/javascript" src="js/model/schema/Schema.js"></script>
+	
+	<script type="text/javascript" src="js/view/ScenarioView.js"></script>
+	<script type="text/javascript" src="js/controller/ScenarioController.js"></script>		
 	<script type="text/javascript" src="js/model/ScenarioModel.js"></script>
 	
 	<script type="text/javascript" src="js/app/AppConstants.js"></script>	

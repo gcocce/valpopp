@@ -16,10 +16,11 @@ function ApplicationController(){
 	
 	// Start Application Setup
 	function startApplicationSetup(){
-		console.log("ApplicationController.loadDefaultScenario");
+		console.log("ApplicationController.startApplicationSetup");
 		
 		setupApplication();
 	}	
+	
 	
 	
 	// **************************************************************************
@@ -67,14 +68,7 @@ function ApplicationController(){
 		
 	}
 	
-	
-	
 
-	
-	
-	
-	
-	
 	
 	//***************************************************************
 	// Events
@@ -118,10 +112,6 @@ function ApplicationController(){
 		console.log("Language Module Initiated Event Dispatched");
 		$(window).trigger( eventLanguageModuleInitiated );	
 	}
-	
-	
-	
-	
 	
 }
 
