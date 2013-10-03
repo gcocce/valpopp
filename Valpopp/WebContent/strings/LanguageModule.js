@@ -1,8 +1,15 @@
 
 
 var languageModule = (function () {
+	var DOWNLOADING=0;
+	var LOADED=1;
+	var INITIALIZED=2;
+	
+	
 	// Field Separator
 	var SEP=";";
+	
+	var state=DOWNLOADING;
 	
 	// Error message
 	var m_error="";
@@ -55,14 +62,13 @@ var languageModule = (function () {
 	
 		// Remove the header of the language file
 		lflines.shift();
-		
 		console.log(lflines);
-		
-		//TODO: replace the next by calling to a function like modifyLayout()
-		
-		// Create a new jQuery.Event object without the "new" operator.
-		var eventLanguageFile = $.Event( "LanguageFileLoaded" );
+			
 		// Dispatch the event
+		console.log("Language File Loaded Event Dispatched");
+		var eventLanguageFile = $.Event( "LanguageFileLoaded" );
+
+		state=LOADED;
 		$(window).trigger( eventLanguageFile );
 	});	
 	
@@ -127,12 +133,16 @@ var languageModule = (function () {
 			console.log(captions);			
 		}
 		
+		state=INITIALIZED;
 		return true;
 	}
 
 
   // Return an object exposed to the public
 	return { 
+		DOWNLOADING:DOWNLOADING,
+		LOADED:LOADED,
+		INITIALIZED:INITIALIZED,
 		getCaption: function (caption){
 			console.log("languageModule.getCaption for: "+ caption + " in lang:"+ currentlang);
 			return captions[caption][currentlang];
@@ -140,6 +150,9 @@ var languageModule = (function () {
 		initialize: doInitialization,
 		getError: function (){
 			return m_error;
+		},
+		getState:function(){
+			return state;
 		},
 		getFileContents: function (){
 			return fileContents;
@@ -161,23 +174,4 @@ var languageModule = (function () {
 }());
 
 
-function eventLanguageFileLoaded(e){		
-	console.log("Language Module File Loaded Event");
 	
-	// Test Language Module
-	if (languageModule.initialize()){
-		console.log("Language Module Initialization Succed");
-		console.log("Selected Language: " + configModule.getLang());
-		
-
-	}else{
-		console.log("Language Module Error: " + languageModule.getError());
-		
-	}
-	
-	
-	// Create a new jQuery.Event object without the "new" operator.
-	var eventLanguageModuleInitiated = $.Event( "LanguageModuleInitiated" );
-	// Dispatch the event
-	$(window).trigger( eventLanguageModuleInitiated );	
-}	

@@ -4,11 +4,13 @@
 function AppConstants(){
 	var STARTING=0;
 	var LOADED=1;
+	var INITIATED=2;
 	
 	var SCENARIO_SCHEMA="js/model/schema/scenario_schema.json";
 
 	this.STARTING=STARTING;
 	this.LOADED=LOADED;	
+	this.INITIATED=INITIATED;
 	
 	this.SCENARIO_SCHEMA=SCENARIO_SCHEMA;
 }

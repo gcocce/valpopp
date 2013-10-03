@@ -4,10 +4,15 @@ var configModule = {
 		// Config properties
 		lang:"es",
 		user:"basic",
+		defScenario:"scenarios/scenario_syntax_demo.json",
 
 		getLang: function () {
 			console.log("configModule.getLang()");
 			return this.lang;
+		},
+		
+		getDefaultScenario:function (){
+			return this.defScenario;
 		},
   
 		setLang: function (lang){
