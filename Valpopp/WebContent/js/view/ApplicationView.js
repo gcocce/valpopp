@@ -1,6 +1,11 @@
 console.log("ApplicationView Script");
 
 
+/* Responsabilities:
+ * 
+ * Perform the apropiate application layout display
+ */
+
 function ApplicationView(){
 	
 	// Public Methods

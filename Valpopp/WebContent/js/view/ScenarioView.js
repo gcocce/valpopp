@@ -1,5 +1,11 @@
 console.log("ScenarioView Script");
 
+/* Responsabilities:
+ * 
+ * Performs User Interface Display associated to the Scenario Layout
+ * Performs Scenario Display
+ */
+
 function ScenarioView(){
 	
 	// Public Methods
@@ -28,6 +34,10 @@ function ScenarioView(){
 		
 		button=document.getElementById("bt_mode");
 		button.disabled=false;
+		
+		button=document.getElementById("bt_data");
+		button.disabled=false;
+		
 	}		
 	
 	//***************************************************************

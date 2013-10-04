@@ -1,15 +1,16 @@
 console.log("ApplicationController Script");
 
+/* Responsabilities:
+ * 
+ * Capture User Interface Events and Trigger Actions
+ * Resolve Application Events
+ */
 
 function ApplicationController(){
 
 	// Public Methods
 	this.openButton=openButton;
-	this.playButton=playButton;
-	this.stopButton=stopButton;
-	this.modeCheckbox=modeCheckbox;
-	this.quizButton=quizButton;
-	this.settingsButton=settingsButton;	
+	this.settingsButton=settingsButton;
 	
 	// **************************************************************************
 	// Private Methods
@@ -19,9 +20,7 @@ function ApplicationController(){
 		console.log("ApplicationController.startApplicationSetup");
 		
 		setupApplication();
-	}	
-	
-	
+	}
 	
 	// **************************************************************************
 	// Public Methods
@@ -30,44 +29,65 @@ function ApplicationController(){
 	function settingsButton(){
 		console.log("settingsButton");
 		
-		$("#dialog").show();
+		var dialog=$("#maindialog").show();
 		
-	    $("#dialog").dialog({ 
-	        modal: true, 
-	        overlay: { 
-	            opacity: 0.8, 
-	            background: "black" 
-	        } 
-	    });	
+	    $("#maindialog").dialog({ 
+	        modal: true,
+	        width: 300,
+	        height: 400,
+	        position: {  my: "center", at: "center", of: window  },
+	        title: "Settings",
+	        buttons:{
+				"Dismiss": function() {
+					$(this).dialog("close");
+				}
+	        }
+	    });
+	    
+	    dialog.dialog("open");
 	}
-
+	
 	function openButton(){
 		console.log("openButton");
 		
-	}
-
-
-	function playButton(){
-		console.log("playButton");
+		var dialog=$("#maindialog").show();
 		
-	}
-
-
-	function stopButton(){
-		console.log("stopButton");
-		
-	}
-
-	function quizButton(){
-		console.log("quizButton");
-		
-	}
-
-	function modeCheckbox(){
-		console.log("modeCheckbox");
-		
+	    $("#maindialog").dialog({ 
+	        modal: false,
+	        width: 300,
+	        height: 400,
+	        position: {  my: "center", at: "center", of: window  },
+	        title: "Load Scenario",
+	        buttons:{
+				"Local File System": function() {
+					$(this).dialog("close");
+				},
+				"Scenario Examples": function() {
+					$("#maindialog").dialog("close");					
+					openScenarioListDialog();
+				}
+	        }
+	    });
+	    
+	    dialog.dialog("open");		
 	}
 	
+	function openScenarioListDialog(){
+		console.log("openScenarioListDialog");
+		
+		var dialog=$("#seconddialog").show();
+		
+	    $("#seconddialog").dialog({ 
+	        modal: true,
+	        width: 400,
+	        height: 500,	        
+	        position: {  my: "center", at: "center", of: window  },
+	        title: "List of Scenarios",
+	    });
+	    
+	    dialog.dialog("open");
+	}
+
 
 	
 	//***************************************************************
@@ -76,7 +96,6 @@ function ApplicationController(){
 	
 	// Events handled by the ApplicationController 
 	$(window).on( "LanguageFileLoaded", initializeLanguageModule);
-	
 	
 	// Events handled by the ApplicationView
 	$(window).on( "LanguageModuleInitiated", applicationView.initLayout);

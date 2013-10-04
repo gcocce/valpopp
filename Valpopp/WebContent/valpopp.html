@@ -6,7 +6,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 	<link href="css/valpopp.css" rel="stylesheet" type="text/css" />
-	<link href="css/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" type="text/css" />
+	<link href="css/smoothness/jquery-ui-1.10.3.custom.css" rel="stylesheet">
 
 
     <meta http-equiv="cache-control" content="max-age=0" />
@@ -24,9 +24,8 @@
     
     <!-- Valpo Application -->
     <div id="valpo">
-		<div id="dialog" style="display:none;">
-	       Lorem ipsum 
-	   </div>    
+		<div id="maindialog" style="display:none;"></div>
+		<div id="seconddialog" style="display:none;"></div>  
 	   
         <div id="vHeader">
             Valpo Header
@@ -54,10 +53,11 @@
             <div id="Commands">
 		<ul>
 		    <li><input id="bt_open" type="button" onclick='applicationController.openButton();' value="Open" disabled></li>
-		    <li><input id="bt_play" type="button" onclick='applicationController.playButton();' value="Start" disabled></li>
-		    <li><input id="bt_stop" type="button" onclick='applicationController.stopButton();' value="Stop" disabled></li>
+		    <li><input id="bt_play" type="button" onclick='scenarioController.playButton();' value="Start" disabled></li>
+		    <li><input id="bt_stop" type="button" onclick='scenarioController.stopButton();' value="Stop" disabled></li>
 		    <li><input id="bt_quiz" type="button" onclick='applicationController.quizButton();' value="Quiz" disabled></li>
-		    <li><input id="bt_mode" type="checkbox" onclick='applicationController.modeCheckbox();' value="Continuous" disabled><label>Continuous Mode</label></li>
+		    <li><input id="bt_mode" type="checkbox" onclick='scenarioController.modeCheckbox();' checked="true" disabled><label>Continuous Mode</label></li>
+		    <li><input id="bt_data" type="button" onclick='scenarioController.dataButton();' value="Scenario Data" disabled></li>
 		    <li><input id="bt_settings" type="button" onclick='applicationController.settingsButton();' value="Settings" disabled></li>
 		</ul>
 	    </div>

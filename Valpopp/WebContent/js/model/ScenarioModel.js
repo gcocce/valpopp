@@ -1,6 +1,14 @@
 /* This class is intended to handle the scenario */
 
-function Scenario() {
+/* Responsabilities:
+ * 
+ * Contain Scenario Data
+ * Control Scenario Data
+ * Validate Scenario Data
+ * 
+ */
+
+function ScenarioModel() {
 	console.log("Scenario Object is created.");
 
 	// ******************************************************************************

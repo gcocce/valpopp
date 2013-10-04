@@ -3,34 +3,33 @@ console.log("Application Script");
 
 //***************************************************************************
 //Application Objects
+//***************************************************************************
 
 var AppConstants= new AppConstants();
 
-//Create Scenario View
+// Scenario View
 var applicationView=new ApplicationView();
 
-//Create Scenario Controller
+// Scenario Controller
 var applicationController= new ApplicationController();
 
 //Scenario Objects
 var scenarioSchema = null;
-
 var scenarioModel = null;
 var scenarioController = null;
 var scenarioView = null;
 
-//Application Global Variables
+// Application Global Variables
 var appState=AppConstants.STARTING;
 
 //*******************************************************************************
-//Setup Section
+// Setup Section
 //*******************************************************************************
 
-//Listen for the event onload (everything is downloaded from the server) 
+// Listen for the event on load (everything is downloaded from the server) 
 $(window).on( "load", setupApplication);
 
-
-/* Every Thing that needs to be donne before running the application */
+// Every Thing that needs to be done before running the application
 function setupApplication(){
 	console.log("setupApplication called");
 	
@@ -56,7 +55,8 @@ function setupApplication(){
 		// Create Scenario Controller
 		scenarioController= new ScenarioController();
 		
-		scenarioModel = new Scenario();
+		// Create Scenario Model
+		scenarioModel = new ScenarioModel();
 		scenarioModel.loadScenarioRemoteFile(configModule.getDefaultScenario());
 
 		appState=AppConstants.INITIATED; 	
