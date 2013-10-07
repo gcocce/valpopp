@@ -13,6 +13,7 @@ function ScenarioModel() {
 
 	// ******************************************************************************
 	// Constants
+	// ******************************************************************************
 	var SCENARIO_NOTLOADED=0;
 	var SCENARIO_LOADED=1;
 	var SCENARIO_LOADING_ERROR=2;
@@ -23,6 +24,8 @@ function ScenarioModel() {
 
 	// ******************************************************************************
 	// Properties
+	// ******************************************************************************
+	
 	// A regular expresion used to validate the type of file (actually not used)
 	var m_file_type="text.*";
 
@@ -47,8 +50,42 @@ function ScenarioModel() {
 	//this.m_scenario=m_scenario;
 
 
+	
+	// ******************************************************************************
+	// Private Methods
+	// ******************************************************************************
+
+	function validateScenario(){
+	
+   	
+
+	}
+
+	function validateScenarioObject(){
+
+
+	}
+
+	function getScenarioName() {
+		if (scenario_obj!=null){
+			return scenario_obj.name;
+		}
+
+		return null;
+	}
+
+	function getContents() {
+		return m_file_content;
+	}
+
+	
+	function setContents(arg){
+		m_file_content=arg;
+	}
+	
 	// ******************************************************************************
 	// Public Methods Publication
+	// ******************************************************************************
 	this.isValid=isValid;
 	this.getError=getError;
 	this.getState=getState;
@@ -56,9 +93,9 @@ function ScenarioModel() {
 	this.loadScenarioRemoteFile=loadScenarioRemoteFile;
 	this.loadScenarioLocalFile=loadScenarioLocalFile;
 
-
-	// **************************************************************************
+	// ******************************************************************************
 	// Public Methods Definition
+	// ******************************************************************************
 
 	function isValid() {
 		return m_valid;
@@ -114,41 +151,17 @@ function ScenarioModel() {
 	}
 
 
+
 	// ******************************************************************************
-	// Private Methods
-
-	function validateScenario(){
+	// Events Listeners
+	// ******************************************************************************
 	
-   	
-
-	}
-
-	function validateScenarioObject(){
-
-
-	}
-
-	function getScenarioName() {
-		if (scenario_obj!=null){
-			return scenario_obj.name;
-		}
-
-		return null;
-	}
-
-	function getContents() {
-		return m_file_content;
-	}
-
 	
-	function setContents(arg){
-		m_file_content=arg;
-	}
 
 
-
-	// ***********************************************************************************
+	// ******************************************************************************
 	// Call back functions
+	// ******************************************************************************
 
 	// This callback method is called when the file was read
 	// This method start validations

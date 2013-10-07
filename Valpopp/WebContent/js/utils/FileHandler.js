@@ -3,6 +3,10 @@
 
 
 function FileHandler() {
+	
+	// ******************************************************************************
+	// Properties
+	// ******************************************************************************	
     var m_enabled=false;
     var m_codification="UTF-8";
     var m_error=null;
@@ -11,15 +15,10 @@ function FileHandler() {
     var m_type=null;
     var m_size=null;
     var m_name=null;
-    
-    this.isEnabled=isEnabled;
-    this.setCodification=setCodification;
-    this.openFile=openFile;
-    this.getName=getName;
-    this.getType=getType;
-    this.setType=setType;
-    this.getSize=getSize;
-    this.getError=getError;
+       
+	// ******************************************************************************
+	// Constructor
+	// ******************************************************************************    
       
     if (window.File && window.FileReader && window.FileList && window.Blob) {
         m_enabled=true;
@@ -34,6 +33,29 @@ function FileHandler() {
     function setCodification(arg) {
         m_codification=arg;
     }
+    
+	// ******************************************************************************
+	// Private Methods
+	// ******************************************************************************
+    
+    
+    
+    
+	// ******************************************************************************
+	// Public Methods Publication
+	// ******************************************************************************    
+    this.isEnabled=isEnabled;
+    this.setCodification=setCodification;
+    this.openFile=openFile;
+    this.getName=getName;
+    this.getType=getType;
+    this.setType=setType;
+    this.getSize=getSize;
+    this.getError=getError;    
+    
+	// ******************************************************************************
+	// Public Methods Definition
+	// ******************************************************************************
 
     /* The parameter must be an input file html element */
     /* Returns true or false according to result */

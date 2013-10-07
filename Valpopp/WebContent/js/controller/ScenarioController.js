@@ -3,33 +3,42 @@ console.log("ScenarioController Script");
 /* Responsabilities:
  * 
  * Capture Events associated to Scenario Layout and trigger the apropiate action
- * 
  */
 
 function ScenarioController(){
+	// ******************************************************************************
+	// Properties
+	// ******************************************************************************
+
 	
-	// Public Methods
+	
+	
+	// ******************************************************************************
+	// Private Methods
+	// ******************************************************************************
+	
+	function privateMethod(){
+
+	}
+	
+	
+	
+	// **************************************************************************
+	// Public Methods Publication
+	//***************************************************************************
 	this.playButton=playButton;
 	this.stopButton=stopButton;
 	this.modeCheckbox=modeCheckbox;
 	this.quizButton=quizButton;
 	this.dataButton=dataButton;	
-
-	
-	// **************************************************************************
-	// Private Methods
-	function privateMethod(){
-
-	}
-	
-	// **************************************************************************
-	// Public Methods
+	//***************************************************************************
+	// Public Methods Definition	
+	//***************************************************************************
 	
 	function playButton(){
 		console.log("playButton");
 		
 	}
-
 
 	function stopButton(){
 		console.log("stopButton");
@@ -80,9 +89,9 @@ function ScenarioController(){
 	}	
 
 	
-	//***************************************************************
-	// Events
-	//***************************************************************
+	//***************************************************************************
+	// Events Listeners
+	//***************************************************************************
 	
 	// Events handled by the ApplicationController 
 	
@@ -94,24 +103,30 @@ function ScenarioController(){
 	
 	
 	
-	//***************************************************************
+	//***************************************************************************
 	// Call back function for events
-	//***************************************************************
+	//***************************************************************************
 	
 	// Function to validate the default scenario loaded the first time any user start the application
 	function initializeScenarioValidation(){
 		console.log("ApplicationController.initializeScenarioValidation");
 		
 		if(scenarioSchema.getState()==scenarioSchema.SCHEMA_LOADED && scenarioModel.getState()==scenarioModel.SCENARIO_LOADED){
-			//TODO: do validtion
+			//TODO: do validation
 			
 			
 			
+			//TODO: check for images existence.
 			
 			
 		
+			//TODO: initiate scenario display (Title, Nodes, and Data)
+			
+			
+			
 			// If valid start scenario controls
-			scenarioView.activateScenarioCommands();		
+			scenarioView.activateScenarioCommands();
+			
 		}else{
 			console.log("Scenario schema or scenario file not ready");
 			console.log("Scenario State: " + scenarioModel.getState());

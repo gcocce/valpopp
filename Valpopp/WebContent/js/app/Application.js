@@ -1,6 +1,22 @@
 
 console.log("Application Script");
 
+
+//***************************************************************************
+//Application Constants
+//***************************************************************************
+
+function AppConstants(){
+	var STARTING=0;
+	var LOADED=1;
+	var INITIATED=2;
+	
+	this.STARTING=STARTING;
+	this.LOADED=LOADED;	
+	this.INITIATED=INITIATED;
+	
+}
+
 //***************************************************************************
 //Application Objects
 //***************************************************************************
@@ -44,10 +60,12 @@ function setupApplication(){
 
 	if(appState==AppConstants.LOADED && languageModule.getState()==languageModule.INITIALIZED){
 		console.log("setupApplication started");
+		console.log("Selected Language: " + configModule.getLang());
+		console.log("User Type: " + configModule.getUserMode());
 
 		// Load Scenario Schema
 		scenarioSchema=new Schema();
-		scenarioSchema.loadSchema(AppConstants.SCENARIO_SCHEMA);
+		scenarioSchema.loadSchema(configModule.getDefSchema());
 
 		// Create Scenario View
 		scenarioView= new ScenarioView();

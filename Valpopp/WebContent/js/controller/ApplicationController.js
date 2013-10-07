@@ -6,14 +6,17 @@ console.log("ApplicationController Script");
  * Resolve Application Events
  */
 
-function ApplicationController(){
+function ApplicationController(){	
+	// ******************************************************************************
+	// Properties
+	// ******************************************************************************
 
-	// Public Methods
-	this.openButton=openButton;
-	this.settingsButton=settingsButton;
 	
-	// **************************************************************************
+	
+	
+	// ******************************************************************************
 	// Private Methods
+	// ******************************************************************************
 	
 	// Start Application Setup
 	function startApplicationSetup(){
@@ -22,8 +25,16 @@ function ApplicationController(){
 		setupApplication();
 	}
 	
-	// **************************************************************************
-	// Public Methods
+	
+	// ******************************************************************************
+	// Public Methods Publication
+	// ******************************************************************************
+	this.openButton=openButton;
+	this.settingsButton=settingsButton;
+	
+	// ******************************************************************************
+	// Public Methods Definition
+	// ******************************************************************************
 	
 	// Button Controllers
 	function settingsButton(){
@@ -90,9 +101,9 @@ function ApplicationController(){
 
 
 	
-	//***************************************************************
-	// Events
-	//***************************************************************
+	// ******************************************************************************
+	// Events Listeners
+	// ******************************************************************************
 	
 	// Events handled by the ApplicationController 
 	$(window).on( "LanguageFileLoaded", initializeLanguageModule);
@@ -107,21 +118,18 @@ function ApplicationController(){
 	$(window).on( "LanguageModuleInitiated", startApplicationSetup);	
 	
 	
-	//***************************************************************
-	// Call back function for events
-	//***************************************************************
+	// ******************************************************************************
+	// Call back functions
+	// ******************************************************************************
 	
 	function initializeLanguageModule(e){		
 		console.log("ApplicationController.initializeLanguageModule");
 		
 		// Test Language Module
 		if (languageModule.initialize()){
-			console.log("Language Module Initialization Succed");
-			console.log("Selected Language: " + configModule.getLang());
-			
+			console.log("Language Module Initialization Succeded");
 		}else{
 			console.log("Language Module Error: " + languageModule.getError());
-			
 		}
 		
 		// Create a new jQuery.Event object without the "new" operator.

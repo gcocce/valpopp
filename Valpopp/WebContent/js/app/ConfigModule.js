@@ -2,22 +2,28 @@
 
 var configModule = {
 		// Config properties
-		lang:"es",
+		lang:"en",
 		user:"basic",
 		defScenario:"scenarios/scenario_syntax_demo.json",
+		defSchema:"js/model/schema/scenario_schema.json",
+		imgpath:"img/",
 
 		getLang: function () {
 			console.log("configModule.getLang()");
 			return this.lang;
 		},
 		
+		setLang: function (lang){
+			console.log("configModule.setLang("+lang+")");
+			this.lang=lang;	  
+		},		
+		
 		getDefaultScenario:function (){
 			return this.defScenario;
 		},
-  
-		setLang: function (lang){
-			console.log("configModule.setLang()");
-			this.lang=lang;	  
+		
+		setDefaultScenario:function (scen){
+			this.defScenario=scen;
 		},
 
 		getUserMode: function(  ) {
@@ -27,7 +33,24 @@ var configModule = {
 		 
 		// override the current configuration
 		setUserMode: function(user) {
-			console.log("configModule.setUserMode()");
+			console.log("configModule.setUserMode("+user+")");
 			this.user=user;
+		 },
+		 
+		 getAppImgPath:function(){
+			 return this.imgpath;
+		 },
+		 
+		 setAppImgPath:function (path){
+			 this.imgpath=path;
+		 },
+		 
+		 getDefSchema:function(){
+			 return this.defSchema;
+		 },
+		 
+		 setDefSchema:function (schema){
+			 this.defSchema=schema;
 		 }		 
+		 
 };
