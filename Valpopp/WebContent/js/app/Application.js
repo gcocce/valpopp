@@ -21,7 +21,9 @@ function AppConstants(){
 //Application Objects
 //***************************************************************************
 
-var AppConstants = new AppConstants();
+var appConstants = new AppConstants();
+
+var utils = new Utils();
 
 // Scenario View
 var applicationView=new ApplicationView();
@@ -36,7 +38,7 @@ var scenarioController = null;
 var scenarioView = null;
 
 // Application Global Variables
-var appState=AppConstants.STARTING;
+var appState=appConstants.STARTING;
 
 //*******************************************************************************
 // Setup Section
@@ -54,13 +56,13 @@ function setupApplication(e){
 	//console.log("languageModule.getState:" + languageModule.getState());
 	
 
-	if (appState==AppConstants.STARTING){
-		appState=AppConstants.LOADED;
-	}else if (appState==AppConstants.INITIATED){
+	if (appState==appConstants.STARTING){
+		appState=appConstants.LOADED;
+	}else if (appState==appConstants.INITIATED){
 		console.log("Application already Setup");
 	}
 
-	if(appState==AppConstants.LOADED && languageModule.getState()==languageModule.INITIALIZED){
+	if(appState==appConstants.LOADED && languageModule.getState()==languageModule.INITIALIZED){
 		console.log("setupApplication started");
 		console.log("Selected Language: " + configModule.getLang());
 		console.log("User Type: " + configModule.getUserMode());
@@ -81,7 +83,7 @@ function setupApplication(e){
 		scenarioModel = new ScenarioModel();
 		scenarioModel.loadScenarioRemoteFile(configModule.getDefaultScenario());
 
-		appState=AppConstants.INITIATED; 	
+		appState=appConstants.INITIATED; 	
 		console.log("setupApplication Finised");
 	}
 

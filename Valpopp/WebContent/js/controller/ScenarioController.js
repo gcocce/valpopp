@@ -108,16 +108,22 @@ function ScenarioController(){
 		console.log("ApplicationController.initializeScenarioValidation");
 		
 		if(scenarioSchema.getState()==scenarioSchema.SCHEMA_LOADED && scenarioModel.getState()==scenarioModel.SCENARIO_LOADED){	
-			// TODO: do additional validation.
 			if (!scenarioModel.validateScenario()){
 				applicationView.removeProgressBar();
-				scenarioView.displayError(scenarioModel.getError());
+				
+				if (configModule.getUserMode().localeCompare("editor")==0){
+					scenarioView.displayError(scenarioModel.getError());
+				}else{
+					scenarioView.displayError(utils.wrapErrorMsg("Scenario is not Valid!"));
+				}
+				
 				return;
 			}
 			
+			
 			//TODO: check for images existence.
 			
-			
+			scenarioView.displayMsg(utils.wrapMsg(scenarioModel.getOutput()));
 			
 			//TODO: Complete the scenario Object.
 			

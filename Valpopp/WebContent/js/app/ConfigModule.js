@@ -3,7 +3,7 @@
 var configModule = {
 		// Config properties
 		lang:"en",
-		user:"basic",
+		user:"basic", // {"basic", "editor"}
 		defScenario:"scenarios/scenario_syntax_demo.json",
 		defSchema:"js/model/schema/scenario_schema.json",
 		imgpath:"img/",

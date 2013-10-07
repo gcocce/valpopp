@@ -40,40 +40,172 @@ function ScenarioModel() {
 
 	// Error message
 	var m_error="";
+	var m_output="";
 
 	// The schema as a string loaded initially with the page
 	var m_scenario_state=SCENARIO_NOTLOADED;
 
 	// The structure of the scenario as a JavaScript Object (actually using scenario_obj)
-
-	//var m_scenario=null;
+	var m_scenario_obj=null;
 	//this.m_scenario=m_scenario;
 
 
-	
 	// ******************************************************************************
 	// Private Methods
 	// ******************************************************************************
 
 	//TODO: perform additional validations
 	function performAdditionalValidations(){
+		m_error="";
 		
-		
-		
-		
-		
-		return true;
-		
+        var title=scenario_obj.name;
+        m_output="";
+     
+        m_output='<span>Nodes: </span><br/>';
+        
+        if (!validateNodes(scenario_obj.nodes)) {
+           return false;
+        }
+             
+        m_output+='<br/><span>Sequences: </span><br/>';
+
+        if (!validateSequences(scenario_obj.sequences)) {
+           return false;
+        }
+                
+        return true;
 	}
+      
+      function validateNodes(nodes) {
+        for (var x = 0, xl = nodes.length; x < xl; ++x) {
+           // NotNeeded
+        	m_output += '<span>Node Id =' +  nodes[x].Id + ' Name: ' + nodes[x].name + '</span><br/>';
+           
+           var id=nodes[x].Id;
+                   
+           // We check if the node id is unique
+           var items = jQuery.grep(nodes, function (node) { return node.Id == id });
+           
+           if (items.length!=1) {
+        	   m_error = utils.wrapErrorMsg("Node Id repeated, it must be unique.");
+              return false;
+           }
+        }      
+        
+        
+        return true;
+      }
+      
+      function validateSequences(sequences) {
+        for (var x = 0, xl = sequences.length; x < xl; ++x) {
+           // NotNeeded
+        	m_output += '<br/><span>Sequence Id =' +  sequences[x].Id + ' nextId: ' + sequences[x].nextId + '</span><br/>';
+        	m_output += '<br/><span>Messages:</span><br/>';
+           
+           var id=sequences[x].Id;
+           var nextId=sequences[x].nextId;
+           
+           // Check that scenario id is less than nextId
+           if (id >= nextId && nextId!=0) {
+        	   m_error=  utils.wrapErrorMsg("Sequence Id="+ id +" is greater or equal than nextId "+ nextId +", it must be the opposite unless nextId is 0.");
+               return false;
+           }
+           
+           // Check that nextId exists
+           if (nextId!=0) {
+              // Check if the nextId exists as a Sequence Id
+              var items = jQuery.grep(sequences, function (sequence) { return sequence.Id == nextId });
+              
+              if (items.length<1) {
+                 m_error=utils.wrapErrorMsg("nextId "+ nextId +" does not point to an existing sequence Id.");
+                 return false;
+              }                
+           }
 
-	function getScenarioName() {
-		if (scenario_obj!=null){
-			return scenario_obj.name;
-		}
+           // Check if the sequence id is unique
+           var items = jQuery.grep(sequences, function (sequence) { return sequence.Id == id });
+           
+           if (items.length!=1) {
+              m_error=utils.wrapErrorMsg("Sequence Id repeated, it must be unique.");
+              return false;
+           }         
+           
+           // Check messages validity
+           if (!validateMessages(scenario_obj.sequences[x].messages)) {
+              return false;
+           }
+           
+           // TODO: if there is a MCQ check if there is at least one answer
+           // Check MCQ validity
+           if (!validateMCQ(scenario_obj.sequences[x].mcq)) {
+              return false;
+           }         
+           
+        }
+        
+        return true;
+      }
+      
+      function validateMessages(messages) {      
+        for (var y= 0, yl = messages.length; y < yl; ++y) {
+           
+           // Check that a messages does not have same source and destination
+           if (messages[y].srcN==messages[y].destN) {
+              m_error=utils.wrapErrorMsg("Source and destination node of a message can not be the same.");
+              return false;
+           }
+           
+           if (messages[y].param) {
+              m_output += '<span>Message =' +  messages[y].name + '(' + messages[y].param + ')  srcN: ' + messages[y].srcN +' destN: ' + messages[y].destN + '</span><br/>';
+           }else{
+        	   m_output += '<span>Message =' +  messages[y].name + ' srcN: ' + messages[y].srcN +' destN: ' + messages[y].destN + '</span><br/>';   
+           }
+           
+        }
+           
+        return true;
+      }
+      
+      function validateMCQ(mcq) {
+        var valids=0;
+        
+        for (var x= 0, xl = mcq.answers.length; x < xl; ++x) {
+           // Check if the answer is valid
+           if (mcq.answers[x].valid=="y") {
+              valids++;
+           }
+           
+           if (valids==0) {
+        	   m_output += '<span>MCQ of title: ' + mcq.title + ', must have at least one valid answer.</span><br/>';
+              m_error=utils.wrapErrorMsg("MCQ of title: " + mcq.title + ", must have at least one valid answer.");
+              return false;
+           }
+        }
+      
+        return true;
+      }	
+	
+	// ******************************************************************************
+	// Public Methods Publication
+	// ******************************************************************************
+  	this.getError=getError;
+	this.getState=getState;
+	this.getContents=getContents;
+	this.setContents=setContents;
+	this.getOutput=getOutput;
+	
+    this.validateScenario=validateScenario;
+	this.loadScenarioRemoteFile=loadScenarioRemoteFile;
+	this.loadScenarioLocalFile=loadScenarioLocalFile;
 
-		return null;
+	// ******************************************************************************
+	// Public Methods Definition
+	// ******************************************************************************
+
+	function getOutput(){
+		return m_output;
 	}
-
+	
 	function getContents() {
 		return m_file_content;
 	}
@@ -83,46 +215,6 @@ function ScenarioModel() {
 		m_file_content=arg;
 	}
 	
-	// ******************************************************************************
-	// Public Methods Publication
-	// ******************************************************************************
-	this.validateScenario=validateScenario;
-	this.isValid=isValid;
-	this.getError=getError;
-	this.getState=getState;
-
-	this.loadScenarioRemoteFile=loadScenarioRemoteFile;
-	this.loadScenarioLocalFile=loadScenarioLocalFile;
-
-	// ******************************************************************************
-	// Public Methods Definition
-	// ******************************************************************************
-
-	/* Validate scenario against schema and then perform aditional validations
-	 * 
-	 * returns true if it is ok, false in other case
-	 * a message error is set in the m_error variable
-	 * 
-	 */
-	
-	function validateScenario(){
-		console.log("scenarioModel.validateScenario.");
-		if(!scenarioSchema.validateScenario(m_file_content)){
-			m_error=scenarioSchema.getError();
-			return false;
-		}
-		
-		if(!performAdditionalValidations()){
-			return false;
-		}		
-	   	
-		return true;
-	}	
-	
-	function isValid() {
-		return m_valid;
-	}
-
 	function getError() {
 		return m_error;
 	}
@@ -130,6 +222,29 @@ function ScenarioModel() {
 	function getState(){
 		return m_scenario_state;
 	}
+	
+	/* Validate scenario against schema and then perform aditional validations
+	 * 
+	 * returns true if it is ok, false in other case
+	 * a message error is set in the m_error variable
+	 * 
+	 */
+	function validateScenario(){
+		console.log("scenarioModel.validateScenario.");
+		if(!scenarioSchema.validateScenario(m_file_content)){
+			m_error=scenarioSchema.getError();
+			return false;
+		}
+		
+		scenario_obj=JSON.parse(m_file_content);
+		
+		if(!performAdditionalValidations()){
+			return false;
+		}		
+	   	
+		return true;
+	}	
+
 
 	// Asynchronous method to load the schema file
 	function loadScenarioRemoteFile(file){

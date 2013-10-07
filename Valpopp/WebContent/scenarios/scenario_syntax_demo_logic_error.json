@@ -1,0 +1,50 @@
+{
+    "name": "Scenario Name",
+    "img": "scenario.gif",
+	"defaultmessage":{"type": "ONEWAY", "length": 230, "treatment": 5, "dash": "SEMI"},
+    "nodes":
+		[
+        {"Id": 1, "name": "MS", "img" : "node1.jpg"},
+        {"Id": 2, "name": "BTS", "img" : "node2.gif"}
+		],
+    "propagthroughputs":
+		[
+        {"srcN": 1,"destN": 2,"propagTime" : 20, "throughput": 6400},
+        {"srcN": 2,"destN": 1,"propagTime" : 20, "throughput": 6400}
+		],
+    "sequences":
+		[
+        {"Id": 1, "nextId": 122,
+			"messages":
+				[
+				{"srcN": 1, "destN": 2 , "name": "MM_LOCATION_UPDATE", "param": "IMSI, LS1", "type": "REQUEST", "length": 230, "treatment": 5, "dash": "FULL", "startTime": "", "synchPoint": ""},
+				{"srcN": 1, "destN": 2, "name": "MM_LOCATION_UPDATE", "param": "TMSI", "type": "REQUEST"},
+				{"srcN": 2, "destN" : 1, "name": "MAP_SEND_AUTHENTIFICATION", "type": "RESPONSE", "length": 230, "treatment": 5, "dash": "SEMI", "startTime": ""}
+				],
+			"mcq": {"title": "Request", "text": "¿Here goes the question?", "points": 3 ,
+				"answers":
+					[
+					{"text": "First Answer", "feedback": "The feedback goes here", "valid": "y"},
+					{"text": "Second Answer", "feedback": "Here goes the feedback", "valid": "y"},
+					{"text": "Therd Answer", "feedback": "May not be feedback at all"}
+					]
+			}
+		},
+        {"Id": 123, "nextId":0,
+			"messages":
+				[
+				{"srcN":1,"destN" : 2, "name": "MM_LOCATION_UPDATE", "param": "IMSI, LS1",  "type": "REQUEST", "length": 230, "treatment": 5, "dash": "FULL", "startTime": "", "synchPoint": ""},
+				{"srcN":1,"destN" : 2, "name": "MM_LOCATION_UPDATE", "param": "IMSI",  "type": "REQUEST", "length": 230, "treatment": 0, "dash": "SEMI", "startTime": "", "synchPoint": "", "scenImg": "scenario2.gif"},
+				{"srcN":2,"destN" : 1, "name": "MAP_SEND_AUTHENTIFICATION", "param": "SRS1, Kc",  "type": "RESPONSE"}
+				],
+			"mcq": {"title": "Appel dans l'extranger","text":"¡What would you choose?", "points": 3 ,
+				"answers":
+					[
+					{"text": "First Answer", "feedback": "This has feedback", "valid": "y"},
+					{"text": "Other Answer"},
+					{"text": "Last Answer", "feedback": "This has feedback also"}
+					]
+			}
+		}
+		]	
+}

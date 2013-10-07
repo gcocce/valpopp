@@ -27,6 +27,7 @@ function ScenarioView(){
 	// Public Methods Publication
 	// ******************************************************************************
 	this.displayError=displayError;
+	this.displayMsg=displayMsg;
 	this.enableScenarioCommands=enableScenarioCommands;
 	this.disableScenarioCommands=disableScenarioCommands;
 	
@@ -36,6 +37,28 @@ function ScenarioView(){
 	// Public Methods Definition
 	// ******************************************************************************
 	
+	function displayMsg(html_msg){
+		console.log("displayError: " + html_msg);   
+	    
+		$("#maindialog").dialog({
+			autoOpen: false,
+			modal: true,
+			width: 500,
+			height: 300,
+			position: {  my: "center", at: "center", of: window  },
+			resizable: true,
+			title: "Scenario Message",
+			buttons: {
+				"Close": function(){
+					$(this).dialog("close");
+				}
+			}
+		});
+		
+		$("#maindialog").html(html_msg);
+		
+		$("#maindialog").dialog("open");		
+	}
 	
 	// Display error message associated to the scenario
 	function displayError(html_msg){
