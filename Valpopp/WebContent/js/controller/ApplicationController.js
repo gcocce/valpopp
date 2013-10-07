@@ -22,7 +22,7 @@ function ApplicationController(){
 	function startApplicationSetup(){
 		console.log("ApplicationController.startApplicationSetup");
 		
-		setupApplication();
+		setupApplication(null);
 	}
 	
 	
@@ -55,6 +55,8 @@ function ApplicationController(){
 	        }
 	    });
 	    
+	    $("#maindialog").html("");
+	    
 	    dialog.dialog("open");
 	}
 	
@@ -64,7 +66,7 @@ function ApplicationController(){
 		var dialog=$("#maindialog").show();
 		
 	    $("#maindialog").dialog({ 
-	        modal: false,
+	        modal: true,
 	        width: 300,
 	        height: 400,
 	        position: {  my: "center", at: "center", of: window  },
@@ -79,6 +81,8 @@ function ApplicationController(){
 				}
 	        }
 	    });
+	    
+	    $("#maindialog").html("");
 	    
 	    dialog.dialog("open");		
 	}
@@ -95,7 +99,7 @@ function ApplicationController(){
 	        position: {  my: "center", at: "center", of: window  },
 	        title: "List of Scenarios",
 	    });
-	    
+	        
 	    dialog.dialog("open");
 	}
 
@@ -108,16 +112,9 @@ function ApplicationController(){
 	// Events handled by the ApplicationController 
 	$(window).on( "LanguageFileLoaded", initializeLanguageModule);
 	
-	// Events handled by the ApplicationView
-	$(window).on( "LanguageModuleInitiated", applicationView.initLayout);
-	
-	// Events handled by the ApplicationView
-	$(window).on( "ScenarioFileLoaded", applicationView.activateScenarioCommands);	
-	
-	// Events handled by the ApplicationView
-	$(window).on( "LanguageModuleInitiated", startApplicationSetup);	
-	
-	
+	$(window).on( "SchemaFileLoadingError", applicationView.disableApplicationCommands);
+		
+
 	// ******************************************************************************
 	// Call back functions
 	// ******************************************************************************
@@ -127,18 +124,20 @@ function ApplicationController(){
 		
 		// Test Language Module
 		if (languageModule.initialize()){
+			// Activate application commands layout
+			applicationView.initLayout();
+			
+			// Is mandatory to call to application setup
+			startApplicationSetup();
+			
 			console.log("Language Module Initialization Succeded");
 		}else{
+			applicationView.displayError(languageModule.getError());		
+			
 			console.log("Language Module Error: " + languageModule.getError());
 		}
-		
-		// Create a new jQuery.Event object without the "new" operator.
-		var eventLanguageModuleInitiated = $.Event( "LanguageModuleInitiated" );
-		
-		// Dispatch the event
-		console.log("Language Module Initiated Event Dispatched");
-		$(window).trigger( eventLanguageModuleInitiated );	
 	}
+		
 	
 }
 

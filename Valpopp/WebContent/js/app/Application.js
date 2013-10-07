@@ -21,7 +21,7 @@ function AppConstants(){
 //Application Objects
 //***************************************************************************
 
-var AppConstants= new AppConstants();
+var AppConstants = new AppConstants();
 
 // Scenario View
 var applicationView=new ApplicationView();
@@ -45,12 +45,14 @@ var appState=AppConstants.STARTING;
 // Listen for the event on load (everything is downloaded from the server) 
 $(window).on( "load", setupApplication);
 
+
 // Every Thing that needs to be done before running the application
-function setupApplication(){
+function setupApplication(e){
 	console.log("setupApplication called");
 	
 	//console.log("appState:" + appState);
 	//console.log("languageModule.getState:" + languageModule.getState());
+	
 
 	if (appState==AppConstants.STARTING){
 		appState=AppConstants.LOADED;
@@ -62,10 +64,12 @@ function setupApplication(){
 		console.log("setupApplication started");
 		console.log("Selected Language: " + configModule.getLang());
 		console.log("User Type: " + configModule.getUserMode());
-
+		
+		applicationView.setProgressBar();
+		
 		// Load Scenario Schema
 		scenarioSchema=new Schema();
-		scenarioSchema.loadSchema(configModule.getDefSchema());
+		scenarioSchema.loadSchema(configModule.getDefaultSchema());
 
 		// Create Scenario View
 		scenarioView= new ScenarioView();

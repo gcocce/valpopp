@@ -55,15 +55,15 @@ function ScenarioModel() {
 	// Private Methods
 	// ******************************************************************************
 
-	function validateScenario(){
-	
-   	
-
-	}
-
-	function validateScenarioObject(){
-
-
+	//TODO: perform additional validations
+	function performAdditionalValidations(){
+		
+		
+		
+		
+		
+		return true;
+		
 	}
 
 	function getScenarioName() {
@@ -86,6 +86,7 @@ function ScenarioModel() {
 	// ******************************************************************************
 	// Public Methods Publication
 	// ******************************************************************************
+	this.validateScenario=validateScenario;
 	this.isValid=isValid;
 	this.getError=getError;
 	this.getState=getState;
@@ -97,6 +98,27 @@ function ScenarioModel() {
 	// Public Methods Definition
 	// ******************************************************************************
 
+	/* Validate scenario against schema and then perform aditional validations
+	 * 
+	 * returns true if it is ok, false in other case
+	 * a message error is set in the m_error variable
+	 * 
+	 */
+	
+	function validateScenario(){
+		console.log("scenarioModel.validateScenario.");
+		if(!scenarioSchema.validateScenario(m_file_content)){
+			m_error=scenarioSchema.getError();
+			return false;
+		}
+		
+		if(!performAdditionalValidations()){
+			return false;
+		}		
+	   	
+		return true;
+	}	
+	
 	function isValid() {
 		return m_valid;
 	}
@@ -122,13 +144,15 @@ function ScenarioModel() {
 			// Dispatch the event
 			console.log("Remote Scenario File Loaded");
 			var event = $.Event( "RemoteScenarioFileLoaded" );
-			$(window).trigger( event );			
+			$(window).trigger(event);
 		})
 		.error(function() {
-			console.err("getJSON ERROR for Remote File");
+			console.error("Default SCENARIO file is not a valid json");
 
-			alert("getJSON ERROR. SCENARIO.JSON is not valid json.");
 			m_scenario_state=SCENARIO_LOADING_ERROR;
+			
+			var event = $.Event( "RemoteScenarioFileLoadingError" );
+			$(window).trigger( event );			
 		});	
 	}   
 

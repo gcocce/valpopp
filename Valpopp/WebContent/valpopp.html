@@ -21,6 +21,12 @@
     configModule.setLang("es");
     configModule.setUserMode("editor");
     
+    //configModule.setDefaultSchema("js/model/schema/scenario_schema.json");    
+    //configModule.setDefaultScenario("scenarios/scenario_syntax_demo.json");
+    
+    //configModule.setDefaultSchema("js/model/schema/schema_error.json");    
+    //configModule.setDefaultScenario("scenarios/scenario_syntax_demo_error.json");
+    
     // -->
     </script>
 </head>
@@ -47,7 +53,7 @@
 				  </canvas>
                 </div>
 				<div id="vDraw">
-					<div id="progress_bar"><img src="img/progress_bar.gif" class="loading_circle" alt="loading" /></div>
+					<div id="progress_bar" class="visible"><img src="img/progress_bar.gif" class="loading_circle" alt="loading" /></div>
 				  <canvas id="MyCanvas" style="background-color: white; border: 2px; border-color: black; display: block;">
 					Your browser does not support HTML5 Canvas.
 				  </canvas>
@@ -79,9 +85,14 @@
    		<p>Here is the footer of the MOOC</p>
     </div>
 </div>
+	<script type="text/javascript" src="lib/jsv/uri/uri.js"></script>
+	<script type="text/javascript" src="lib/jsv/uri/schemes/urn.js"></script>
+	<script type="text/javascript" src="lib/jsv/jsv.js"></script>
+	<script type="text/javascript" src="lib/jsv/json-schema-draft-03.js"></script>
+	
 	<script type="text/javascript" src="lib/modernizr.js"></script>	
 	<script type="text/javascript" src="lib/jquery-1.10.2.js"></script>	
-	<script type="text/javascript" src="lib/jquery-ui-1.10.3.custom.min.js"></script>	
+	<script type="text/javascript" src="lib/jquery-ui-1.10.3.custom.js"></script>	
 		
 	<script type="text/javascript" src="js/utils/FileHandler.js"></script>	
 		
@@ -95,10 +106,5 @@
 	<script type="text/javascript" src="js/app/Application.js"></script>
 	
 	<script type="text/javascript" src="strings/LanguageModule.js"></script>
-		
-	<script type="text/javascript" src="lib/jsv/uri/uri.js"></script>
-	<script type="text/javascript" src="lib/jsv/uri/schemes/urn.js"></script>
-	<script type="text/javascript" src="lib/jsv/jsv.js"></script>
-	<script type="text/javascript" src="lib/jsv/json-schema-draft-03.js"></script>
 </body>
 </html>

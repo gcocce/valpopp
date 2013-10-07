@@ -45,11 +45,11 @@ var configModule = {
 			 this.imgpath=path;
 		 },
 		 
-		 getDefSchema:function(){
+		 getDefaultSchema:function(){
 			 return this.defSchema;
 		 },
 		 
-		 setDefSchema:function (schema){
+		 setDefaultSchema:function (schema){
 			 this.defSchema=schema;
 		 }		 
 		 

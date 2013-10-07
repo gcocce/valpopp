@@ -26,9 +26,9 @@ function ScenarioView(){
 	// ******************************************************************************
 	// Public Methods Publication
 	// ******************************************************************************
-	this.activateScenarioCommands=activateScenarioCommands;
-	
-	
+	this.displayError=displayError;
+	this.enableScenarioCommands=enableScenarioCommands;
+	this.disableScenarioCommands=disableScenarioCommands;
 	
 
 	
@@ -36,9 +36,35 @@ function ScenarioView(){
 	// Public Methods Definition
 	// ******************************************************************************
 	
+	
+	// Display error message associated to the scenario
+	function displayError(html_msg){
+		
+		console.log("displayError: " + html_msg);   
+	    
+		$("#maindialog").dialog({
+			autoOpen: false,
+			modal: true,
+			width: 500,
+			height: 300,
+			position: {  my: "center", at: "center", of: window  },
+			resizable: true,
+			title: "Scenario Error Message",
+			buttons: {
+				"Close": function(){
+					$(this).dialog("close");
+				}
+			}
+		});
+		
+		$("#maindialog").html(html_msg);
+		
+		$("#maindialog").dialog("open");
+	}
+	
 	// Setup Layout When the Language Module Was Fully Loaded
 
-	function activateScenarioCommands(){
+	function enableScenarioCommands(){
 		console.log("ApplicationView.activateScenarioCommands");
 		
 		// Enable buttons
@@ -53,8 +79,25 @@ function ScenarioView(){
 		
 		button=document.getElementById("bt_data");
 		button.disabled=false;
-		
 	}
+	
+	function disableScenarioCommands(){
+		console.log("ApplicationView.disableScenarioCommands");
+		
+		// Enable buttons
+		var button=document.getElementById("bt_play");
+		button.disabled=true;
+		
+		button=document.getElementById("bt_stop");
+		button.disabled=true;
+		
+		button=document.getElementById("bt_mode");
+		button.disabled=true;
+		
+		button=document.getElementById("bt_data");
+		button.disabled=true;		
+	}
+	
 	
 	
 	
