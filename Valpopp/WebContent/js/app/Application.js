@@ -22,7 +22,6 @@ function AppConstants(){
 //***************************************************************************
 
 var appConstants = new AppConstants();
-
 var utils = new Utils();
 
 // Scenario View

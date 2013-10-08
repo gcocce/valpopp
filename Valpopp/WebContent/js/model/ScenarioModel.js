@@ -14,13 +14,17 @@ function ScenarioModel() {
 	// ******************************************************************************
 	// Constants
 	// ******************************************************************************
-	var SCENARIO_NOTLOADED=0;
-	var SCENARIO_LOADED=1;
-	var SCENARIO_LOADING_ERROR=2;
+	var SCENARIO_OK=0;
+	var SCENARIO_NOTLOADED=1;
+	var SCENARIO_LOADED=2;
+	var SCENARIO_LOADING_ERROR=3;
+	var SCENARIO_IMG_LOADING_ERROR=4;
 
+	this.SCENARIO_OK=SCENARIO_OK;
 	this.SCENARIO_NOTLOADED=SCENARIO_NOTLOADED;
 	this.SCENARIO_LOADED=SCENARIO_LOADED;
 	this.SCENARIO_LOADING_ERROR=SCENARIO_LOADING_ERROR;	
+	this.SCENARIO_IMG_LOADING_ERROR=SCENARIO_IMG_LOADING_ERROR;
 
 	// ******************************************************************************
 	// Properties
@@ -30,7 +34,7 @@ function ScenarioModel() {
 	var m_file_type="text.*";
 
 	// Private Variables
-	var m_valid=false;
+	var m_valid=true;
 
 	// The content of the scenario file loaded
 	var m_file_content="";
@@ -47,8 +51,10 @@ function ScenarioModel() {
 
 	// The structure of the scenario as a JavaScript Object (actually using scenario_obj)
 	var m_scenario_obj=null;
-	//this.m_scenario=m_scenario;
-
+	
+	var m_scenarioContext=new ScenarioContext();
+	
+	var m_node_images_processed=0;
 
 	// ******************************************************************************
 	// Private Methods
@@ -58,18 +64,18 @@ function ScenarioModel() {
 	function performAdditionalValidations(){
 		m_error="";
 		
-        var title=scenario_obj.name;
+        var title=m_scenario_obj.name;
         m_output="";
      
         m_output='<span>Nodes: </span><br/>';
         
-        if (!validateNodes(scenario_obj.nodes)) {
+        if (!validateNodes(m_scenario_obj.nodes)) {
            return false;
         }
              
         m_output+='<br/><span>Sequences: </span><br/>';
 
-        if (!validateSequences(scenario_obj.sequences)) {
+        if (!validateSequences(m_scenario_obj.sequences)) {
            return false;
         }
                 
@@ -131,13 +137,13 @@ function ScenarioModel() {
            }         
            
            // Check messages validity
-           if (!validateMessages(scenario_obj.sequences[x].messages)) {
+           if (!validateMessages(m_scenario_obj.sequences[x].messages)) {
               return false;
            }
            
            // TODO: if there is a MCQ check if there is at least one answer
            // Check MCQ validity
-           if (!validateMCQ(scenario_obj.sequences[x].mcq)) {
+           if (!validateMCQ(m_scenario_obj.sequences[x].mcq)) {
               return false;
            }         
            
@@ -177,13 +183,35 @@ function ScenarioModel() {
            
            if (valids==0) {
         	   m_output += '<span>MCQ of title: ' + mcq.title + ', must have at least one valid answer.</span><br/>';
-              m_error=utils.wrapErrorMsg("MCQ of title: " + mcq.title + ", must have at least one valid answer.");
+               m_error=utils.wrapErrorMsg("MCQ of title: " + mcq.title + ", must have at least one valid answer.");
               return false;
            }
         }
       
         return true;
       }	
+      
+    // Initiate the download of the nodes images
+	function validateImages(){
+		var nodes= m_scenario_obj.nodes;
+				
+    	// Download and validate image
+		//m_scenario_context.setScenarioImg(0,m_scenario_obj.img);
+        
+        for (var x = 0, xl = nodes.length; x < xl; ++x) {
+        	
+        	// Download and validate image
+        	m_scenarioContext.setNodeImg(x, configModule.getScenarioImgPath() + nodes[x].img);
+         }
+		
+		return true;
+	}
+
+	function initModel(){
+		console.log("ScenarioModel.initModel()");
+		
+		m_node_images_processed=0;
+	}
 	
 	// ******************************************************************************
 	// Public Methods Publication
@@ -193,7 +221,7 @@ function ScenarioModel() {
 	this.getContents=getContents;
 	this.setContents=setContents;
 	this.getOutput=getOutput;
-	
+		
     this.validateScenario=validateScenario;
 	this.loadScenarioRemoteFile=loadScenarioRemoteFile;
 	this.loadScenarioLocalFile=loadScenarioLocalFile;
@@ -228,6 +256,8 @@ function ScenarioModel() {
 	 * returns true if it is ok, false in other case
 	 * a message error is set in the m_error variable
 	 * 
+	 * if both validations are right starts node images download
+	 * 
 	 */
 	function validateScenario(){
 		console.log("scenarioModel.validateScenario.");
@@ -236,20 +266,31 @@ function ScenarioModel() {
 			return false;
 		}
 		
-		scenario_obj=JSON.parse(m_file_content);
+		m_scenario_obj=JSON.parse(m_file_content);
 		
 		if(!performAdditionalValidations()){
 			return false;
-		}		
-	   	
-		return true;
-	}	
+		}
+		
+		m_scenarioContext.setNumberofNodes(m_scenario_obj.nodes.length);
+		m_scenario_state=SCENARIO_OK;
+		
+		if(!validateImages()){
+			return false
+		}
+		
+		//TODO: Update Scenario Context
+		//TODO: Complete the scenario Object.
 
+		return true;
+	}
 
 	// Asynchronous method to load the schema file
 	function loadScenarioRemoteFile(file){
 		// Load Scenario Schema Schema
 		console.log("loadScenarioRemoteFile: " + file);
+		
+		initModel();
 
 		jQuery.getJSON(file, function(data) {
 			m_file_content=JSON.stringify(data);
@@ -274,6 +315,9 @@ function ScenarioModel() {
 
 	// Start file reading, return true if there is no error
 	function loadScenarioLocalFile(file) {
+		
+		initModel();
+		
 		m_valid=false;
 		if (m_fh.isEnabled()) {
 			if (m_fh.openFile(file, readScenarioCallback)){
@@ -289,19 +333,48 @@ function ScenarioModel() {
 		}
 	}
 
-
-
 	// ******************************************************************************
 	// Events Listeners
 	// ******************************************************************************
 	
-	
+	// Events to control node image download
+	$(window).on( "RemoteScenarioImageLoaded", scenarioNodesImgCtrl);	
+	$(window).on( "RemoteScenarioImageLoadingError", scenarioNodesImgCtrl);	
 
 
 	// ******************************************************************************
 	// Call back functions
 	// ******************************************************************************
 
+	// Control Nodes Images Download and trigger event when all files has been processed
+	function scenarioNodesImgCtrl(e){
+		m_node_images_processed++;
+		
+		// It finish when all the images nodes are processed
+		if (m_node_images_processed==m_scenarioContext.getNumberofNodes()){
+			m_error="";
+			
+			console.log("Check for Img State");
+		
+			for (var x=0; x < m_scenarioContext.getNumberofNodes(); x++){
+				
+				var scimg=m_scenarioContext.getNodeImg(x);
+				
+				if (scimg.getState()!=scimg.IMG_OK){
+					m_scenario_state=SCENARIO_IMG_LOADING_ERROR;
+					
+					console.log("Error downloading image for node number: " + (x + 1) + ", file name: "+ scimg.getUrl());
+					m_error+="Error downloading image for node number: " + (x + 1)  + ", file name: "+ scimg.getUrl()+ "<br>";
+				}
+			}
+						
+			// Dispatch ScenarioNodeImgsProccessed Event
+			var event = $.Event( "ScenarioNodeImgsProccessed" );
+			$(window).trigger( event );	
+		}
+	}
+	
+	
 	// This callback method is called when the file was read
 	// This method start validations
 	function readScenarioCallback(e) {
@@ -313,7 +386,4 @@ function ScenarioModel() {
 		validateScenario();
 	}    
 }
-
-
-
 

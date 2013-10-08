@@ -12,8 +12,8 @@ function Schema(){
 	// Constants
 	// ******************************************************************************
 	
-	var SCHEMA_NOTLOADED=0;
-	var SCHEMA_LOADED=1;
+	var SCHEMA_LOADED=0;	
+	var SCHEMA_NOTLOADED=1;
 	
 	var SCHEMA_LOADING_ERROR=100;	
 	

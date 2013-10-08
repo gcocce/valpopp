@@ -4,8 +4,10 @@
 	"defaultmessage":{"type": "ONEWAY", "length": 230, "treatment": 5, "dash": "SEMI"},
     "nodes":
 		[
-        {"Id": 1, "name": "MS", "img" : "node1.jpg"},
-        {"Id": 2, "name": "BTS", "img" : "node2.gif"}
+        {"Id": 1, "name": "MS", "img" : "ms.gif"},
+        {"Id": 2, "name": "BTS", "img" : "bsc.gif"},
+        {"Id": 3, "name": "MS", "img" : "bss.gif"},
+        {"Id": 4, "name": "BTS", "img" : "mscvlr.gif"}        
 		],
     "propagthroughputs":
 		[

@@ -97,6 +97,8 @@ function ScenarioController(){
 	// Trigger when the scenario file couldn't be loaded
 	$(window).on( "RemoteScenarioFileLoadingError", remoteScenarioLoadingError);
 	
+	// Trigger when all the nodes images download attempt has been processed
+	$(window).on( "ScenarioNodeImgsProccessed", scenarioNodeImgProcessed);
 	
 	//***************************************************************************
 	// Call back function for events
@@ -104,6 +106,8 @@ function ScenarioController(){
 	
 	// Function to validate the default scenario loaded the first time any user start the application
 	// This function is called two times until both schema and scenario are already downloaded
+	// If the syntax and logic of the scenario is ok it will automatically initiate the nodes images download
+	// Once the images are downloaded the event ScenarioNodeImgsProccessed is triggered
 	function initializeScenarioValidation(){
 		console.log("ApplicationController.initializeScenarioValidation");
 		
@@ -119,24 +123,6 @@ function ScenarioController(){
 				
 				return;
 			}
-			
-			
-			//TODO: check for images existence.
-			
-			scenarioView.displayMsg(utils.wrapMsg(scenarioModel.getOutput()));
-			
-			//TODO: Complete the scenario Object.
-			
-			
-			
-		
-			//TODO: Initiate scenario display (Title, Nodes, and Data)
-			
-			
-			
-			// If valid start scenario controls
-			applicationView.removeProgressBar();			
-			scenarioView.enableScenarioCommands();			
 		}else{ 
 			// In the case one of the files is not ready
 			console.log("Scenario schema or scenario file not ready");
@@ -155,6 +141,28 @@ function ScenarioController(){
 		scenarioView.disableScenarioCommands();
 		applicationView.removeProgressBar();
 		applicationView.displayError('<div id="msg" class="error">Scenario File is not a valid json.</div>');
-	}	
+	}
+	
+	// Initiate Scenario Display if all images has been downloaded
+	// If one file is missing show error
+	function scenarioNodeImgProcessed(e){
+		applicationView.removeProgressBar();
+		
+		if (scenarioModel.getState()==scenarioModel.SCENARIO_OK){
+			// In this case nodes images has been downloaded correctly.
+			scenarioView.enableScenarioCommands();
+		}else{
+			scenarioView.displayError(utils.wrapErrorMsg(scenarioModel.getError()));
+			return;
+		}
+		
+		//TODO: Initiate scenario display (Title, Nodes, and Data)
+		scenarioView.displayMsg(utils.wrapMsg(scenarioModel.getOutput()));
+		
+		
+		//TODO: Initiate scenario images download
+
+		
+	}
 	
 }
