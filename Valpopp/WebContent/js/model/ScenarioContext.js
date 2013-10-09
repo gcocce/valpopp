@@ -179,6 +179,7 @@ function ScenarioContext(){
 	this.getCurrentImgName=getCurrentImgName;
 	this.setNodeImg=setNodeImg;
 	this.getNodeImg=getNodeImg;
+	this.getNodeName=getNodeName;
 	this.setScenarioImg=setScenarioImg;
 	
 	this.normalizeScenario=normalizeScenario;
@@ -186,6 +187,10 @@ function ScenarioContext(){
 	// ******************************************************************************
 	// Public Methods Definition
 	// ******************************************************************************
+	
+	function getNodeName(index){
+		return m_scenario_object.nodes[index].name;
+	}
 	
 	function getScenarioName(){
 		return m_scenario_object.name;

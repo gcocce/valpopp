@@ -53,51 +53,51 @@ body {
 	font-size: 3em;
 }
 
-#footer {
-	display:block;	
-	height: 5%;
-	min-height:5%;
-	display:block;
-	clear: both;
-	text-align: center;
-	background-color: #CCCCCC;
-	font-size: 1em;
-}
-
 #valpo {
 	height: 75%;
+	min-height: 75%;
 	display:block;
 	clear: both;
 	background-color: #FFFFFF;
 	position: relative;
 }
 
+#footer {
+	display:block;	
+	height: 5%;
+	min-height:5%;
+	clear: both;
+	text-align: center;
+	background-color: #CCCCCC;
+	font-size: 1em;
+}
+
 #vHeader {
+	height: 5%;	
 	display:block;
 	border: 1px dashed;
-	height: 10%;
 }
 
 #vMain{
+	height: 85%;	
 	display: block;
-	height: 75%;
 }
 
 #vScenario{
+	height: 100%;	
 	width: 70%;
-	height: 100%;
 	float: left;
 	border: 1px dashed;
 }
 
 #vNodes{
-	height: 10%;
+	height: 15%;
 	width: 100%;
 	background-color: white; overflow-x: hidden; overflow-y: hidden;	
 }
 
 #vDraw{
-	height: 89%;
+	height: 85%;
 	width: 100%;
 	background-color: white; border: 1px solid black; overflow-x: hidden; overflow-y: scroll;
 }
@@ -129,7 +129,7 @@ body {
 }
 
 #vCommand{
-	height: 10%;
+	height: 9%;
 	clear: both;
 	display:block;
 	border: 1px dashed;
@@ -141,8 +141,8 @@ body {
 #Commands ul li {
 	display: inline-block;
 	margin-left: 15px;
-	margin-top: 4px;
-	margin-bottom: 5px;
+	margin-top: 0px;
+	margin-bottom: 0px;
 	margin-right: 0px;
 }
 
@@ -159,7 +159,7 @@ body {
 #msg.valid{ border: 1px solid #0f0;  font-size: 0.5em; background-color: #efe; }
  
 #msg.error { border: 1px solid #f00; font-size: 0.5em; background-color: #fee; }     
-        
+     
         
 @media screen and (max-width: 768px) {
 	#title{
@@ -168,18 +168,15 @@ body {
 
 	#vScenario{
 		width: 95%;
-		height: 100%;
 		float: left;
 		border: 1px dashed;
 	}
 	
 	#vNodes{
-		height: 10%;
 		width: 100%;
 	}
 	
 	#vDraw{
-		height: 89%;
 		width: 100%;
 	}
 	
