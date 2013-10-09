@@ -2,8 +2,10 @@ console.log("ScenarioView Script");
 
 /* Responsabilities:
  * 
- * Performs User Interface Display associated to the Scenario Layout
  * Performs Scenario Display
+ * 
+ * Performs User Interface Display associated to the Scenario Layout
+ * 
  */
 
 function ScenarioView(){
@@ -11,14 +13,32 @@ function ScenarioView(){
 	// Properties
 	// ******************************************************************************	
 	
+	var m_scenarioContext=null;
 	
-	
+    var theNodes = document.getElementById("Nodes");
+    var theContainer = document.getElementById("vDraw");
+    var theCanvas = document.getElementById("MyCanvas");    
 	
 	// ******************************************************************************
 	// Private Methods
 	// ******************************************************************************
-	function privateMethod(){
-
+	function displayScenarioTitle(){
+		console.log("scenarioView.displayScenarioTitle()");
+		
+		var header=document.getElementById("vHeader");
+		
+		header.innerHTML=m_scenarioContext.getScenarioName();
+		
+	}
+	
+	function displayNodeImages(){
+		
+		
+		
+		
+		
+		
+		
 	}
 	
 	
@@ -30,6 +50,7 @@ function ScenarioView(){
 	this.displayMsg=displayMsg;
 	this.enableScenarioCommands=enableScenarioCommands;
 	this.disableScenarioCommands=disableScenarioCommands;
+	this.initiateScenarioDisplay=initiateScenarioDisplay;
 	
 
 	
@@ -37,8 +58,22 @@ function ScenarioView(){
 	// Public Methods Definition
 	// ******************************************************************************
 	
+	function initiateScenarioDisplay(context){
+		console.log("ScenarioView.initiateScenarioDisplay(context)");
+		m_scenarioContext=context;
+		
+		enableScenarioCommands();
+		
+		//TODO: Initiate Scenario Display (Title, Nodes, and Data)
+		displayScenarioTitle();
+		
+		displayNodeImages();
+		
+		
+	}
+	
 	function displayMsg(html_msg){
-		console.log("displayError: " + html_msg);   
+		//console.log("displayMsg: " + html_msg);   
 	    
 		$("#maindialog").dialog({
 			autoOpen: false,
@@ -62,8 +97,7 @@ function ScenarioView(){
 	
 	// Display error message associated to the scenario
 	function displayError(html_msg){
-		
-		console.log("displayError: " + html_msg);   
+		//console.log("displayError: " + html_msg);   
 	    
 		$("#maindialog").dialog({
 			autoOpen: false,
@@ -88,7 +122,7 @@ function ScenarioView(){
 	// Setup Layout When the Language Module Was Fully Loaded
 
 	function enableScenarioCommands(){
-		console.log("ApplicationView.activateScenarioCommands");
+		console.log("ApplicationView.activateScenarioCommands()");
 		
 		// Enable buttons
 		var button=document.getElementById("bt_play");

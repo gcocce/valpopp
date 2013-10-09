@@ -11,7 +11,7 @@
 		],
     "propagthroughputs":
 		[
-        {"srcN": 1,"destN": 2,"propagTime" : 20, "throughput": 6400},
+        {"srcN": 1,"destN": 2,"propagTime" : 40, "throughput": 7200},
         {"srcN": 2,"destN": 1,"propagTime" : 20, "throughput": 6400}
 		],
     "sequences":
@@ -39,7 +39,7 @@
 				{"srcN":1,"destN" : 2, "name": "MM_LOCATION_UPDATE", "param": "IMSI",  "type": "REQUEST", "length": 230, "treatment": 0, "dash": "SEMI", "startTime": "", "synchPoint": "", "scenImg": "scenario2.gif"},
 				{"srcN":2,"destN" : 1, "name": "MAP_SEND_AUTHENTIFICATION", "param": "SRS1, Kc",  "type": "RESPONSE"}
 				],
-			"mcq": {"title": "Appel dans l'extranger","text":"¡What would you choose?", "points": 3 ,
+			"mcq": {"title": "Appel dans l'extranger","text":"What would you choose?", "points": 3 ,
 				"answers":
 					[
 					{"text": "First Answer", "feedback": "This has feedback", "valid": "y"},

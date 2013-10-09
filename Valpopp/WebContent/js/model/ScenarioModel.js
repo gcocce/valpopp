@@ -2,9 +2,11 @@
 
 /* Responsabilities:
  * 
- * Contain Scenario Data
- * Control Scenario Data
- * Validate Scenario Data
+ * Load Scenario File
+ * 
+ * Validate Scenario File
+ * 
+ * Build Scenario Data from Scenario File
  * 
  */
 
@@ -60,7 +62,9 @@ function ScenarioModel() {
 	// Private Methods
 	// ******************************************************************************
 
-	//TODO: perform additional validations
+	/* Start the additional validations
+	 * 
+	 */
 	function performAdditionalValidations(){
 		m_error="";
 		
@@ -141,7 +145,6 @@ function ScenarioModel() {
               return false;
            }
            
-           // TODO: if there is a MCQ check if there is at least one answer
            // Check MCQ validity
            if (!validateMCQ(m_scenario_obj.sequences[x].mcq)) {
               return false;
@@ -192,14 +195,10 @@ function ScenarioModel() {
       }	
       
     // Initiate the download of the nodes images
-	function validateImages(){
+	function getRemoteNodeImages(){
 		var nodes= m_scenario_obj.nodes;
-				
-    	// Download and validate image
-		//m_scenario_context.setScenarioImg(0,m_scenario_obj.img);
-        
+
         for (var x = 0, xl = nodes.length; x < xl; ++x) {
-        	
         	// Download and validate image
         	m_scenarioContext.setNodeImg(x, configModule.getScenarioImgPath() + nodes[x].img);
          }
@@ -221,15 +220,21 @@ function ScenarioModel() {
 	this.getContents=getContents;
 	this.setContents=setContents;
 	this.getOutput=getOutput;
+	this.getContext=getContext;
 		
     this.validateScenario=validateScenario;
 	this.loadScenarioRemoteFile=loadScenarioRemoteFile;
 	this.loadScenarioLocalFile=loadScenarioLocalFile;
+	this.normalizeScenario=normalizeScenario;
 
 	// ******************************************************************************
 	// Public Methods Definition
 	// ******************************************************************************
 
+	function getContext(){
+		return m_scenarioContext;
+	}
+	
 	function getOutput(){
 		return m_output;
 	}
@@ -251,6 +256,10 @@ function ScenarioModel() {
 		return m_scenario_state;
 	}
 	
+	function normalizeScenario(){
+		m_scenarioContext.normalizeScenario();
+	}
+	
 	/* Validate scenario against schema and then perform aditional validations
 	 * 
 	 * returns true if it is ok, false in other case
@@ -270,17 +279,18 @@ function ScenarioModel() {
 		
 		if(!performAdditionalValidations()){
 			return false;
-		}
+		}	
 		
+		m_scenarioContext.setScenario(m_scenario_obj);
+		
+		//TODO:this could be done by scenario context
 		m_scenarioContext.setNumberofNodes(m_scenario_obj.nodes.length);
+		
 		m_scenario_state=SCENARIO_OK;
 		
-		if(!validateImages()){
+		if(!getRemoteNodeImages()){
 			return false
 		}
-		
-		//TODO: Update Scenario Context
-		//TODO: Complete the scenario Object.
 
 		return true;
 	}
@@ -354,7 +364,7 @@ function ScenarioModel() {
 		if (m_node_images_processed==m_scenarioContext.getNumberofNodes()){
 			m_error="";
 			
-			console.log("Check for Img State");
+			console.log("Check for Nodes Images State");
 		
 			for (var x=0; x < m_scenarioContext.getNumberofNodes(); x++){
 				

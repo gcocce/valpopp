@@ -150,18 +150,18 @@ function ScenarioController(){
 		
 		if (scenarioModel.getState()==scenarioModel.SCENARIO_OK){
 			// In this case nodes images has been downloaded correctly.
-			scenarioView.enableScenarioCommands();
+			scenarioModel.normalizeScenario();
+			
+			scenarioView.initiateScenarioDisplay(scenarioModel.getContext());
+
+			//scenarioView.displayMsg(utils.wrapMsg(scenarioModel.getOutput()));		
+			
+			//TODO: Initiate Scenario Images Download
+			
 		}else{
 			scenarioView.displayError(utils.wrapErrorMsg(scenarioModel.getError()));
 			return;
 		}
-		
-		//TODO: Initiate scenario display (Title, Nodes, and Data)
-		scenarioView.displayMsg(utils.wrapMsg(scenarioModel.getOutput()));
-		
-		
-		//TODO: Initiate scenario images download
-
 		
 	}
 	
