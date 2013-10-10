@@ -29,7 +29,9 @@ function ScenarioView(){
 	// ******************************************************************************
 	// Private Methods
 	// ******************************************************************************
-	
+
+    
+
     function setupSize() {
 //    	console.log("ScenarioView.setupSize()");
         //var width = window.innerWidth;
@@ -264,7 +266,9 @@ function ScenarioView(){
 	
 	// Events handled by the ApplicationController 
 	
-	$(window).on( "resize", updateScenarioView);	
+	$(window).on( "resize", updateScenarioView);
+	
+	$(window).on( "ScenarioPlayChanged", drawScenarioScreen);
 	
 	
 	// ******************************************************************************
@@ -279,7 +283,21 @@ function ScenarioView(){
 			
 			displayScenarioTitle();
 			
-			displayNodeImages();			
+			displayNodeImages();
+			
+			drawScenarioScreen();
 		}
 	}
+	
+	// Get Data from ScenarioPlay and display it on the canvas
+	function drawScenarioScreen(){
+		console.log("ScenarioView.drawScenarioScreen");
+		
+		//TODO: Display the current scenarioPlay in the canvas
+		
+		
+		
+	}
+	
+	
 }

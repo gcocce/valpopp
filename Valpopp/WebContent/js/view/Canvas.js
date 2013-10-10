@@ -11,8 +11,11 @@ function Canvas(){
 	// ******************************************************************************
 	// Properties
 	// ******************************************************************************	
-	var width=0;
-	var height=0;
+	
+	var m_error="";
+	
+	var m_width=0;
+	var m_height=0;
 	
 	
 	// ******************************************************************************
@@ -33,7 +36,15 @@ function Canvas(){
 	// Public Methods Definition
 	// ******************************************************************************
 	
+	function setWidth(value){
+		m_width=value;
+	}
 	
+	function setHeight(value){
+		m_height=value;
+	}
 	
-	
+	function getError(){
+		return m_error;
+	}
 }

@@ -35,6 +35,8 @@ function ScenarioController(){
 		
 		var state=scenarioPlay.getState();
 		
+		console.log("ScenarioController.playButton state:"+state);
+		
 		  theCommandButton = document.getElementById("bt_play");
 			
 		  switch (state) {
@@ -55,7 +57,10 @@ function ScenarioController(){
 
 	function stopButton(){
 		console.log("stopButton");
-
+		
+		theCommandButton = document.getElementById("bt_play");
+		theCommandButton.value="Start";
+		 
 		var scenarioPlay=scenarioView.getCurrentScenarioPlay();
 		scenarioPlay.stop();
 	}
