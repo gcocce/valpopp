@@ -11,16 +11,9 @@ function ScenarioController(){
 	// ******************************************************************************
 
 	
-	
-	
 	// ******************************************************************************
 	// Private Methods
 	// ******************************************************************************
-	
-	function privateMethod(){
-
-	}
-	
 	
 	
 	// **************************************************************************
@@ -38,27 +31,56 @@ function ScenarioController(){
 	function playButton(){
 		console.log("playButton");
 		
+		var scenarioPlay=scenarioView.getCurrentScenarioPlay();
+		
+		var state=scenarioPlay.getState();
+		
+		  theCommandButton = document.getElementById("bt_play");
+			
+		  switch (state) {
+			case scenarioPlay.SCENARIO_STOPPED: // Play
+			  theCommandButton.value="Pause";
+			  scenarioPlay.play();
+			  break;
+			case scenarioPlay.SCENARIO_PLAYING: // Pause
+			  theCommandButton.value="Continue";
+			  scenarioPlay.pause();
+			  break;
+			case scenarioPlay.SCENARIO_PAUSED: // Continue
+			  theCommandButton.value="Pause";
+			  scenarioPlay.continuePlay();		  
+			  break;
+		  }
 	}
 
 	function stopButton(){
 		console.log("stopButton");
 
-		
+		var scenarioPlay=scenarioView.getCurrentScenarioPlay();
+		scenarioPlay.stop();
 	}
 
 	function quizButton(){
 		console.log("quizButton");
+		// TODO: indicate to scenarioView open Quiz dialog.
 		
 	}
 
 	function modeCheckbox(){
 		console.log("modeCheckbox");
+				
+		var scenarioPlay=scenarioView.getCurrentScenarioPlay();
 		
+		theCheckButton = document.getElementById("bt_mode");
+				
+		scenarioPlay.changeMode(theCheckButton.checked);
 	}
 	
 	function dataButton(){
 		console.log("dataButton");   
 	    
+		// TODO: ask scenarioView to show scenario data dialog 
+		
 		$("#maindialog").dialog({
 			autoOpen: false,
 			modal: true,
@@ -77,7 +99,6 @@ function ScenarioController(){
 		$("#maindialog").html("");
 		
 		$("#maindialog").dialog("open");
-		
 	}	
 
 	

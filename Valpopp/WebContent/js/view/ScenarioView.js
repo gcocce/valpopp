@@ -15,6 +15,7 @@ function ScenarioView(){
 	var m_error="";
 	
 	var m_scenarioContext=null;
+	var m_scenarioPlay=null;
 	
 	// to display the node images
 	var theNodesContainer=document.getElementById("vNodes");
@@ -30,7 +31,7 @@ function ScenarioView(){
 	// ******************************************************************************
 	
     function setupSize() {
-    	console.log("ScenarioView.setupSize()");
+//    	console.log("ScenarioView.setupSize()");
         //var width = window.innerWidth;
         //var height = window.innerHeight;
     	
@@ -40,11 +41,10 @@ function ScenarioView(){
         var theNodesContainerHeight = window.getComputedStyle(theNodesContainer).getPropertyValue('height');        
         var theNodesContainerWidth = window.getComputedStyle(theNodesContainer).getPropertyValue('width');        
         
-        console.log("vDraw height: "+theContainerHeight);
-        console.log("vDraw width: "+theContainerWidth);
-        
-        console.log("vNodes height: "+theNodesContainerHeight);
-        console.log("vNodes width: "+theNodesContainerWidth);
+//        console.log("vDraw height: "+theContainerHeight);
+//        console.log("vDraw width: "+theContainerWidth);
+//        console.log("vNodes height: "+theNodesContainerHeight);
+//        console.log("vNodes width: "+theNodesContainerWidth);
         
         theContainerHeight = parseInt(theContainerHeight);
         theContainerWidth = parseInt(theContainerWidth);
@@ -62,15 +62,14 @@ function ScenarioView(){
 	    theNodes.setAttribute('height',theNodesContainerHeight);	    
 	    theNodes.setAttribute('width', theContainerWidth );    	    
     	
-    	console.log("ScenarioView.setupSize()");
-    	console.log("theCanvas style width:" + theCanvas.style.width + " height:" + theCanvas.style.height);
-    	console.log("theCanvas width:" + theCanvas.width + " height:" +  theCanvas.height);
-    	console.log("theNodes style width:" + theNodes.style.width + " height:" + theNodes.style.height);
-    	console.log("theNodes width:" + theNodes.width + " height:" +  theNodes.height);    	
+//    	console.log("theCanvas style width:" + theCanvas.style.width + " height:" + theCanvas.style.height);
+//    	console.log("theCanvas width:" + theCanvas.width + " height:" +  theCanvas.height);
+//    	console.log("theNodes style width:" + theNodes.style.width + " height:" + theNodes.style.height);
+//    	console.log("theNodes width:" + theNodes.width + " height:" +  theNodes.height);    	
     }
     
     function displayScenarioTitle(){
-		console.log("scenarioView.displayScenarioTitle()");
+//		console.log("scenarioView.displayScenarioTitle()");
 		
 		var header=document.getElementById("vHeader");
 		
@@ -79,8 +78,7 @@ function ScenarioView(){
 	
     
 	function displayNodeImages(){
-		
-		console.log("displayNodeImages");
+//		console.log("displayNodeImages");
 		
 		var width= theNodes.width;
 		var heigth= theNodes.height;
@@ -88,8 +86,8 @@ function ScenarioView(){
 		var imgHeight= Math.round(heigth * 0.7);
 		var tagHeight= Math.round(heigth * 0.3);
 		
-		console.log("Node image height: "+imgHeight);
-		console.log("Node tag height: "+tagHeight)
+//		console.log("Node image height: "+imgHeight);
+//		console.log("Node tag height: "+tagHeight)
 		
 		var img=null;
 		
@@ -107,22 +105,23 @@ function ScenarioView(){
 	    // Distance between nodes
 	    var distNodos = (width - (border * 2) ) / (m_scenarioContext.getNumberofNodes() -1);	
 	    
-	    console.log("Number of nodes: "+ m_scenarioContext.getNumberofNodes());
+//	    console.log("Number of nodes: "+ m_scenarioContext.getNumberofNodes());
 	    
 	    for (var x=0; x < m_scenarioContext.getNumberofNodes(); x++){
 			try{
-				img=m_scenarioContext.getNodeImg(x).getImg();
+				var NodeImage=m_scenarioContext.getNodeImg(x);
 				
-				if (img.height > imgHeight){
-					var proportion = imgHeight / img.height;
+				img=NodeImage.getImg();
+				
+				//if (img.height > imgHeight){
+					var proportion = imgHeight / NodeImage.getHeight();
 					
 					img.height = imgHeight;
-					img.width = img.width * proportion;
-				}
+					img.width = NodeImage.getWidth() * proportion;
+				//}
 				
-				console.log("display image for node 0: " + img.src);
-				
-				console.log("image width: "+ img.width +" image height:"+ img.height);
+//				console.log("display image for node 0: " + img.src);
+//				console.log("image width: "+ img.width +" image height:"+ img.height);
 				
 				// Display the image of the node
 				theNodesContext.drawImage(img, border + (distNodos * x) - (img.width/2), 0, img.width, img.height);
@@ -140,8 +139,6 @@ function ScenarioView(){
 	    }
 	}
 	
-	
-	
 	// ******************************************************************************
 	// Public Methods Publication
 	// ******************************************************************************
@@ -150,23 +147,31 @@ function ScenarioView(){
 	this.enableScenarioCommands=enableScenarioCommands;
 	this.disableScenarioCommands=disableScenarioCommands;
 	this.initiateScenarioDisplay=initiateScenarioDisplay;
+	
+	this.getCurrentScenarioPlay=getCurrentScenarioPlay;
 
 	
 	// ******************************************************************************
 	// Public Methods Definition
 	// ******************************************************************************
 	
+	function getCurrentScenarioPlay(){
+		return m_scenarioPlay;
+	}
+	
 	function initiateScenarioDisplay(context){
 		console.log("ScenarioView.initiateScenarioDisplay(context)");
 		m_scenarioContext=context;
 		
-		enableScenarioCommands();
-		
+		m_scenarioPlay=new ScenarioPlay(context);
+	
 		setupSize();
 		
 		displayScenarioTitle();
 		
 		displayNodeImages();
+		
+		enableScenarioCommands();		
 	}
 	
 	function displayMsg(html_msg){
@@ -253,24 +258,28 @@ function ScenarioView(){
 	}
 	
 	
-	
-	
 	// ******************************************************************************
 	// Events
 	// ******************************************************************************	
 	
 	// Events handled by the ApplicationController 
-	$(window).on( "Event", someCalbackFunction);	
 	
-	
-	
+	$(window).on( "resize", updateScenarioView);	
 	
 	
 	// ******************************************************************************
 	// Call back function for events
 	// ******************************************************************************	
 	
-	function someCalbackFunction(e){
+	function updateScenarioView(e){
+//		console.log("ScenarioView.updateScenarioView");
 		
+		if (m_scenarioPlay!=null){
+			setupSize();
+			
+			displayScenarioTitle();
+			
+			displayNodeImages();			
+		}
 	}
 }

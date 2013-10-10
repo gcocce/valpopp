@@ -41,6 +41,8 @@ function ScenarioImage(url_param){
 	var m_img=new Image();
 	var m_url=url_param;
 	var m_state=IMG_ERROR;
+	var m_width=0;
+	var m_height=0;
 	
 	// ******************************************************************************
 	// Constructor
@@ -60,6 +62,9 @@ function ScenarioImage(url_param){
 	    m_state=IMG_OK;
 	    m_other=1;
 	    
+	    m_width=m_img.width;
+	    m_height=m_img.height;
+	    
 	    //Dispatch Event
 		var event = $.Event( "RemoteScenarioImageLoadingError" );
 		$(window).trigger( event );	
@@ -74,10 +79,20 @@ function ScenarioImage(url_param){
 	this.getState=getState;
 	this.getImg=getImg;
 	this.getUrl=getUrl;
+	this.getWidth=getWidth;
+	this.getHeight=getHeight;
 
 	// ******************************************************************************
 	// Public Methods Definition
 	// ******************************************************************************
+	
+	function getWidth(){
+		return m_width;
+	}
+	
+	function getHeight(){
+		return m_height;
+	}
 	
 	function getState(){
 		return m_state;
