@@ -4,7 +4,10 @@
 	<title>Valpo++</title>
 	
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+	
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	
 	<link href="css/valpopp.css" rel="stylesheet" type="text/css" />
 	<link href="css/smoothness/jquery-ui-1.10.3.custom.css" rel="stylesheet">
 
@@ -21,11 +24,21 @@
     configModule.setLang("es");
     configModule.setUserMode("editor");
     
-    //configModule.setDefaultSchema("js/model/schema/scenario_schema.json");    
+    //configModule.setDefaultSchema("js/model/schema/scenario_schema.json");
+    
+    // Four Nodes
     //configModule.setDefaultScenario("scenarios/scenario_syntax_demo.json");
     
-    //configModule.setDefaultSchema("js/model/schema/schema_error.json");    
+    // Two Nodes
+    //configModule.setDefaultScenario("scenarios/scenario_demo_working_copy.json");
+    
+    
+    // TO SEE ERRORS:
+    // Wrong Schema File
+    //configModule.setDefaultSchema("js/model/schema/schema_error.json");
+    // Scenario Syntax Error
     //configModule.setDefaultScenario("scenarios/scenario_syntax_demo_syntax_error.json");
+    // Scenario Logic Error
     //configModule.setDefaultScenario("scenarios/scenario_syntax_demo_logic_error.json");
     
     
@@ -110,7 +123,7 @@
 	<script type="text/javascript" src="js/controller/ScenarioController.js"></script>
 	<script type="text/javascript" src="js/model/ScenarioContext.js"></script>
 	<script type="text/javascript" src="js/model/ScenarioPlay.js"></script>
-	<script type="text/javascript" src="js/model/ScenarioModel.js"></script>
+	<script type="text/javascript" src="js/model/ScenarioModelBuilder.js"></script>
 	
 	<script type="text/javascript" src="js/view/ApplicationView.js"></script>	
 	<script type="text/javascript" src="js/controller/ApplicationController.js"></script>

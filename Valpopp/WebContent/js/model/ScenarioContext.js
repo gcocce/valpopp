@@ -51,6 +51,10 @@ function ScenarioContext(){
 	function completeDefaults(){
 		var def=m_scenario_object.defaultmessage;
 		
+		if (!def){
+			def={};
+		}
+		
 		if(def.type){
 			m_default["type"]=def.type;
 		}else{
@@ -172,16 +176,16 @@ function ScenarioContext(){
 	
 	this.getError=getError;
 	this.getState=getState;
-	this.setScenario=setScenario;
 	this.getScenarioName=getScenarioName;
-	this.setNumberofNodes=setNumberofNodes;
+	this.setScenario=setScenario;
 	this.getNumberofNodes=getNumberofNodes;
 	this.getCurrentImgName=getCurrentImgName;
-	this.setNodeImg=setNodeImg;
 	this.getNodeImg=getNodeImg;
 	this.getNodeName=getNodeName;
-	this.setScenarioImg=setScenarioImg;
 	
+	this.setNumberofNodes=setNumberofNodes;
+	this.setNodeImg=setNodeImg;
+	this.setScenarioImg=setScenarioImg;
 	this.normalizeScenario=normalizeScenario;
 		
 	// ******************************************************************************

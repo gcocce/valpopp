@@ -3,8 +3,8 @@
     "img": "scenario.gif",
     "nodes":
 		[
-        {"Id": 1, "name": "MS", "img" : "node1.jpg"},
-        {"Id": 2, "name": "BTS", "img" : "node2.gif"}
+        {"Id": 1, "name": "MS", "img" : "ms.gif"},
+        {"Id": 2, "name": "BTS", "img" : "bsc.gif"}
 		],
     "propagthroughputs":
 		[

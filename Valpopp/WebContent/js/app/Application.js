@@ -32,7 +32,7 @@ var applicationController= new ApplicationController();
 
 //Scenario Objects
 var scenarioSchema = null;
-var scenarioModel = null;
+var scenarioModelBuilder = null;
 var scenarioController = null;
 var scenarioView = null;
 
@@ -78,9 +78,9 @@ function setupApplication(e){
 		// Create Scenario Controller
 		scenarioController= new ScenarioController();
 		
-		// Create Scenario Model
-		scenarioModel = new ScenarioModel();
-		scenarioModel.loadScenarioRemoteFile(configModule.getDefaultScenario());
+		// Create Scenario Model Builder
+		scenarioModelBuilder = new ScenarioModelBuilder();
+		scenarioModelBuilder.loadScenarioRemoteFile(configModule.getDefaultScenario());
 
 		appState=appConstants.INITIATED; 	
 		console.log("setupApplication Finised");

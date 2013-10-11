@@ -137,12 +137,12 @@ function ScenarioController(){
 	function initializeScenarioValidation(){
 		console.log("ApplicationController.initializeScenarioValidation");
 		
-		if(scenarioSchema.getState()==scenarioSchema.SCHEMA_LOADED && scenarioModel.getState()==scenarioModel.SCENARIO_LOADED){	
-			if (!scenarioModel.validateScenario()){
+		if(scenarioSchema.getState()==scenarioSchema.SCHEMA_LOADED && scenarioModelBuilder.getState()==scenarioModelBuilder.SCENARIO_LOADED){	
+			if (!scenarioModelBuilder.validateScenario()){
 				applicationView.removeProgressBar();
 				
 				if (configModule.getUserMode().localeCompare("editor")==0){
-					scenarioView.displayError(scenarioModel.getError());
+					scenarioView.displayError(scenarioModelBuilder.getError());
 				}else{
 					scenarioView.displayError(utils.wrapErrorMsg("Scenario is not Valid!"));
 				}
@@ -152,7 +152,7 @@ function ScenarioController(){
 		}else{ 
 			// In the case one of the files is not ready
 			console.log("Scenario schema or scenario file not ready");
-			console.log("Scenario State: " + scenarioModel.getState());
+			console.log("Scenario State: " + scenarioModelBuilder.getState());
 			console.log("Schema State: " + scenarioSchema.getState());	
 		}	
 	}
@@ -174,18 +174,18 @@ function ScenarioController(){
 	function scenarioNodeImgProcessed(e){
 		applicationView.removeProgressBar();
 		
-		if (scenarioModel.getState()==scenarioModel.SCENARIO_OK){
+		if (scenarioModelBuilder.getState()==scenarioModelBuilder.SCENARIO_OK){
 			// In this case nodes images has been downloaded correctly.
-			scenarioModel.normalizeScenario();
+			scenarioModelBuilder.normalizeScenario();
 			
-			scenarioView.initiateScenarioDisplay(scenarioModel.getContext());
+			scenarioView.initiateScenarioDisplay(scenarioModelBuilder.getContext());
 
-			//scenarioView.displayMsg(utils.wrapMsg(scenarioModel.getOutput()));		
+			//scenarioView.displayMsg(utils.wrapMsg(scenarioModelBuilder.getOutput()));		
 			
 			//TODO: Initiate Scenario Images Download
 			
 		}else{
-			scenarioView.displayError(utils.wrapErrorMsg(scenarioModel.getError()));
+			scenarioView.displayError(utils.wrapErrorMsg(scenarioModelBuilder.getError()));
 			return;
 		}
 		
