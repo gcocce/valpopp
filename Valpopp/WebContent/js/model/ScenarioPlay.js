@@ -21,14 +21,16 @@ function ScenarioPlay(context){
 	var SCENARIO_PLAYING=1;
 	var SCENARIO_PAUSED=2;
 	var SCENARIO_QUIZZING=3;
+	var SCENARIO_FINISHED=4;
 	
-	var LOOP_UPDATE_TIME=1000;
+	var LOOP_UPDATE_TIME=100;
 
 	// To be used outside the class
 	this.SCENARIO_STOPPED=SCENARIO_STOPPED;
 	this.SCENARIO_PLAYING=SCENARIO_PLAYING;
 	this.SCENARIO_PAUSED=SCENARIO_PAUSED;
 	this.SCENARIO_QUIZZING=SCENARIO_QUIZZING;	
+	this.SCENARIO_FINISHED=SCENARIO_FINISHED;
 	
 	// ******************************************************************************
 	// Properties
@@ -40,10 +42,13 @@ function ScenarioPlay(context){
 	
 	var m_context=context;
 	
-	// Reference to Timer
-	var m_loop;
+	// Messages
+	var m_messages=new Array();
 	
+	// Reference to Timer
+	var m_loop=null;
 	var m_userscroll=false;
+	var m_finished=false;
 	
     var theContainer = document.getElementById("vDraw");
     var theCanvas = document.getElementById("vScenarioCanvas");   
@@ -57,10 +62,10 @@ function ScenarioPlay(context){
 	function cleanScenarioPlay(){
 		console.log("ScenarioPlay.cleanScenarioPlay");
 		
-		//m_finished=false;
-		m_userscroll=false;
-		
 		//TODO: Clean Objects used to store scenario play data
+		m_finished=false;
+		m_userscroll=false;
+		m_messages = new Array();
 		
 		theContainer.scrollTop = 0;		
 	}
@@ -68,30 +73,61 @@ function ScenarioPlay(context){
 	function cleanScenarioPlayScreen(){
 		console.log("ScenarioPlay.cleanScenarioPlayScreen");
 		
-		// TODO: Clean Canvas
+		//TODO: replace for a proper call
+		notifyChange();
 	}	
 	
 	function calculateScenarioPlay(){
-		console.log("ScenarioPlay.calculateScenarioPlay");
+//		console.log("ScenarioPlay.calculateScenarioPlay finished:" + m_finished);
 		
 		//TODO: Calculate the new state of ScenarioPlay objects 
-		
-		
-		notifyChange();
+		if (!m_finished){
+			// The following code is to test scenario states change
+//			console.log("ScenarioPlay messages.lenght:" + m_messages.length );
+			
+			if (m_messages.length==0){
+				m_messages[0]=0.1;
+			}else{
+				var value=m_messages[m_messages.length-1];
+				
+				if (value<1){
+					value = value + 0.1;
+					m_messages[m_messages.length-1]=value;
+				}else{
+					if (m_messages.length < 20){
+						m_messages[m_messages.length]=0.1;
+					}else{
+						m_finished=true;
+						
+						m_state=SCENARIO_STOPPED;
+						
+						window.clearTimeout(m_loop);
+						
+						var event = $.Event( "ScenarioPlayFinished" );
+						$(window).trigger( event );							
+					}
+				}
+			}
+
+			notifyChange();
+		}
+			
 	}
 	
 	function start(){
 		console.log("ScenarioPlay.start");
 		
-		m_userscroll=false;
-
-		m_loop=window.setTimeout(appLoop, LOOP_UPDATE_TIME);
-
+		cleanScenarioPlay();
+		
+		cleanScenarioPlayScreen();
+		
 		calculateScenarioPlay();
+		
+		m_loop=window.setTimeout(appLoop, LOOP_UPDATE_TIME);		
 	}
 	
 	function notifyChange(){
-		console.log("ScenarioPlay.notifyChange");
+//		console.log("ScenarioPlay.notifyChange");
 		
 		// Dispatch ScenarioNodeImgsProccessed Event
 		var event = $.Event( "ScenarioPlayChanged" );
@@ -117,9 +153,26 @@ function ScenarioPlay(context){
 	this.continuePlay=continuePlay;
 	this.changeMode=changeMode;
 	
+	this.setUserScroll=setUserScroll;
+	this.getUserScroll=getUserScroll;
+	
+	this.getMessages=getMessages;
+	
 	// ******************************************************************************
 	// Public Methods Definition
 	// ******************************************************************************
+	
+	function getUserScroll(){
+		return m_userscroll;
+	}
+	
+	function setUserScroll(value){
+		m_userscroll=value;
+	}
+	
+	function getMessages(){
+		return m_messages;
+	}
 	
 	function getError(){
 		return m_error;
@@ -152,6 +205,7 @@ function ScenarioPlay(context){
 	function continuePlay(){
 		console.log("ScenarioPlay.continuePlay m_state:", m_state);
 		
+		m_userscroll=false;
 		m_state=SCENARIO_PLAYING;
 		  
 		m_loop=window.setTimeout(appLoop, LOOP_UPDATE_TIME);		
@@ -178,9 +232,6 @@ function ScenarioPlay(context){
 	// Events Listeners
 	// ******************************************************************************
 	
-	// Events to control node image download
-	//$(window).on( "ScenarioPlayAdvance", scenarioPlayUpdate);	
-
 	// ******************************************************************************
 	// Call back functions
 	// ******************************************************************************	

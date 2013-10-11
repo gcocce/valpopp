@@ -255,8 +255,7 @@ function ScenarioContext(){
 	// Events Listeners
 	// ******************************************************************************
 	
-	$(window).on( "RemoteScenarioImageLoadingError", scenarioImgLoadingError);	
-
+	$(window).on( "RemoteScenarioImageLoadingError", scenarioImgLoadingError);
 
 	// ******************************************************************************
 	// Call back functions

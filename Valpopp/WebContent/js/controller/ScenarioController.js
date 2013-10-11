@@ -9,7 +9,8 @@ function ScenarioController(){
 	// ******************************************************************************
 	// Properties
 	// ******************************************************************************
-
+    var theContainer = document.getElementById("vDraw");
+    var theCanvas = document.getElementById("vScenarioCanvas");   
 	
 	// ******************************************************************************
 	// Private Methods
@@ -108,7 +109,7 @@ function ScenarioController(){
 
 	
 	//***************************************************************************
-	// Events Listeners
+	// Events Listeners for Loading Process
 	//***************************************************************************
 		
 	// Trigger when the default scenario file is already loaded the first time any user start the application
@@ -125,9 +126,9 @@ function ScenarioController(){
 	
 	// Trigger when all the nodes images download attempt has been processed
 	$(window).on( "ScenarioNodeImgsProccessed", scenarioNodeImgProcessed);
-	
+
 	//***************************************************************************
-	// Call back function for events
+	// Call back function for loading process
 	//***************************************************************************
 	
 	// Function to validate the default scenario loaded the first time any user start the application
@@ -191,4 +192,128 @@ function ScenarioController(){
 		
 	}
 	
+	//***************************************************************************
+	// Events associated to mouse and gestures
+	//***************************************************************************	
+		
+	  document.addEventListener('scroll', theDocumentWasScrolled, null);
+	  theContainer.addEventListener('click', theContainerWasClicked, null);
+	  theContainer.addEventListener('scroll', theContainerWasScrolled, null);
+	  theContainer.addEventListener('mousewheel', theContainerWasMouseWheeled, null);
+	  theContainer.addEventListener('mousedown', theContainerWasPressedDown, null);
+	  
+	  theContainer.addEventListener('DOMMouseScroll', theContainerWasMouseWheeled, null);
+	  
+	  
+	  
+	  theCanvas.addEventListener('touchstart', function(event) {
+		// If there's exactly one finger inside this element
+		if (event.targetTouches.length == 1) {
+		  onTouchStart(event);
+		}
+	  }, false);
+	  
+	  theCanvas.addEventListener('touchmove', function(event) {
+		// If there's exactly one finger inside this element
+		if (event.targetTouches.length == 1) {
+		  onTouchMove(event);
+		}
+	  }, false);
+	  
+	  var pi=null;
+	  
+	  function onTouchStart(event) {
+		  pi = getCoords(event.touches[0]);
+	  }
+	  
+	  function onTouchMove(event) {
+		  var pf = getCoords(event.touches[0]);
+	  
+		  scrollCanvas(pf.y-pi.y);
+	  
+		  pi=pf;
+	  }
+	 
+	  function scrollCanvas(diffY) {
+		console.log("scrollCanvas diff: " + diffY);
+		
+		//TODO: ask scenarioView to scroll
+		theContainer.scrollTop = theContainer.scrollTop - diffY;
+		
+		var scenarioPlay=scenarioView.getCurrentScenarioPlay();
+		scenarioPlay.setUserScroll(true);
+		
+		userscroll=true;
+	  }
+		
+		
+	  // Get the coordinates for a mouse or touch event
+	  function getCoords(e) {
+		console.log("Canvas offsetLeft: " + theCanvas.offsetLeft);
+		console.log("Canvas offsetTop: " + theCanvas.offsetTop);
+		console.log("e.pageX: " + e.pageX);
+		console.log("e.pageY: " + e.pageY);
+		
+		return { x: e.pageX - theCanvas.offsetLeft, y: e.pageY - theCanvas.offsetTop };
+	  }
+	  
+	  
+		//***************************************************************************
+		// Call back function for loading process
+		//***************************************************************************
+	  
+	  function theContainerWasClicked(e) {
+		console.log("Container Was Clicked");
+		
+		userscroll=true;
+		var scenarioPlay=scenarioView.getCurrentScenarioPlay();
+		scenarioPlay.setUserScroll(true);		
+		
+		var scenarioPlay=scenarioView.getCurrentScenarioPlay();
+		scenarioPlay.setUserScroll(true);
+	  }
+	  
+	  // This is triggered every time the canvas container is scrolled (whoever does it)
+	  function theContainerWasScrolled(e) {
+		console.log("Container was Scrolled");
+	  }
+	  
+	  function theDocumentWasScrolled(e) {
+		 console.log("Document was Scrolled");
+	  }
+	  
+	  function theContainerWasMouseWheeled(e) {
+		userscroll=true;
+		var scenarioPlay=scenarioView.getCurrentScenarioPlay();
+		scenarioPlay.setUserScroll(true);
+		
+		console.log("Container Was MouseWheeled");
+	  }
+	  
+	  function theContainerWasPressedDown(e) {
+		userscroll=true;
+		var scenarioPlay=scenarioView.getCurrentScenarioPlay();
+		scenarioPlay.setUserScroll(true);
+		
+		console.log("Container Was Mouse Pressed Down");		
+	  }		
+	  
+	  
+		//***************************************************************************
+		// Events associated to ScenarioPlay State
+		//***************************************************************************	  
+	  
+		// Trigger when the schema file is already loaded
+		$(window).on( "ScenarioPlayFinished", updateCommandButton);
+	
+	  
+		//***************************************************************************
+		// Call back function for ScenarioPlay State
+		//***************************************************************************	 
+	  
+		function updateCommandButton(){
+			theCommandButton = document.getElementById("bt_play");
+			theCommandButton.value="Start";			
+		}
+	  
 }

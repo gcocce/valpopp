@@ -25,13 +25,14 @@ function ScenarioView(){
     var theContainer = document.getElementById("vDraw");
     var theCanvas = document.getElementById("vScenarioCanvas");   
     var theCanvasContext=theCanvas.getContext("2d");
+    
+    var m_drawing_canvas=new Canvas(theCanvasContext);
 	
 	// ******************************************************************************
 	// Private Methods
 	// ******************************************************************************
 
     
-
     function setupSize() {
 //    	console.log("ScenarioView.setupSize()");
         //var width = window.innerWidth;
@@ -149,9 +150,7 @@ function ScenarioView(){
 	this.enableScenarioCommands=enableScenarioCommands;
 	this.disableScenarioCommands=disableScenarioCommands;
 	this.initiateScenarioDisplay=initiateScenarioDisplay;
-	
 	this.getCurrentScenarioPlay=getCurrentScenarioPlay;
-
 	
 	// ******************************************************************************
 	// Public Methods Definition
@@ -262,8 +261,7 @@ function ScenarioView(){
 	
 	// ******************************************************************************
 	// Events
-	// ******************************************************************************	
-	
+	// ******************************************************************************
 	// Events handled by the ApplicationController 
 	
 	$(window).on( "resize", updateScenarioView);
@@ -291,13 +289,46 @@ function ScenarioView(){
 	
 	// Get Data from ScenarioPlay and display it on the canvas
 	function drawScenarioScreen(){
-		console.log("ScenarioView.drawScenarioScreen");
-		
+//		console.log("ScenarioView.drawScenarioScreen userScroll: " + m_scenarioPlay.getUserScroll());
+
 		//TODO: Display the current scenarioPlay in the canvas
-		
-		
-		
-	}
+		var width= theCanvas.width;
+		var height = theCanvas.height;
+
+		// Adjust the height of the canvas to the number of messages of the scenario
+		var advance=50;
+		var messages = m_scenarioPlay.getMessages();
 	
+		height = messages.length * advance + 20;
+
+	    theCanvas.style.height = height + 'px';	    
+	    theCanvas.style.width = width + 'px';
+	    theCanvas.height = height;
+	    theCanvas.width = width;
+	    
+		
+		var pi=new Point();
+		var pf=new Point();
+
+		for (var x = 0; x <= messages.length - 1; x++){
+			pi.setX(5);
+			pi.setY(x * advance + 5);
+			
+			pf.setX(Math.round((width - (width * 0.11)) * messages[x]) + 5);
+			pf.setY(Math.round(advance * messages[x]) + (x * advance + 5));
+			
+			m_drawing_canvas.drawArrow(pi, pf);
+		}
+		
+		var downlinepos = (messages.length + 1) * advance;
+		
+		var theContainerHeight = window.getComputedStyle(theContainer).getPropertyValue('height');
+        
+//		console.log("downlinepos:" +downlinepos + " container.height:" + theContainerHeight );
+		
+		if (!m_scenarioPlay.getUserScroll() && downlinepos > parseInt(theContainerHeight)) {
+			theContainer.scrollTop = downlinepos - parseInt(theContainerHeight);
+        }		
 	
+	}	
 }

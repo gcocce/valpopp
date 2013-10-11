@@ -106,3 +106,28 @@ function ScenarioImage(url_param){
 		return m_img;
 	}
 }
+
+function Point(xvalue,yvalue){
+    var m_x =xvalue;
+    var m_y =yvalue;
+    this.getX = getX;
+    this.getY = getY;
+    this.setX = setX;
+    this.setY = setY;
+    
+    function getX() {
+      return m_x;
+    }
+    
+    function getY() {
+      return m_y;
+    }
+    
+    function setX(xvalue) {
+      m_x= xvalue;
+    }
+    
+    function setY(yvalue) {
+      m_y = yvalue;
+    }
+}
