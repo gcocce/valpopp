@@ -22,7 +22,132 @@ function Utils(){
 	}	
 }
 
+function ScenType(){
+	var MESSAGE=0;
+	var ACTION=1;
+	var TIMER=2;
+	var TREATMENT=3;
+	
+	this.MESSAGE=MESSAGE;
+	this.ACTION=ACTION;
+	this.TIMER=TIMER;
+	this.TREATMENT=TREATMENT;
+}
 
+function ScenObject(type, object){
+	var m_type=type;
+	var m_obj=object;
+	
+	this.getType=getType;
+	
+	function getType(){
+		return m_type;
+	}
+	
+	function getObject(){
+		return m_obj;
+	}
+}
+
+function ScenTimer(pi,pf){
+	var m_pi=pi;
+	var m_pf=pf;
+	var m_drawpercent=0;	
+	
+	this.getInitPos=getInitPos;
+	this.getEndPos=getEndPos;
+	this.getDrawPercent=getDrawPercent;
+	this.setDrawPercent=setDrawPercent;		
+	
+	function getInitPos(){
+		return m_pi;		
+	}
+	
+	function getEndPos(){
+		return m_pf;		
+	}
+	
+	function getDrawPercent() {
+		return m_drawpercent;
+	}
+
+	function setDrawPercent(drawpv) {
+		m_drawpercent=drawpv;
+	}		
+}
+
+function ScenTreatment(pi,pf){
+	var m_pi=pi;
+	var m_pf=pf;
+	var m_drawpercent=0;	
+	
+	this.getInitPos=getInitPos;
+	this.getEndPos=getEndPos;
+	this.getDrawPercent=getDrawPercent;
+	this.setDrawPercent=setDrawPercent;		
+	
+	function getInitPos(){
+		return m_pi;		
+	}
+	
+	function getEndPos(){
+		return m_pf;		
+	}
+
+	function getDrawPercent() {
+		return m_drawpercent;
+	}
+
+	function setDrawPercent(drawpv) {
+		m_drawpercent=drawpv;
+	}	
+}
+
+function ScenMessage(pi,pf, index, msgv){
+	var m_pi=pi;
+	var m_pf=pf;
+	
+	// Regiter the position in the list of messages
+	var m_index=index;
+		
+	// Register the text message to be displayed
+	var m_msg=msgv;
+	
+	// Register the percentage of display
+	var m_drawpercent=0;
+	
+	this.getInitPos=getInitPos;
+	this.getEndPos=getEndPos;
+	
+	this.getMsg = getMsg;
+	
+	this.getDrawPercent=getDrawPercent;
+	this.setDrawPercent=setDrawPercent;	
+	
+	function getInitPos(){
+		return m_pi;		
+	}
+	
+	function getEndPos(){
+		return m_pf;		
+	}	
+	
+	function getMsg() {
+		return m_msg;
+	}
+	
+	function getDrawPercent() {
+		return m_drawpercent;
+	}
+
+	function setDrawPercent(drawpv) {
+		m_drawpercent=drawpv;
+	}	
+}
+
+function ScenAction(){
+	
+}
 
 function ScenarioImage(url_param){
 	// ******************************************************************************
@@ -130,4 +255,20 @@ function Point(xvalue,yvalue){
     function setY(yvalue) {
       m_y = yvalue;
     }
+}
+
+function Position(NodeNumber, y){
+	var m_node=NodeNumber;
+	var m_y=y;
+	
+	this.getNode=getNode;
+	this.getY=getY;
+	
+	function getNode(){
+		return m_node;
+	}
+	
+	function getY(){
+		return m_y;		
+	}
 }

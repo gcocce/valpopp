@@ -27,6 +27,10 @@ function ScenarioView(){
     var theCanvasContext=theCanvas.getContext("2d");
     
     var m_drawing_canvas=new Canvas(theCanvasContext);
+    
+	var m_scenType= new ScenType();
+    var m_nodesPosition= new Array();
+    var m_transfHeight=1.0;
 	
 	// ******************************************************************************
 	// Private Methods
@@ -125,7 +129,10 @@ function ScenarioView(){
 				
 //				console.log("display image for node 0: " + img.src);
 //				console.log("image width: "+ img.width +" image height:"+ img.height);
-				
+					
+				// Update Node x Position
+				m_nodesPosition[x]=border + (distNodos * x);
+					
 				// Display the image of the node
 				theNodesContext.drawImage(img, border + (distNodos * x) - (img.width/2), 0, img.width, img.height);
 				
@@ -140,6 +147,28 @@ function ScenarioView(){
 				displayError(utils.wrapErrorMsg(e.toString()));
 			}	    	
 	    }
+	}
+	
+	function displayObject(obj){
+		//m_transfHeight
+		console.log("displayObject of type: " + obj.getType());
+		
+		//TODO: display objects
+		switch (obj.getType()){
+			case m_scenType.MESSAGE:
+				var initPos=obj.getInitPos();
+				var endPos=obj.getEndPos();
+					
+				var pi= new Point(m_nodesPosition[initPos.getNode()], initPos.getY() * m_transfHeight);
+				var pf= new Point(m_nodesPosition[endPos.getNode()], endPos.getY() * m_transfHeight);
+				
+				m_drawing_canvas.drawArrow(pi, pf);
+				
+				break;
+			default:
+				console.log("displayObject, nor recognized type: " + obj.getType());
+				break;
+		}
 	}
 	
 	// ******************************************************************************
@@ -296,38 +325,67 @@ function ScenarioView(){
 		var height = theCanvas.height;
 
 		// Adjust the height of the canvas to the number of messages of the scenario
-		var advance=50;
-		var messages = m_scenarioPlay.getMessages();
-	
-		height = messages.length * advance + 20;
+//		var advance=50;
+		
+		m_transfHeight=1.0;
+		
+//		var messages = m_scenarioPlay.getMessages();
+//		height = messages.length * advance + 20;
 
+		height = m_scenarioPlay.getCurrentHeight() * m_transfHeight + 20;
+		
 	    theCanvas.style.height = height + 'px';	    
 	    theCanvas.style.width = width + 'px';
 	    theCanvas.height = height;
 	    theCanvas.width = width;
 	    
+//		var pi=new Point();
+//		var pf=new Point();
+//
+//		for (var x = 0; x <= messages.length - 1; x++){
+//			pi.setX(5);
+//			pi.setY(x * advance + 5);
+//			
+//			pf.setX(Math.round((width - (width * 0.11)) * messages[x]) + 5);
+//			pf.setY(Math.round(advance * messages[x]) + (x * advance + 5));
+//			
+//			m_drawing_canvas.drawArrow(pi, pf);
+//		}
+	    
+	    // Display horizontal lines
+	    for (var x=0; x < m_scenarioContext.getNumberofNodes(); x++){
+		    var pi=new Point(m_nodesPosition[x],0);
+		    var pf=new Point(m_nodesPosition[x],height);
+	    	
+		    m_drawing_canvas.drawVerticalLine(pi, pf);
+	    }
+	    
+	    var readyO=m_scenarioPlay.getReadyObjects();
+	    
+	    for (var x=0; x < readyO.length; x++){
+	    	// Display ready Objects
+	    	var obj=readyO[x];
+	    	
+	    	displayObject(obj);
+	    }
+	    
+	    var processingO= m_scenarioPlay.getProcessingObjects();
+	    
+	    for (var x=0; x < processingO.length; x++){
+	    	//Display processing Objects
+	    	var obj=processingO[x];
+	    	
+	    	displayObject(obj);
+	    }
 		
-		var pi=new Point();
-		var pf=new Point();
-
-		for (var x = 0; x <= messages.length - 1; x++){
-			pi.setX(5);
-			pi.setY(x * advance + 5);
-			
-			pf.setX(Math.round((width - (width * 0.11)) * messages[x]) + 5);
-			pf.setY(Math.round(advance * messages[x]) + (x * advance + 5));
-			
-			m_drawing_canvas.drawArrow(pi, pf);
-		}
-		
-		var downlinepos = (messages.length + 1) * advance;
-		
+//		var downlinepos = (messages.length + 1) * advance;
+	    
 		var theContainerHeight = window.getComputedStyle(theContainer).getPropertyValue('height');
         
 //		console.log("downlinepos:" +downlinepos + " container.height:" + theContainerHeight );
 		
-		if (!m_scenarioPlay.getUserScroll() && downlinepos > parseInt(theContainerHeight)) {
-			theContainer.scrollTop = downlinepos - parseInt(theContainerHeight);
+		if (!m_scenarioPlay.getUserScroll() && height > parseInt(theContainerHeight)) {
+			theContainer.scrollTop = height - parseInt(theContainerHeight);
         }		
 	
 	}	

@@ -182,6 +182,7 @@ function ScenarioContext(){
 	this.getCurrentImgName=getCurrentImgName;
 	this.getNodeImg=getNodeImg;
 	this.getNodeName=getNodeName;
+	this.getSequence=getSequence;
 	
 	this.setNumberofNodes=setNumberofNodes;
 	this.setNodeImg=setNodeImg;
@@ -191,7 +192,7 @@ function ScenarioContext(){
 	// ******************************************************************************
 	// Public Methods Definition
 	// ******************************************************************************
-	
+
 	function getNodeName(index){
 		return m_scenario_object.nodes[index].name;
 	}
@@ -218,6 +219,19 @@ function ScenarioContext(){
 	
 	function getError(){
 		return m_error;
+	}
+	
+	function getSequence(id){
+		if (id==0){
+			return m_scenario_object.sequences[0];
+		}else{		
+			for (var x=0; x < m_scenario_object.sequences.length; x++){
+				if(m_scenario_object.sequences[x].Id==id){
+					return m_scenario_object.sequences[x];
+				}
+			}
+			return m_scenario_object.sequences[0];
+		}
 	}
 	
 	

@@ -32,6 +32,7 @@ function Canvas(drawing_context){
 	this.setWidth=setWidth;
 	this.setHeight=setHeight;
 	this.getError=getError;
+	this.drawVerticalLine=drawVerticalLine;
 	this.drawArrow=drawArrow;
 	
 	// ******************************************************************************
@@ -48,6 +49,17 @@ function Canvas(drawing_context){
 	
 	function getError(){
 		return m_error;
+	}
+	
+	function drawVerticalLine(pi,pf){
+		m_context.strokeStyle  = "red";
+		m_context.lineWidth  = 1;
+		m_context.lineCap  = 'square';
+		m_context.beginPath();
+		m_context.moveTo(pi.getX(), pi.getY());
+		m_context.lineTo(pf.getX(), pf.getY());
+		m_context.stroke();
+		m_context.closePath();		
 	}
 	
 	function drawArrow(pi,pf){
