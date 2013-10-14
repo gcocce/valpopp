@@ -204,8 +204,6 @@ function ScenarioController(){
 	  
 	  theContainer.addEventListener('DOMMouseScroll', theContainerWasMouseWheeled, null);
 	  
-	  
-	  
 	  theCanvas.addEventListener('touchstart', function(event) {
 		// If there's exactly one finger inside this element
 		if (event.targetTouches.length == 1) {
@@ -235,7 +233,7 @@ function ScenarioController(){
 	  }
 	 
 	  function scrollCanvas(diffY) {
-		console.log("scrollCanvas diff: " + diffY);
+		//console.log("scrollCanvas diff: " + diffY);
 		
 		//TODO: ask scenarioView to scroll
 		theContainer.scrollTop = theContainer.scrollTop - diffY;
@@ -249,10 +247,10 @@ function ScenarioController(){
 		
 	  // Get the coordinates for a mouse or touch event
 	  function getCoords(e) {
-		console.log("Canvas offsetLeft: " + theCanvas.offsetLeft);
-		console.log("Canvas offsetTop: " + theCanvas.offsetTop);
-		console.log("e.pageX: " + e.pageX);
-		console.log("e.pageY: " + e.pageY);
+//		console.log("Canvas offsetLeft: " + theCanvas.offsetLeft);
+//		console.log("Canvas offsetTop: " + theCanvas.offsetTop);
+//		console.log("e.pageX: " + e.pageX);
+//		console.log("e.pageY: " + e.pageY);
 		
 		return { x: e.pageX - theCanvas.offsetLeft, y: e.pageY - theCanvas.offsetTop };
 	  }
@@ -263,7 +261,7 @@ function ScenarioController(){
 		//***************************************************************************
 	  
 	  function theContainerWasClicked(e) {
-		console.log("Container Was Clicked");
+		//console.log("Container Was Clicked");
 		
 		userscroll=true;
 		var scenarioPlay=scenarioView.getCurrentScenarioPlay();
@@ -275,11 +273,11 @@ function ScenarioController(){
 	  
 	  // This is triggered every time the canvas container is scrolled (whoever does it)
 	  function theContainerWasScrolled(e) {
-		console.log("Container was Scrolled");
+		//console.log("Container was Scrolled");
 	  }
 	  
 	  function theDocumentWasScrolled(e) {
-		 console.log("Document was Scrolled");
+		 //console.log("Document was Scrolled");
 	  }
 	  
 	  function theContainerWasMouseWheeled(e) {
@@ -287,7 +285,7 @@ function ScenarioController(){
 		var scenarioPlay=scenarioView.getCurrentScenarioPlay();
 		scenarioPlay.setUserScroll(true);
 		
-		console.log("Container Was MouseWheeled");
+		//console.log("Container Was MouseWheeled");
 	  }
 	  
 	  function theContainerWasPressedDown(e) {
@@ -295,7 +293,7 @@ function ScenarioController(){
 		var scenarioPlay=scenarioView.getCurrentScenarioPlay();
 		scenarioPlay.setUserScroll(true);
 		
-		console.log("Container Was Mouse Pressed Down");		
+		//console.log("Container Was Mouse Pressed Down");		
 	  }		
 	  
 	  

@@ -34,6 +34,7 @@ function Canvas(drawing_context){
 	this.getError=getError;
 	this.drawVerticalLine=drawVerticalLine;
 	this.drawArrow=drawArrow;
+	this.drawMessage=drawMessage;
 	
 	// ******************************************************************************
 	// Public Methods Definition
@@ -65,7 +66,7 @@ function Canvas(drawing_context){
 	function drawArrow(pi,pf){
         //console.log("Canvas.drawArrow final point: "+pf.getX()+","+pf.getY());
 		m_context.fillStyle = '#000000';  
-		m_context.strokeStyle  = "black";
+		m_context.strokeStyle  = "grey";
 		m_context.lineWidth  = 1;
 		m_context.lineCap  = 'square';
 		m_context.beginPath();
@@ -75,4 +76,22 @@ function Canvas(drawing_context){
 		m_context.closePath();		
 	}
 	
+	function drawMessage(msg, posx, posy, textSize){
+//		console.log("drawMessage " + msg);
+		var fontSize = textSize;
+		var fontFace = "serif";
+		var textFillColor ="#ff0000";
+		var textBaseline = "middle";
+		var textAlign = "center";
+		var fontWeight ="normal";
+		var fontStyle = "normal";
+
+		m_context.textBaseline = textBaseline;
+		m_context.textAlign = textAlign;
+		m_context.font = fontWeight + " " + fontStyle + " " + fontSize + "px " + fontFace;
+
+		m_context.fillStyle    = "black";
+		m_context.fillText  ( msg,  posx , posy);		
+	}
+
 }

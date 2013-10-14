@@ -132,10 +132,24 @@ function ScenarioPlay(context){
 		var nodeDif=Math.abs(scenMessage.destN - scenMessage.srcN) - 1;
 		
 		//TODO: calculate time to target and replace constant
-		m_scenCurrentHeight = 60 + nodeDif * 20;
-		var pf=new Position(scenMessage.destN, m_scenCurrentHeight);
+		var lastPos = 60 + nodeDif * 20;
+		var pf=new Position(scenMessage.destN, lastPos);
 		
-		var msg=new ScenMessage(pi, pf, 0, scenMessage.name + "(" + scenMessage.param + ")");
+		if (lastPos>m_scenCurrentHeight){
+			m_scenCurrentHeight=lastPos;
+		}
+		
+		var msgName="";
+		if(scenMessage.param.localeCompare("")==0){
+			msgName= scenMessage.name;
+		}else{
+			msgName= scenMessage.name + " (" + scenMessage.param + ")";
+		}
+		var msg=new ScenMessage(pi, pf, 0, msgName);
+		
+		//TODO: set msg parameters		
+		msg.setSyncPoint(scenMessage.synchPoint);
+		msg.setStartPoint(scenMessage.startTime);		
 		
 		var obj= new ScenObject(m_scenType.MESSAGE, msg);
 		
@@ -150,14 +164,45 @@ function ScenarioPlay(context){
 		var nodeDif=Math.abs(scenMessage.destN - scenMessage.srcN) - 1;
 		
 		//TODO: calculate time to target and replace constant	
-		m_scenCurrentHeight = startPos + 50 + nodeDif * 20;
-		var pf=new Position(scenMessage.destN, m_scenCurrentHeight);
+		var lastPos = startPos + 50 + nodeDif * 20;
+		var pf=new Position(scenMessage.destN, lastPos);
 			
-		var msg=new ScenMessage(pi, pf, index, scenMessage.name + "(" + scenMessage.param + ")");
+		if (lastPos>m_scenCurrentHeight){
+			m_scenCurrentHeight=lastPos;
+		}
+		
+		var msgName="";
+		if(scenMessage.param.localeCompare("")==0){
+			msgName= scenMessage.name;
+		}else{
+			msgName= scenMessage.name + " (" + scenMessage.param + ")";
+		}		
+		var msg=new ScenMessage(pi, pf, index, msgName);
+		
+		//TODO: set msg parameters
+		msg.setSyncPoint(scenMessage.synchPoint);
+		msg.setStartPoint(scenMessage.startTime);
 		
 		var obj= new ScenObject(m_scenType.MESSAGE, msg);
 		
 		m_new_processingList.push(obj);
+	}
+	
+	function processSyncPoint(syncpoint, index, startPos){
+		console.log("processSyncPoint "+ syncpoint);
+		
+		var count=0;
+		for (var x=index; x < m_current_messageList.length; x++){
+			var scenMessage=m_current_messageList[x];
+			
+			if(scenMessage.startTime.localeCompare(syncpoint)==0){
+				count++;
+				//TODO: add to the Processing List
+				processMessage(scenMessage, x, startPos);
+			}
+		}
+		
+		console.log("number of syncronizing messages "+ count);
 	}
 	
 	function calculateScenarioPlay(){
@@ -180,7 +225,7 @@ function ScenarioPlay(context){
  				
  				// Add the first message to the ProcessingList
  				// The first message can not start at a given Synch Point
- 				processFirstMessage(m_current_messageList[m_currentMessage], 0);
+ 				processFirstMessage(m_current_messageList[0], 0);
  			}else{
  				sequence=m_context.getSequence(m_currentSequence);
  			}
@@ -236,29 +281,28 @@ function ScenarioPlay(context){
 	 						
 	 						var index = msg.getIndex();
 	 						var lastPos = msg.getEndPos().getY();
-	 						var nextIndex = index+1;
+	 						var nextIndex = index + 1;
 	 						
  							if(msg.hasSyncPoint()){
- 								m_currentSyncPoint=new SyncPoint(msg.getSyncPoint(),lastPos);
+ 								// In case it is needed in the next Sequence
+ 								m_currentSyncPoint=new SyncPoint(msg.getSyncPoint(), lastPos);
  							}else{
  								m_currentSyncPoint=null;
  							}
  							
 	 						if (nextIndex < m_current_messageList.length){
 	 							if(msg.hasSyncPoint()){
-	 								
 	 								// Add Messages With Same SyncPoint to the Processing List
-	 								//processSyncPoint(msg.getSyncPoint(), nextIndex);
+	 								processSyncPoint(msg.getSyncPoint(), nextIndex, lastPos);
 	 							}
 	 							
-	 							
 	 							var nextMsg = m_current_messageList[nextIndex];
-	 							processMessage(nextMsg, nextIndex, lastPos);
+	 							
+	 							if (nextMsg.startTime.localeCompare("")==0){
+	 								processMessage(nextMsg, nextIndex, lastPos);	
+	 							}
 	 						}
-	 		 				// Si se completa el mensaje y no tiene syncPoint agregar el siguiente
-	 		 				// Si se completa el mensaje y tiene syncPoint agregar todos los que sincronizan
-	 		 				// En ambos casos agregar el mensaje completado a la lista de completados 
-	 						
+	 							 						
 	 						// The objects go to the Ready List
 	 						m_readyObjects.push(obj);
 	 					}else{

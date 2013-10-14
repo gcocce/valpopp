@@ -123,6 +123,15 @@ function ScenarioView(){
 	    }
 	}
 	
+	function calculateMsgTextSize(m_transfHeight){
+		var nodeDistance= m_nodesPosition[2] - m_nodesPosition[1];
+		
+		var size=Math.round(nodeDistance / 16 * m_transfHeight);
+		
+		return size;
+	}
+	
+
 	function displayObject(obj){
 		//m_transfHeight
 //		console.log("displayObject of type: " + obj.getType());
@@ -130,7 +139,10 @@ function ScenarioView(){
 		// TODO: display other object types
 		switch (obj.getType()){
 			case m_scenType.MESSAGE:
+				
 				var msg=obj.getObject();
+				
+				var name=msg.getMsg();
 				
 				var initPos=msg.getInitPos();
 				var endPos=msg.getEndPos();
@@ -141,16 +153,26 @@ function ScenarioView(){
 				//var pf= new Point(m_nodesPosition[endPos.getNode()] * percent, endPos.getY() * m_transfHeight * percent);	
 				
 				var destX=0;
+				var messageX=0;
+				var messageY=0;
 				
-				// TODO: correct the way it is calculated
+				// TODO: correct the way it is calculated, it should be more simple
 		        if (initPos.getNode() < endPos.getNode()) {
 		          destX= m_nodesPosition[initPos.getNode()] + (m_nodesPosition[endPos.getNode()] - m_nodesPosition[initPos.getNode()]) * percent;
+		          messageX = m_nodesPosition[initPos.getNode()] + (m_nodesPosition[endPos.getNode()] - m_nodesPosition[initPos.getNode()]) / 2 ;		          
 		        }else{
-		          destX= m_nodesPosition[initPos.getNode()] - Math.abs(m_nodesPosition[endPos.getNode()] - m_nodesPosition[initPos.getNode()]) * percent ;				
+		          destX= m_nodesPosition[initPos.getNode()] - Math.abs(m_nodesPosition[endPos.getNode()] - m_nodesPosition[initPos.getNode()]) * percent ;
+		          messageX = m_nodesPosition[initPos.getNode()] - Math.abs(m_nodesPosition[endPos.getNode()] - m_nodesPosition[initPos.getNode()]) / 2 ;
 		        }
 		        
 				var pf= new Point(destX, initPos.getY() * m_transfHeight + (endPos.getY()- initPos.getY()) * m_transfHeight * percent);		        
 		        
+				messageY= initPos.getY() * m_transfHeight + ((endPos.getY()- initPos.getY()) * m_transfHeight) / 4;
+					        
+				var textSize=calculateMsgTextSize(m_transfHeight);
+				
+				m_drawing_canvas.drawMessage(name, messageX, messageY, textSize);
+				
 				m_drawing_canvas.drawArrow(pi, pf);
 				
 				break;
