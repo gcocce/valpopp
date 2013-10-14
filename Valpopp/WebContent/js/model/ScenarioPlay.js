@@ -23,7 +23,7 @@ function ScenarioPlay(context){
 	var SCENARIO_QUIZZING=3;
 	var SCENARIO_FINISHED=4;
 	
-	var LOOP_UPDATE_TIME=100;
+	var LOOP_UPDATE_TIME=200;
 
 	// To be used outside the class
 	this.SCENARIO_STOPPED=SCENARIO_STOPPED;
@@ -45,12 +45,13 @@ function ScenarioPlay(context){
 	var m_scenType= new ScenType();
 	
 	// Messages
-	var m_messages=new Array();
+	//var m_messages=new Array();
 	
 	// Reference to Timer
 	var m_loop=null;
 	var m_userscroll=false;
 	var m_finished=false;
+	var m_started=false;
 	
     var theContainer = document.getElementById("vDraw");
     var theCanvas = document.getElementById("vScenarioCanvas");   
@@ -59,9 +60,8 @@ function ScenarioPlay(context){
     /* Object to register ScenarioPlay
      *  
      */
- 
-    
     // Scenario Data
+    //TODO: chose better names for the variables 
     var m_scenario_messageList=new Array();
     var m_scenario_referenceList=new Array();
     	
@@ -69,7 +69,8 @@ function ScenarioPlay(context){
     var m_currentSequence=0;
     var m_currentMessage=0;
     
-    var m_current_messageList=null;   
+    var m_current_messageList=null;
+    var m_currentSyncPoint=null;
     
     // The message sequences currently displayed
     var m_sequenceList=new Array();
@@ -85,6 +86,9 @@ function ScenarioPlay(context){
     // Drawable objects in process growing or increasing
     var m_processingObjects = new Array();
     
+    // Temp
+    var m_new_processingList=new Array();
+    
     
 	// ******************************************************************************
 	// Private Methods
@@ -97,16 +101,18 @@ function ScenarioPlay(context){
 		//TODO: Clean Objects used to store scenario play data
 		m_finished=false;
 		m_userscroll=false;
+		m_started=false;
 		
-		// TODO: take this away
-		m_messages = new Array();
-		
+		m_currentSyncPoint=null;
+			
 		m_scenCurrentHeight=0;
+		m_currentSequence=0;
 		m_messagesList= new Array();
 		m_sequenceList= new Array();
 		m_synckPointsPos = new Array();
 		m_readyObjects = new Array();
 		m_processingObjects = new Array();
+		m_new_processingList= new Array();
 		
 		// Update scroll position
 		theContainer.scrollTop = 0;		
@@ -119,94 +125,160 @@ function ScenarioPlay(context){
 		notifyChange();
 	}
 	
-	
-	function processMessage(scenMessage, index){
-		var pi=new Position(scenMessage.srcN, 0);
-		var pf=new Position(scenMessage.destN,dist);
+	function processFirstMessage(scenMessage){
+		console.log("Process First Message srcN:"+scenMessage.srcN + " destN:"+scenMessage.destN );
+		var pi=new Position(scenMessage.srcN, 10);
 		
-		var msg=new ScenMessage(pi, pf, index, scenMessage.name + "(" + scenMessage.param + ")");
+		var nodeDif=Math.abs(scenMessage.destN - scenMessage.srcN) - 1;
+		
+		//TODO: calculate time to target and replace constant
+		m_scenCurrentHeight = 60 + nodeDif * 20;
+		var pf=new Position(scenMessage.destN, m_scenCurrentHeight);
+		
+		var msg=new ScenMessage(pi, pf, 0, scenMessage.name + "(" + scenMessage.param + ")");
 		
 		var obj= new ScenObject(m_scenType.MESSAGE, msg);
 		
 		m_processingObjects.push(obj);
+	}	
+	
+	function processMessage(scenMessage, index, startPos){
+		console.log("ProcessMessage message index:" + index);	
+		console.log("ProcessMessage srcN:"+scenMessage.srcN + " destN:"+scenMessage.destN );
+		var pi=new Position(scenMessage.srcN, startPos);
+		
+		var nodeDif=Math.abs(scenMessage.destN - scenMessage.srcN) - 1;
+		
+		//TODO: calculate time to target and replace constant	
+		m_scenCurrentHeight = startPos + 50 + nodeDif * 20;
+		var pf=new Position(scenMessage.destN, m_scenCurrentHeight);
+			
+		var msg=new ScenMessage(pi, pf, index, scenMessage.name + "(" + scenMessage.param + ")");
+		
+		var obj= new ScenObject(m_scenType.MESSAGE, msg);
+		
+		m_new_processingList.push(obj);
 	}
 	
 	function calculateScenarioPlay(){
 //		console.log("ScenarioPlay.calculateScenarioPlay finished:" + m_finished);
 		
  		if (!m_finished){
-//			console.log("ScenarioPlay messages.lenght:" + m_messages.length );
-			
 			//TODO: Calculate the new state of ScenarioPlay objects
 			
- 			//TODO: HERE IS THE WORK BRO
- 			
  			var sequence=null;
  			
- 			if (m_state==SCENARIO_STOPPED){
+ 			// The first step of a scenario execution
+ 			if (!m_started){
+ 				console.log("ScenarioPlay Start with first Message");
  				
- 				sequence=m_context.getSequence(0);
+ 				m_started=true;
  				
- 				m_currentMessage=0;
+ 				sequence=m_context.getSequence(m_currentSequence);
  				
  				m_current_messageList=sequence.messages;
  				
- 				//TODO: Agregar el primer mensaje a la lista de objetos en proceso
- 				processMessage(m_current_messageList[m_currentMessage], m_currentMessage);
-				
+ 				// Add the first message to the ProcessingList
+ 				// The first message can not start at a given Synch Point
+ 				processFirstMessage(m_current_messageList[m_currentMessage], 0);
  			}else{
  				sequence=m_context.getSequence(m_currentSequence);
  			}
  			
- 			
- 			//TODO: procesar la lista de objectos en proceso
- 			
- 			
- 			// Hacer copia de la lista de objetos en proceso crear una nueva e ir agregando los que permanecen en esa lista
- 			
- 			for (var x=0; x < m_processingObjects.length; x++){
- 				
- 				// si es de tipo MESSAGE extender
- 				
- 				// Si se completa el mensaje y no tiene syncPoint agregar el siguiente
- 				// Si se completa el mensaje y tiene syncPoint agregar todos los que sincronizan
- 				// En ambos casos agregar el mensaje completado a la lista de completados
- 				
- 				// Si el objeto continua agregar a la nueva lista de objetos en proceso
- 				// Si el objeto está completo agregar a la lista de objetos completos
- 			}
- 			
-			// Reemplazar la lista de objectos en proceso
- 			
- 			
- 			
-//			if (m_messages.length==0){
-//				m_messages[0]=0.1;
-//			}else{
-//				var value=m_messages[m_messages.length-1];
-//				
-//				if (value<1){
-//					value = value + 0.1;
-//					m_messages[m_messages.length-1]=value;
-//				}else{
-//					if (m_messages.length < 20){
-//						m_messages[m_messages.length]=0.1;
-//					}else{
-//						m_finished=true;
-//						
-//						m_state=SCENARIO_STOPPED;
-//						
-//						window.clearTimeout(m_loop);
-//						
-//						var event = $.Event( "ScenarioPlayFinished" );
-//						$(window).trigger( event );							
-//					}
-//				}
-//			}
+
+			if ( m_processingObjects.length==0){
+				console.log("ScenarioPlay no more obj in processing list");
+				m_finished=true;
+				
+				m_state=SCENARIO_STOPPED;
+				
+				window.clearTimeout(m_loop);
+				
+				var event = $.Event( "ScenarioPlayFinished" );
+				$(window).trigger( event );					
+			}else{
+	 			//TODO: procesar la lista de objectos en proceso
+				
+	 			// Create a new Processing List
+	 			m_new_processingList=new Array();
+	 			
+	 			for (var x=0; x < m_processingObjects.length; x++){
+	 				
+	 				// Si es de tipo MESSAGE extender
+	 				
+	 				var obj=m_processingObjects[x];
+	 				
+	 				switch (obj.getType()){
+	 				case m_scenType.MESSAGE:
+	 					var msg=obj.getObject();
+	 					
+	 					var iNode=msg.getInitPos().getNode();
+	 					var fNode=msg.getEndPos().getNode();
+	 						 					
+	 					
+	 					var percent=msg.getDrawPercent();
+	 					
+	 					percent = percent + (0.1 / Math.abs(fNode - iNode));
+	 					if(Math.abs((percent-1))<0.0001){
+	 						percent=1;
+	 					}
+	 					
+//	 					console.log("percent: "+percent);
+	 					
+	 					msg.setDrawPercent(percent);
+	 					
+	 					obj.setObject(msg);
+	 					
+	 					if(percent==1){
+	 						var index=msg.getIndex();
+	 						
+	 						console.log("calculateScenarioPlay message completed index:" + index);
+	 						
+	 						var index = msg.getIndex();
+	 						var lastPos = msg.getEndPos().getY();
+	 						var nextIndex = index+1;
+	 						
+ 							if(msg.hasSyncPoint()){
+ 								m_currentSyncPoint=new SyncPoint(msg.getSyncPoint(),lastPos);
+ 							}else{
+ 								m_currentSyncPoint=null;
+ 							}
+ 							
+	 						if (nextIndex < m_current_messageList.length){
+	 							if(msg.hasSyncPoint()){
+	 								
+	 								// Add Messages With Same SyncPoint to the Processing List
+	 								//processSyncPoint(msg.getSyncPoint(), nextIndex);
+	 							}
+	 							
+	 							
+	 							var nextMsg = m_current_messageList[nextIndex];
+	 							processMessage(nextMsg, nextIndex, lastPos);
+	 						}
+	 		 				// Si se completa el mensaje y no tiene syncPoint agregar el siguiente
+	 		 				// Si se completa el mensaje y tiene syncPoint agregar todos los que sincronizan
+	 		 				// En ambos casos agregar el mensaje completado a la lista de completados 
+	 						
+	 						// The objects go to the Ready List
+	 						m_readyObjects.push(obj);
+	 					}else{
+	 						// The object continues int the Processing List
+	 						m_new_processingList.push(obj);
+	 					}
+	 					
+	 					break;
+	 					default:
+	 						console.log("calculateScenarioPlay: object type unknown");
+	 						break;
+	 				}
+	 			}
+	 			
+				// Replace the Processing Object List with the new one
+	 			m_processingObjects=m_new_processingList;				
+			}
 
 			notifyChange();
 		}
-			
 	}
 	
 	function start(){

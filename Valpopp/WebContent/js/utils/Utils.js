@@ -39,6 +39,8 @@ function ScenObject(type, object){
 	var m_obj=object;
 	
 	this.getType=getType;
+	this.getObject=getObject;
+	this.setObject=setObject;
 	
 	function getType(){
 		return m_type;
@@ -46,6 +48,10 @@ function ScenObject(type, object){
 	
 	function getObject(){
 		return m_obj;
+	}
+	
+	function setObject(obj){
+		m_obj=obj;
 	}
 }
 
@@ -113,6 +119,9 @@ function ScenMessage(pi,pf, index, msgv){
 	// Register the text message to be displayed
 	var m_msg=msgv;
 	
+	var m_synchPoint="";
+	var m_startPoint="";
+	
 	// Register the percentage of display
 	var m_drawpercent=0;
 	
@@ -120,6 +129,15 @@ function ScenMessage(pi,pf, index, msgv){
 	this.getEndPos=getEndPos;
 	
 	this.getMsg = getMsg;
+	this.getIndex=getIndex;
+
+	this.hasStartPoint=hasStartPoint;	
+	this.getStartPoint=getStartPoint;
+	this.setStartPoint=setStartPoint;
+	
+	this.hasSyncPoint=hasSyncPoint;	
+	this.setSyncPoint=setSyncPoint;
+	this.getSyncPoint=getSyncPoint;
 	
 	this.getDrawPercent=getDrawPercent;
 	this.setDrawPercent=setDrawPercent;	
@@ -134,6 +152,42 @@ function ScenMessage(pi,pf, index, msgv){
 	
 	function getMsg() {
 		return m_msg;
+	}
+	
+	function getIndex(){
+		return m_index;
+	}
+	
+	function hasSyncPoint(){
+		if (m_synchPoint.localeCompare("")==0){
+			return false;
+		}else{
+			return true;
+		}
+	}
+	
+	function hasStartPoint(){
+		if (m_startPoint.localeCompare("")==0){
+			return false;
+		}else{
+			return true;
+		}
+	}
+	
+	function setSyncPoint(value){
+		m_synchPoint=value;
+	}
+	
+	function getSyncPoint(){
+		return m_synchPoint;
+	}
+	
+	function setStartPoint(value){
+		m_startPoint=value;
+	}
+	
+	function getStartPoint(){
+		return m_startPoint;
 	}
 	
 	function getDrawPercent() {
@@ -255,6 +309,22 @@ function Point(xvalue,yvalue){
     function setY(yvalue) {
       m_y = yvalue;
     }
+}
+
+function SyncPoint(value, pos){
+	var m_pos=pos;
+	var m_sync=value;
+	
+	this.getSyncPoint=getSyncPoint;
+	this.getPos=getPos;
+	
+	function getPos(){
+		return m_pos;
+	}
+	
+	function getSyncPoint(){
+		return m_sync;
+	}
 }
 
 function Position(NodeNumber, y){

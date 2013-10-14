@@ -35,23 +35,15 @@ function ScenarioView(){
 	// ******************************************************************************
 	// Private Methods
 	// ******************************************************************************
-
     
     function setupSize() {
 //    	console.log("ScenarioView.setupSize()");
-        //var width = window.innerWidth;
-        //var height = window.innerHeight;
     	
         var theContainerHeight = window.getComputedStyle(theContainer).getPropertyValue('height');
         var theContainerWidth = window.getComputedStyle(theContainer).getPropertyValue('width');
         
         var theNodesContainerHeight = window.getComputedStyle(theNodesContainer).getPropertyValue('height');        
         var theNodesContainerWidth = window.getComputedStyle(theNodesContainer).getPropertyValue('width');        
-        
-//        console.log("vDraw height: "+theContainerHeight);
-//        console.log("vDraw width: "+theContainerWidth);
-//        console.log("vNodes height: "+theNodesContainerHeight);
-//        console.log("vNodes width: "+theNodesContainerWidth);
         
         theContainerHeight = parseInt(theContainerHeight);
         theContainerWidth = parseInt(theContainerWidth);
@@ -68,34 +60,22 @@ function ScenarioView(){
 	    theNodes.style.width = theContainerWidth + 'px';
 	    theNodes.setAttribute('height',theNodesContainerHeight);	    
 	    theNodes.setAttribute('width', theContainerWidth );    	    
-    	
-//    	console.log("theCanvas style width:" + theCanvas.style.width + " height:" + theCanvas.style.height);
-//    	console.log("theCanvas width:" + theCanvas.width + " height:" +  theCanvas.height);
-//    	console.log("theNodes style width:" + theNodes.style.width + " height:" + theNodes.style.height);
-//    	console.log("theNodes width:" + theNodes.width + " height:" +  theNodes.height);    	
     }
     
     function displayScenarioTitle(){
-//		console.log("scenarioView.displayScenarioTitle()");
-		
 		var header=document.getElementById("vHeader");
 		
 		header.innerHTML=m_scenarioContext.getScenarioName();
 	}
 	
     
-	function displayNodeImages(){
-//		console.log("displayNodeImages");
-		
+	function displayNodeImages(){		
 		var width= theNodes.width;
 		var heigth= theNodes.height;
 		
 		var imgHeight= Math.round(heigth * 0.7);
 		var tagHeight= Math.round(heigth * 0.3);
-		
-//		console.log("Node image height: "+imgHeight);
-//		console.log("Node tag height: "+tagHeight)
-		
+				
 		var img=null;
 		
 		var fontSize = tagHeight -1;
@@ -106,32 +86,26 @@ function ScenarioView(){
 		var fontWeight ="normal";
 		var fontStyle = "normal";		
 
-		
 		// Space the first and last node and the border
 		var border = 30;
+		
 	    // Distance between nodes
 	    var distNodos = (width - (border * 2) ) / (m_scenarioContext.getNumberofNodes() -1);	
-	    
-//	    console.log("Number of nodes: "+ m_scenarioContext.getNumberofNodes());
-	    
+	       
+	    m_nodesPosition[0]=0;
 	    for (var x=0; x < m_scenarioContext.getNumberofNodes(); x++){
 			try{
 				var NodeImage=m_scenarioContext.getNodeImg(x);
 				
 				img=NodeImage.getImg();
 				
-				//if (img.height > imgHeight){
-					var proportion = imgHeight / NodeImage.getHeight();
-					
-					img.height = imgHeight;
-					img.width = NodeImage.getWidth() * proportion;
-				//}
+				var proportion = imgHeight / NodeImage.getHeight();
 				
-//				console.log("display image for node 0: " + img.src);
-//				console.log("image width: "+ img.width +" image height:"+ img.height);
-					
+				img.height = imgHeight;
+				img.width = NodeImage.getWidth() * proportion;
+				
 				// Update Node x Position
-				m_nodesPosition[x]=border + (distNodos * x);
+				m_nodesPosition[x + 1]=border + (distNodos * x);
 					
 				// Display the image of the node
 				theNodesContext.drawImage(img, border + (distNodos * x) - (img.width/2), 0, img.width, img.height);
@@ -151,17 +125,32 @@ function ScenarioView(){
 	
 	function displayObject(obj){
 		//m_transfHeight
-		console.log("displayObject of type: " + obj.getType());
+//		console.log("displayObject of type: " + obj.getType());
 		
-		//TODO: display objects
+		// TODO: display other object types
 		switch (obj.getType()){
 			case m_scenType.MESSAGE:
-				var initPos=obj.getInitPos();
-				var endPos=obj.getEndPos();
+				var msg=obj.getObject();
+				
+				var initPos=msg.getInitPos();
+				var endPos=msg.getEndPos();
+				
+				var percent=msg.getDrawPercent();
 					
 				var pi= new Point(m_nodesPosition[initPos.getNode()], initPos.getY() * m_transfHeight);
-				var pf= new Point(m_nodesPosition[endPos.getNode()], endPos.getY() * m_transfHeight);
+				//var pf= new Point(m_nodesPosition[endPos.getNode()] * percent, endPos.getY() * m_transfHeight * percent);	
 				
+				var destX=0;
+				
+				// TODO: correct the way it is calculated
+		        if (initPos.getNode() < endPos.getNode()) {
+		          destX= m_nodesPosition[initPos.getNode()] + (m_nodesPosition[endPos.getNode()] - m_nodesPosition[initPos.getNode()]) * percent;
+		        }else{
+		          destX= m_nodesPosition[initPos.getNode()] - Math.abs(m_nodesPosition[endPos.getNode()] - m_nodesPosition[initPos.getNode()]) * percent ;				
+		        }
+		        
+				var pf= new Point(destX, initPos.getY() * m_transfHeight + (endPos.getY()- initPos.getY()) * m_transfHeight * percent);		        
+		        
 				m_drawing_canvas.drawArrow(pi, pf);
 				
 				break;
@@ -319,45 +308,29 @@ function ScenarioView(){
 	// Get Data from ScenarioPlay and display it on the canvas
 	function drawScenarioScreen(){
 //		console.log("ScenarioView.drawScenarioScreen userScroll: " + m_scenarioPlay.getUserScroll());
+//		console.log("ScenarioView.drawScenarioScreen");
 
 		//TODO: Display the current scenarioPlay in the canvas
 		var width= theCanvas.width;
 		var height = theCanvas.height;
 
-		// Adjust the height of the canvas to the number of messages of the scenario
-//		var advance=50;
-		
 		m_transfHeight=1.0;
 		
-//		var messages = m_scenarioPlay.getMessages();
-//		height = messages.length * advance + 20;
-
 		height = m_scenarioPlay.getCurrentHeight() * m_transfHeight + 20;
 		
 	    theCanvas.style.height = height + 'px';	    
 	    theCanvas.style.width = width + 'px';
 	    theCanvas.height = height;
 	    theCanvas.width = width;
-	    
-//		var pi=new Point();
-//		var pf=new Point();
-//
-//		for (var x = 0; x <= messages.length - 1; x++){
-//			pi.setX(5);
-//			pi.setY(x * advance + 5);
-//			
-//			pf.setX(Math.round((width - (width * 0.11)) * messages[x]) + 5);
-//			pf.setY(Math.round(advance * messages[x]) + (x * advance + 5));
-//			
-//			m_drawing_canvas.drawArrow(pi, pf);
-//		}
-	    
-	    // Display horizontal lines
-	    for (var x=0; x < m_scenarioContext.getNumberofNodes(); x++){
-		    var pi=new Point(m_nodesPosition[x],0);
-		    var pf=new Point(m_nodesPosition[x],height);
-	    	
-		    m_drawing_canvas.drawVerticalLine(pi, pf);
+	        
+	    // Display horizontal lines if there is anything to be displayed
+	    if (m_scenarioPlay.getCurrentHeight()>0){
+		    for (var x=1; x <= m_scenarioContext.getNumberofNodes(); x++){
+			    var pi=new Point(m_nodesPosition[x],0);
+			    var pf=new Point(m_nodesPosition[x],height);
+		    	
+			    m_drawing_canvas.drawVerticalLine(pi, pf);
+		    }
 	    }
 	    
 	    var readyO=m_scenarioPlay.getReadyObjects();
