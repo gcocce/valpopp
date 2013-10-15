@@ -113,7 +113,7 @@ function ScenarioPlay(context){
 		m_quizz_processed=false;
 			
 		m_scenCurrentHeight=0;
-		m_scenCurrentLastPos=0;
+		m_scenCurrentLastPos=10;
 		m_currentSequenceId=0;
 		m_messagesList= new Array();
 		m_readyObjects = new Array();
@@ -212,7 +212,7 @@ function ScenarioPlay(context){
  				
  				// Add the first message to the ProcessingList
  				// The first message can not start at a given Synch Point
- 				processMessage(m_current_messageList[0], 0, 10);
+ 				processMessage(m_current_messageList[0], 0, m_scenCurrentLastPos);
  			}else{
  				sequence=m_context.getSequence(m_currentSequenceId);
  			}
@@ -305,7 +305,6 @@ function ScenarioPlay(context){
 	 			
 				// Replace the Processing Object List with the new one
 	 			m_processingObjects=m_new_processingList;
-	 		
 			}else{
 			// If there are no more objects in the Processing List
 				console.log("ScenarioPlay no more obj in processing list");
@@ -342,13 +341,6 @@ function ScenarioPlay(context){
 						m_currentSequenceId=nextSequence;
 						
 						sequence=m_context.getSequence(m_currentSequenceId);
-						
-						// Add the first message to the Processing List
-		 				m_current_messageList=sequence.messages;
-		 				
-		 				// Add the first message to the ProcessingList
-		 				// The first message can not start at a given Synch Point
-		 				processMessage(m_current_messageList[0], 0, m_scenCurrentLastPos);						
 					}
 				}				
 			
