@@ -116,11 +116,19 @@ function ScenMessage(pi,pf, index, msgv){
 	// Regiter the position in the list of messages
 	var m_index=index;
 		
-	// Register the text message to be displayed
+	// Register the text message to be displayed with its parameters
 	var m_msg=msgv;
+	
+	// Register type of message
+	var m_type="";
+	var m_length=0;
+	var m_treatment=0;
+	var m_dash="FULL"
 	
 	var m_synchPoint="";
 	var m_startPoint="";
+	
+	var m_scenImg="";
 	
 	// Register the percentage of display
 	var m_drawpercent=0;
@@ -130,6 +138,22 @@ function ScenMessage(pi,pf, index, msgv){
 	
 	this.getMsg = getMsg;
 	this.getIndex=getIndex;
+	
+	this.setType=setType;
+	this.getType=getType;
+	
+	this.setLength=setLength;
+	this.getLength=getLength;
+	
+	this.setTreatment=setTreatment;
+	this.getTreatment=getTreatment;
+	
+	this.setDash=setDash;
+	this.getDash=getDash;
+	
+	this.setScenImg=setScenImg;
+	this.getScenImg=getScenImg;
+	this.hasScenImg=hasScenImg;
 
 	this.hasStartPoint=hasStartPoint;	
 	this.getStartPoint=getStartPoint;
@@ -196,7 +220,55 @@ function ScenMessage(pi,pf, index, msgv){
 
 	function setDrawPercent(drawpv) {
 		m_drawpercent=drawpv;
-	}	
+	}
+	
+	function setType(type){
+		m_type=type;
+	}
+	
+	function getType(){
+		return m_type;
+	}
+	
+	function setLength(length){
+		m_length=length;
+	}
+	
+	function getLength(){
+		return m_length;
+	}
+	
+	function setTreatment(treatment){
+		m_treatment=treatment;
+	}
+	
+	function getTreatment(){
+		return m_treatment;
+	}
+	
+	function setDash(dash){
+		m_dash=dash;
+	}
+	
+	function getDash(){
+		return m_dash;
+	}
+	
+	function setScenImg(img){
+		m_scenImg=img;
+	}
+	
+	function getScenImg(){
+		return m_scenImg;
+	}
+	
+	function hasScenImg(){
+		if (m_scenImg.localeCompare("")==0){
+			return false;
+		}else{
+			return true;
+		}		
+	}
 }
 
 function ScenAction(){

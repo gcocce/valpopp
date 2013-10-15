@@ -221,6 +221,7 @@ function ScenarioContext(){
 		return m_error;
 	}
 	
+	// Get the sequence for a given id, if id is 0 get the first one
 	function getSequence(id){
 		if (id==0){
 			return m_scenario_object.sequences[0];

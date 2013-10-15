@@ -36,59 +36,66 @@ function ScenarioPlay(context){
 	// Properties
 	// ******************************************************************************	
 	
-	var m_error="";
-	var m_state=SCENARIO_STOPPED;
-	var m_continious_mode=true;
-	
-	var m_context=context;
-	
-	var m_scenType= new ScenType();
-	
-	// Messages
-	//var m_messages=new Array();
-	
-	// Reference to Timer
-	var m_loop=null;
-	var m_userscroll=false;
-	var m_finished=false;
-	var m_started=false;
-	
+	// References to the html elements
     var theContainer = document.getElementById("vDraw");
     var theCanvas = document.getElementById("vScenarioCanvas");   
     var theCanvasContext=theCanvas.getContext("2d");
     
-    /* Object to register ScenarioPlay
-     *  
-     */
-    // Scenario Data
-    //TODO: chose better names for the variables 
-    var m_scenario_messageList=new Array();
-    var m_scenario_referenceList=new Array();
-    	
-    // Data structure for ScenarioPlay Managment
-    var m_currentSequence=0;
-    var m_currentMessage=0;
+	// To register a description of the last error if any.
+	var m_error="";
+	
+	// To register the state of the ScenarioPlay Instance
+	var m_state=SCENARIO_STOPPED;
+	
+	// The register the mode selected
+	var m_continious_mode=true;
+	
+	// To dintiguish the different types of objects used in the ScenarioPlay
+	var m_scenType= new ScenType();
+	
+	// Reference to the Timer used to control the messages display evolution
+	var m_loop=null;
+	
+	// Register whether the user chose to scroll the page or not, to avoid automatic scroll
+	var m_userscroll=false;
+	
+	// Register whether the simulation has finished or not 
+	var m_finished=false;
+	
+	// Register whether the current sequence has started or not 
+	var m_sequence_started=false;
     
+    /* Object to register ScenarioPlay Data */
+    
+	// A reference to the ScenarioContext
+	var m_context=context;
+
+    // Register the Id of the current sequence been processed
+    var m_currentSequenceId=0;   
+    
+    // Regerence to the message list of the current sequence been processed
     var m_current_messageList=null;
+    
+    // Register the last SyncPoint Processed, useful between a sequence change
     var m_currentSyncPoint=null;
     
-    // The message sequences currently displayed
-    var m_sequenceList=new Array();
-    
-    // The actual height for the canvas
+    // Register if the current quiz has already been processed
+    var m_quizz_processed=false;
+       
+    // Register the maximum height needed for the canvas
     var m_scenCurrentHeight=0;
     
-    var m_synckPointsPos = new Array();
-    
-    // Drawable objects already finished
+    // Register the last position reached by a message
+    var m_scenCurrentLastPos=0;
+      
+    // Register the list of objects already finished
     var m_readyObjects = new Array();
     
-    // Drawable objects in process growing or increasing
+    // Register the list of objects in process of drawing (like a message that is going from on node to another)
     var m_processingObjects = new Array();
     
-    // Temp
+    // Temp register of the processing objects. Used each time the Processing Objcet List is updated.
     var m_new_processingList=new Array();
-    
     
 	// ******************************************************************************
 	// Private Methods
@@ -98,18 +105,17 @@ function ScenarioPlay(context){
 	function cleanScenarioPlay(){
 		console.log("ScenarioPlay.cleanScenarioPlay");
 		
-		//TODO: Clean Objects used to store scenario play data
 		m_finished=false;
 		m_userscroll=false;
-		m_started=false;
+		m_sequence_started=false;
 		
 		m_currentSyncPoint=null;
+		m_quizz_processed=false;
 			
 		m_scenCurrentHeight=0;
-		m_currentSequence=0;
+		m_scenCurrentLastPos=0;
+		m_currentSequenceId=0;
 		m_messagesList= new Array();
-		m_sequenceList= new Array();
-		m_synckPointsPos = new Array();
 		m_readyObjects = new Array();
 		m_processingObjects = new Array();
 		m_new_processingList= new Array();
@@ -124,41 +130,10 @@ function ScenarioPlay(context){
 		//TODO: replace for a proper call
 		notifyChange();
 	}
-	
-	function processFirstMessage(scenMessage){
-		console.log("Process First Message srcN:"+scenMessage.srcN + " destN:"+scenMessage.destN );
-		var pi=new Position(scenMessage.srcN, 10);
 		
-		var nodeDif=Math.abs(scenMessage.destN - scenMessage.srcN) - 1;
-		
-		//TODO: calculate time to target and replace constant
-		var lastPos = 60 + nodeDif * 20;
-		var pf=new Position(scenMessage.destN, lastPos);
-		
-		if (lastPos>m_scenCurrentHeight){
-			m_scenCurrentHeight=lastPos;
-		}
-		
-		var msgName="";
-		if(scenMessage.param.localeCompare("")==0){
-			msgName= scenMessage.name;
-		}else{
-			msgName= scenMessage.name + " (" + scenMessage.param + ")";
-		}
-		var msg=new ScenMessage(pi, pf, 0, msgName);
-		
-		//TODO: set msg parameters		
-		msg.setSyncPoint(scenMessage.synchPoint);
-		msg.setStartPoint(scenMessage.startTime);		
-		
-		var obj= new ScenObject(m_scenType.MESSAGE, msg);
-		
-		m_processingObjects.push(obj);
-	}	
-	
 	function processMessage(scenMessage, index, startPos){
-		console.log("ProcessMessage message index:" + index);	
-		console.log("ProcessMessage srcN:"+scenMessage.srcN + " destN:"+scenMessage.destN );
+		console.log("ProcessMessage Message index:" + index);	
+
 		var pi=new Position(scenMessage.srcN, startPos);
 		
 		var nodeDif=Math.abs(scenMessage.destN - scenMessage.srcN) - 1;
@@ -179,13 +154,25 @@ function ScenarioPlay(context){
 		}		
 		var msg=new ScenMessage(pi, pf, index, msgName);
 		
-		//TODO: set msg parameters
 		msg.setSyncPoint(scenMessage.synchPoint);
 		msg.setStartPoint(scenMessage.startTime);
+		msg.setType(scenMessage.type);
+		msg.setLength(scenMessage.length);
+		msg.setTreatment(scenMessage.treatment);
+		msg.setDash(scenMessage.dash);
+		
+		if (scenMessage.scenImg){
+			msg.setScenImg(scenMessage.scenImg);
+		}
 		
 		var obj= new ScenObject(m_scenType.MESSAGE, msg);
 		
-		m_new_processingList.push(obj);
+		// The first message goes into the Processing List
+		if (index==0){
+			m_processingObjects.push(obj);
+		}else{
+			m_new_processingList.push(obj);
+		}
 	}
 	
 	function processSyncPoint(syncpoint, index, startPos){
@@ -205,112 +192,111 @@ function ScenarioPlay(context){
 		console.log("number of syncronizing messages "+ count);
 	}
 	
+	//TODO: Calculate the new state of ScenarioPlay objects
 	function calculateScenarioPlay(){
 //		console.log("ScenarioPlay.calculateScenarioPlay finished:" + m_finished);
 		
  		if (!m_finished){
-			//TODO: Calculate the new state of ScenarioPlay objects
-			
  			var sequence=null;
  			
  			// The first step of a scenario execution
- 			if (!m_started){
- 				console.log("ScenarioPlay Start with first Message");
+ 			if (!m_sequence_started){
+ 				console.log("ScenarioPlay Start CurrentSequence:" + m_currentSequenceId);
  				
- 				m_started=true;
+ 				m_sequence_started=true;
+ 				m_quizz_processed=false;
  				
- 				sequence=m_context.getSequence(m_currentSequence);
+ 				sequence=m_context.getSequence(m_currentSequenceId);
  				
  				m_current_messageList=sequence.messages;
  				
  				// Add the first message to the ProcessingList
  				// The first message can not start at a given Synch Point
- 				processFirstMessage(m_current_messageList[0], 0);
+ 				processMessage(m_current_messageList[0], 0, 10);
  			}else{
- 				sequence=m_context.getSequence(m_currentSequence);
+ 				sequence=m_context.getSequence(m_currentSequenceId);
  			}
- 			
 
-			if ( m_processingObjects.length==0){
-				console.log("ScenarioPlay no more obj in processing list");
-				m_finished=true;
-				
-				m_state=SCENARIO_STOPPED;
-				
-				window.clearTimeout(m_loop);
-				
-				var event = $.Event( "ScenarioPlayFinished" );
-				$(window).trigger( event );					
-			}else{
-	 			//TODO: procesar la lista de objectos en proceso
+			if ( m_processingObjects.length!=0){
 				
 	 			// Create a new Processing List
 	 			m_new_processingList=new Array();
 	 			
 	 			for (var x=0; x < m_processingObjects.length; x++){
 	 				
-	 				// Si es de tipo MESSAGE extender
-	 				
 	 				var obj=m_processingObjects[x];
 	 				
 	 				switch (obj.getType()){
 	 				case m_scenType.MESSAGE:
+		 				// If it is a MESSAGE type extend the arrow
 	 					var msg=obj.getObject();
 	 					
 	 					var iNode=msg.getInitPos().getNode();
 	 					var fNode=msg.getEndPos().getNode();
 	 						 					
-	 					
+	 					//TODO: modify the way the advancemente is calculated
 	 					var percent=msg.getDrawPercent();
-	 					
 	 					percent = percent + (0.1 / Math.abs(fNode - iNode));
 	 					if(Math.abs((percent-1))<0.0001){
 	 						percent=1;
 	 					}
-	 					
-//	 					console.log("percent: "+percent);
-	 					
+	 					 					
 	 					msg.setDrawPercent(percent);
 	 					
 	 					obj.setObject(msg);
 	 					
+	 					// If message got to the destination node
 	 					if(percent==1){
+	 						// Index of the messag in the ScenarioFile Array of Messages
 	 						var index=msg.getIndex();
-	 						
-	 						console.log("calculateScenarioPlay message completed index:" + index);
-	 						
-	 						var index = msg.getIndex();
+	 						//console.log("calculateScenarioPlay message completed index:" + index);
+
 	 						var lastPos = msg.getEndPos().getY();
-	 						var nextIndex = index + 1;
 	 						
- 							if(msg.hasSyncPoint()){
- 								// In case it is needed in the next Sequence
- 								m_currentSyncPoint=new SyncPoint(msg.getSyncPoint(), lastPos);
- 							}else{
- 								m_currentSyncPoint=null;
- 							}
+	 						//Register the last vertical position
+	 						m_scenCurrentLastPos=lastPos;
+	 						
+	 						var nextIndex = index + 1;
  							
+	 						// If there are following messages
 	 						if (nextIndex < m_current_messageList.length){
+	 							// If the current message has SyncPoint
 	 							if(msg.hasSyncPoint()){
-	 								// Add Messages With Same SyncPoint to the Processing List
+	 								// Add Messages With StartPoint equals to SyncPoint into the Processing List
 	 								processSyncPoint(msg.getSyncPoint(), nextIndex, lastPos);
 	 							}
 	 							
 	 							var nextMsg = m_current_messageList[nextIndex];
 	 							
+	 							// If the following messages has default StartPoint add to the Processing List
 	 							if (nextMsg.startTime.localeCompare("")==0){
 	 								processMessage(nextMsg, nextIndex, lastPos);	
 	 							}
+	 						}else{
+	 							// If it is the las message and it has a SyncPoint register for the next Sequence
+	 							if(msg.hasSyncPoint()){
+	 								m_currentSyncPoint=new SyncPoint(msg.getSyncPoint(), lastPos);
+	 							}else{
+	 								m_currentSyncPoint=null;
+	 							}	 							
 	 						}
 	 							 						
-	 						// The objects go to the Ready List
+	 						// Add the current message to Ready List
 	 						m_readyObjects.push(obj);
 	 					}else{
-	 						// The object continues int the Processing List
+	 						// If the message did not get to the destination node
+	 						// it continues in the Processing List
 	 						m_new_processingList.push(obj);
 	 					}
+	 					break;
+	 				case m_scenType.TREATMENT:
+	 					
 	 					
 	 					break;
+	 				case m_scenType.TIMER:
+	 					
+	 					
+	 					break
 	 					default:
 	 						console.log("calculateScenarioPlay: object type unknown");
 	 						break;
@@ -318,7 +304,54 @@ function ScenarioPlay(context){
 	 			}
 	 			
 				// Replace the Processing Object List with the new one
-	 			m_processingObjects=m_new_processingList;				
+	 			m_processingObjects=m_new_processingList;
+	 		
+			}else{
+			// If there are no more objects in the Processing List
+				console.log("ScenarioPlay no more obj in processing list");
+				
+				// If the CurrentSequence does have an MCQ and it has not been processed 
+				if (sequence.mcq && !m_quizz_processed){
+					m_state=SCENARIO_QUIZZING;
+					
+					window.clearTimeout(m_loop);
+					
+					var event = $.Event( "ScenarioPlayQuizz" );
+					$(window).trigger( event );		
+				}else{
+				// If the CurrentSequence does not have an MCQ or it has been processed
+					
+					// Get next Sequence ID
+					var nextSequence=sequence.nextId;
+					console.log("Next Sequence Id: " + nextSequence);
+					
+					m_quizz_processed=false;
+					m_sequence_started=false;
+					
+					// Check if there are no more following sequence
+					if (nextSequence==0){
+						m_finished=true;
+						
+						m_state=SCENARIO_STOPPED;
+						window.clearTimeout(m_loop);
+						
+						var event = $.Event( "ScenarioPlayFinished" );
+						$(window).trigger( event );	
+					}else{
+						// Start the Sequence
+						m_currentSequenceId=nextSequence;
+						
+						sequence=m_context.getSequence(m_currentSequenceId);
+						
+						// Add the first message to the Processing List
+		 				m_current_messageList=sequence.messages;
+		 				
+		 				// Add the first message to the ProcessingList
+		 				// The first message can not start at a given Synch Point
+		 				processMessage(m_current_messageList[0], 0, m_scenCurrentLastPos);						
+					}
+				}				
+			
 			}
 
 			notifyChange();
@@ -373,9 +406,15 @@ function ScenarioPlay(context){
 		
 	this.getMessages=getMessages;
 	
+	this.processMCQ=processMCQ;
+	
 	// ******************************************************************************
 	// Public Methods Definition
 	// ******************************************************************************
+	
+	function processMCQ(){
+		m_quizz_processed=true;
+	}
 	
 	function getReadyObjects(){
 		return m_readyObjects;

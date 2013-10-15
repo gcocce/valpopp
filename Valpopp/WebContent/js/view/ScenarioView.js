@@ -36,9 +36,7 @@ function ScenarioView(){
 	// Private Methods
 	// ******************************************************************************
     
-    function setupSize() {
-//    	console.log("ScenarioView.setupSize()");
-    	
+    function setupSize() {   	
         var theContainerHeight = window.getComputedStyle(theContainer).getPropertyValue('height');
         var theContainerWidth = window.getComputedStyle(theContainer).getPropertyValue('width');
         
@@ -133,7 +131,6 @@ function ScenarioView(){
 	
 
 	function displayObject(obj){
-		//m_transfHeight
 //		console.log("displayObject of type: " + obj.getType());
 		
 		// TODO: display other object types
@@ -191,6 +188,7 @@ function ScenarioView(){
 	this.disableScenarioCommands=disableScenarioCommands;
 	this.initiateScenarioDisplay=initiateScenarioDisplay;
 	this.getCurrentScenarioPlay=getCurrentScenarioPlay;
+	this.showScenarioQuizz=showScenarioQuizz;
 	
 	// ******************************************************************************
 	// Public Methods Definition
@@ -199,6 +197,41 @@ function ScenarioView(){
 	function getCurrentScenarioPlay(){
 		return m_scenarioPlay;
 	}
+	
+	function showScenarioQuizz(){
+		console.log("ScenarioView.showScenarioQuizz");   
+	    
+		$("#maindialog").dialog({
+			autoOpen: false,
+			modal: true,
+			width: 500,
+			height: 300,
+			position: {  my: "center", at: "center", of: window  },
+			resizable: true,
+			title: "Multiple Choice Question",
+			buttons: {
+				"Answer": function() {
+					$("#maindialog").dialog("close");					
+					answerQuizz();
+				},			
+				"Close": function(){
+					$(this).dialog("close");
+				}
+			}
+		});
+		
+		$("#maindialog").html("<h1>Answer the quizz!</h1>");
+		
+		$("#maindialog").dialog("open");		
+	}
+	
+	// Move to private function section
+	function answerQuizz(){
+		m_scenarioPlay.processMCQ();
+		
+		var event = $.Event( "ScenarioPlayQuizzFinished" );
+		$(window).trigger( event );			
+	}	
 	
 	function initiateScenarioDisplay(context){
 		console.log("ScenarioView.initiateScenarioDisplay(context)");
@@ -308,6 +341,8 @@ function ScenarioView(){
 	
 	$(window).on( "ScenarioPlayChanged", drawScenarioScreen);
 	
+	$(window).on( "ScenarioPlayQuizz", showScenarioQuizz);	
+	
 	
 	// ******************************************************************************
 	// Call back function for events
@@ -372,12 +407,8 @@ function ScenarioView(){
 	    	
 	    	displayObject(obj);
 	    }
-		
-//		var downlinepos = (messages.length + 1) * advance;
 	    
 		var theContainerHeight = window.getComputedStyle(theContainer).getPropertyValue('height');
-        
-//		console.log("downlinepos:" +downlinepos + " container.height:" + theContainerHeight );
 		
 		if (!m_scenarioPlay.getUserScroll() && height > parseInt(theContainerHeight)) {
 			theContainer.scrollTop = height - parseInt(theContainerHeight);

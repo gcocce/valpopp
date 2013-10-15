@@ -24,7 +24,7 @@ function Schema(){
 	// ******************************************************************************
 	// Properties
 	// ******************************************************************************	
-	var m_schema_state=SCHEMA_NOTLOADED;	
+	var m_schema_state=SCHEMA_NOTLOADED;
 	var m_schema_string=null;	
 	var m_error="";
 	var m_scenario_string="";

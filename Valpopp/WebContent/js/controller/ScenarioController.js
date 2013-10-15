@@ -53,6 +53,13 @@ function ScenarioController(){
 			  theCommandButton.value="Pause";
 			  scenarioPlay.continuePlay();		  
 			  break;
+			case scenarioPlay.SCENARIO_QUIZZING:
+			  theCommandButton.value="Pause";
+			  scenarioPlay.continuePlay();					
+			  break;
+			default:
+				console.log("ScenarioController.playButton known state");
+				break;
 		  }
 	}
 
@@ -68,8 +75,8 @@ function ScenarioController(){
 
 	function quizButton(){
 		console.log("quizButton");
-		// TODO: indicate to scenarioView open Quiz dialog.
 		
+		scenarioView.showScenarioQuizz();
 	}
 
 	function modeCheckbox(){
@@ -302,16 +309,56 @@ function ScenarioController(){
 		//***************************************************************************	  
 	  
 		// Trigger when the schema file is already loaded
-		$(window).on( "ScenarioPlayFinished", updateCommandButton);
+		$(window).on( "ScenarioPlayFinished", initCommandButton);
 	
+		$(window).on( "ScenarioPlayQuizz", quizzCommandButtons);
+		
+		$(window).on( "ScenarioPlayQuizzFinished", quizzFinishedCommandButtons);
+		
+		
 	  
 		//***************************************************************************
 		// Call back function for ScenarioPlay State
 		//***************************************************************************	 
 	  
-		function updateCommandButton(){
+		function initCommandButton(){			
 			theCommandButton = document.getElementById("bt_play");
 			theCommandButton.value="Start";			
+		}
+		
+		function quizzCommandButtons(){	
+			var button=document.getElementById("bt_play");
+			button.value="Continue";
+			button.disabled=true;
+			
+			button=document.getElementById("bt_stop");
+			button.disabled=true;
+			
+			button=document.getElementById("bt_mode");
+			button.disabled=true;
+			
+			button=document.getElementById("bt_quiz");
+			button.disabled=false;			
+		}
+		
+		function quizzFinishedCommandButtons(){
+			var button=document.getElementById("bt_play");
+			button.value="Pause";
+			button.disabled=false;
+			
+			button=document.getElementById("bt_stop");
+			button.disabled=false;
+			
+			button=document.getElementById("bt_mode");
+			button.disabled=false;
+			
+			button=document.getElementById("bt_quiz");
+			button.disabled=true;
+			
+			
+			//TODO: Continue Simulation
+			playButton();
+			
 		}
 	  
 }
