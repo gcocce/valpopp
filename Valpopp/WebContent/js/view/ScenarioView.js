@@ -139,39 +139,39 @@ function ScenarioView(){
 				
 				var msg=obj.getObject();
 				
-				var name=msg.getMsg();
-				
-				var initPos=msg.getInitPos();
-				var endPos=msg.getEndPos();
-				
 				var percent=msg.getDrawPercent();
+				
+				if (percent>0){
+					var name=msg.getMsg();
+					var initPos=msg.getInitPos();
+					var endPos=msg.getEndPos();
 					
-				var pi= new Point(m_nodesPosition[initPos.getNode()], initPos.getY() * m_transfHeight);
-				//var pf= new Point(m_nodesPosition[endPos.getNode()] * percent, endPos.getY() * m_transfHeight * percent);	
-				
-				var destX=0;
-				var messageX=0;
-				var messageY=0;
-				
-				// TODO: correct the way it is calculated, it should be more simple
-		        if (initPos.getNode() < endPos.getNode()) {
-		          destX= m_nodesPosition[initPos.getNode()] + (m_nodesPosition[endPos.getNode()] - m_nodesPosition[initPos.getNode()]) * percent;
-		          messageX = m_nodesPosition[initPos.getNode()] + (m_nodesPosition[endPos.getNode()] - m_nodesPosition[initPos.getNode()]) / 2 ;		          
-		        }else{
-		          destX= m_nodesPosition[initPos.getNode()] - Math.abs(m_nodesPosition[endPos.getNode()] - m_nodesPosition[initPos.getNode()]) * percent ;
-		          messageX = m_nodesPosition[initPos.getNode()] - Math.abs(m_nodesPosition[endPos.getNode()] - m_nodesPosition[initPos.getNode()]) / 2 ;
-		        }
-		        
-				var pf= new Point(destX, initPos.getY() * m_transfHeight + (endPos.getY()- initPos.getY()) * m_transfHeight * percent);		        
-		        
-				messageY= initPos.getY() * m_transfHeight + ((endPos.getY()- initPos.getY()) * m_transfHeight) / 4;
-					        
-				var textSize=calculateMsgTextSize(m_transfHeight);
-				
-				m_drawing_canvas.drawMessage(name, messageX, messageY, textSize);
-				
-				m_drawing_canvas.drawArrow(pi, pf);
-				
+					var pi= new Point(m_nodesPosition[initPos.getNode()], initPos.getY() * m_transfHeight);
+					//var pf= new Point(m_nodesPosition[endPos.getNode()] * percent, endPos.getY() * m_transfHeight * percent);	
+					
+					var destX=0;
+					var messageX=0;
+					var messageY=0;
+					
+					// TODO: correct the way it is calculated, it should be more simple
+			        if (initPos.getNode() < endPos.getNode()) {
+			          destX= m_nodesPosition[initPos.getNode()] + (m_nodesPosition[endPos.getNode()] - m_nodesPosition[initPos.getNode()]) * percent;
+			          messageX = m_nodesPosition[initPos.getNode()] + (m_nodesPosition[endPos.getNode()] - m_nodesPosition[initPos.getNode()]) / 2 ;		          
+			        }else{
+			          destX= m_nodesPosition[initPos.getNode()] - Math.abs(m_nodesPosition[endPos.getNode()] - m_nodesPosition[initPos.getNode()]) * percent ;
+			          messageX = m_nodesPosition[initPos.getNode()] - Math.abs(m_nodesPosition[endPos.getNode()] - m_nodesPosition[initPos.getNode()]) / 2 ;
+			        }
+			        
+					var pf= new Point(destX, initPos.getY() * m_transfHeight + (endPos.getY()- initPos.getY()) * m_transfHeight * percent);		        
+			        
+					messageY= initPos.getY() * m_transfHeight + ((endPos.getY()- initPos.getY()) * m_transfHeight) / 4;
+						        
+					var textSize=calculateMsgTextSize(m_transfHeight);
+					
+					m_drawing_canvas.drawMessage(name, messageX, messageY, textSize);
+					
+					m_drawing_canvas.drawArrow(pi, pf);
+				}
 				break;
 			default:
 				console.log("displayObject, nor recognized type: " + obj.getType());

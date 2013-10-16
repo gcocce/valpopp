@@ -283,6 +283,15 @@ function ScenarioPlay(context){
 	 							 						
 	 						// Add the current message to Ready List
 	 						m_readyObjects.push(obj);
+	 						
+	 						if (!m_continious_mode){
+	 							m_state=SCENARIO_PAUSED;
+	 							
+	 							window.clearTimeout(m_loop);
+	 							
+	 							var event = $.Event( "ScenarioPause" );
+	 							$(window).trigger( event );		 							
+	 						}
 	 					}else{
 	 						// If the message did not get to the destination node
 	 						// it continues in the Processing List

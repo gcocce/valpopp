@@ -25,6 +25,8 @@ function ScenarioController(){
 	this.modeCheckbox=modeCheckbox;
 	this.quizButton=quizButton;
 	this.dataButton=dataButton;	
+	this.changeMode=changeMode;
+	
 	//***************************************************************************
 	// Public Methods Definition	
 	//***************************************************************************
@@ -87,6 +89,21 @@ function ScenarioController(){
 		theCheckButton = document.getElementById("bt_mode");
 				
 		scenarioPlay.changeMode(theCheckButton.checked);
+	}
+	
+	function changeMode(){
+		
+		var scenarioPlay=scenarioView.getCurrentScenarioPlay();
+		
+		theCheckButton = document.getElementById("bt_mode");
+		
+		if (theCheckButton.checked){
+			theCheckButton.checked=false;
+		}else{
+			theCheckButton.checked=true;
+		}
+		
+		scenarioPlay.changeMode(theCheckButton.checked);		
 	}
 	
 	function dataButton(){
@@ -315,8 +332,9 @@ function ScenarioController(){
 		
 		$(window).on( "ScenarioPlayQuizzFinished", quizzFinishedCommandButtons);
 		
+		$(window).on( "ScenarioPause", scenarioPausedCommandButtons);
 		
-	  
+  
 		//***************************************************************************
 		// Call back function for ScenarioPlay State
 		//***************************************************************************	 
@@ -359,6 +377,11 @@ function ScenarioController(){
 			//TODO: Continue Simulation
 			playButton();
 			
+		}
+		
+		function scenarioPausedCommandButtons(){
+			var button=document.getElementById("bt_play");
+			button.value="Continue";			
 		}
 	  
 }

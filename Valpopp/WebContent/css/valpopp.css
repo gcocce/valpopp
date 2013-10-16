@@ -156,9 +156,15 @@ body {
   width: 90px;
 }
 
-#Commands label{
+#Commands a{
   font-size: 1.0em;
+  text-decoration:none;
 }
+
+#Commands a:hover {color:#000000;}
+#Commands a:link {color:#000000;}
+#Commands a:visited {color:#000000;}
+#Commands a:active {color:#000000;} 
 
 #msg { padding: 5px; }
  
@@ -206,7 +212,7 @@ body {
 	  width: 75px;
 	}	
 
-	#Commands label{
+	#Commands a{
 	  font-size: 0.8em;
 	}	
 
@@ -233,7 +239,7 @@ body {
 	  width: 60px;
 	}		
 	
-	#Commands label{
+	#Commands a{
 	  font-size: 0.6em;
 	}	
 	
@@ -260,7 +266,7 @@ body {
 	  width: 60px;
 	}		
 		
-	#Commands label{
+	#Commands a{
 	  font-size: 0.6em;
 	}	
 }
