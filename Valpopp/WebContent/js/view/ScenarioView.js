@@ -139,34 +139,49 @@ function ScenarioView(){
 				
 				var msg=obj.getObject();
 				
-				var percent=msg.getDrawPercent();
+				var display=msg.getDisplay();
 				
-				if (percent>0){
+				if (display){
 					var name=msg.getMsg();
 					var initPos=msg.getInitPos();
 					var endPos=msg.getEndPos();
 					
-					var pi= new Point(m_nodesPosition[initPos.getNode()], initPos.getY() * m_transfHeight);
-					//var pf= new Point(m_nodesPosition[endPos.getNode()] * percent, endPos.getY() * m_transfHeight * percent);	
+					var messageY = msg.getMsgPosY() * m_transfHeight;
 					
-					var destX=0;
 					var messageX=0;
-					var messageY=0;
-					
-					// TODO: correct the way it is calculated, it should be more simple
 			        if (initPos.getNode() < endPos.getNode()) {
-			          destX= m_nodesPosition[initPos.getNode()] + (m_nodesPosition[endPos.getNode()] - m_nodesPosition[initPos.getNode()]) * percent;
 			          messageX = m_nodesPosition[initPos.getNode()] + (m_nodesPosition[endPos.getNode()] - m_nodesPosition[initPos.getNode()]) / 2 ;		          
 			        }else{
-			          destX= m_nodesPosition[initPos.getNode()] - Math.abs(m_nodesPosition[endPos.getNode()] - m_nodesPosition[initPos.getNode()]) * percent ;
 			          messageX = m_nodesPosition[initPos.getNode()] - Math.abs(m_nodesPosition[endPos.getNode()] - m_nodesPosition[initPos.getNode()]) / 2 ;
 			        }
 			        
-					var pf= new Point(destX, initPos.getY() * m_transfHeight + (endPos.getY()- initPos.getY()) * m_transfHeight * percent);		        
-			        
-					messageY= initPos.getY() * m_transfHeight + ((endPos.getY()- initPos.getY()) * m_transfHeight) / 4;
-						        
 					var textSize=calculateMsgTextSize(m_transfHeight);
+					
+					// Calculate initial and final arrow points
+					var pi=new Point(m_nodesPosition[initPos.getNode()], initPos.getY() * m_transfHeight);
+					var pf=null;
+
+					if (msg.getReady()){
+						pf= new Point(m_nodesPosition[endPos.getNode()], endPos.getY() * m_transfHeight);	
+					}else{
+						var destX=0;
+						var destY=0;
+						
+						destY = (initPos.getY() + msg.getTransmitedTime()) * m_transfHeight;
+						
+						var xdisp=0;
+						var nodeDist=Math.abs(m_nodesPosition[endPos.getNode()] - m_nodesPosition[initPos.getNode()]);
+						
+						xdisp = Math.round( nodeDist * msg.getTransmitedTime() / msg.getTransTime() );
+						
+				        if (initPos.getNode() < endPos.getNode()) {
+				          destX= m_nodesPosition[initPos.getNode()] + xdisp;
+				        }else{
+				          destX= m_nodesPosition[initPos.getNode()] - xdisp;
+				        }
+				        
+						var pf= new Point(destX, destY);		        
+					}
 					
 					m_drawing_canvas.drawMessage(name, messageX, messageY, textSize);
 					

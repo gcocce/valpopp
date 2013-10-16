@@ -24,6 +24,7 @@ function ScenarioPlay(context){
 	var SCENARIO_FINISHED=4;
 	
 	var LOOP_UPDATE_TIME=200;
+	var SIMULATION_TIME = 4;
 
 	// To be used outside the class
 	this.SCENARIO_STOPPED=SCENARIO_STOPPED;
@@ -133,13 +134,21 @@ function ScenarioPlay(context){
 		
 	function processMessage(scenMessage, index, startPos){
 		console.log("ProcessMessage Message index:" + index);	
-
-		var pi=new Position(scenMessage.srcN, startPos);
+//		console.log("Message from node:" + scenMessage.srcN + " to node:" + scenMessage.destN);	
 		
-		var nodeDif=Math.abs(scenMessage.destN - scenMessage.srcN) - 1;
+		// Calculate Transmision Time
+		var trans_time= m_context.getPropagTime(scenMessage.srcN, scenMessage.destN) + Math.round(scenMessage.length / m_context.getThroughput(scenMessage.srcN, scenMessage.destN));
 		
-		//TODO: calculate time to target and replace constant	
-		var lastPos = startPos + 50 + nodeDif * 20;
+		//TODO: calculate time to target and replace constant
+		//var nodeDif=Math.abs(scenMessage.destN - scenMessage.srcN) - 1;
+		//var lastPos = startPos + 50 + nodeDif * 20;
+		
+		var lastPos = startPos + trans_time;
+		
+		var msgPosY = startPos + Math.round(trans_time / 4);
+       
+		var pi=new Position(scenMessage.srcN, startPos);		
+		//var pf=new Position(scenMessage.destN, lastPos);
 		var pf=new Position(scenMessage.destN, lastPos);
 			
 		if (lastPos>m_scenCurrentHeight){
@@ -154,12 +163,17 @@ function ScenarioPlay(context){
 		}		
 		var msg=new ScenMessage(pi, pf, index, msgName);
 		
+		msg.setReady(false);
+		msg.setMsgPosY(msgPosY);
 		msg.setSyncPoint(scenMessage.synchPoint);
 		msg.setStartPoint(scenMessage.startTime);
 		msg.setType(scenMessage.type);
 		msg.setLength(scenMessage.length);
 		msg.setTreatment(scenMessage.treatment);
 		msg.setDash(scenMessage.dash);
+		msg.setTransTime(trans_time);
+		
+		console.log("Message Transmision Time: " + msg.getTransTime());
 		
 		if (scenMessage.scenImg){
 			msg.setScenImg(scenMessage.scenImg);
@@ -231,22 +245,28 @@ function ScenarioPlay(context){
 		 				// If it is a MESSAGE type extend the arrow
 	 					var msg=obj.getObject();
 	 					
+	 					msg.setDisplay(true);
+	 					
 	 					var iNode=msg.getInitPos().getNode();
 	 					var fNode=msg.getEndPos().getNode();
-	 						 					
-	 					//TODO: modify the way the advancemente is calculated
-	 					var percent=msg.getDrawPercent();
-	 					percent = percent + (0.1 / Math.abs(fNode - iNode));
-	 					if(Math.abs((percent-1))<0.0001){
-	 						percent=1;
+
+	 					// Update the amount of time used to transmit the message
+	 					var transmited=msg.getTransmitedTime();
+	 					transmited = transmited + SIMULATION_TIME;
+	 					
+	 					//console.log("Update message transmited time: "+ transmited);
+	 					
+	 					if( transmited >= msg.getTransTime()){
+	 						transmited=msg.getTransTime();
 	 					}
 	 					 					
-	 					msg.setDrawPercent(percent);
+	 					msg.setTransmitedTime(transmited);
 	 					
 	 					obj.setObject(msg);
 	 					
 	 					// If message got to the destination node
-	 					if(percent==1){
+	 					if(transmited>=msg.getTransTime()){
+	 						msg.setReady(true);
 	 						// Index of the messag in the ScenarioFile Array of Messages
 	 						var index=msg.getIndex();
 	 						//console.log("calculateScenarioPlay message completed index:" + index);

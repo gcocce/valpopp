@@ -19,9 +19,8 @@ function ScenarioContext(){
 	this.CONTEXT_OK=CONTEXT_OK;
 	this.CONTEXT_NODE_IMGS_ERROR=CONTEXT_NODE_IMGS_ERROR;
 	
-	var DEFAULT_PROPAGATION_TIME=10;
-	var DEFAULT_THROUGHPUT=3400;
-
+	var DEFAULT_PROPAGATION_TIME=40;
+	var DEFAULT_THROUGHPUT=512;
 	
 	// ******************************************************************************
 	// Properties
@@ -119,8 +118,6 @@ function ScenarioContext(){
 				var data=prop[i];
 				
 				m_def_prog[data.srcN][data.destN]={"srcN": data.srcN,"destN": data.destN, "propagTime" : data.propagTime, "throughput": data.throughput};
-				
-
 			}
 		}
 		
@@ -188,11 +185,23 @@ function ScenarioContext(){
 	this.setNodeImg=setNodeImg;
 	this.setScenarioImg=setScenarioImg;
 	this.normalizeScenario=normalizeScenario;
+	
+	this.getPropagTime=getPropagTime;
+	this.getThroughput=getThroughput;
+
 		
 	// ******************************************************************************
 	// Public Methods Definition
 	// ******************************************************************************
 
+	function getPropagTime(srcN, destN){
+		return m_def_prog[srcN][destN].propagTime;
+	}
+	
+	function getThroughput(srcN, destN){
+		return m_def_prog[srcN][destN].throughput;
+	}
+	
 	function getNodeName(index){
 		return m_scenario_object.nodes[index].name;
 	}

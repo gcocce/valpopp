@@ -118,12 +118,19 @@ function ScenMessage(pi,pf, index, msgv){
 		
 	// Register the text message to be displayed with its parameters
 	var m_msg=msgv;
+	var m_msg_pos=0;
 	
 	// Register type of message
 	var m_type="";
 	var m_length=0;
 	var m_treatment=0;
 	var m_dash="FULL"
+		
+	// Total Transmision Time
+	var m_trans_time=0;
+	
+	// Time already used of the Transmition time
+	var m_transmited_time=0;
 	
 	var m_synchPoint="";
 	var m_startPoint="";
@@ -131,7 +138,9 @@ function ScenMessage(pi,pf, index, msgv){
 	var m_scenImg="";
 	
 	// Register the percentage of display
-	var m_drawpercent=0;
+	//var m_drawpercent=0;
+	var m_display=false;
+	var m_ready=false;
 	
 	this.getInitPos=getInitPos;
 	this.getEndPos=getEndPos;
@@ -163,8 +172,60 @@ function ScenMessage(pi,pf, index, msgv){
 	this.setSyncPoint=setSyncPoint;
 	this.getSyncPoint=getSyncPoint;
 	
-	this.getDrawPercent=getDrawPercent;
-	this.setDrawPercent=setDrawPercent;	
+	this.setTransTime=setTransTime;
+	this.getTransTime=getTransTime;
+	
+	this.getDisplay=getDisplay;
+	this.setDisplay=setDisplay;
+	
+	this.setMsgPosY=setMsgPosY;
+	this.getMsgPosY=getMsgPosY;
+	
+	this.setReady=setReady;
+	this.getReady=getReady;
+	
+	this.setTransmitedTime=setTransmitedTime;
+	this.getTransmitedTime=getTransmitedTime;
+	
+	function setTransmitedTime(time){
+		m_transmited_time=time;
+	}
+	
+	function getTransmitedTime(){
+		return m_transmited_time;
+	}
+	
+	function setReady(value){
+		m_ready=value;
+	}
+	
+	function getReady(){
+		return m_ready;
+	}
+	
+	function getMsgPosY(){
+		return m_msg_pos;
+	}
+	
+	function setMsgPosY(value){
+		m_msg_pos=value;
+	}
+	
+	function getDisplay() {
+		return m_display;
+	}
+
+	function setDisplay(value) {
+		m_display=value;
+	}	
+	
+	function setTransTime(time){
+		m_trans_time=time;
+	}
+	
+	function getTransTime(){
+		return m_trans_time;
+	}
 	
 	function getInitPos(){
 		return m_pi;		
@@ -212,14 +273,6 @@ function ScenMessage(pi,pf, index, msgv){
 	
 	function getStartPoint(){
 		return m_startPoint;
-	}
-	
-	function getDrawPercent() {
-		return m_drawpercent;
-	}
-
-	function setDrawPercent(drawpv) {
-		m_drawpercent=drawpv;
 	}
 	
 	function setType(type){
