@@ -82,31 +82,50 @@ function ScenTimer(pi,pf){
 	}		
 }
 
-function ScenTreatment(pi,pf){
-	var m_pi=pi;
-	var m_pf=pf;
-	var m_drawpercent=0;	
+function ScenTreatment(it,et,node){
+	var m_it=it;
+	var m_et=et;
+	var m_node=node;
+	var m_current_time=it;
+	var m_display=false;
 	
-	this.getInitPos=getInitPos;
-	this.getEndPos=getEndPos;
-	this.getDrawPercent=getDrawPercent;
-	this.setDrawPercent=setDrawPercent;		
+	this.getInitTime=getInitTime;
+	this.getEndTime=getEndTime;
+	this.getNode=getNode;
 	
-	function getInitPos(){
-		return m_pi;		
+	this.setCurrentTime=setCurrentTime;
+	this.getCurrentTime=getCurrentTime;
+	
+	this.getDisplay=getDisplay;
+	this.setDisplay=setDisplay;
+	
+	function getDisplay(){
+		return m_display;
 	}
 	
-	function getEndPos(){
-		return m_pf;		
+	function setDisplay(display){
+		m_display=display;
 	}
-
-	function getDrawPercent() {
-		return m_drawpercent;
+	
+	function setCurrentTime(time){
+		m_current_time=time;
 	}
-
-	function setDrawPercent(drawpv) {
-		m_drawpercent=drawpv;
-	}	
+	
+	function getCurrentTime(){
+		return m_current_time;
+	}
+	
+	function getNode(){
+		return m_node;
+	}
+	
+	function getInitTime(){
+		return m_it;		
+	}
+	
+	function getEndTime(){
+		return m_et;		
+	}
 }
 
 function ScenMessage(pi,pf, index, msgv){

@@ -129,7 +129,6 @@ function ScenarioView(){
 		return size;
 	}
 	
-
 	function displayObject(obj){
 //		console.log("displayObject of type: " + obj.getType());
 		
@@ -187,6 +186,30 @@ function ScenarioView(){
 					
 					m_drawing_canvas.drawArrow(pi, pf);
 				}
+				break;
+			case m_scenType.TREATMENT:
+				var treatobj=obj.getObject();
+				
+				var display=treatobj.getDisplay();
+				
+				if (display){
+					var initTime=treatobj.getInitTime();
+					var endTime=treatobj.getEndTime();
+					var currentTime=treatobj.getCurrentTime();
+					var node=treatobj.getNode();
+			
+					// Calculate initial and final arrow points
+					var pi=new Point(m_nodesPosition[node], initTime * m_transfHeight);
+					var pf=null;
+					
+					if (endTime > currentTime){
+						pf= new Point(m_nodesPosition[node], currentTime * m_transfHeight);
+					}else{
+						pf= new Point(m_nodesPosition[node], endTime * m_transfHeight);
+					}
+								
+					m_drawing_canvas.drawTreatmentLine(pi, pf);
+				}				
 				break;
 			default:
 				console.log("displayObject, nor recognized type: " + obj.getType());

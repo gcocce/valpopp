@@ -63,6 +63,12 @@ function ScenarioPlay(context){
 	// Register whether the simulation has finished or not 
 	var m_finished=false;
 	
+	// Register the current simulation time
+	var m_sim_time=0;
+	
+	// Last sequence message treatment
+	var m_last_msg_treatment=0;
+	
 	// Register whether the current sequence has started or not 
 	var m_sequence_started=false;
     
@@ -113,6 +119,8 @@ function ScenarioPlay(context){
 		m_currentSyncPoint=null;
 		m_quizz_processed=false;
 			
+		m_sim_time=0;
+		m_last_msg_treatment=0;
 		m_scenCurrentHeight=0;
 		m_scenCurrentLastPos=10;
 		m_currentSequenceId=0;
@@ -131,28 +139,30 @@ function ScenarioPlay(context){
 		//TODO: replace for a proper call
 		notifyChange();
 	}
-		
-	function processMessage(scenMessage, index, startPos){
+	
+	/* Process the Scenario File Message
+	 * Parameters:
+	 * scenMessage: Scenario File Message
+	 * index: the index in the Scenario File messages array
+	 * startPos: the last position of the previous message
+	 * treatment: the treatment time of the previous message
+	 */
+	function processMessage(scenMessage, index, startPos, treatment){
 		console.log("ProcessMessage Message index:" + index);	
-//		console.log("Message from node:" + scenMessage.srcN + " to node:" + scenMessage.destN);	
 		
 		// Calculate Transmision Time
 		var trans_time= m_context.getPropagTime(scenMessage.srcN, scenMessage.destN) + Math.round(scenMessage.length / m_context.getThroughput(scenMessage.srcN, scenMessage.destN));
 		
-		//TODO: calculate time to target and replace constant
-		//var nodeDif=Math.abs(scenMessage.destN - scenMessage.srcN) - 1;
-		//var lastPos = startPos + 50 + nodeDif * 20;
+		var lastPos = startPos + treatment + trans_time;
 		
-		var lastPos = startPos + trans_time;
-		
-		var msgPosY = startPos + Math.round(trans_time / 4);
+		var msgPosY = startPos + treatment + Math.round(trans_time / 4);
        
-		var pi=new Position(scenMessage.srcN, startPos);		
-		//var pf=new Position(scenMessage.destN, lastPos);
+		var pi=new Position(scenMessage.srcN, startPos + treatment);		
+
 		var pf=new Position(scenMessage.destN, lastPos);
 			
 		if (lastPos>m_scenCurrentHeight){
-			m_scenCurrentHeight=lastPos;
+			m_scenCurrentHeight=lastPos + treatment;
 		}
 		
 		var msgName="";
@@ -177,9 +187,24 @@ function ScenarioPlay(context){
 		
 		if (scenMessage.scenImg){
 			msg.setScenImg(scenMessage.scenImg);
+			//TODO: change scenario image
 		}
 		
 		var obj= new ScenObject(m_scenType.MESSAGE, msg);
+
+		
+		if (scenMessage.treatment > 0){
+			//Add treatment object to the scenario Processing List
+			var treatobj=new ScenTreatment(lastPos, lastPos + scenMessage.treatment, scenMessage.destN); 
+			
+			var scenobj= new ScenObject(m_scenType.TREATMENT, treatobj);
+			
+			if (index==0){
+				m_processingObjects.push(scenobj);
+			}else{
+				m_new_processingList.push(scenobj);
+			}
+		}
 		
 		// The first message goes into the Processing List
 		if (index==0){
@@ -187,9 +212,11 @@ function ScenarioPlay(context){
 		}else{
 			m_new_processingList.push(obj);
 		}
+		
+
 	}
 	
-	function processSyncPoint(syncpoint, index, startPos){
+	function processSyncPoint(syncpoint, index, startPos, treatment){
 		console.log("processSyncPoint "+ syncpoint);
 		
 		var count=0;
@@ -199,7 +226,7 @@ function ScenarioPlay(context){
 			if(scenMessage.startTime.localeCompare(syncpoint)==0){
 				count++;
 				//TODO: add to the Processing List
-				processMessage(scenMessage, x, startPos);
+				processMessage(scenMessage, x, startPos, treatment);
 			}
 		}
 		
@@ -226,12 +253,15 @@ function ScenarioPlay(context){
  				
  				// Add the first message to the ProcessingList
  				// The first message can not start at a given Synch Point
- 				processMessage(m_current_messageList[0], 0, m_scenCurrentLastPos);
+ 				processMessage(m_current_messageList[0], 0, m_scenCurrentLastPos, m_last_msg_treatment);
  			}else{
  				sequence=m_context.getSequence(m_currentSequenceId);
  			}
 
 			if ( m_processingObjects.length!=0){
+				
+				// Update the current simulation time
+				m_sim_time = m_sim_time + SIMULATION_TIME;
 				
 	 			// Create a new Processing List
 	 			m_new_processingList=new Array();
@@ -244,83 +274,125 @@ function ScenarioPlay(context){
 	 				case m_scenType.MESSAGE:
 		 				// If it is a MESSAGE type extend the arrow
 	 					var msg=obj.getObject();
-	 					
-	 					msg.setDisplay(true);
-	 					
+ 					
 	 					var iNode=msg.getInitPos().getNode();
 	 					var fNode=msg.getEndPos().getNode();
+	 					
+	 					var startTime=msg.getInitPos().getY();
 
-	 					// Update the amount of time used to transmit the message
-	 					var transmited=msg.getTransmitedTime();
-	 					transmited = transmited + SIMULATION_TIME;
-	 					
-	 					//console.log("Update message transmited time: "+ transmited);
-	 					
-	 					if( transmited >= msg.getTransTime()){
-	 						transmited=msg.getTransTime();
-	 					}
-	 					 					
-	 					msg.setTransmitedTime(transmited);
-	 					
-	 					obj.setObject(msg);
-	 					
-	 					// If message got to the destination node
-	 					if(transmited>=msg.getTransTime()){
-	 						msg.setReady(true);
-	 						// Index of the messag in the ScenarioFile Array of Messages
-	 						var index=msg.getIndex();
-	 						//console.log("calculateScenarioPlay message completed index:" + index);
-
-	 						var lastPos = msg.getEndPos().getY();
+	 					// Display is true if it is time to show the message
+	 					if (m_sim_time >= startTime){
 	 						
-	 						//Register the last vertical position
-	 						m_scenCurrentLastPos=lastPos;
+	 						msg.setDisplay(true);
 	 						
-	 						var nextIndex = index + 1;
- 							
-	 						// If there are following messages
-	 						if (nextIndex < m_current_messageList.length){
-	 							// If the current message has SyncPoint
-	 							if(msg.hasSyncPoint()){
-	 								// Add Messages With StartPoint equals to SyncPoint into the Processing List
-	 								processSyncPoint(msg.getSyncPoint(), nextIndex, lastPos);
-	 							}
+		 					// Update the amount of time used to transmit the message if it is already displayed
+		 					var transmited=msg.getTransmitedTime();
+		 					transmited = transmited + SIMULATION_TIME;
+		 					
+		 					//console.log("Update message transmited time: "+ transmited);
+		 					
+		 					if( transmited >= msg.getTransTime()){
+		 						transmited=msg.getTransTime();
+		 					}
+		 					 					
+		 					msg.setTransmitedTime(transmited);
+	 					
+		 					
+		 					obj.setObject(msg);
+	 					
+		 					// If message got to the destination node
+		 					// Treatment should be managed here
+		 					if(transmited>=msg.getTransTime()){
+		 						msg.setReady(true);
+		 						// Index of the messag in the ScenarioFile Array of Messages
+		 						var index=msg.getIndex();
+		 						//console.log("calculateScenarioPlay message completed index:" + index);
+		 						
+		 						var treatment=msg.getTreatment();
+	
+		 						var lastPos = msg.getEndPos().getY();
+		 						
+		 						//Register the last vertical position
+		 						m_scenCurrentLastPos=lastPos + treatment;
+		 						
+		 						// Update last message treatment
+		 						m_last_msg_treatment=treatment;
+		 						
+		 						var nextIndex = index + 1;
 	 							
-	 							var nextMsg = m_current_messageList[nextIndex];
-	 							
-	 							// If the following messages has default StartPoint add to the Processing List
-	 							if (nextMsg.startTime.localeCompare("")==0){
-	 								processMessage(nextMsg, nextIndex, lastPos);	
-	 							}
-	 						}else{
-	 							// If it is the las message and it has a SyncPoint register for the next Sequence
-	 							if(msg.hasSyncPoint()){
-	 								m_currentSyncPoint=new SyncPoint(msg.getSyncPoint(), lastPos);
-	 							}else{
-	 								m_currentSyncPoint=null;
-	 							}	 							
-	 						}
-	 							 						
-	 						// Add the current message to Ready List
-	 						m_readyObjects.push(obj);
-	 						
-	 						if (!m_continious_mode){
-	 							m_state=SCENARIO_PAUSED;
-	 							
-	 							window.clearTimeout(m_loop);
-	 							
-	 							var event = $.Event( "ScenarioPause" );
-	 							$(window).trigger( event );		 							
-	 						}
+		 						// If there are following messages
+		 						if (nextIndex < m_current_messageList.length){
+		 							// If the current message has SyncPoint
+		 							if(msg.hasSyncPoint()){
+		 								// Add Messages With StartPoint equals to SyncPoint into the Processing List
+		 								processSyncPoint(msg.getSyncPoint(), nextIndex, lastPos, treatment);
+		 							}
+		 							
+		 							var nextMsg = m_current_messageList[nextIndex];
+		 							
+		 							// If the following messages has default StartPoint add to the Processing List
+		 							if (nextMsg.startTime.localeCompare("")==0){
+		 								processMessage(nextMsg, nextIndex, lastPos, treatment);	
+		 							}
+		 						}else{
+		 							// If it is the las message and it has a SyncPoint register for the next Sequence
+		 							if(msg.hasSyncPoint()){
+		 								m_currentSyncPoint=new SyncPoint(msg.getSyncPoint(), lastPos);
+		 							}else{
+		 								m_currentSyncPoint=null;
+		 							}	 							
+		 						}
+		 							 						
+		 						// Add the current message to Ready List
+		 						m_readyObjects.push(obj);
+		 						
+		 						if (!m_continious_mode){
+		 							m_state=SCENARIO_PAUSED;
+		 							
+		 							window.clearTimeout(m_loop);
+		 							
+		 							var event = $.Event( "ScenarioPause" );
+		 							$(window).trigger( event );		 							
+		 						}
+		 						
+		 					}else{
+		 						// If the message did not get to the destination node
+		 						// it continues in the Processing List
+		 						m_new_processingList.push(obj);
+		 					}
 	 					}else{
-	 						// If the message did not get to the destination node
-	 						// it continues in the Processing List
 	 						m_new_processingList.push(obj);
 	 					}
+	 					
 	 					break;
 	 				case m_scenType.TREATMENT:
+		 				// If it is a TREATMENT type extend the line
+	 					var treatobj=obj.getObject();
 	 					
-	 					
+	 					var startTime=treatobj.getInitTime();
+
+	 					// Display is true if simulation time is higher than the startTime of the treatment object
+	 					if (m_sim_time > startTime){
+	 						
+	 						treatobj.setDisplay(true);
+		 					
+		 					if( m_sim_time >= treatobj.getEndTime()){
+		 						treatobj.setCurrentTime(treatobj.getEndTime());
+		 					}else{
+		 						treatobj.setCurrentTime(m_sim_time);
+		 					}
+		 					
+		 					obj.setObject(treatobj);
+		 					
+		 					if( m_sim_time >= treatobj.getEndTime()){
+		 						// Add the current object to Ready List
+		 						m_readyObjects.push(obj);
+		 					}else{
+		 						m_new_processingList.push(obj);
+		 					}		 					
+	 					}else{
+	 						m_new_processingList.push(obj);
+	 					}
 	 					break;
 	 				case m_scenType.TIMER:
 	 					

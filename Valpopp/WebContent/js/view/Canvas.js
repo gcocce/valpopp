@@ -35,6 +35,9 @@ function Canvas(drawing_context){
 	this.drawVerticalLine=drawVerticalLine;
 	this.drawArrow=drawArrow;
 	this.drawMessage=drawMessage;
+	this.drawTreatmentLine=drawTreatmentLine;
+	
+
 	
 	// ******************************************************************************
 	// Public Methods Definition
@@ -53,7 +56,7 @@ function Canvas(drawing_context){
 	}
 	
 	function drawVerticalLine(pi,pf){
-		m_context.strokeStyle  = "red";
+		m_context.strokeStyle  = "blue";
 		m_context.lineWidth  = 1;
 		m_context.lineCap  = 'square';
 		m_context.beginPath();
@@ -61,6 +64,17 @@ function Canvas(drawing_context){
 		m_context.lineTo(pf.getX(), pf.getY());
 		m_context.stroke();
 		m_context.closePath();		
+	}
+	
+	function drawTreatmentLine(pi, pf){
+		m_context.strokeStyle  = "black";
+		m_context.lineWidth  = 2;
+		m_context.lineCap  = 'square';
+		m_context.beginPath();
+		m_context.moveTo(pi.getX(), pi.getY());
+		m_context.lineTo(pf.getX(), pf.getY());
+		m_context.stroke();
+		m_context.closePath();			
 	}
 	
 	function drawArrow(pi,pf){
