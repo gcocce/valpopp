@@ -253,9 +253,14 @@ function ScenarioPlay(context){
  				
  				m_current_messageList=sequence.messages;
  				
- 				// Add the first message to the ProcessingList
- 				// The first message can not start at a given Synch Point
- 				processMessage(m_current_messageList[0], 0, m_scenCurrentLastPos, m_last_msg_treatment);
+ 				// If the previous sequence established a synchronization point process the synchronization point
+ 				if (m_currentSyncPoint!=null){
+ 					processSyncPoint(m_currentSyncPoint.getSyncPoint(), 0, m_scenCurrentLastPos, m_last_msg_treatment);
+ 				}else{
+ 	 				// Add the first message to the ProcessingList
+ 	 				// The first message can not start at a given Synch Point
+ 	 				processMessage(m_current_messageList[0], 0, m_scenCurrentLastPos, m_last_msg_treatment); 					
+ 				}
  			}else{
  				sequence=m_context.getSequence(m_currentSequenceId);
  			}
@@ -337,9 +342,9 @@ function ScenarioPlay(context){
 		 								processMessage(nextMsg, nextIndex, lastPos, treatment);	
 		 							}
 		 						}else{
-		 							// If it is the las message and it has a SyncPoint register for the next Sequence
+		 							// If it is the last message and it has a SyncPoint register for the next Sequence
 		 							if(msg.hasSyncPoint()){
-		 								m_currentSyncPoint=new SyncPoint(msg.getSyncPoint(), lastPos);
+		 								m_currentSyncPoint=new SyncPoint(msg.getSyncPoint(), lastPos + treatment);
 		 							}else{
 		 								m_currentSyncPoint=null;
 		 							}	 							
@@ -399,7 +404,7 @@ function ScenarioPlay(context){
 	 				case m_scenType.TIMER:
 	 					
 	 					
-	 					break
+	 					break;
 	 					default:
 	 						console.log("calculateScenarioPlay: object type unknown");
 	 						break;
