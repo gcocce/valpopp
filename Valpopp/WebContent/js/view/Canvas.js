@@ -1,6 +1,4 @@
-
 console.log("Canvas Script");
-
 
 /* Responsabilities:
  * 
@@ -37,8 +35,6 @@ function Canvas(drawing_context){
 	this.drawMessage=drawMessage;
 	this.drawTreatmentLine=drawTreatmentLine;
 	
-
-	
 	// ******************************************************************************
 	// Public Methods Definition
 	// ******************************************************************************
@@ -69,6 +65,7 @@ function Canvas(drawing_context){
 	function drawTreatmentLine(pi, pf){
 		m_context.strokeStyle  = "black";
 		m_context.lineWidth  = 2;
+		m_context.setLineDash([0]);
 		m_context.lineCap  = 'square';
 		m_context.beginPath();
 		m_context.moveTo(pi.getX(), pi.getY());
@@ -77,10 +74,11 @@ function Canvas(drawing_context){
 		m_context.closePath();			
 	}
 	
-	function drawArrow(pi,pf){
+	function drawArrow(pi,pf, color, dash){
         //console.log("Canvas.drawArrow final point: "+pf.getX()+","+pf.getY());
 		m_context.fillStyle = '#000000';  
-		m_context.strokeStyle  = "grey";
+		m_context.strokeStyle  = color;
+		m_context.setLineDash([dash]);
 		m_context.lineWidth  = 1;
 		m_context.lineCap  = 'square';
 		m_context.beginPath();

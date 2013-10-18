@@ -144,6 +144,8 @@ function ScenarioView(){
 					var name=msg.getMsg();
 					var initPos=msg.getInitPos();
 					var endPos=msg.getEndPos();
+					var dash=msg.getDash();
+					var type=msg.getType();
 					
 					var messageY = msg.getMsgPosY() * m_transfHeight;
 					
@@ -179,12 +181,33 @@ function ScenarioView(){
 				          destX= m_nodesPosition[initPos.getNode()] - xdisp;
 				        }
 				        
-						var pf= new Point(destX, destY);		        
+						pf= new Point(destX, destY);		        
 					}
 					
-					m_drawing_canvas.drawMessage(name, messageX, messageY, textSize);
+					var color="black";
+					switch (type){
+					case "ONEWAY":
+						color="#FF33FF";
+						break;
+					case "REQUEST":
+						color="#FF0000";
+						break;
+					case "RESPONSE":
+						color="#0033FF";
+						break;
+					default:
+						color="black";	
+						break;
+					}
 					
-					m_drawing_canvas.drawArrow(pi, pf);
+					var dashSize=0;
+					if (dash.localeCompare("FULL")!=0){
+						dashSize=4;
+					}
+					
+					m_drawing_canvas.drawArrow(pi, pf, color, dashSize);
+					
+					m_drawing_canvas.drawMessage(name, messageX, messageY, textSize);
 				}
 				break;
 			case m_scenType.TREATMENT:
@@ -405,7 +428,6 @@ function ScenarioView(){
 //		console.log("ScenarioView.drawScenarioScreen userScroll: " + m_scenarioPlay.getUserScroll());
 //		console.log("ScenarioView.drawScenarioScreen");
 
-		//TODO: Display the current scenarioPlay in the canvas
 		var width= theCanvas.width;
 		var height = theCanvas.height;
 
