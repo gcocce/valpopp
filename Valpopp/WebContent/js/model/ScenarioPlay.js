@@ -152,15 +152,31 @@ function ScenarioPlay(context){
 	 */
 	function processMessage(scenMessage, index, startPos, treatment){
 		console.log("ProcessMessage Message index:" + index);	
+
+		// Create an Action if it exists
+		var action_displacement=0;
+		var initpos= m_space_bet_msg + treatment + startPos;
+			
+		if (scenMessage.action){
+//			action_displacement=50;
+//			
+//			m_sim_time = m_sim_time + action_displacement;
+//			
+//			var text = scenMessage.action.text;
+//					
+//			var scenAction= new ScenAction(scenMessage.srcN, initpos, initpos + action_displacement, text);
+//			var scenobj= new ScenObject(m_scenType.ACTION, scenAction);
+//			m_readyObjects.push(scenobj);
+		}
 		
 		// Calculate Transmision Time
 		var trans_time= m_context.getPropagTime(scenMessage.srcN, scenMessage.destN) + Math.round(scenMessage.length / m_context.getThroughput(scenMessage.srcN, scenMessage.destN));
 		
-		var lastPos = treatment + m_space_bet_msg + startPos +  + trans_time;
+		var lastPos = action_displacement + treatment + m_space_bet_msg + startPos +  + trans_time;
 		
-		var msgPosY = startPos + treatment + Math.round(trans_time / 4);
+		var msgPosY = action_displacement + startPos + treatment + Math.round(trans_time / 4);
        
-		var pi=new Position(scenMessage.srcN, m_space_bet_msg + treatment + startPos );		
+		var pi=new Position(scenMessage.srcN, action_displacement + m_space_bet_msg + treatment + startPos );		
 
 		var pf=new Position(scenMessage.destN, lastPos);
 			
@@ -216,8 +232,6 @@ function ScenarioPlay(context){
 		}else{
 			m_new_processingList.push(obj);
 		}
-		
-
 	}
 	
 	function processSyncPoint(syncpoint, index, startPos, treatment){
@@ -303,7 +317,6 @@ function ScenarioPlay(context){
 		 					}
 		 					 					
 		 					msg.setTransmitedTime(transmited);
-	 					
 		 					
 		 					obj.setObject(msg);
 	 					
@@ -471,13 +484,10 @@ function ScenarioPlay(context){
 	}
 	
 	function notifyChange(){
-//		console.log("ScenarioPlay.notifyChange");
-		
 		// Dispatch ScenarioNodeImgsProccessed Event
 		var event = $.Event( "ScenarioPlayChanged" );
 		$(window).trigger( event );	
 	}
-	
 	
 	function appLoop() {
 		m_loop=window.setTimeout(appLoop, LOOP_UPDATE_TIME);

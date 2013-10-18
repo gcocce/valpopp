@@ -31,6 +31,8 @@ function ScenarioView(){
 	var m_scenType= new ScenType();
     var m_nodesPosition= new Array();
     var m_transfHeight=1.0;
+    
+	var m_distBetweenNodes = 0;
 	
 	// ******************************************************************************
 	// Private Methods
@@ -119,6 +121,8 @@ function ScenarioView(){
 				displayError(utils.wrapErrorMsg(e.toString()));
 			}	    	
 	    }
+	    
+		m_distBetweenNodes = m_nodesPosition[2] - m_nodesPosition[1];
 	}
 	
 	function calculateMsgTextSize(m_transfHeight){
@@ -205,7 +209,12 @@ function ScenarioView(){
 						dashSize=4;
 					}
 					
-					m_drawing_canvas.drawArrow(pi, pf, color, dashSize);
+					// Calculate the complement of the angle of the arrow
+					var angle=  Math.atan((endPos.getY() - initPos.getY()) * m_transfHeight / Math.abs(m_nodesPosition[endPos.getNode()] - m_nodesPosition[initPos.getNode()]) );
+					
+					var complement = (Math.PI / 2)  - angle;
+						
+					m_drawing_canvas.drawArrow(pi, pf, color, dashSize, complement, m_distBetweenNodes);
 					
 					m_drawing_canvas.drawMessage(name, messageX, messageY, textSize);
 				}
@@ -232,7 +241,41 @@ function ScenarioView(){
 					}
 								
 					m_drawing_canvas.drawTreatmentLine(pi, pf);
-				}				
+				}	
+				break;
+			case m_scenType.ACTION:
+				//TODO: modify this code to display actions correctly
+				var actionObj=obj.getObject();
+				
+				var node=actionObj.getNode();
+				var initpos=actionObj.getInitPos();
+				var endpos=actionObj.getFinalPos();
+				var text= actionObj.getAction();
+				
+				var nodeDist = m_nodesPosition[2] - m_nodesPosition[1];
+				
+				var messageY = Math.round( initpos + (endpos - initpos) / 2);
+				var messageX = 0;
+				
+				var textSize=calculateMsgTextSize(m_transfHeight);
+				// The number of nodes depends on the scenario file configuration
+				
+				if (node==1){
+					messageX = Math.round(nodeDist / 4) + 20;
+				}else{
+					if (node == m_scenarioContext.getNumberofNodes()){
+						messageX= m_nodesPosition[node] - Math.round(nodeDist / 4);
+					}else{
+						messageX= m_nodesPosition[node];
+					}
+				}
+				
+				m_drawing_canvas.drawMessage(text, messageX, messageY, textSize);
+				//m_drawing_canvas.drawAction
+				
+				break;
+			case  m_scenType.TIMER:
+				
 				break;
 			default:
 				console.log("displayObject, nor recognized type: " + obj.getType());

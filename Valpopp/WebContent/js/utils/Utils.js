@@ -1,7 +1,5 @@
 
 function Utils(){
-	
-	
 	// **************************************************************************
 	// Public Methods Publication
 	//***************************************************************************
@@ -343,7 +341,32 @@ function ScenMessage(pi,pf, index, msgv){
 	}
 }
 
-function ScenAction(){
+function ScenAction(node, initpos, finalpos, action){
+	var m_node=node;
+	var m_initpos=initpos;
+	var m_finalpos=finalpos;
+	var m_action=action;
+	
+	this.getNode=getNode;
+	this.getInitPos=getInitPos;
+	this.getFinalPos=getFinalPos;
+	this.getAction=getAction;
+	
+	function getNode(){
+		return m_node;
+	}
+	
+	function getInitPos(){
+		return m_initpos;
+	}
+	
+	function getFinalPos(){
+		return m_finalpos;
+	}
+	
+	function getAction(){
+		return m_action;
+	}
 	
 }
 

@@ -17,7 +17,7 @@
 			"messages":
 				[
 				{"name": "MM_LOCATION_UPDATE", "param": "IMSI, LS1", "srcN": 1, "destN": 2, "type": "REQUEST"},
-				{"name": "MM_LOCATION_UPDATE", "param": "IMSI, LS1", "srcN": 1, "destN": 2, "type": "REQUEST"},
+				{"name": "MM_LOCATION_UPDATE", "param": "IMSI, LS1", "srcN": 1, "destN": 2, "type": "REQUEST", "action": {"text": "This node does some work..."}},
 				{"name": "MAP_SEND_AUTHENTIFICATION", "param": "SRE, Kc", "srcN": 2, "destN" : 1, "type": "RESPONSE"}
 				],
 			"mcq": {"title": "Request", "text": "¿Here goes the question?", "points": 3 ,
@@ -32,7 +32,7 @@
         {"Id": 123, "nextId":324,
 			"messages":
 				[
-				{"name": "MM_LOCATION_UPDATE", "param": "TMSI, LS1", "srcN":1,"destN" : 2, "type": "REQUEST", "length": 230, "treatment": 4, "dash": "SEMI", "startTime": "", "synchPoint": "", "comment": {"text": "This messages do some work..."}},
+				{"name": "MM_LOCATION_UPDATE", "param": "TMSI, LS1", "srcN":1,"destN" : 2, "type": "REQUEST", "length": 230, "treatment": 4, "dash": "SEMI", "startTime": "", "synchPoint": "", "comment": {"text": "This messages do some work..."}, "action": {"text": "This node does some work..."}},
 				{"name": "MM_LOCATION_UPDATE", "param": "IMSI, LS1", "srcN":1,"destN" : 2, "type": "REQUEST", "length": 230, "treatment": 10, "dash": "SEMI", "startTime": "", "synchPoint": "", "scenImg": "scenario2.gif", "comment": {"text": "This messages do some work..."}},
 				{"name": "MAP_SEND_AUTHENTIFICATION", "param": "SRE, Kc", "srcN":2,"destN" : 1, "type": "RESPONSE", "comment": {"text": "This messages do some work..."}}
 				],
