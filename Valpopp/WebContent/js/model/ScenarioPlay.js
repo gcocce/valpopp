@@ -25,6 +25,7 @@ function ScenarioPlay(context){
 	
 	var LOOP_UPDATE_TIME=200;
 	var SIMULATION_TIME = 4;
+	var INITIAL_TIME=20;
 
 	// To be used outside the class
 	this.SCENARIO_STOPPED=SCENARIO_STOPPED;
@@ -62,6 +63,8 @@ function ScenarioPlay(context){
 	
 	// Register whether the simulation has finished or not 
 	var m_finished=false;
+	
+	var m_space_bet_msg = configModule.getSpaceBetweenMessages();
 	
 	// Register the current simulation time
 	var m_sim_time=0;
@@ -119,10 +122,10 @@ function ScenarioPlay(context){
 		m_currentSyncPoint=null;
 		m_quizz_processed=false;
 			
-		m_sim_time=0;
+		m_sim_time=INITIAL_TIME;
 		m_last_msg_treatment=0;
 		m_scenCurrentHeight=0;
-		m_scenCurrentLastPos=10;
+		m_scenCurrentLastPos=INITIAL_TIME;
 		m_currentSequenceId=0;
 		m_messagesList= new Array();
 		m_readyObjects = new Array();
@@ -153,16 +156,16 @@ function ScenarioPlay(context){
 		// Calculate Transmision Time
 		var trans_time= m_context.getPropagTime(scenMessage.srcN, scenMessage.destN) + Math.round(scenMessage.length / m_context.getThroughput(scenMessage.srcN, scenMessage.destN));
 		
-		var lastPos = startPos + treatment + trans_time;
+		var lastPos = treatment + m_space_bet_msg + startPos +  + trans_time;
 		
 		var msgPosY = startPos + treatment + Math.round(trans_time / 4);
        
-		var pi=new Position(scenMessage.srcN, startPos + treatment);		
+		var pi=new Position(scenMessage.srcN, m_space_bet_msg + treatment + startPos );		
 
 		var pf=new Position(scenMessage.destN, lastPos);
 			
 		if (lastPos>m_scenCurrentHeight){
-			m_scenCurrentHeight=lastPos + treatment;
+			m_scenCurrentHeight = lastPos;
 		}
 		
 		var msgName="";
@@ -191,9 +194,10 @@ function ScenarioPlay(context){
 		}
 		
 		var obj= new ScenObject(m_scenType.MESSAGE, msg);
-
 		
 		if (scenMessage.treatment > 0){
+			m_scenCurrentHeight = lastPos + scenMessage.treatment;
+			
 			//Add treatment object to the scenario Processing List
 			var treatobj=new ScenTreatment(lastPos, lastPos + scenMessage.treatment, scenMessage.destN); 
 			
@@ -225,7 +229,6 @@ function ScenarioPlay(context){
 			
 			if(scenMessage.startTime.localeCompare(syncpoint)==0){
 				count++;
-				//TODO: add to the Processing List
 				processMessage(scenMessage, x, startPos, treatment);
 			}
 		}
@@ -233,7 +236,6 @@ function ScenarioPlay(context){
 		console.log("number of syncronizing messages "+ count);
 	}
 	
-	//TODO: Calculate the new state of ScenarioPlay objects
 	function calculateScenarioPlay(){
 //		console.log("ScenarioPlay.calculateScenarioPlay finished:" + m_finished);
 		
@@ -312,8 +314,8 @@ function ScenarioPlay(context){
 	
 		 						var lastPos = msg.getEndPos().getY();
 		 						
-		 						//Register the last vertical position
-		 						m_scenCurrentLastPos=lastPos + treatment;
+		 						//Register the last vertical position of a message
+		 						m_scenCurrentLastPos = lastPos;
 		 						
 		 						// Update last message treatment
 		 						m_last_msg_treatment=treatment;

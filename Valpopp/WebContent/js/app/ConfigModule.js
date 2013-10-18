@@ -8,6 +8,15 @@ var configModule = {
 		defSchema:"js/model/schema/scenario_schema.json",
 		imgpath:"img/",
 		scenarioImgPath:"scenarios/img/",
+		spaceBetweenMessages: 0,
+		
+		setSpaceBetweenMessages:function (space){
+			this.spaceBetweenMessages=space;
+		},
+		
+		getSpaceBetweenMessages:function (){
+			return this.spaceBetweenMessages;
+		},
 		
 		setScenarioImgPath: function (path){
 			this.scenarioImgPath=path;
