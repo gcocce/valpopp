@@ -65,6 +65,7 @@ function Canvas(drawing_context){
 	function drawTreatmentLine(pi, pf){
 		m_context.strokeStyle  = "black";
 		m_context.lineWidth  = 2;
+		// The following function does not works on firefox older versions
 		//m_context.setLineDash([0]);
 		m_context.lineCap  = 'square';
 		m_context.beginPath();
@@ -78,6 +79,7 @@ function Canvas(drawing_context){
         //console.log("Canvas.drawArrow final point: "+pf.getX()+","+pf.getY());
 		m_context.fillStyle = '#000000';  
 		m_context.strokeStyle  = color;
+		// The following function does not works on firefox older versions
 		//m_context.setLineDash([dash]);
 		m_context.lineWidth  = 1;
 		m_context.lineCap  = 'square';
@@ -88,6 +90,7 @@ function Canvas(drawing_context){
 		m_context.closePath();
 		
 		// Draw the point of the arrow
+		// The following function does not works on firefox older versions
 		//m_context.setLineDash([0]);
 		
 		var direction = -1;

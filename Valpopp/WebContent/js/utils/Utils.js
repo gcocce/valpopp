@@ -453,6 +453,8 @@ function ScenarioImage(url_param){
 	}
 }
 
+// A point in the ScenarioView 
+// x for the x axe and y for the y axe
 function Point(xvalue,yvalue){
     var m_x =xvalue;
     var m_y =yvalue;
@@ -494,18 +496,20 @@ function SyncPoint(value, pos){
 	}
 }
 
-function Position(NodeNumber, y){
+// Position in the model ScenarioPlay 
+// It is identified by the number of the node and the time of ocurrence
+function Position(NodeNumber, time){
 	var m_node=NodeNumber;
-	var m_y=y;
+	var m_time=time;
 	
 	this.getNode=getNode;
-	this.getY=getY;
+	this.getTime=getTime;
 	
 	function getNode(){
 		return m_node;
 	}
 	
-	function getY(){
-		return m_y;		
+	function getTime(){
+		return m_time;		
 	}
 }

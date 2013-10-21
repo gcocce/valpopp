@@ -17,17 +17,23 @@ function ScenarioPlay(context){
 	// ******************************************************************************
 	// Constants
 	// ******************************************************************************
+	// ScenarioPlay States
 	var SCENARIO_STOPPED=0;
 	var SCENARIO_PLAYING=1;
 	var SCENARIO_PAUSED=2;
 	var SCENARIO_QUIZZING=3;
 	var SCENARIO_FINISHED=4;
 	
+	// Every Cicle of the simulations take place every LOOP_UPDATE_TIME miliseconds
 	var LOOP_UPDATE_TIME=200;
+	
+	// Every cicle the time advance SIMULATION_TIME
 	var SIMULATION_TIME = 4;
-	var INITIAL_TIME=20;
 
-	// To be used outside the class
+	// ScenarioPlay starts at INITIAL_TIME
+	var INITIAL_TIME=configModule.getInitialSimulationTime();
+
+	// Public constants
 	this.SCENARIO_STOPPED=SCENARIO_STOPPED;
 	this.SCENARIO_PLAYING=SCENARIO_PLAYING;
 	this.SCENARIO_PAUSED=SCENARIO_PAUSED;
@@ -49,14 +55,11 @@ function ScenarioPlay(context){
 	// To register the state of the ScenarioPlay Instance
 	var m_state=SCENARIO_STOPPED;
 	
-	// The register the mode selected
+	// The register the mode selected (Continious or Step by Step)
 	var m_continious_mode=true;
 	
 	// To dintiguish the different types of objects used in the ScenarioPlay
-	var m_scenType= new ScenType();
-	
-	// Reference to the Timer used to control the messages display evolution
-	var m_loop=null;
+	var m_scenType= new ScenType(); // (message, treatment, action, timer)
 	
 	// Register whether the user chose to scroll the page or not, to avoid automatic scroll
 	var m_userscroll=false;
@@ -64,19 +67,21 @@ function ScenarioPlay(context){
 	// Register whether the simulation has finished or not 
 	var m_finished=false;
 	
+	// Default time between messages
 	var m_space_bet_msg = configModule.getSpaceBetweenMessages();
+	
+	// Reference to the Timer used to control the messages display evolution
+	var m_loop=null;
 	
 	// Register the current simulation time
 	var m_sim_time=0;
 	
-	// Last sequence message treatment
+	// Last sequence message treatment, used to display the next messages with a displacement
 	var m_last_msg_treatment=0;
 	
 	// Register whether the current sequence has started or not 
 	var m_sequence_started=false;
-    
-    /* Object to register ScenarioPlay Data */
-    
+     
 	// A reference to the ScenarioContext
 	var m_context=context;
 
@@ -93,10 +98,10 @@ function ScenarioPlay(context){
     var m_quizz_processed=false;
        
     // Register the maximum height needed for the canvas
-    var m_scenCurrentHeight=0;
+    var m_scenCurrentMaxTime=0;
     
     // Register the last position reached by a message
-    var m_scenCurrentLastPos=0;
+    var m_scenCurrentLastTime=0;
       
     // Register the list of objects already finished
     var m_readyObjects = new Array();
@@ -104,7 +109,7 @@ function ScenarioPlay(context){
     // Register the list of objects in process of drawing (like a message that is going from on node to another)
     var m_processingObjects = new Array();
     
-    // Temp register of the processing objects. Used each time the Processing Objcet List is updated.
+    // Temp register of the processing objects. Used each time the Processing Objects List is updated.
     var m_new_processingList=new Array();
     
 	// ******************************************************************************
@@ -118,14 +123,13 @@ function ScenarioPlay(context){
 		m_finished=false;
 		m_userscroll=false;
 		m_sequence_started=false;
-		
 		m_currentSyncPoint=null;
 		m_quizz_processed=false;
 			
 		m_sim_time=INITIAL_TIME;
 		m_last_msg_treatment=0;
-		m_scenCurrentHeight=0;
-		m_scenCurrentLastPos=INITIAL_TIME;
+		m_scenCurrentMaxTime=0;
+		m_scenCurrentLastTime=INITIAL_TIME;
 		m_currentSequenceId=0;
 		m_messagesList= new Array();
 		m_readyObjects = new Array();
@@ -147,41 +151,44 @@ function ScenarioPlay(context){
 	 * Parameters:
 	 * scenMessage: Scenario File Message
 	 * index: the index in the Scenario File messages array
-	 * startPos: the last position of the previous message
+	 * lastmsgTime: the last time of the previous message
 	 * treatment: the treatment time of the previous message
 	 */
-	function processMessage(scenMessage, index, startPos, treatment){
+	function processMessage(scenMessage, index, lastmsgTime, treatment){
 		console.log("ProcessMessage Message index:" + index);	
 
 		// Create an Action if it exists
 		var action_displacement=0;
-		var initpos= m_space_bet_msg + treatment + startPos;
+		var initTime= m_space_bet_msg + treatment + lastmsgTime;
 			
+		// If the message has an action to be displayed
 		if (scenMessage.action){
 //			action_displacement=50;
 //			
-//			m_sim_time = m_sim_time + action_displacement;
+//			// Advance the time introduce some incoherences, we can not do this
+//			//m_sim_time = m_sim_time + action_displacement;
 //			
 //			var text = scenMessage.action.text;
 //					
-//			var scenAction= new ScenAction(scenMessage.srcN, initpos, initpos + action_displacement, text);
+//			var scenAction= new ScenAction(scenMessage.srcN, initTime, initTime + action_displacement, text);
 //			var scenobj= new ScenObject(m_scenType.ACTION, scenAction);
 //			m_readyObjects.push(scenobj);
 		}
 		
-		// Calculate Transmision Time
+		// Calculate Total Transmission Time for the message
+		// Total transmission time= propagation time + (Message length / rate)
 		var trans_time= m_context.getPropagTime(scenMessage.srcN, scenMessage.destN) + Math.round(scenMessage.length / m_context.getThroughput(scenMessage.srcN, scenMessage.destN));
 		
-		var lastPos = action_displacement + treatment + m_space_bet_msg + startPos +  + trans_time;
+		var lastTime = action_displacement + treatment + m_space_bet_msg + lastmsgTime +  + trans_time;
 		
-		var msgPosY = action_displacement + startPos + treatment + Math.round(trans_time / 4);
+		var msgPosY = action_displacement + lastmsgTime + treatment + Math.round(trans_time / 4);
        
-		var pi=new Position(scenMessage.srcN, action_displacement + m_space_bet_msg + treatment + startPos );		
+		var pi=new Position(scenMessage.srcN, action_displacement + m_space_bet_msg + treatment + lastmsgTime );		
 
-		var pf=new Position(scenMessage.destN, lastPos);
+		var pf=new Position(scenMessage.destN, lastTime);
 			
-		if (lastPos>m_scenCurrentHeight){
-			m_scenCurrentHeight = lastPos;
+		if (lastTime>m_scenCurrentMaxTime){
+			m_scenCurrentMaxTime = lastTime;
 		}
 		
 		var msgName="";
@@ -202,7 +209,7 @@ function ScenarioPlay(context){
 		msg.setDash(scenMessage.dash);
 		msg.setTransTime(trans_time);
 		
-		console.log("Message Transmision Time: " + msg.getTransTime());
+		console.log("Message Total Transmision Time: " + msg.getTransTime());
 		
 		if (scenMessage.scenImg){
 			msg.setScenImg(scenMessage.scenImg);
@@ -212,10 +219,15 @@ function ScenarioPlay(context){
 		var obj= new ScenObject(m_scenType.MESSAGE, msg);
 		
 		if (scenMessage.treatment > 0){
-			m_scenCurrentHeight = lastPos + scenMessage.treatment;
+			
+			if (lastTime + scenMessage.treatment > m_scenCurrentMaxTime){
+				m_scenCurrentMaxTime = lastTime + scenMessage.treatment;
+			}
+			
+			// m_scenCurrentMaxTime = lastTime + scenMessage.treatment;
 			
 			//Add treatment object to the scenario Processing List
-			var treatobj=new ScenTreatment(lastPos, lastPos + scenMessage.treatment, scenMessage.destN); 
+			var treatobj=new ScenTreatment(lastTime, lastTime + scenMessage.treatment, scenMessage.destN); 
 			
 			var scenobj= new ScenObject(m_scenType.TREATMENT, treatobj);
 			
@@ -234,7 +246,7 @@ function ScenarioPlay(context){
 		}
 	}
 	
-	function processSyncPoint(syncpoint, index, startPos, treatment){
+	function processSyncPoint(syncpoint, index, lastmsgTime, treatment){
 		console.log("processSyncPoint "+ syncpoint);
 		
 		var count=0;
@@ -243,42 +255,47 @@ function ScenarioPlay(context){
 			
 			if(scenMessage.startTime.localeCompare(syncpoint)==0){
 				count++;
-				processMessage(scenMessage, x, startPos, treatment);
+				processMessage(scenMessage, x, lastmsgTime, treatment);
 			}
 		}
 		
 		console.log("number of syncronizing messages "+ count);
 	}
 	
+	/* Calculate the time of ocurrence and create the Scenario Objects
+	 * 
+	 */
 	function calculateScenarioPlay(){
 //		console.log("ScenarioPlay.calculateScenarioPlay finished:" + m_finished);
-		
+	
+		// If all the sequences have not been processed
  		if (!m_finished){
- 			var sequence=null;
+ 			var m_current_sequence=null;
  			
- 			// The first step of a scenario execution
+ 			// If the current sequence has not started to be processed
  			if (!m_sequence_started){
  				console.log("ScenarioPlay Start CurrentSequence:" + m_currentSequenceId);
  				
  				m_sequence_started=true;
  				m_quizz_processed=false;
  				
- 				sequence=m_context.getSequence(m_currentSequenceId);
+ 				m_current_sequence=m_context.getSequence(m_currentSequenceId);
  				
- 				m_current_messageList=sequence.messages;
+ 				// Establish a reference to the messages of the sequence
+ 				m_current_messageList=m_current_sequence.messages;
  				
  				// If the previous sequence established a synchronization point process the synchronization point
  				if (m_currentSyncPoint!=null){
- 					processSyncPoint(m_currentSyncPoint.getSyncPoint(), 0, m_scenCurrentLastPos, m_last_msg_treatment);
+ 					processSyncPoint(m_currentSyncPoint.getSyncPoint(), 0, m_scenCurrentLastTime, m_last_msg_treatment);
  				}else{
  	 				// Add the first message to the ProcessingList
- 	 				// The first message can not start at a given Synch Point
- 	 				processMessage(m_current_messageList[0], 0, m_scenCurrentLastPos, m_last_msg_treatment); 					
+ 	 				processMessage(m_current_messageList[0], 0, m_scenCurrentLastTime, m_last_msg_treatment); 					
  				}
  			}else{
- 				sequence=m_context.getSequence(m_currentSequenceId);
+ 				m_current_sequence=m_context.getSequence(m_currentSequenceId);
  			}
 
+ 			// If there is any object in the Processing List
 			if ( m_processingObjects.length!=0){
 				
 				// Update the current simulation time
@@ -287,21 +304,21 @@ function ScenarioPlay(context){
 	 			// Create a new Processing List
 	 			m_new_processingList=new Array();
 	 			
+	 			// For every object in the Processing List
 	 			for (var x=0; x < m_processingObjects.length; x++){
 	 				
 	 				var obj=m_processingObjects[x];
 	 				
 	 				switch (obj.getType()){
-	 				case m_scenType.MESSAGE:
-		 				// If it is a MESSAGE type extend the arrow
+	 				case m_scenType.MESSAGE: // If it is a MESSAGE type extend the arrow
 	 					var msg=obj.getObject();
  					
 	 					var iNode=msg.getInitPos().getNode();
 	 					var fNode=msg.getEndPos().getNode();
 	 					
-	 					var startTime=msg.getInitPos().getY();
+	 					var startTime=msg.getInitPos().getTime();
 
-	 					// Display is true if it is time to show the message
+	 					// If it is time to show the message
 	 					if (m_sim_time >= startTime){
 	 						
 	 						msg.setDisplay(true);
@@ -330,10 +347,10 @@ function ScenarioPlay(context){
 		 						
 		 						var treatment=msg.getTreatment();
 	
-		 						var lastPos = msg.getEndPos().getY();
+		 						var lastTime = msg.getEndPos().getTime();
 		 						
 		 						//Register the last vertical position of a message
-		 						m_scenCurrentLastPos = lastPos;
+		 						m_scenCurrentLastTime = lastTime;
 		 						
 		 						// Update last message treatment
 		 						m_last_msg_treatment=treatment;
@@ -345,19 +362,19 @@ function ScenarioPlay(context){
 		 							// If the current message has SyncPoint
 		 							if(msg.hasSyncPoint()){
 		 								// Add Messages With StartPoint equals to SyncPoint into the Processing List
-		 								processSyncPoint(msg.getSyncPoint(), nextIndex, lastPos, treatment);
+		 								processSyncPoint(msg.getSyncPoint(), nextIndex, lastTime, treatment);
 		 							}
 		 							
 		 							var nextMsg = m_current_messageList[nextIndex];
 		 							
 		 							// If the following messages has default StartPoint add to the Processing List
 		 							if (nextMsg.startTime.localeCompare("")==0){
-		 								processMessage(nextMsg, nextIndex, lastPos, treatment);	
+		 								processMessage(nextMsg, nextIndex, lastTime, treatment);	
 		 							}
 		 						}else{
 		 							// If it is the last message and it has a SyncPoint register for the next Sequence
 		 							if(msg.hasSyncPoint()){
-		 								m_currentSyncPoint=new SyncPoint(msg.getSyncPoint(), lastPos + treatment);
+		 								m_currentSyncPoint=new SyncPoint(msg.getSyncPoint(), lastTime + treatment);
 		 							}else{
 		 								m_currentSyncPoint=null;
 		 							}	 							
@@ -428,21 +445,31 @@ function ScenarioPlay(context){
 	 			m_processingObjects=m_new_processingList;
 			}else{
 			// If there are no more objects in the Processing List
-				console.log("ScenarioPlay no more obj in processing list");
+				console.log("ScenarioPlay no more obj in processing list " + configModule.getMandatoryMCQ());
+				
 				
 				// If the CurrentSequence does have an MCQ and it has not been processed 
-				if (sequence.mcq && !m_quizz_processed){
+				if (m_current_sequence.mcq && !m_quizz_processed){
 					m_state=SCENARIO_QUIZZING;
 					
 					window.clearTimeout(m_loop);
 					
-					var event = $.Event( "ScenarioPlayQuizz" );
-					$(window).trigger( event );		
+					if(!configModule.getMandatoryMCQ()){
+						m_quizz_processed=true;
+					}					
+					
+					if (configModule.getMandatoryMCQ()){
+						var event = $.Event( "ScenarioPlayMandatoryQuizz" );
+						$(window).trigger( event );	
+					}else{
+						var event = $.Event( "ScenarioPlayQuizzOffer" );
+						$(window).trigger( event );	
+					}
 				}else{
 				// If the CurrentSequence does not have an MCQ or it has been processed
 					
 					// Get next Sequence ID
-					var nextSequence=sequence.nextId;
+					var nextSequence=m_current_sequence.nextId;
 					console.log("Next Sequence Id: " + nextSequence);
 					
 					m_quizz_processed=false;
@@ -461,7 +488,7 @@ function ScenarioPlay(context){
 						// Start the Sequence
 						m_currentSequenceId=nextSequence;
 						
-						sequence=m_context.getSequence(m_currentSequenceId);
+						m_current_sequence=m_context.getSequence(m_currentSequenceId);
 					}
 				}				
 			
@@ -471,6 +498,7 @@ function ScenarioPlay(context){
 		}
 	}
 	
+	// Start the ScenarioPlay execution
 	function start(){
 		console.log("ScenarioPlay.start");
 		
@@ -483,12 +511,14 @@ function ScenarioPlay(context){
 		m_loop=window.setTimeout(appLoop, LOOP_UPDATE_TIME);		
 	}
 	
+	// Notity the Scenario Play that a change ocurred
 	function notifyChange(){
 		// Dispatch ScenarioNodeImgsProccessed Event
 		var event = $.Event( "ScenarioPlayChanged" );
 		$(window).trigger( event );	
 	}
 	
+	// Scheddule the next execution of appLoop and start calculateScenarioPlay()
 	function appLoop() {
 		m_loop=window.setTimeout(appLoop, LOOP_UPDATE_TIME);
 		
@@ -510,12 +540,10 @@ function ScenarioPlay(context){
 	this.setUserScroll=setUserScroll;
 	this.getUserScroll=getUserScroll;
 	
-	this.getCurrentHeight=getCurrentHeight;
+	this.getCurrentMaxTime=getCurrentMaxTime;
 	this.getReadyObjects=getReadyObjects;
 	this.getProcessingObjects=getProcessingObjects;
 		
-	this.getMessages=getMessages;
-	
 	this.processMCQ=processMCQ;
 	
 	// ******************************************************************************
@@ -534,8 +562,8 @@ function ScenarioPlay(context){
 		return m_processingObjects;	
 	}
 	
-	function getCurrentHeight(){
-		return m_scenCurrentHeight;
+	function getCurrentMaxTime(){
+		return m_scenCurrentMaxTime;
 	}
 	
 	function getUserScroll(){
@@ -544,10 +572,6 @@ function ScenarioPlay(context){
 	
 	function setUserScroll(value){
 		m_userscroll=value;
-	}
-	
-	function getMessages(){
-		return m_messages;
 	}
 	
 	function getError(){

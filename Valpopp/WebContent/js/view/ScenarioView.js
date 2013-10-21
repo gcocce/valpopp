@@ -14,10 +14,12 @@ function ScenarioView(){
 	// ******************************************************************************	
 	var m_error="";
 	
+	// Reference to the model
 	var m_scenarioContext=null;
+	// Reference to one instance of ScenarioPlay
 	var m_scenarioPlay=null;
 	
-	// to display the node images
+	// Reference to the Html elements used to display the scenario
 	var theNodesContainer=document.getElementById("vNodes");
     var theNodes = document.getElementById("vNodesCanvas");
     var theNodesContext=theNodes.getContext("2d");
@@ -26,10 +28,13 @@ function ScenarioView(){
     var theCanvas = document.getElementById("vScenarioCanvas");   
     var theCanvasContext=theCanvas.getContext("2d");
     
+    
     var m_drawing_canvas=new Canvas(theCanvasContext);
     
 	var m_scenType= new ScenType();
+	
     var m_nodesPosition= new Array();
+    
     var m_transfHeight=1.0;
     
 	var m_distBetweenNodes = 0;
@@ -69,6 +74,7 @@ function ScenarioView(){
 	}
 	
     
+    // Calculate Nodes Position and display Node Images
 	function displayNodeImages(){		
 		var width= theNodes.width;
 		var heigth= theNodes.height;
@@ -125,6 +131,7 @@ function ScenarioView(){
 		m_distBetweenNodes = m_nodesPosition[2] - m_nodesPosition[1];
 	}
 	
+	
 	function calculateMsgTextSize(m_transfHeight){
 		var nodeDistance= m_nodesPosition[2] - m_nodesPosition[1];
 		
@@ -136,7 +143,6 @@ function ScenarioView(){
 	function displayObject(obj){
 //		console.log("displayObject of type: " + obj.getType());
 		
-		// TODO: display other object types
 		switch (obj.getType()){
 			case m_scenType.MESSAGE:
 				
@@ -163,16 +169,16 @@ function ScenarioView(){
 					var textSize=calculateMsgTextSize(m_transfHeight);
 					
 					// Calculate initial and final arrow points
-					var pi=new Point(m_nodesPosition[initPos.getNode()], initPos.getY() * m_transfHeight);
+					var pi=new Point(m_nodesPosition[initPos.getNode()], initPos.getTime() * m_transfHeight);
 					var pf=null;
 
 					if (msg.getReady()){
-						pf= new Point(m_nodesPosition[endPos.getNode()], endPos.getY() * m_transfHeight);	
+						pf= new Point(m_nodesPosition[endPos.getNode()], endPos.getTime() * m_transfHeight);	
 					}else{
 						var destX=0;
 						var destY=0;
 						
-						destY = (initPos.getY() + msg.getTransmitedTime()) * m_transfHeight;
+						destY = (initPos.getTime() + msg.getTransmitedTime()) * m_transfHeight;
 						
 						var xdisp=0;
 						var nodeDist=Math.abs(m_nodesPosition[endPos.getNode()] - m_nodesPosition[initPos.getNode()]);
@@ -210,7 +216,7 @@ function ScenarioView(){
 					}
 					
 					// Calculate the complement of the angle of the arrow
-					var angle=  Math.atan((endPos.getY() - initPos.getY()) * m_transfHeight / Math.abs(m_nodesPosition[endPos.getNode()] - m_nodesPosition[initPos.getNode()]) );
+					var angle=  Math.atan((endPos.getTime() - initPos.getTime()) * m_transfHeight / Math.abs(m_nodesPosition[endPos.getNode()] - m_nodesPosition[initPos.getNode()]) );
 					
 					var complement = (Math.PI / 2)  - angle;
 						
@@ -275,6 +281,10 @@ function ScenarioView(){
 				
 				break;
 			case  m_scenType.TIMER:
+				// TODO: code to display TIMER objects
+				
+				
+				
 				
 				break;
 			default:
@@ -445,7 +455,7 @@ function ScenarioView(){
 	
 	$(window).on( "ScenarioPlayChanged", drawScenarioScreen);
 	
-	$(window).on( "ScenarioPlayQuizz", showScenarioQuizz);	
+	//$(window).on( "ScenarioPlayMandatoryQuizz", showScenarioQuizz);	
 	
 	
 	// ******************************************************************************
@@ -466,17 +476,15 @@ function ScenarioView(){
 		}
 	}
 	
-	// Get Data from ScenarioPlay and display it on the canvas
+	// Get Data from ScenarioPlay adapt it to the Scenario Size and display it on the canvas
 	function drawScenarioScreen(){
-//		console.log("ScenarioView.drawScenarioScreen userScroll: " + m_scenarioPlay.getUserScroll());
-//		console.log("ScenarioView.drawScenarioScreen");
 
 		var width= theCanvas.width;
 		var height = theCanvas.height;
 
 		m_transfHeight=1.0;
 		
-		height = m_scenarioPlay.getCurrentHeight() * m_transfHeight + 20;
+		height = m_scenarioPlay.getCurrentMaxTime() * m_transfHeight + 20;
 		
 	    theCanvas.style.height = height + 'px';	    
 	    theCanvas.style.width = width + 'px';
@@ -484,7 +492,7 @@ function ScenarioView(){
 	    theCanvas.width = width;
 	        
 	    // Display horizontal lines if there is anything to be displayed
-	    if (m_scenarioPlay.getCurrentHeight()>0){
+	    if (m_scenarioPlay.getCurrentMaxTime() > 0){
 		    for (var x=1; x <= m_scenarioContext.getNumberofNodes(); x++){
 			    var pi=new Point(m_nodesPosition[x],0);
 			    var pf=new Point(m_nodesPosition[x],height);

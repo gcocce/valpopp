@@ -57,6 +57,8 @@ function ScenarioController(){
 			  break;
 			case scenarioPlay.SCENARIO_QUIZZING:
 			  theCommandButton.value="Pause";
+			  var button=document.getElementById("bt_quiz");
+			  button.disabled=true;				  
 			  scenarioPlay.continuePlay();					
 			  break;
 			default:
@@ -328,7 +330,9 @@ function ScenarioController(){
 		// Trigger when the schema file is already loaded
 		$(window).on( "ScenarioPlayFinished", initCommandButton);
 	
-		$(window).on( "ScenarioPlayQuizz", quizzCommandButtons);
+		$(window).on( "ScenarioPlayMandatoryQuizz", quizzMandatoryCommandButtons);
+		
+		$(window).on( "ScenarioPlayQuizzOffer", quizzOfferCommandButtons);
 		
 		$(window).on( "ScenarioPlayQuizzFinished", quizzFinishedCommandButtons);
 		
@@ -344,7 +348,7 @@ function ScenarioController(){
 			theCommandButton.value="Start";			
 		}
 		
-		function quizzCommandButtons(){	
+		function quizzMandatoryCommandButtons(){	
 			var button=document.getElementById("bt_play");
 			button.value="Continue";
 			button.disabled=true;
@@ -352,16 +356,16 @@ function ScenarioController(){
 			button=document.getElementById("bt_stop");
 			button.disabled=true;
 			
-			button=document.getElementById("bt_mode");
-			button.disabled=true;
+			//button=document.getElementById("bt_mode");
+			//button.disabled=true;
 			
 			button=document.getElementById("bt_quiz");
 			button.disabled=false;			
 		}
 		
-		function quizzFinishedCommandButtons(){
+		function quizzOfferCommandButtons(){	
 			var button=document.getElementById("bt_play");
-			button.value="Pause";
+			button.value="Continue";
 			button.disabled=false;
 			
 			button=document.getElementById("bt_stop");
@@ -371,12 +375,30 @@ function ScenarioController(){
 			button.disabled=false;
 			
 			button=document.getElementById("bt_quiz");
+			button.disabled=false;			
+		}		
+				
+		
+		function quizzFinishedCommandButtons(){
+			var button=document.getElementById("bt_stop");
+			button.disabled=false;
+			
+			button=document.getElementById("bt_mode");
+			button.disabled=false;
+			
+			button=document.getElementById("bt_quiz");
 			button.disabled=true;
 			
+			button=document.getElementById("bt_play");
+			button.disabled=false;
 			
-			//TODO: Continue Simulation
-			playButton();
-			
+			// Continue Simulation
+			if (configModule.getContinueAfterMCQ()){
+				button.value="Pause";
+				playButton();
+			}else{
+				button.value="Continue";
+			}
 		}
 		
 		function scenarioPausedCommandButtons(){

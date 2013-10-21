@@ -9,6 +9,33 @@ var configModule = {
 		imgpath:"img/",
 		scenarioImgPath:"scenarios/img/",
 		spaceBetweenMessages: 0,
+		initialSimulationTime: 10,
+		mandatoryMCQ: true,
+		continueAfterMCQ:true,
+		
+		setContinueAfterMCQ:function (value){
+			this.continueAfterMCQ=value;
+		},
+		
+		getContinueAfterMCQ:function (){
+			return this.continueAfterMCQ;
+		},
+		
+		setMandatoryMCQ:function (value){
+			this.mandatoryMCQ=value;
+		},
+		
+		getMandatoryMCQ:function (){
+			return this.mandatoryMCQ;
+		},
+		
+		setInitialSimulationTime:function (time){
+			this.initialSimulationTime=time;
+		},
+		
+		getInitialSimulationTime:function (){
+			return this.initialSimulationTime;
+		},
 		
 		setSpaceBetweenMessages:function (space){
 			this.spaceBetweenMessages=space;
@@ -27,7 +54,6 @@ var configModule = {
 		},
 
 		getLang: function () {
-			console.log("configModule.getLang()");
 			return this.lang;
 		},
 		
@@ -45,7 +71,6 @@ var configModule = {
 		},
 
 		getUserMode: function(  ) {
-			console.log("configModule.getUserMode()");
 			return this.user;
 		 },
 		 
