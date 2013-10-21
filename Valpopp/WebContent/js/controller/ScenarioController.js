@@ -58,8 +58,10 @@ function ScenarioController(){
 			case scenarioPlay.SCENARIO_QUIZZING:
 			  theCommandButton.value="Pause";
 			  var button=document.getElementById("bt_quiz");
-			  button.disabled=true;				  
-			  scenarioPlay.continuePlay();					
+			  button.disabled=true;
+			  button.className="inactive";
+			  scenarioPlay.continuePlay();		
+			  
 			  break;
 			default:
 				console.log("ScenarioController.playButton known state");
@@ -72,6 +74,10 @@ function ScenarioController(){
 		
 		theCommandButton = document.getElementById("bt_play");
 		theCommandButton.value="Start";
+		
+		var button=document.getElementById("bt_quiz");
+		button.disabled=true;
+		button.className="inactive";		
 		 
 		var scenarioPlay=scenarioView.getCurrentScenarioPlay();
 		scenarioPlay.stop();
@@ -360,6 +366,7 @@ function ScenarioController(){
 			//button.disabled=true;
 			
 			button=document.getElementById("bt_quiz");
+			button.className="active";			
 			button.disabled=false;			
 		}
 		
@@ -375,7 +382,8 @@ function ScenarioController(){
 			button.disabled=false;
 			
 			button=document.getElementById("bt_quiz");
-			button.disabled=false;			
+			button.disabled=false;
+			button.className="active";
 		}		
 				
 		

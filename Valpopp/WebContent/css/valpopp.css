@@ -156,6 +156,29 @@ body {
   width: 90px;
 }
 
+#Commands input.inactive{
+  background-color:default;
+}
+
+#Commands input.active{
+  background-color: #FF6600;
+  -webkit-transition-property: background-color;
+  -webkit-transition-duration: 2.0s;
+  -webkit-transition-timing-function: ease-in-out;
+  -moz-transition-property: background-color;
+  -moz-transition-duration: 2.0s;
+  -moz-transition-timing-function: ease-in-out;
+  -o-transition-property: background-color;
+  -o-transition-duration: 2.0s;
+  -o-transition-timing-function: ease-in-out;
+  -ms-transition-property: background-color;
+  -ms-transition-duration: 2.0s;
+  -ms-transition-timing-function: ease-in-out;
+  transition-property: background-color;
+  transition-duration: 2.0s;
+  transition-timing-function: ease-in-out;  
+}
+
 #Commands a{
   font-size: 1.0em;
   text-decoration:none;
