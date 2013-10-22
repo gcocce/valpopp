@@ -431,6 +431,49 @@ button.ui-button::-moz-focus-inner {
 	border-right-width: 0;
 	border-left-width: 1px;
 }
+
+
+/* Component containers
+----------------------------------*/
+.ui-widget {
+	font-family: Verdana,Arial,sans-serif;
+	font-size: 1.1em;
+}
+
+.ui-widget .ui-widget {
+	font-size: 1.1em;
+}
+
+.ui-widget input,
+.ui-widget select,
+.ui-widget textarea,
+
+.ui-widget button {
+	font-family: Verdana,Arial,sans-serif;
+	font-size: 1.1em;
+}
+
+.ui-widget-content {
+	border: 1px solid #aaaaaa;
+	background: #ffffff url(images/ui-bg_flat_75_ffffff_40x100.png) 50% 50% repeat-x;
+	color: #222222;
+}
+.ui-widget-content a {
+	color: #222222;
+}
+.ui-widget-header {
+	border: 1px solid #aaaaaa;
+	background: #cccccc url(images/ui-bg_highlight-soft_75_cccccc_1x100.png) 50% 50% repeat-x;
+	color: #222222;
+	font-weight: bold;
+}
+.ui-widget-header a {
+	color: #222222;
+}
+
+
+/* UI Dialog
+----------------------------------*/
 .ui-dialog {
 	position: absolute;
 	top: 0;
@@ -438,17 +481,22 @@ button.ui-button::-moz-focus-inner {
 	padding: .2em;
 	outline: 0;
 }
+
+/* For dialog title we should modify this one */
 .ui-dialog .ui-dialog-titlebar {
-	padding: .4em 1em;
+	padding: 0.4em;
 	position: relative;
+	font-size: 1.1em;
 }
+
 .ui-dialog .ui-dialog-title {
 	float: left;
-	margin: .1em 0;
+	margin: .1em .1em;
 	white-space: nowrap;
 	width: 90%;
 	overflow: hidden;
 	text-overflow: ellipsis;
+	font-size: 1.1em;
 }
 .ui-dialog .ui-dialog-titlebar-close {
 	position: absolute;
@@ -461,25 +509,31 @@ button.ui-button::-moz-focus-inner {
 }
 .ui-dialog .ui-dialog-content {
 	position: relative;
-	border: 0;
-	padding: .5em 1em;
+	border: 0px;
+	padding: .4em;
 	background: none;
 	overflow: auto;
+	/*font-size: 0.5em;*/	
 }
 .ui-dialog .ui-dialog-buttonpane {
 	text-align: left;
 	border-width: 1px 0 0 0;
 	background-image: none;
-	margin-top: .5em;
-	padding: .3em 1em .5em .4em;
+	margin-top: .1em;
+	padding: .1em .1em .1em .1em;
 }
 .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset {
 	float: right;
 }
+
+/* For dialog buttons we should modify this */
 .ui-dialog .ui-dialog-buttonpane button {
-	margin: .5em .4em .5em 0;
+	margin: 0.2em 2.0em .1em .1em;
+	padding: 0em;
+	font-size: 1.1em;
 	cursor: pointer;
 }
+
 .ui-dialog .ui-resizable-se {
 	width: 12px;
 	height: 12px;
@@ -487,6 +541,133 @@ button.ui-button::-moz-focus-inner {
 	bottom: -5px;
 	background-position: 16px 16px;
 }
+
+/* UI Container and UI Dialog Adaptation
+----------------------------------*/
+
+@media screen and (max-width: 768px) {
+	.ui-widget {
+		font-size: 0.9em;
+	}
+	.ui-widget .ui-widget {
+		font-size: 0.9em;
+	}
+	.ui-widget button {
+		font-size: 0.9em;
+	}
+	
+/* For dialog title we should modify this one */	
+	.ui-dialog .ui-dialog-titlebar {
+		padding: 0.4em;
+		font-size: 0.9em;
+	}
+	.ui-dialog .ui-dialog-title {
+		margin: .1em .1em;
+		font-size: 0.9em;
+	}
+	.ui-dialog .ui-dialog-titlebar-close {
+		right: .3em;
+		top: 50%;
+		width: 21px;
+		margin: -10px 0 0 0;
+		padding: 1px;
+		height: 20px;
+	}
+	.ui-dialog .ui-dialog-content {
+		padding: .3em;
+		/*font-size: 0.5em;*/	
+	}	
+/* For dialog buttons we should modify this */	
+	.ui-dialog .ui-dialog-buttonpane button {
+		margin: 0.2em 2.0em .1em .1em;
+		padding: 0em;
+		font-size: 0.9em;
+	}
+}
+
+@media screen and (max-width: 550px) {
+	.ui-widget {
+		font-size: 0.8em;
+	}
+	.ui-widget .ui-widget {
+		font-size: 0.8em;
+	}
+	.ui-widget button {
+		font-size: 0.8em;
+	}
+	
+/* For dialog title we should modify this one */	
+	.ui-dialog .ui-dialog-titlebar {
+		padding: 0.4em;
+		font-size: 0.8em;
+	}
+	.ui-dialog .ui-dialog-title {
+		margin: .1em .1em;
+		font-size: 0.8em;
+	}
+	.ui-dialog .ui-dialog-titlebar-close {
+		right: .3em;
+		top: 50%;
+		width: 21px;
+		margin: -10px 0 0 0;
+		padding: 1px;
+		height: 20px;
+	}
+	.ui-dialog .ui-dialog-content {
+		padding: .3em;
+		/*font-size: 0.5em;*/	
+	}	
+/* For dialog buttons we should modify this */	
+	.ui-dialog .ui-dialog-buttonpane button {
+		margin: 0.2em 2.0em .1em .1em;
+		padding: 0em;
+		font-size: 0.8em;
+	}
+}
+
+@media screen and (max-width: 320px) {
+	.ui-widget {
+		font-size: 0.8em;
+	}
+	.ui-widget .ui-widget {
+		font-size: 0.8em;
+	}
+	.ui-widget button {
+		font-size: 0.8em;
+	}
+	
+/* For dialog title we should modify this one */	
+	.ui-dialog .ui-dialog-titlebar {
+		padding: 0.4em;
+		font-size: 0.7em;
+	}
+	.ui-dialog .ui-dialog-title {
+		margin: .1em .1em;
+		font-size: 0.7em;
+	}
+	.ui-dialog .ui-dialog-titlebar-close {
+		right: .3em;
+		top: 50%;
+		width: 10px;
+		margin: -6px 0 0 0;
+		padding: 1px;
+		height: 10px;
+	}
+	.ui-dialog .ui-dialog-content {
+		padding: .3em;
+		/*font-size: 0.5em;*/	
+	}	
+/* For dialog buttons we should modify this */	
+	.ui-dialog .ui-dialog-buttonpane button {
+		margin: 0.2em 2.0em .1em .1em;
+		padding: 0em;
+		font-size: 0.7em;
+	}
+}
+
+
+
+
 .ui-draggable .ui-dialog-titlebar {
 	cursor: move;
 }
@@ -749,39 +930,7 @@ body .ui-tooltip {
 	border-width: 2px;
 }
 
-/* Component containers
-----------------------------------*/
-.ui-widget {
-	font-family: Verdana,Arial,sans-serif;
-	font-size: 1.1em;
-}
-.ui-widget .ui-widget {
-	font-size: 1em;
-}
-.ui-widget input,
-.ui-widget select,
-.ui-widget textarea,
-.ui-widget button {
-	font-family: Verdana,Arial,sans-serif;
-	font-size: 1em;
-}
-.ui-widget-content {
-	border: 1px solid #aaaaaa;
-	background: #ffffff url(images/ui-bg_flat_75_ffffff_40x100.png) 50% 50% repeat-x;
-	color: #222222;
-}
-.ui-widget-content a {
-	color: #222222;
-}
-.ui-widget-header {
-	border: 1px solid #aaaaaa;
-	background: #cccccc url(images/ui-bg_highlight-soft_75_cccccc_1x100.png) 50% 50% repeat-x;
-	color: #222222;
-	font-weight: bold;
-}
-.ui-widget-header a {
-	color: #222222;
-}
+
 
 /* Interaction states
 ----------------------------------*/

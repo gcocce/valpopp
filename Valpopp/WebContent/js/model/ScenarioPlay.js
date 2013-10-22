@@ -544,11 +544,19 @@ function ScenarioPlay(context){
 	this.getReadyObjects=getReadyObjects;
 	this.getProcessingObjects=getProcessingObjects;
 		
+	this.getMCQ=getMCQ;
 	this.processMCQ=processMCQ;
 	
 	// ******************************************************************************
 	// Public Methods Definition
 	// ******************************************************************************
+	
+	function getMCQ(){
+		var m_current_sequence=m_context.getSequence(m_currentSequenceId);
+			
+		// Establish a reference to the messages of the sequence
+		return m_current_sequence.mcq;
+	}
 	
 	function processMCQ(){
 		m_quizz_processed=true;

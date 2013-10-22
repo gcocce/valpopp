@@ -313,16 +313,33 @@ function ScenarioView(){
 	}
 	
 	function showScenarioQuizz(){
-		console.log("ScenarioView.showScenarioQuizz");   
+		console.log("ScenarioView.showScenarioQuizz");
+		
+		var mcq = m_scenarioPlay.getMCQ();
+		
+		var mcq_title= mcq.title;
+		
+		var mcq_html= utils.getMCQHTML(mcq);
+		
+	    var width = window.innerWidth * 0.8;
+	    var height = window.innerHeight * 0.8;
+	    
+	    if (width > 600){
+	    	width = 600;
+	    }
+	    
+	    if (height > 450){
+	    	height = 450;
+	    }
 	    
 		$("#maindialog").dialog({
 			autoOpen: false,
 			modal: true,
-			width: 500,
-			height: 300,
-			position: {  my: "center", at: "center", of: window  },
-			resizable: true,
-			title: "Multiple Choice Question",
+			position: {  my: "center", at: "center", of: "#vScenario"  },
+			resizable: true,	
+			width: width,
+			height: height,			
+			title: mcq_title,
 			buttons: {
 				"Answer": function() {
 					$("#maindialog").dialog("close");					
@@ -334,7 +351,8 @@ function ScenarioView(){
 			}
 		});
 		
-		$("#maindialog").html("<h1>Answer the quizz!</h1>");
+		//$("#maindialog").html("<h1>Answer the quizz!</h1>");
+		$("#maindialog").html(mcq_html);
 		
 		$("#maindialog").dialog("open");		
 	}

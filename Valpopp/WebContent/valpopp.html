@@ -8,6 +8,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 	
 	<link href="css/valpopp.css" rel="stylesheet" type="text/css" />
+	<link href="css/mcq.css" rel="stylesheet" type="text/css" />
 	<link href="css/smoothness/jquery-ui-1.10.3.custom.css" rel="stylesheet">
 
     <meta http-equiv="cache-control" content="max-age=0" />
@@ -44,13 +45,14 @@
     // Two Nodes
     //configModule.setDefaultScenario("scenarios/scenario_demo_working_copy.json");
     
-    
     // TO SEE ERRORS:
     	
     // Wrong Schema File
     //configModule.setDefaultSchema("js/model/schema/schema_error.json");
+    
     // Scenario Syntax Error
     //configModule.setDefaultScenario("scenarios/scenario_syntax_demo_syntax_error.json");
+    
     // Scenario Logic Error
     //configModule.setDefaultScenario("scenarios/scenario_syntax_demo_logic_error.json");
     
@@ -70,8 +72,8 @@
     
     <!-- Valpo Application -->
     <div id="valpo">
-		<div id="maindialog" style="display:none;"></div>
-		<div id="seconddialog" style="display:none;"></div>  
+		<div id="maindialog" ></div>
+		<div id="seconddialog" ></div>  
 	   
         <div id="vHeader">
             Valpo Header
@@ -118,6 +120,8 @@
    		<p>Here is the footer of the MOOC</p>
     </div>
 </div>
+
+	<!-- Valpo++ Script Files -->
 	<script type="text/javascript" src="lib/jsv/uri/uri.js"></script>
 	<script type="text/javascript" src="lib/jsv/uri/schemes/urn.js"></script>
 	<script type="text/javascript" src="lib/jsv/jsv.js"></script>

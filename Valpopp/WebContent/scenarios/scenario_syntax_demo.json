@@ -20,10 +20,9 @@
         {"Id": 1, "nextId":2,
 			"messages":
 				[
-				{"srcN":2,"destN" : 1, "name": "MM_LOCATION_UPDATE", "param": "IMSI, LS1",  "type": "REQUEST", "length": 230, "treatment": 0, "dash": "FULL", "startTime": "C", "synchPoint": ""},
-				{"srcN":1,"destN" : 3, "name": "MAP_SEND_AUTHENTIFICATION", "param": "SRS1, Kc",  "type": "RESPONSE"}
+				{"srcN":2,"destN" : 1, "name": "MM_LOCATION_UPDATE", "param": "IMSI, LS1",  "type": "REQUEST", "length": 230, "treatment": 0, "dash": "FULL", "startTime": "C", "synchPoint": ""}
 				],
-			"mcq": {"title": "Appel dans l'extranger","text":"What would you choose?", "points": 3 ,
+			"mcq": {"title": "Appel dans l'extranger", "text":"What would you choose?", "points": 3 ,
 				"answers":
 					[
 					{"text": "First Answer", "feedback": "This has feedback", "valid": "y"},

@@ -5,6 +5,7 @@ function Utils(){
 	//***************************************************************************
 	this.wrapErrorMsg=wrapErrorMsg;
 	this.wrapMsg=wrapMsg;
+	this.getMCQHTML=getMCQHTML;
 
 	//***************************************************************************
 	// Public Methods Definition	
@@ -17,7 +18,27 @@ function Utils(){
 	
 	function wrapMsg(msg){
 		return '<div id="msg" class="valid">' + msg + '</div>';
-	}	
+	}
+	
+	function getMCQHTML(mcq){
+		
+		var question='<div id="question" class="MCQquestion"><h2>'+ mcq.text +'</h2></div>';
+		
+		var answers='<div id="answers" class="MCQanswers"><ul>';
+		
+		for (var i=0; i < mcq.answers.length; i++ ){
+			
+			answers+='<li><input id="answer'+ i+1 +'" type="checkbox" unchecked><p>'+ mcq.answers[i].text +'</p></li>';
+		}
+		
+		answers+='</ul></div>';
+		
+		var comments='<div id="comments" class="MCQcomments"></div>';
+		
+		var html='<div id="mcq" class="MCQcontainer" >' + question + answers + comments + '</div>';
+		
+		return html;		
+	}
 }
 
 function ScenType(){
