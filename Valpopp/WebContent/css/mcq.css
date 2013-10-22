@@ -1,0 +1,46 @@
+
+/* it works for the content of the dialog */
+#maindialog{
+	display:none;
+	font-size: 1.5em;
+
+}
+
+#mcq.MCQcontainer{ 
+	background-color: white; 
+	border: 1px solid black; 
+	overflow-x: hidden; 
+	overflow-y: scroll;
+}
+
+#seconddialog {
+
+}
+            
+@media screen and (max-width: 768px) {
+	#MCQtitle{
+		font-size: 2.5em;
+  		font-size: 1.0em;
+  		text-decoration:none;		
+	}
+
+
+
+}
+
+@media screen and (max-width: 550px) {
+	#MCQtitle {
+		display: none;
+	}
+	
+
+	
+}
+
+@media screen and (max-width: 320px) {
+	#MCQtitle {
+		display: none;
+	}
+	
+
+}
