@@ -39,6 +39,8 @@ function ScenarioView(){
     
 	var m_distBetweenNodes = 0;
 	
+	var m_current_dialog=null;
+	
 	// ******************************************************************************
 	// Private Methods
 	// ******************************************************************************
@@ -328,11 +330,11 @@ function ScenarioView(){
 	    	width = 600;
 	    }
 	    
-	    if (height > 450){
-	    	height = 450;
+	    if (height > 400){
+	    	height = 400;
 	    }
 	    
-		$("#maindialog").dialog({
+	    m_current_dialog = $("#maindialog").dialog({
 			autoOpen: false,
 			modal: true,
 			position: {  my: "center", at: "center", of: "#vScenario"  },
@@ -341,9 +343,9 @@ function ScenarioView(){
 			height: height,			
 			title: mcq_title,
 			buttons: {
-				"Answer": function() {
+				"Accept": function() {
 					$("#maindialog").dialog("close");					
-					answerQuizz();
+					quizzResults();
 				},			
 				"Close": function(){
 					$(this).dialog("close");
@@ -352,18 +354,91 @@ function ScenarioView(){
 		});
 		
 		//$("#maindialog").html("<h1>Answer the quizz!</h1>");
-		$("#maindialog").html(mcq_html);
+		//$("#maindialog").html(mcq_html);
+	    m_current_dialog.html(mcq_html);
 		
-		$("#maindialog").dialog("open");		
+		//$("#maindialog").dialog("open");		
+	    m_current_dialog.dialog("open");
 	}
 	
 	// Move to private function section
-	function answerQuizz(){
+	function quizzResults(){
+		
+		var mcq = m_scenarioPlay.getMCQ();
+		
+		var userResponses = new Array();
+		var validResponses = new Array();
+		var validAnswer=true;		
+		
+		for (var i=0; i < mcq.answers.length; i++ ){
+			var userAnswer=document.getElementById("ValpoppMCQanswer" + (i+1));
+			
+			if (userAnswer.checked){
+				userResponses[i]=true;
+			}else{
+				userResponses[i]=false;
+			}
+			
+			if (mcq.answers[i].valid){
+				validResponses[i]=true;
+			}else{
+				validResponses[i]=false;			
+			}			
+			
+			if (userResponses[i]!=validResponses[i]){
+				validAnswer=false;
+			}			
+		}
+		
+		m_current_dialog.html(utils.getMCQResults(mcq, userResponses, validResponses, validAnswer));
+		
+		// Select which buttons are displied
+		if (configModule.getShowMCQAnswers() && !validAnswer){
+			m_current_dialog.dialog('option', 'buttons', {
+			    'Show Answers': function() {
+			    	quizzAnswers();
+			    },			
+				"Close": function(){
+					finishQuizz();
+					$(this).dialog("close");
+				}
+			});			
+		}else{
+			m_current_dialog.dialog('option', 'buttons', {			
+				"Close": function(){
+					finishQuizz();
+					$(this).dialog("close");
+				}
+			});				
+		}
+		
+		m_current_dialog.dialog("open");		
+	}
+	
+	// Move to private function section
+	function quizzAnswers(){
+		
+		//TODO: show answers here
+		var mcq = m_scenarioPlay.getMCQ();
+		m_current_dialog.html(utils.getMCQAnswers(mcq));
+		
+		m_current_dialog.dialog('option', 'buttons', {
+		    'Close': function() {
+		    	finishQuizz();
+		        $(this).dialog('close');
+		    }
+		});
+		
+		m_current_dialog.dialog("open");
+		
+	}
+	
+	function finishQuizz(){
 		m_scenarioPlay.processMCQ();
 		
 		var event = $.Event( "ScenarioPlayQuizzFinished" );
 		$(window).trigger( event );			
-	}	
+	}
 	
 	function initiateScenarioDisplay(context){
 		console.log("ScenarioView.initiateScenarioDisplay(context)");

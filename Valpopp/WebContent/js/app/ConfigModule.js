@@ -12,6 +12,15 @@ var configModule = {
 		initialSimulationTime: 10,
 		mandatoryMCQ: true,
 		continueAfterMCQ:true,
+		showMCQAnswers:true,
+		
+		setShowMCQAnswers:function (value){
+			this.showMCQAnswers=value;
+		},
+		
+		getShowMCQAnswers:function (){
+			return this.showMCQAnswers;
+		},
 		
 		setContinueAfterMCQ:function (value){
 			this.continueAfterMCQ=value;

@@ -6,6 +6,8 @@ function Utils(){
 	this.wrapErrorMsg=wrapErrorMsg;
 	this.wrapMsg=wrapMsg;
 	this.getMCQHTML=getMCQHTML;
+	this.getMCQResults=getMCQResults;
+	this.getMCQAnswers=getMCQAnswers;
 
 	//***************************************************************************
 	// Public Methods Definition	
@@ -27,7 +29,7 @@ function Utils(){
 		var answers='<div id="MCQanswers" class="MCQanswers"><table width="100%" border="0">';
 		
 		for (var i=0; i < mcq.answers.length; i++ ){
-			answers+='<tr><td width="5%"></td><td width="5%"><input id="answer'+ i+1 +'" type="checkbox" unchecked></td><td width="90%">'+ mcq.answers[i].text +'</td></tr>';
+			answers+='<tr><td width="5%"></td><td width="5%"><input id="ValpoppMCQanswer'+ (i+1) +'" type="checkbox" unchecked></td><td width="90%">'+ (i+1) +') '+ mcq.answers[i].text +'</td></tr>';
 		}
 		
 		answers+='</table></div>';
@@ -38,6 +40,63 @@ function Utils(){
 		
 		return html;		
 	}
+	
+	function getMCQResults(mcq, userRes, validRes, result){
+		var title="";
+		var responses="";
+		
+		if(result){
+			title='<div id="MCQquestion" class="MCQquestion"><h2 style="color:green">Your answer is correct!</h2><br></div>';
+			responses='';
+		}else{
+			title='<div id="MCQquestion" class="MCQquestion"><h2 style="color:red">Your answer is wrong!</h2><br></div>';
+			responses='<div id="MCQanswers" class="MCQanswers"><table width="100%" border="0">';
+			
+			// Show feedback
+			for (var i=0; i < mcq.answers.length; i++ ){
+				var feedback="";
+				if (mcq.answers[i].feedback){
+					feedback=mcq.answers[i].feedback;
+				}
+				responses+='<tr><td width="5%"></td><td width="5%"></td><td width="90%">'+ (i+1) +') '+ feedback +'</td></tr>';
+			}
+			
+			responses+='</table></div>';
+		}
+		
+		var html='<div id="mcq" class="MCQcontainer" >' + title + responses + '</div>';
+		
+		return html;		
+	}
+	
+	// TODO: download right and wrong images previously
+	function getMCQAnswers(mcq){
+		var title="";
+		var responses="";
+		
+		title='<div id="MCQquestion" class="MCQquestion"><h2>'+ mcq.text +'</h2><br></div>';
+
+		responses='<div id="MCQanswers" class="MCQanswers"><table width="100%" border="0">';
+		
+		// Show rigth solution
+		for (var i=0; i < mcq.answers.length; i++ ){
+			var img="";
+			
+			if (mcq.answers[i].valid){
+				img='<img src="img/mcq_right.gif" height="32" width="32">';
+			}else{
+				img='<img src="img/mcq_wrong.gif" height="32" width="32">';
+			}
+			
+			responses+='<tr nowrap><td width="5%">'+img+'</td><td width="5%"></td><td width="90%">'+ (i+1) +') '+ mcq.answers[i].text +'</td></tr>';
+		}
+		
+		responses+='</table></div>';
+		
+		var html='<div id="mcq" class="MCQcontainer" >' + title + responses + '</div>';
+		
+		return html;		
+	}	
 }
 
 function ScenType(){
