@@ -20,14 +20,14 @@
         {"Id": 1, "nextId":2,
 			"messages":
 				[
-				{"srcN":2,"destN" : 1, "name": "MM_LOCATION_UPDATE", "param": "IMSI, LS1",  "type": "REQUEST", "length": 230, "treatment": 0, "dash": "FULL", "startTime": "C", "synchPoint": ""}
+				{"srcN":1,"destN" : 2, "name": "MM_LOCATION_UPDATE", "param": "IMSI, LS1",  "type": "REQUEST", "length": 230, "treatment": 0, "dash": "FULL", "startTime": "", "synchPoint": ""}
 				],
-			"mcq": {"title": "Appel dans l'extranger", "text":"What would you choose?", "points": 3 ,
+			"mcq": {"title": "Gestion de la mobilité", "text":"Lors de la primier mise sous tension du terminal:", "points": 3 ,
 				"answers":
 					[
-					{"text": "First Answer", "feedback": "This has feedback", "valid": "y"},
-					{"text": "Other Answer"},
-					{"text": "Last Answer", "feedback": "This has feedback also"}
+					{"text": "La terminal transmit tout son profil au réseau", "feedback": "That's not true"},
+					{"text": "Le HLR transmet le profil au VLR ou le terminal se trouve", "valid": "y"},
+					{"text": "Le profil de l'abonné est transmit a tous les VLR de réseau", "feedback": "This is not true"}
 					]
 			}
 		},		
@@ -47,12 +47,12 @@
 				{"srcN": 2, "destN" : 3, "name": "MAP_SEND_AUTHENTIFICATION", "type": "RESPONSE", "length": 230, "treatment": 30, "dash": "SEMI", "startTime": ""},
 				{"srcN": 3, "destN" : 2, "name": "MAP_SEND_AUTHENTIFICATION", "type": "RESPONSE", "length": 230, "treatment": 5, "dash": "SEMI", "startTime": "", "action": {"text": "This node does some work..."}}
 				],
-			"mcq": {"title": "Request", "text": "Here goes the question?", "points": 3 ,
+			"mcq": {"title": "Appel mobile vers fixe", "text": "Alice a un téléphone GSM. Elle appelle Bob sur post fixe.", "points": 3 ,
 				"answers":
 					[
-					{"text": "First Answer", "feedback": "The feedback goes here", "valid": "y"},
-					{"text": "Second Answer", "feedback": "Here goes the feedback", "valid": "y"},
-					{"text": "Therd Answer", "feedback": "May not be feedback at all"}
+					{"text": "Le premier message envoyé par le terminal d'Alice contient son TMSI", "feedback": "The feedback goes here"},
+					{"text": "Le HLR est consulté pour vérifier la localisation d'Alice", "feedback": "Here goes the feedback", "valid": "y"},
+					{"text": "La communication transite par le HLR", "feedback": "May not be feedback at all", "valid": "y"}
 					]
 			}
 		},
@@ -67,12 +67,12 @@
 				{"srcN":1,"destN" : 3, "name": "MAP_SEND_AUTHENTIFICATION", "param": "SRS1, Kc",  "type": "RESPONSE"},
 				{"srcN":3,"destN" : 2, "name": "MM_LOCATION_UPDATE", "param": "IMSI, LS1",  "type": "REQUEST", "length": 430, "treatment": 40, "dash": "FULL", "startTime": "", "synchPoint": "C"}				
 				],
-			"mcq": {"title": "Appel dans l'extranger","text":"What would you choose?", "points": 3 ,
+			"mcq": {"title": "Introduction á GPRS","text":"Vrai ou Faux", "points": 3 ,
 				"answers":
 					[
-					{"text": "First Answer", "feedback": "This has feedback", "valid": "y"},
-					{"text": "Other Answer"},
-					{"text": "Last Answer", "feedback": "This has feedback also"}
+					{"text": "Un réseau coeur GPRS peut transporter tout type de paquet", "feedback": "This has feedback", "valid": "y"},
+					{"text": "Le débit en EDGE-GPRS est typiquement de quelques dizaines de kbit/s", "valid": "y"},
+					{"text": "Pour mettre en ceuvre GPRS, les opérateurs ont du installer un nouveau réseau coeur", "feedback": "This has feedback also", "valid": "y"}
 					]
 			}
 		},
@@ -84,12 +84,12 @@
 				{"srcN":3,"destN" : 1, "name": "MAP_SEND_AUTHENTIFICATION", "param": "SRS1, Kc",  "type": "RESPONSE", "action": {"text": "This node does some work..."}},
 				{"srcN":1,"destN" : 3, "name": "MAP_SEND_AUTHENTIFICATION", "param": "SRS1, Kc",  "type": "RESPONSE"}
 				],
-			"mcq": {"title": "Appel dans l'extranger","text":"What would you choose?", "points": 3 ,
+			"mcq": {"title": "Mobilité GPRS","text":"Vrai ou Faux", "points": 3 ,
 				"answers":
 					[
-					{"text": "First Answer", "feedback": "This has feedback", "valid": "y"},
-					{"text": "Other Answer"},
-					{"text": "Last Answer", "feedback": "This has feedback also"}
+					{"text": "En GPRS le terminal s'identifie systématiquement par son IMSI", "feedback": "This has feedback"},
+					{"text": "Le réseau sait á tout moment dans quelle cellule se trouve un terminal GPRS en veille"},
+					{"text": "Le HLR sait á tout moment quel est le SGSN qui prend en charge un terminal GPRS", "feedback": "This has feedback also", "valid": "y"}
 					]
 			}
 		}		

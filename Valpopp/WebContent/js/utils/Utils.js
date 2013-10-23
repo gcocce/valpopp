@@ -22,18 +22,17 @@ function Utils(){
 	
 	function getMCQHTML(mcq){
 		
-		var question='<div id="question" class="MCQquestion"><h2>'+ mcq.text +'</h2></div>';
+		var question='<div id="MCQquestion" class="MCQquestion"><h2>'+ mcq.text +'</h2><br></div>';
 		
-		var answers='<div id="answers" class="MCQanswers"><ul>';
+		var answers='<div id="MCQanswers" class="MCQanswers"><table width="100%" border="0">';
 		
 		for (var i=0; i < mcq.answers.length; i++ ){
-			
-			answers+='<li><input id="answer'+ i+1 +'" type="checkbox" unchecked><p>'+ mcq.answers[i].text +'</p></li>';
+			answers+='<tr><td width="5%"></td><td width="5%"><input id="answer'+ i+1 +'" type="checkbox" unchecked></td><td width="90%">'+ mcq.answers[i].text +'</td></tr>';
 		}
 		
-		answers+='</ul></div>';
+		answers+='</table></div>';
 		
-		var comments='<div id="comments" class="MCQcomments"></div>';
+		var comments='<div id="MCQcomments" class="MCQcomments"></div>';
 		
 		var html='<div id="mcq" class="MCQcontainer" >' + question + answers + comments + '</div>';
 		

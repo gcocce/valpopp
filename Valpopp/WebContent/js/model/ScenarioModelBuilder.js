@@ -87,14 +87,14 @@ function ScenarioModelBuilder() {
 	}
       
       function validateNodes(nodes) {
-        for (var x = 0, xl = nodes.length; x < xl; ++x) {
+        for (var x = 0; x < nodes.length; x++) {
            // NotNeeded
         	m_output += '<span>Node Id =' +  nodes[x].Id + ' Name: ' + nodes[x].name + '</span><br/>';
            
            var id=nodes[x].Id;
                    
            // We check if the node id is unique
-           var items = jQuery.grep(nodes, function (node) { return node.Id == id });
+           var items = jQuery.grep(nodes, function (node) { return node.Id == id; });
            
            if (items.length!=1) {
         	   m_error = utils.wrapErrorMsg("Node Id repeated, it must be unique.");
@@ -107,7 +107,7 @@ function ScenarioModelBuilder() {
       }
       
       function validateSequences(sequences) {
-        for (var x = 0, xl = sequences.length; x < xl; ++x) {
+        for (var x = 0; x < sequences.length; x++) {
            // NotNeeded
         	m_output += '<br/><span>Sequence Id =' +  sequences[x].Id + ' nextId: ' + sequences[x].nextId + '</span><br/>';
         	m_output += '<br/><span>Messages:</span><br/>';
@@ -124,7 +124,7 @@ function ScenarioModelBuilder() {
            // Check that nextId exists
            if (nextId!=0) {
               // Check if the nextId exists as a Sequence Id
-              var items = jQuery.grep(sequences, function (sequence) { return sequence.Id == nextId });
+              var items = jQuery.grep(sequences, function (sequence) { return sequence.Id == nextId; });
               
               if (items.length<1) {
                  m_error=utils.wrapErrorMsg("nextId "+ nextId +" does not point to an existing sequence Id.");
@@ -133,7 +133,7 @@ function ScenarioModelBuilder() {
            }
 
            // Check if the sequence id is unique
-           var items = jQuery.grep(sequences, function (sequence) { return sequence.Id == id });
+           var items = jQuery.grep(sequences, function (sequence) { return sequence.Id == id; });
            
            if (items.length!=1) {
               m_error=utils.wrapErrorMsg("Sequence Id repeated, it must be unique.");
@@ -156,7 +156,7 @@ function ScenarioModelBuilder() {
       }
       
       function validateMessages(messages) {      
-        for (var y= 0, yl = messages.length; y < yl; ++y) {
+        for (var y= 0; y < messages.length; y++) {
            
            // Check that a messages does not have same source and destination
            if (messages[y].srcN==messages[y].destN) {
@@ -178,19 +178,19 @@ function ScenarioModelBuilder() {
       function validateMCQ(mcq) {
         var valids=0;
         
-        for (var x= 0, xl = mcq.answers.length; x < xl; ++x) {
+        for (var x= 0; x < mcq.answers.length; x++) {
            // Check if the answer is valid
            if (mcq.answers[x].valid=="y") {
               valids++;
            }
-           
-           if (valids==0) {
-        	   m_output += '<span>MCQ of title: ' + mcq.title + ', must have at least one valid answer.</span><br/>';
-               m_error=utils.wrapErrorMsg("MCQ of title: " + mcq.title + ", must have at least one valid answer.");
-              return false;
-           }
         }
       
+        if (valids==0) {
+     	   m_output += '<span>MCQ of title: ' + mcq.title + ', must have at least one valid answer.</span><br/>';
+            m_error=utils.wrapErrorMsg("MCQ of title: " + mcq.title + ", must have at least one valid answer.");
+           return false;
+        }
+        
         return true;
       }	
       
@@ -198,7 +198,7 @@ function ScenarioModelBuilder() {
 	function getRemoteNodeImages(){
 		var nodes= m_scenario_obj.nodes;
 
-        for (var x = 0, xl = nodes.length; x < xl; ++x) {
+        for (var x = 0; x < nodes.length; x++) {
         	// Download and validate image
         	m_scenarioContext.setNodeImg(x, configModule.getScenarioImgPath() + nodes[x].img);
          }
