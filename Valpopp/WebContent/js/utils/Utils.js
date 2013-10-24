@@ -8,6 +8,8 @@ function Utils(){
 	this.getMCQHTML=getMCQHTML;
 	this.getMCQResults=getMCQResults;
 	this.getMCQAnswers=getMCQAnswers;
+	this.wrapComment=wrapComment;
+	this.getScenarioListLoading=getScenarioListLoading;
 
 	//***************************************************************************
 	// Public Methods Definition	
@@ -21,6 +23,10 @@ function Utils(){
 	function wrapMsg(msg){
 		return '<div id="msg" class="valid">' + msg + '</div>';
 	}
+	
+	function wrapComment(msg){
+		return '<div id="msg" class="comment">' + msg + '</div>';
+	}	
 	
 	function getMCQHTML(mcq){
 		
@@ -97,6 +103,25 @@ function Utils(){
 		
 		return html;		
 	}	
+	
+	
+	function getScenarioListLoading(){
+		var html='<div id="DialogContainer">';
+		
+		html+='<div id="DialogContainer">';
+		
+		html+='<div id="Filter" class="Filter">';
+		  
+		html+='<input type="text" name="keyword" id="keyword" maxlength="30" width="80%" /><input type="button" name="bt_filter" id="bt_filter" value="Filter" width="20%" />';
+
+		html+='</div>';
+		
+		html+='<div id="ScenarioList" class="ScenarioList"><br><br><img src="img/progress_bar.gif"/></div>';
+		
+		html+='</div>';
+		
+		return html;
+	}
 }
 
 function ScenType(){

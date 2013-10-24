@@ -146,6 +146,33 @@ body {
 	margin-right: 0px;
 }
 
+
+#ScenarioList {
+	width: 100%;
+}
+
+#ScenarioList ul{
+	width: 100%;
+	border-top: 1px solid #ccc;	
+}
+
+#ScenarioList ul li{
+	border-bottom: 1px solid #ccc;
+	line-height: 30px;	
+	display: list-item;
+	background: #eee;
+	cursor:pointer;
+}
+
+#ScenarioList ul li.ScenarioSelected {
+	background: #fff;	
+}
+
+#ScenarioList img{
+    display:block;
+    margin:auto;	
+}
+
 #Commands input{
   font-size: 1.2em;
   padding: 1px 2px 1px 2px;
@@ -196,6 +223,7 @@ body {
  
 #msg.error { border: 1px solid #f00; font-size: 0.5em; background-color: #fee; }     
      
+#msg.comment { border: 1px solid #000; font-size: 0.8em; background-color: #fff; }
 
 /* it works for the content of the dialog */
 #maindialog{

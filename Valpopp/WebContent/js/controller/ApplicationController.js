@@ -10,9 +10,19 @@ function ApplicationController(){
 	// ******************************************************************************
 	// Properties
 	// ******************************************************************************
-
+	var m_error="";
 	
+	var m_open_dialog=null;
 	
+	// The contento of the list file
+	var m_scenario_list=new Array();
+	
+	// A list with the file names
+	var m_scenario_filter_list=new Array();
+	
+	var m_selected_example=-1;
+	
+	var SEP=";";
 	
 	// ******************************************************************************
 	// Private Methods
@@ -25,16 +35,86 @@ function ApplicationController(){
 		setupApplication(null);
 	}
 	
+	function loadScenarioExampleList(){
+		// Load file languages content
+		var jqxhr=$.get('scenarios/list.csv', function(data){
+			
+			var lflines = data.split('\n');
+			
+			// Removes the header
+			lflines.shift();			
+
+			m_scenario_list=lflines;
+			
+			scenarioExampleListLoaded();
+		});
+		
+		// Set another completion function for the request above
+		jqxhr.fail(function() {
+		  m_error="Error reading file!";
+		  scenarioExampleListLoaded();		  
+		});	
+	}
+	
+	function scenarioExampleListLoaded(){
+		console.log("scenarioExampleListLoaded");
+		
+		var listElement=document.getElementById("ScenarioList");
+		
+		if (m_error.localeCompare("")!=0){
+			listElement.innerHTML=utils.wrapErrorMsg("Ups! Something went worng while loading the list!");
+		}else{
+
+			var html_list='<ul>';
+			
+			for (var l=0; l < m_scenario_list.length; l++){
+				var exampleLine=m_scenario_list[l];
+				
+				if (exampleLine.localeCompare("")!=0){
+					var example=exampleLine.split(SEP);
+					var name=example[0];
+					var file_name=example[1];
+					m_scenario_filter_list.push(file_name);
+					
+					if (l==0){
+						html_list+='<li id="ScenarioListItem'+l+'" class="ScenarioSelected" onClick="applicationController.selectExample('+l+');">' + name + '</li>';
+						m_selected_example=0;
+					}else{
+						html_list+='<li id="ScenarioListItem'+l+'" onClick="applicationController.selectExample('+l+');">' + name + '</li>';	
+					}
+					
+				}
+			}
+			
+			html_list+='</ul>';
+			
+			listElement.innerHTML=html_list;
+		}
+	}	
+	
 	
 	// ******************************************************************************
 	// Public Methods Publication
 	// ******************************************************************************
 	this.openButton=openButton;
 	this.settingsButton=settingsButton;
+	this.selectExample=selectExample;
 	
 	// ******************************************************************************
 	// Public Methods Definition
 	// ******************************************************************************
+	
+	function selectExample(index){
+		var listItem=document.getElementById("ScenarioListItem" + index);
+		
+		var previouslistItem=document.getElementById("ScenarioListItem" + m_selected_example);
+		
+		previouslistItem.className="";
+		
+		listItem.className="ScenarioSelected";
+		
+		m_selected_example=index;		
+	}
 	
 	// Button Controllers
 	function settingsButton(){
@@ -63,44 +143,53 @@ function ApplicationController(){
 	function openButton(){
 		console.log("openButton");
 		
-		var dialog=$("#maindialog").show();
+		m_selected_example=-1;
 		
-	    $("#maindialog").dialog({ 
+	    loadScenarioExampleList();		
+		
+	    var width = window.innerWidth * 0.8;
+	    var height = window.innerHeight * 0.8;
+	    
+	    if (width > 500){
+	    	width = 500;
+	    }
+	    
+	    if (height > 400){
+	    	height = 400;
+	    }
+	    
+		var m_open_dialog=$("#maindialog").show();
+		
+		m_open_dialog.dialog({ 
 	        modal: true,
-	        width: 300,
-	        height: 400,
-	        position: {  my: "center", at: "center", of: window  },
+	        width: width,
+	        height: height,
+	        position: {  my: "center", at: "center", of: "#vScenario"  },
 	        title: "Load Scenario",
 	        buttons:{
-				"Local File System": function() {
-					$(this).dialog("close");
-				},
-				"Scenario Examples": function() {
+				"Select": function() {
 					$("#maindialog").dialog("close");					
-					openScenarioListDialog();
-				}
+					openScenarioExample();
+				},
+				"Cancel": function() {
+					$(this).dialog("close");
+				}				
 	        }
 	    });
 	    
-	    $("#maindialog").html("");
+	    m_open_dialog.html(utils.getScenarioListLoading());
 	    
-	    dialog.dialog("open");		
+    
+	    m_open_dialog.dialog("open");		
 	}
 	
-	function openScenarioListDialog(){
-		console.log("openScenarioListDialog");
+	function openScenarioExample(){
+		console.log("openScenarioExample");
 		
-		var dialog=$("#seconddialog").show();
 		
-	    $("#seconddialog").dialog({ 
-	        modal: true,
-	        width: 400,
-	        height: 500,	        
-	        position: {  my: "center", at: "center", of: window  },
-	        title: "List of Scenarios",
-	    });
-	        
-	    dialog.dialog("open");
+		
+		
+
 	}
 
 
@@ -118,6 +207,8 @@ function ApplicationController(){
 	// ******************************************************************************
 	// Call back functions
 	// ******************************************************************************
+	
+
 	
 	function initializeLanguageModule(e){		
 		console.log("ApplicationController.initializeLanguageModule");
