@@ -20,6 +20,23 @@ function ApplicationView(){
 	// ******************************************************************************
 	// Private Methods
 	// ******************************************************************************
+
+	
+	
+	// ******************************************************************************
+	// Public Methods Publication
+	// ******************************************************************************
+	this.initLayout=initLayout;
+	this.enableApplicationCommands=enableApplicationCommands;
+	this.disableApplicationCommands=disableApplicationCommands;
+	this.displayError=displayError;
+	this.setProgressBar=setProgressBar;
+	this.removeProgressBar=removeProgressBar;
+	
+	// ******************************************************************************
+	// Public Methods Definition
+	// ******************************************************************************
+
 	function removeProgressBar(){
 		var div=document.getElementById("progress_bar");
 		
@@ -45,21 +62,6 @@ function ApplicationView(){
 		}		
 		
 	}
-	
-	
-	// ******************************************************************************
-	// Public Methods Publication
-	// ******************************************************************************
-	this.initLayout=initLayout;
-	this.enableApplicationCommands=enableApplicationCommands;
-	this.disableApplicationCommands=disableApplicationCommands;
-	this.displayError=displayError;
-	this.setProgressBar=setProgressBar;
-	this.removeProgressBar=removeProgressBar;
-	
-	// ******************************************************************************
-	// Public Methods Definition
-	// ******************************************************************************
 	
 	function disableApplicationCommands(){
 		console.log("ApplicationView.disableApplicationCommands");

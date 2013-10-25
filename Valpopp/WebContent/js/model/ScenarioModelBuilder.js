@@ -295,9 +295,9 @@ function ScenarioModelBuilder() {
 		return true;
 	}
 
-	// Asynchronous method to load the schema file
+	// Asynchronous method to load the scenario file
 	function loadScenarioRemoteFile(file){
-		// Load Scenario Schema Schema
+		// Load Scenario File
 		console.log("loadScenarioRemoteFile: " + file);
 		
 		initModel();
@@ -308,12 +308,12 @@ function ScenarioModelBuilder() {
 			m_scenario_state=SCENARIO_LOADED;
 			
 			// Dispatch the event
-			console.log("Remote Scenario File Loaded");
+			console.log("Remote Scenario File Loaded: " + m_file_content);
 			var event = $.Event( "RemoteScenarioFileLoaded" );
 			$(window).trigger(event);
 		})
 		.error(function() {
-			console.error("Default SCENARIO file is not a valid json");
+			console.error("There was an error while attempting to download the SCENARIO file.");
 
 			m_scenario_state=SCENARIO_LOADING_ERROR;
 			

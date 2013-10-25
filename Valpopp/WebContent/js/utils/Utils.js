@@ -107,16 +107,14 @@ function Utils(){
 	
 	function getScenarioListLoading(){
 		var html='<div id="DialogContainer">';
-		
-		html+='<div id="DialogContainer">';
-		
-		html+='<div id="Filter" class="Filter">';
+			
+		html+='<div id="ScenarioFilter" class="Filter">';
 		  
 		html+='<input type="text" name="keyword" id="keyword" maxlength="30" width="80%" /><input type="button" name="bt_filter" id="bt_filter" value="Filter" width="20%" />';
 
 		html+='</div>';
 		
-		html+='<div id="ScenarioList" class="ScenarioList"><br><br><img src="img/progress_bar.gif"/></div>';
+		html+='<div id="ScenarioListContainer"><div id="ScenarioList" class="ScenarioList"><br><br><img src="img/progress_bar.gif"/></div></div>';
 		
 		html+='</div>';
 		

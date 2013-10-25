@@ -143,6 +143,8 @@ function ApplicationController(){
 	function openButton(){
 		console.log("openButton");
 		
+		scenarioController.stopButton();
+		
 		m_selected_example=-1;
 		
 	    loadScenarioExampleList();		
@@ -184,12 +186,17 @@ function ApplicationController(){
 	}
 	
 	function openScenarioExample(){
-		console.log("openScenarioExample");
+		console.log("openScenarioExample selected Item: " + m_selected_example);
 		
+		var file_name=m_scenario_filter_list[m_selected_example];
 		
+		console.log("File: " + file_name);
 		
+		applicationView.setProgressBar();
+			
+		scenarioView.disableScenarioCommands();
 		
-
+		scenarioModelBuilder.loadScenarioRemoteFile(configModule.getScenarioPath()+ file_name);
 	}
 
 

@@ -82,7 +82,7 @@ function ScenarioController(){
 		var scenarioPlay=scenarioView.getCurrentScenarioPlay();
 		scenarioPlay.stop();
 	}
-
+	
 	function quizButton(){
 		console.log("quizButton");
 		
@@ -193,13 +193,13 @@ function ScenarioController(){
 	function schemaLoadingError(e){
 		scenarioView.disableScenarioCommands();
 		applicationView.removeProgressBar();
-		applicationView.displayError('<div id="msg" class="error">Default SCHEMA is not a valid json.</div>');
+		applicationView.displayError('<div id="msg" class="error">There was an error while attempting to download the SCHEMA file.</div>');
 	}
 	
 	function remoteScenarioLoadingError(e){
 		scenarioView.disableScenarioCommands();
 		applicationView.removeProgressBar();
-		applicationView.displayError('<div id="msg" class="error">Scenario File is not a valid json.</div>');
+		applicationView.displayError('<div id="msg" class="error">There was an error while attempting to download the SCENARIO file.</div>');
 	}
 	
 	// Initiate Scenario Display if all images has been downloaded

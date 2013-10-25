@@ -430,7 +430,6 @@ function ScenarioView(){
 		});
 		
 		m_current_dialog.dialog("open");
-		
 	}
 	
 	function finishQuizz(){
@@ -505,7 +504,7 @@ function ScenarioView(){
 	// Setup Layout When the Language Module Was Fully Loaded
 
 	function enableScenarioCommands(){
-		console.log("ApplicationView.activateScenarioCommands()");
+		console.log("ApplicationView.enableScenarioCommands()");
 		
 		// Enable buttons
 		var button=document.getElementById("bt_play");
@@ -535,7 +534,11 @@ function ScenarioView(){
 		button.disabled=true;
 		
 		button=document.getElementById("bt_data");
-		button.disabled=true;		
+		button.disabled=true;
+		
+		button=document.getElementById("bt_quiz");
+		button.className="inactive";
+		button.disabled=true;
 	}
 	
 	

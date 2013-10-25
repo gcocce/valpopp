@@ -7,6 +7,7 @@ var configModule = {
 		defScenario:"scenarios/scenario_syntax_demo.json",
 		defSchema:"js/model/schema/scenario_schema.json",
 		imgpath:"img/",
+		scenarioPath: "scenarios/",
 		scenarioImgPath:"scenarios/img/",
 		spaceBetweenMessages: 0,
 		initialSimulationTime: 10,
@@ -53,6 +54,14 @@ var configModule = {
 		getSpaceBetweenMessages:function (){
 			return this.spaceBetweenMessages;
 		},
+		
+		setScenarioPath: function (path){
+			this.scenarioPath=path;
+		},
+		
+		getScenarioPath: function (){
+			return this.scenarioPath;
+		},		
 		
 		setScenarioImgPath: function (path){
 			this.scenarioImgPath=path;
