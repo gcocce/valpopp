@@ -41,6 +41,8 @@ function ScenarioView(){
 	
 	var m_current_dialog=null;
 	
+	var m_scenario_data_dialog=null;
+	
 	// ******************************************************************************
 	// Private Methods
 	// ******************************************************************************
@@ -305,6 +307,10 @@ function ScenarioView(){
 	this.initiateScenarioDisplay=initiateScenarioDisplay;
 	this.getCurrentScenarioPlay=getCurrentScenarioPlay;
 	this.showScenarioQuizz=showScenarioQuizz;
+	this.showScenarioDataMenu=showScenarioDataMenu;
+	this.showScenarioImage=showScenarioImage;
+	this.showScenarioMessages=showScenarioMessages;
+	this.showScenarioReferences=showScenarioReferences;
 	
 	// ******************************************************************************
 	// Public Methods Definition
@@ -312,6 +318,55 @@ function ScenarioView(){
 	
 	function getCurrentScenarioPlay(){
 		return m_scenarioPlay;
+	}
+	
+	function showScenarioImage(){
+		
+	}
+	
+	function showScenarioMessages(){
+		
+	}
+	
+	function showScenarioReferences(){
+		
+	}
+	
+	function showScenarioDataMenu(){
+		//
+		console.log("ScenarioView.showScenarioQuizz");
+			
+		var scendata_html= utils.getScenarioDataMenu();
+		
+	    var width = window.innerWidth * 0.8;
+	    var height = window.innerHeight * 0.8;
+	    
+	    if (width > 400){
+	    	width = 400;
+	    }
+	    
+	    if (height > 400){
+	    	height = 400;
+	    }
+	    
+	    m_scenario_data_dialog = $("#scenarioData").dialog({
+			autoOpen: false,
+			modal: true,
+			position: {  my: "center", at: "center", of: window },
+			resizable: true,	
+			width: width,
+			height: height,			
+			title: "Scenario Data",
+			buttons: {		
+				"Close": function(){
+					$(this).dialog("close");
+				}
+			}
+		});
+		
+	    m_scenario_data_dialog.html(scendata_html);
+		
+	    m_scenario_data_dialog.dialog("open");		
 	}
 	
 	function showScenarioQuizz(){

@@ -10,10 +10,25 @@ function Utils(){
 	this.getMCQAnswers=getMCQAnswers;
 	this.wrapComment=wrapComment;
 	this.getScenarioListLoading=getScenarioListLoading;
+	this.getScenarioDataMenu=getScenarioDataMenu;
 
 	//***************************************************************************
 	// Public Methods Definition	
 	//***************************************************************************
+	
+	function getScenarioDataMenu(){
+		var html='<div id="ScenarioDataDialog">';
+		
+		html+='<div class="ScenarioDataButton"><input type="button" value="Scenario Image" onClick="scenarioView.showScenarioImage();"></div>';
+
+		html+='<div class="ScenarioDataButton"><input type="button" value="Scenario Messages" onClick="scenarioView.showScenarioMessages();"></div>';
+		
+		html+='<div class="ScenarioDataButton"><input type="button" value="Scenario References" onClick="scenarioView.showScenarioReferences();"></div>';
+		
+		html+='</div>';
+		
+		return html;
+	}
 	
 	function wrapErrorMsg(msg){
 		return '<div id="msg" class="error">' + msg + '</div>';

@@ -117,26 +117,9 @@ function ScenarioController(){
 	function dataButton(){
 		console.log("dataButton");   
 	    
-		// TODO: ask scenarioView to show scenario data dialog 
+		scenarioView.showScenarioDataMenu();
 		
-		$("#maindialog").dialog({
-			autoOpen: false,
-			modal: true,
-			width: 400,
-			height: 400,
-			position: {  my: "center", at: "center", of: window  },
-			resizable: false,
-			title: "Scenario Data",
-			buttons: {
-				"Dismiss": function(){
-					$(this).dialog("close");
-				}
-			}
-		});
 		
-		$("#maindialog").html("");
-		
-		$("#maindialog").dialog("open");
 	}	
 
 	
