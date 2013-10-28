@@ -57,9 +57,7 @@ function ApplicationController(){
 	}
 	
 	function scenarioExampleListLoaded(){
-		console.log("scenarioExampleListLoaded");
-		
-		var listElement=document.getElementById("ScenarioList");
+	var listElement=document.getElementById("ScenarioList");
 		
 		if (m_error.localeCompare("")!=0){
 			listElement.innerHTML=utils.wrapErrorMsg("Ups! Something went worng while loading the list!");
@@ -71,6 +69,7 @@ function ApplicationController(){
 				var exampleLine=m_scenario_list[l];
 				
 				if (exampleLine.localeCompare("")!=0){
+					
 					var example=exampleLine.split(SEP);
 					var name=example[0];
 					var file_name=example[1];
@@ -82,7 +81,6 @@ function ApplicationController(){
 					}else{
 						html_list+='<li id="ScenarioListItem'+l+'" onClick="applicationController.selectExample('+l+');">' + name + '</li>';	
 					}
-					
 				}
 			}
 			
@@ -99,10 +97,95 @@ function ApplicationController(){
 	this.openButton=openButton;
 	this.settingsButton=settingsButton;
 	this.selectExample=selectExample;
+	this.FilterList=FilterList;
 	
 	// ******************************************************************************
 	// Public Methods Definition
 	// ******************************************************************************
+	
+
+
+		
+
+
+	
+	function FilterList(){
+		console.log("ApplicationController Filter List");
+		
+		var keywords= new String();
+		
+		keywords=document.getElementById("btscenario_filterkeyword").value;
+			
+		keywords=keywords.trim();
+		
+		keywords=keywords.toLowerCase();
+			
+		if (keywords.localeCompare("")!=0){
+			console.log("some keywords");
+	
+			var keyword=keywords.split(" ");
+			
+			var listElement=document.getElementById("ScenarioList");
+			
+			var html_list='<ul>';
+			
+			var counter=0;
+			
+			m_scenario_filter_list=new Array();
+			
+			for (var l=0; l < m_scenario_list.length; l++){
+				var exampleLine=m_scenario_list[l];
+				
+				if (exampleLine.localeCompare("")!=0){
+					var example=exampleLine.split(SEP);
+					var name=example[0];
+					var file_name=example[1];
+					
+					if (checkFilter(keyword, name)){
+						if (counter==0){
+							html_list+='<li id="ScenarioListItem'+counter+'" class="ScenarioSelected" onClick="applicationController.selectExample('+counter+');">' + name + '</li>';
+							m_selected_example=0;
+						}else{
+							html_list+='<li id="ScenarioListItem'+counter+'" onClick="applicationController.selectExample('+counter+');">' + name + '</li>';	
+						}
+						
+						m_scenario_filter_list.push(file_name);
+						counter++;
+					}
+				}
+			}
+			
+			html_list+='</ul>';
+			
+			listElement.innerHTML=html_list;			
+			
+		}else{
+			if(keywords.localeCompare("")==0){
+				scenarioExampleListLoaded();
+			}			
+		}
+	}
+	
+	function checkFilter(keyword, name ){
+		
+		var title=name;
+		
+		title=title.toLowerCase();
+		
+		for (var x=0; x < keyword.length; x++){
+			
+			var key=keyword[x].trim();
+			
+			if (key.localeCompare("")!=0){
+				
+				if (title.search(key)>=0){
+					return true;
+				}				
+			}
+		}
+		
+		return false;
+	}
 	
 	function selectExample(index){
 		var listItem=document.getElementById("ScenarioListItem" + index);

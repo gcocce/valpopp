@@ -110,7 +110,7 @@ function Utils(){
 			
 		html+='<div id="ScenarioFilter" class="Filter">';
 		  
-		html+='<input type="text" name="keyword" id="keyword" maxlength="30" width="80%" /><input type="button" name="bt_filter" id="bt_filter" value="Filter" width="20%" />';
+		html+='<input type="text" name="btscenario_filterkeyword" id="btscenario_filterkeyword" onkeyup="applicationController.FilterList();" maxlength="30" width="80%" /><input type="button" name="bt_filter" id="btscenario_filter" onClick="applicationController.FilterList();" value="Search" width="20%" />';
 
 		html+='</div>';
 		

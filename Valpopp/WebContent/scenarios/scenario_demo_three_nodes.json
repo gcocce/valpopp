@@ -1,19 +1,18 @@
 {
-    "name": "Scenario Name",
+    "name": "Scenario Three Nodes",
     "img": "scenario.gif",
 	"defaultmessage":{"type": "ONEWAY", "length": 240, "treatment": 0, "dash": "SEMI"},
     "nodes":
 		[
         {"Id": 1, "name": "MS", "img" : "ms.gif"},
         {"Id": 2, "name": "BTS", "img" : "bsc.gif"},
-        {"Id": 3, "name": "MS", "img" : "bss.gif"},
-        {"Id": 4, "name": "BTS", "img" : "mscvlr.gif"}        
+        {"Id": 3, "name": "MS", "img" : "bss.gif"}     
 		],
     "propagthroughputs":
 		[
         {"srcN": 1,"destN": 2,"propagTime" : 40, "throughput": 7200},
         {"srcN": 2,"destN": 1,"propagTime" : 30, "throughput": 6400},
-        {"srcN": 1,"destN": 4,"propagTime" : 40, "throughput": 64}        
+        {"srcN": 1,"destN": 3,"propagTime" : 40, "throughput": 64}        
 		],
     "sequences":
 		[
@@ -36,14 +35,14 @@
 				[
 				{"srcN": 1, "destN": 2 , "name": "MM_LOCATION_UPDATE", "param": "IMSI, LS1", "type": "REQUEST", "length": 230, "treatment": 15, "dash": "FULL", "startTime": "", "synchPoint": ""},
 				{"srcN": 2, "destN": 1, "name": "MM_LOCATION_UPDATE", "param": "TMSI", "type": "REQUEST"},
-				{"srcN": 1, "destN" : 4, "name": "MAP_SEND_AUTHENTIFICATION", "type": "ONEWAY", "length": 2230, "treatment": 0, "dash": "SEMI", "startTime": "", "action": {"text": "This node does some work..."}},
-				{"srcN": 4, "destN" : 2, "name": "MAP_SEND_AUTHENTIFICATION", "type": "RESPONSE", "length": 230, "treatment": 20, "dash": "SEMI", "startTime": "", "synchPoint": "A", "action": {"text": "This node does some work..."}},
+				{"srcN": 1, "destN" : 3, "name": "MAP_SEND_AUTHENTIFICATION", "type": "ONEWAY", "length": 2230, "treatment": 0, "dash": "SEMI", "startTime": "", "action": {"text": "This node does some work..."}},
+				{"srcN": 3, "destN" : 2, "name": "MAP_SEND_AUTHENTIFICATION", "type": "RESPONSE", "length": 230, "treatment": 20, "dash": "SEMI", "startTime": "", "synchPoint": "A", "action": {"text": "This node does some work..."}},
 				{"srcN": 2, "destN" : 1, "name": "MAP_SEND_AUTHENTIFICATION", "type": "RESPONSE", "length": 230, "treatment": 0, "dash": "SEMI", "startTime": "A"},
 				{"srcN": 1, "destN" : 2, "name": "MAP_SEND_AUTHENTIFICATION", "type": "ONEWAY", "length": 230, "treatment": 5, "dash": "SEMI", "startTime": ""},
 				{"srcN": 2, "destN" : 1, "name": "MAP_SEND_AUTHENTIFICATION", "type": "RESPONSE", "length": 230, "treatment": 5, "dash": "SEMI", "startTime": ""},
 				{"srcN": 1, "destN" : 2, "name": "MAP_SEND_AUTHENTIFICATION", "type": "REQUEST", "length": 230, "treatment": 10, "dash": "SEMI", "startTime": ""},				
-				{"srcN": 2, "destN" : 4, "name": "MAP_SEND_AUTHENTIFICATION", "type": "RESPONSE", "length": 230, "treatment": 5, "dash": "SEMI", "startTime": "A"},
-				{"srcN": 4, "destN" : 2, "name": "MAP_SEND_AUTHENTIFICATION", "type": "RESPONSE", "length": 230, "treatment": 0, "dash": "SEMI", "startTime": ""},
+				{"srcN": 2, "destN" : 3, "name": "MAP_SEND_AUTHENTIFICATION", "type": "RESPONSE", "length": 230, "treatment": 5, "dash": "SEMI", "startTime": "A"},
+				{"srcN": 3, "destN" : 2, "name": "MAP_SEND_AUTHENTIFICATION", "type": "RESPONSE", "length": 230, "treatment": 0, "dash": "SEMI", "startTime": ""},
 				{"srcN": 2, "destN" : 3, "name": "MAP_SEND_AUTHENTIFICATION", "type": "RESPONSE", "length": 230, "treatment": 30, "dash": "SEMI", "startTime": ""},
 				{"srcN": 3, "destN" : 2, "name": "MAP_SEND_AUTHENTIFICATION", "type": "RESPONSE", "length": 230, "treatment": 5, "dash": "SEMI", "startTime": "", "action": {"text": "This node does some work..."}}
 				],
