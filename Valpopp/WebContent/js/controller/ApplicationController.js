@@ -24,6 +24,9 @@ function ApplicationController(){
 	
 	var SEP=";";
 	
+	var appImagesLoaded=false;
+	
+	
 	// ******************************************************************************
 	// Private Methods
 	// ******************************************************************************
@@ -293,7 +296,8 @@ function ApplicationController(){
 	
 	$(window).on( "SchemaFileLoadingError", applicationView.disableApplicationCommands);
 		
-
+	$(window).on( "ScenarioLoaded", preloadAppImages);
+	
 	// ******************************************************************************
 	// Call back functions
 	// ******************************************************************************
@@ -319,6 +323,21 @@ function ApplicationController(){
 		}
 	}
 		
+	
+	function preloadAppImages(){
+		if (!appImagesLoaded){
+			console.log("Preload application images");
+					
+			for (var x=0; x < appImagesNames.length; x++){
+				
+				console.log("preload appImage: "+ appImagesNames[x])
+
+				var m_img = new AppImage(configModule.getAppImgPath() + appImagesNames[x]);
+				
+			}	
+			appImagesLoaded=true;			
+		}
+	}
 	
 }
 

@@ -39,6 +39,12 @@ var scenarioView = null;
 // Application Global Variables
 var appState=appConstants.STARTING;
 
+// Application images (for preload)
+var appImagesNames = new Array();
+appImagesNames.push("mcq_right.gif");
+appImagesNames.push("mcq_wrong.gif");
+
+
 //*******************************************************************************
 // Setup Section
 //*******************************************************************************

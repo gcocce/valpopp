@@ -200,6 +200,9 @@ function ScenarioController(){
 			
 			//TODO: Initiate Scenario Images Download
 			
+			//Indicate to the application that it can preload other images
+			var event = $.Event( "ScenarioLoaded" );
+			$(window).trigger( event );				
 		}else{
 			scenarioView.displayError(utils.wrapErrorMsg(scenarioModelBuilder.getError()));
 			return;
