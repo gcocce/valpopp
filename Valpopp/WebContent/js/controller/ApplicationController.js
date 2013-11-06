@@ -38,6 +38,7 @@ function ApplicationController(){
 		setupApplication(null);
 	}
 	
+	// This method load the contents of the list.csv file which contains the scenario list
 	function loadScenarioExampleList(){
 		// Load file languages content
 		var jqxhr=$.get('scenarios/list.csv', function(data){
@@ -47,6 +48,7 @@ function ApplicationController(){
 			// Removes the header
 			lflines.shift();			
 
+			// preserves the contents in this variable
 			m_scenario_list=lflines;
 			
 			scenarioExampleListLoaded();
@@ -59,20 +61,23 @@ function ApplicationController(){
 		});	
 	}
 	
+	// Once the scenario list file is loaded build the list to show
 	function scenarioExampleListLoaded(){
-	var listElement=document.getElementById("ScenarioList");
+		
+		var listElement=document.getElementById("ScenarioList");
 		
 		if (m_error.localeCompare("")!=0){
 			listElement.innerHTML=utils.wrapErrorMsg("Ups! Something went worng while loading the list!");
 		}else{
 
+			m_scenario_filter_list=new Array();
+			
 			var html_list='<ul>';
 			
 			for (var l=0; l < m_scenario_list.length; l++){
 				var exampleLine=m_scenario_list[l];
 				
 				if (exampleLine.localeCompare("")!=0){
-					
 					var example=exampleLine.split(SEP);
 					var name=example[0];
 					var file_name=example[1];
@@ -105,12 +110,6 @@ function ApplicationController(){
 	// ******************************************************************************
 	// Public Methods Definition
 	// ******************************************************************************
-	
-
-
-		
-
-
 	
 	function FilterList(){
 		console.log("ApplicationController Filter List");
@@ -191,6 +190,8 @@ function ApplicationController(){
 	}
 	
 	function selectExample(index){
+		console.log("selectExample:"+index);
+		
 		var listItem=document.getElementById("ScenarioListItem" + index);
 		
 		var previouslistItem=document.getElementById("ScenarioListItem" + m_selected_example);
@@ -280,6 +281,7 @@ function ApplicationController(){
 		
 		applicationView.setProgressBar();
 			
+		scenarioView.clearScenarioDisplay();
 		scenarioView.disableScenarioCommands();
 		
 		scenarioModelBuilder.loadScenarioRemoteFile(configModule.getScenarioPath()+ file_name);

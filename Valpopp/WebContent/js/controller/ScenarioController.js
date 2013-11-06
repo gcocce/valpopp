@@ -80,7 +80,9 @@ function ScenarioController(){
 		button.className="inactive";		
 		 
 		var scenarioPlay=scenarioView.getCurrentScenarioPlay();
-		scenarioPlay.stop();
+		if (scenarioPlay){
+			scenarioPlay.stop();
+		}
 	}
 	
 	function quizButton(){

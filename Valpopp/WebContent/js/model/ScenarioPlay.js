@@ -112,6 +112,12 @@ function ScenarioPlay(context){
     // Temp register of the processing objects. Used each time the Processing Objects List is updated.
     var m_new_processingList=new Array();
     
+    // List of messages already displayed in the current Scenario Play
+    var m_message_list=new Array();
+    
+    // Name of the scenario image currently displayed
+    var m_scenario_img=null;
+    
 	// ******************************************************************************
 	// Private Methods
 	// ******************************************************************************

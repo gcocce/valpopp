@@ -11,37 +11,35 @@ function Utils(){
 	this.wrapComment=wrapComment;
 	this.getScenarioListLoading=getScenarioListLoading;
 	this.getScenarioDataMenu=getScenarioDataMenu;
+	this.wrapHtmlErrorMsg=wrapHtmlErrorMsg;
+	this.wrapHtmlMsg=wrapHtmlMsg;
 
 	//***************************************************************************
 	// Public Methods Definition	
 	//***************************************************************************
 	
-	function getScenarioDataMenu(){
-		var html='<div id="ScenarioDataDialog">';
-		
-		html+='<div class="ScenarioDataButton"><input type="button" value="Scenario Image" onClick="scenarioView.showScenarioImage();"></div>';
-
-		html+='<div class="ScenarioDataButton"><input type="button" value="Scenario Messages" onClick="scenarioView.showScenarioMessages();"></div>';
-		
-		html+='<div class="ScenarioDataButton"><input type="button" value="Scenario References" onClick="scenarioView.showScenarioReferences();"></div>';
-		
-		html+='</div>';
-		
-		return html;
+	function wrapHtmlErrorMsg(html_msg){
+		return '<div id="msgContainer">'+html_msg+'</div>';
 	}
 	
-	function wrapErrorMsg(msg){
-		return '<div id="msg" class="error">' + msg + '</div>';
-	}
-	
-	
-	function wrapMsg(msg){
-		return '<div id="msg" class="valid">' + msg + '</div>';
-	}
-	
-	function wrapComment(msg){
-		return '<div id="msg" class="comment">' + msg + '</div>';
+	function wrapHtmlMsg(html_msg){
+		return '<div id="msgContainer">'+html_msg+'</div>';
 	}	
+	
+	// For string messages
+	function wrapErrorMsg(msg){
+		return '<div id="msgContainer"><div id="msg" class="error">' + msg + '</div></div>';
+	}
+	
+	// For string messages
+	function wrapMsg(msg){
+		return '<div id="msgContainer"><div id="msg" class="valid">' + msg + '</div></div>';
+	}
+	
+	// For string messages
+	function wrapComment(msg){
+		return '<div id="msgContainer"><div id="msg" class="comment">' + msg + '</div></div>';
+	}
 	
 	function getMCQHTML(mcq){
 		
@@ -135,6 +133,20 @@ function Utils(){
 		
 		return html;
 	}
+	
+	function getScenarioDataMenu(){
+		var html='<div id="ScenarioDataDialog">';
+		
+		html+='<div class="ScenarioDataButton"><input type="button" value="Scenario Image" onClick="scenarioView.showScenarioImage();"></div>';
+
+		html+='<div class="ScenarioDataButton"><input type="button" value="Scenario Messages" onClick="scenarioView.showScenarioMessages();"></div>';
+		
+		html+='<div class="ScenarioDataButton"><input type="button" value="Scenario References" onClick="scenarioView.showScenarioReferences();"></div>';
+		
+		html+='</div>';
+		
+		return html;
+	}	
 }
 
 function ScenType(){

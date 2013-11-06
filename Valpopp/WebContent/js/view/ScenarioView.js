@@ -302,9 +302,10 @@ function ScenarioView(){
 	// ******************************************************************************
 	this.displayError=displayError;
 	this.displayMsg=displayMsg;
+	this.clearScenarioDisplay=clearScenarioDisplay;
+	this.initiateScenarioDisplay=initiateScenarioDisplay;	
 	this.enableScenarioCommands=enableScenarioCommands;
 	this.disableScenarioCommands=disableScenarioCommands;
-	this.initiateScenarioDisplay=initiateScenarioDisplay;
 	this.getCurrentScenarioPlay=getCurrentScenarioPlay;
 	this.showScenarioQuizz=showScenarioQuizz;
 	this.showScenarioDataMenu=showScenarioDataMenu;
@@ -494,6 +495,11 @@ function ScenarioView(){
 		$(window).trigger( event );			
 	}
 	
+	function clearScenarioDisplay(){
+		m_scenarioContext=null;
+		m_scenarioPlay=null;
+	}	
+	
 	function initiateScenarioDisplay(context){
 		console.log("ScenarioView.initiateScenarioDisplay(context)");
 		m_scenarioContext=context;
@@ -527,7 +533,7 @@ function ScenarioView(){
 			}
 		});
 		
-		$("#maindialog").html(html_msg);
+		$("#maindialog").html(utils.wrapHtmlMsg(html_msg));
 		
 		$("#maindialog").dialog("open");		
 	}
@@ -551,7 +557,7 @@ function ScenarioView(){
 			}
 		});
 		
-		$("#maindialog").html(html_msg);
+		$("#maindialog").html(utils.wrapHtmlErrorMsg(html_msg));
 		
 		$("#maindialog").dialog("open");
 	}
@@ -614,9 +620,12 @@ function ScenarioView(){
 	// ******************************************************************************	
 	
 	function updateScenarioView(e){
-//		console.log("ScenarioView.updateScenarioView");
+		console.log("ScenarioView.updateScenarioView");
 		
 		if (m_scenarioPlay!=null){
+			
+			console.log("Valid scenario Play, attempt to resize...");
+			
 			setupSize();
 			
 			displayScenarioTitle();

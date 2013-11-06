@@ -192,7 +192,15 @@ body {
 #Commands a:active {color:#000000;} 
 
 /* it works for the dialog messages for error and information */
-#msg { padding: 5px; }
+#msgContainer {
+	padding: 2px;
+	height: 100%;
+	width: 100%;	
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+
+#msg { padding: 5px;}
  
 #msg.valid{ border: 1px solid #0f0;  font-size: 0.8em; background-color: #efe; }
  
@@ -206,7 +214,7 @@ body {
 	width: 100%;
 	display:none;
 	font-size: 1.0em;
-	background-color: white; overflow-x: hidden; overflow-y: hidden;	
+	background-color: white; overflow-x: hidden; overflow-y: hidden;
 }
 
 /* It works for the content of the MCQ dialog */
