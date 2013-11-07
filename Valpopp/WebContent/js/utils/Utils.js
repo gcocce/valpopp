@@ -499,7 +499,9 @@ function ScenAction(node, initpos, finalpos, action){
 	
 }
 
-function ScenarioImage(url_param){
+
+
+function ScenarioImage(url_param, isNode){
 	// ******************************************************************************
 	// Constants
 	// ******************************************************************************
@@ -528,8 +530,13 @@ function ScenarioImage(url_param){
 	    m_state=IMG_ERROR;
 	    
 	    //Dispatch Event
-		var event = $.Event( "RemoteScenarioImageLoaded" );
-		$(window).trigger( event );	
+	    if (isNode){
+			var event = $.Event( "RemoteNodeImageLoaded" );
+			$(window).trigger( event );
+	    }else{
+			var event = $.Event( "RemoteScenarioImageLoaded" );
+			$(window).trigger( event );	    	
+	    }
 	};
 	
 	m_img.onload = function () {
@@ -541,8 +548,13 @@ function ScenarioImage(url_param){
 	    m_height=m_img.height;
 	    
 	    //Dispatch Event
-		var event = $.Event( "RemoteScenarioImageLoadingError" );
-		$(window).trigger( event );	
+	    if (isNode){
+			var event = $.Event( "RemoteNodeImageLoadingError" );
+			$(window).trigger( event );	
+	    }else{
+			var event = $.Event( "RemoteScenarioImageLoadingError" );
+			$(window).trigger( event );	    	
+	    }
 	};
 	
 	m_img.src = url_param;

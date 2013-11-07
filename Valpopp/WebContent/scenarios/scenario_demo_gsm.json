@@ -62,7 +62,7 @@
 				{"srcN":2,"destN" : 1, "name": "MM_LOCATION_UPDATE", "param": "IMSI, LS1",  "type": "REQUEST", "length": 230, "treatment": 5, "dash": "FULL", "startTime": "", "synchPoint": ""},
 				{"srcN":1,"destN" : 2, "name": "MM_LOCATION_UPDATE", "param": "IMSI, LS1",  "type": "REQUEST", "length": 430, "treatment": 40, "dash": "FULL", "startTime": "", "synchPoint": "B"},
 				{"srcN":2,"destN" : 1, "name": "MM_LOCATION_UPDATE", "param": "IMSI",  "type": "REQUEST", "length": 230, "treatment": 0, "dash": "SEMI", "startTime": "B", "synchPoint": "", "scenImg": "scenario2.gif"},
-				{"srcN":2,"destN" : 3, "name": "MM_LOCATION_UPDATE", "param": "IMSI",  "type": "REQUEST", "length": 230, "treatment": 0, "dash": "SEMI", "startTime": "B", "synchPoint": "", "scenImg": "scenario2.gif"},				
+				{"srcN":2,"destN" : 3, "name": "MM_LOCATION_UPDATE", "param": "IMSI",  "type": "REQUEST", "length": 230, "treatment": 0, "dash": "SEMI", "startTime": "B", "synchPoint": "", "scenImg": "scenario3.gif"},				
 				{"srcN":3,"destN" : 1, "name": "MAP_SEND_AUTHENTIFICATION", "param": "SRS1, Kc",  "type": "RESPONSE", "action": {"text": "This node does some work..."}},
 				{"srcN":1,"destN" : 3, "name": "MAP_SEND_AUTHENTIFICATION", "param": "SRS1, Kc",  "type": "RESPONSE"},
 				{"srcN":3,"destN" : 2, "name": "MM_LOCATION_UPDATE", "param": "IMSI, LS1",  "type": "REQUEST", "length": 430, "treatment": 40, "dash": "FULL", "startTime": "", "synchPoint": "C"}				
@@ -80,7 +80,7 @@
 			"messages":
 				[
 				{"srcN":2,"destN" : 1, "name": "MM_LOCATION_UPDATE", "param": "IMSI, LS1",  "type": "REQUEST", "length": 230, "treatment": 0, "dash": "FULL", "startTime": "C", "synchPoint": ""},
-				{"srcN":2,"destN" : 3, "name": "MM_LOCATION_UPDATE", "param": "IMSI",  "type": "REQUEST", "length": 230, "treatment": 0, "dash": "SEMI", "startTime": "C", "synchPoint": "", "scenImg": "scenario2.gif"},		
+				{"srcN":2,"destN" : 3, "name": "MM_LOCATION_UPDATE", "param": "IMSI",  "type": "REQUEST", "length": 230, "treatment": 0, "dash": "SEMI", "startTime": "C", "synchPoint": "", "scenImg": "scenario4.gif"},		
 				{"srcN":3,"destN" : 1, "name": "MAP_SEND_AUTHENTIFICATION", "param": "SRS1, Kc",  "type": "RESPONSE", "action": {"text": "This node does some work..."}},
 				{"srcN":1,"destN" : 3, "name": "MAP_SEND_AUTHENTIFICATION", "param": "SRS1, Kc",  "type": "RESPONSE"}
 				],

@@ -200,8 +200,6 @@ function ScenarioController(){
 
 			//scenarioView.displayMsg(utils.wrapMsg(scenarioModelBuilder.getOutput()));		
 			
-			//TODO: Initiate Scenario Images Download
-			
 			//Indicate to the application that it can preload other images
 			var event = $.Event( "ScenarioLoaded" );
 			$(window).trigger( event );				
@@ -255,7 +253,6 @@ function ScenarioController(){
 	  function scrollCanvas(diffY) {
 		//console.log("scrollCanvas diff: " + diffY);
 		
-		//TODO: ask scenarioView to scroll
 		theContainer.scrollTop = theContainer.scrollTop - diffY;
 		
 		var scenarioPlay=scenarioView.getCurrentScenarioPlay();

@@ -184,6 +184,8 @@ function ScenarioContext(){
 	this.setNumberofNodes=setNumberofNodes;
 	this.setNodeImg=setNodeImg;
 	this.setScenarioImg=setScenarioImg;
+	this.getScenarioImg=getScenarioImg;
+	this.getScenarioImgList=getScenarioImgList;
 	this.normalizeScenario=normalizeScenario;
 	
 	this.getPropagTime=getPropagTime;
@@ -210,21 +212,31 @@ function ScenarioContext(){
 		return m_scenario_object.name;
 	}
 	
-	function setScenarioImg(index, img_url){
-		m_scenario_images[index]=new ScenarioImage(img_url);	
+	function setScenarioImg(img_url){
+		m_scenario_images[img_url]=new ScenarioImage(img_url, false);	
+	}
+	
+	function getScenarioImg(img_url){
+		return m_scenario_images[img_url];
+	}	
+	
+	function getScenarioImgList(){
+		return m_scenario_images;
 	}
 	
 	function setNodeImg(index, img_url){
-		m_nodes_images[index]=new ScenarioImage(img_url);
+		m_nodes_images[index]=new ScenarioImage(img_url, true);
 	}
+	
+	function getNodeImg(index){
+		return m_nodes_images[index];
+	}	
 	
 	function setScenario(obj){
 		m_scenario_object=obj;
 	}
 	
-	function getNodeImg(index){
-		return m_nodes_images[index];
-	}
+
 	
 	function getError(){
 		return m_error;

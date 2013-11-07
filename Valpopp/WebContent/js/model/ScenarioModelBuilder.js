@@ -57,6 +57,9 @@ function ScenarioModelBuilder() {
 	var m_scenarioContext=new ScenarioContext();
 	
 	var m_node_images_processed=0;
+	
+	var m_scenario_images=0;
+	var m_scenario_images_processed=0;
 
 	// ******************************************************************************
 	// Private Methods
@@ -348,8 +351,13 @@ function ScenarioModelBuilder() {
 	// ******************************************************************************
 	
 	// Events to control node image download
-	$(window).on( "RemoteScenarioImageLoaded", scenarioNodesImgCtrl);	
-	$(window).on( "RemoteScenarioImageLoadingError", scenarioNodesImgCtrl);	
+	$(window).on( "RemoteNodeImageLoaded", scenarioNodesImgCtrl);	
+	$(window).on( "RemoteNodeImageLoadingError", scenarioNodesImgCtrl);	
+	
+	$(window).on( "RemoteScenarioImageLoaded", scenarioImgCtrl);	
+	$(window).on( "RemoteScenarioImageLoadingError", scenarioImgCtrl);	
+	
+	$(window).on( "ScenarioLoaded", preloadScenarioImages);	
 
 
 	// ******************************************************************************
@@ -384,6 +392,74 @@ function ScenarioModelBuilder() {
 		}
 	}
 	
+	function preloadScenarioImages(e){
+		m_scenario_images=0;
+		m_scenario_images_processed=0;
+		
+		// Count the amount of images of the scenario
+		
+		// For the first mandatory image of the scenario
+		m_scenario_images++;
+		
+		// For every other images of the scenario
+		for (var x=0; x < m_scenario_obj.sequences.length; x++){
+			var messages=m_scenario_obj.sequences[x].messages;
+			
+			for (var y=0; y < messages.length; y++){
+				
+				if (messages[y].scenImg){
+					m_scenario_images++;
+				}
+			}
+		}
+		
+		// Start downloading the images
+		m_scenarioContext.setScenarioImg(configModule.getScenarioImgPath() + m_scenario_obj.img);
+		
+		for (var x=0; x < m_scenario_obj.sequences.length; x++){
+
+			var messages=m_scenario_obj.sequences[x].messages;
+			
+			for (var y=0; y < messages.length; y++){
+				
+				if (messages[y].scenImg){
+					m_scenarioContext.setScenarioImg(configModule.getScenarioImgPath() + messages[y].scenImg);
+				}
+			}
+		}
+	}
+	
+	// Control the download of the images
+	function scenarioImgCtrl(e){		
+		m_scenario_images_processed++;
+		
+		// Once all the images has been processed
+		if (m_scenario_images_processed==m_scenario_images){
+			var there_is_error=false;
+			
+			console.log("Check scenario images");
+			
+			var list=m_scenarioContext.getScenarioImgList();
+			
+			m_error="";
+			
+			for (key in list) {
+				
+				var img=list[key];
+								
+				// If the images has not been found
+				if (img.getState()!=img.IMG_OK){
+					there_is_error=true;
+					m_error+="Error downloading image: "+ img.getUrl() + "<br>";
+				}				
+			}			
+			
+			if (there_is_error){
+				scenarioView.displayError('<div id="msg" class="error">'+m_error+'</div>');
+			}
+			
+		}
+	}
 	
 	// This callback method is called when the file was read
 	// This method start validations
