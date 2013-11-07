@@ -8,6 +8,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 	
 	<link href="css/valpopp.css" rel="stylesheet" type="text/css" />
+	
 	<link href="css/smoothness/jquery-ui-1.10.3.custom.css" rel="stylesheet">
 
     <meta http-equiv="cache-control" content="max-age=0" />
@@ -107,8 +108,8 @@
 		<ul>
 		    <li><input id="bt_open" type="button" onclick='applicationController.openButton();' value="Open" disabled></li>
 		    <li><input id="bt_play" class="play" type="button" onclick='scenarioController.playButton();' value="Start" disabled></li>
-		    <li><input id="bt_stop" type="button" onclick='scenarioController.stopButton();' value="Stop" disabled></li>
 		    <li><input id="bt_quiz" class="inactive" type="button" onclick='scenarioController.quizButton();' value="Quiz" disabled></li>
+		    <li><input id="bt_clear" type="button" onclick='scenarioController.stopButton();' value="Clear" disabled></li>
 		    <li><input id="bt_mode" type="checkbox" onclick='scenarioController.modeCheckbox();' checked disabled><a href="#" onclick='scenarioController.changeMode();' >Continuous Mode</a></li>
 		    <li><input id="bt_data" type="button" onclick='scenarioController.dataButton();' value="Scenario Data" disabled></li>
 		    <li><input id="bt_settings" type="button" onclick='applicationController.settingsButton();' value="Settings" disabled></li>

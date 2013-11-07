@@ -41,6 +41,8 @@ function ScenarioView(){
 	
 	var m_current_dialog=null;
 	
+	var m_current_quizz_ready=false;
+	
 	var m_scenario_data_dialog=null;
 	
 	// ******************************************************************************
@@ -373,6 +375,8 @@ function ScenarioView(){
 	function showScenarioQuizz(){
 		console.log("ScenarioView.showScenarioQuizz");
 		
+		m_current_quizz_ready=false;
+		
 		var mcq = m_scenarioPlay.getMCQ();
 		
 		var mcq_title= mcq.title;
@@ -399,13 +403,13 @@ function ScenarioView(){
 			height: height,			
 			title: mcq_title,
 			buttons: {
-				"Accept": function() {
+				"Submit": function() {
 					$("#maindialog").dialog("close");					
 					quizzResults();
-				},			
-				"Close": function(){
-					$(this).dialog("close");
 				}
+			},
+			close: function( event, ui ) {
+				finishQuizz();
 			}
 		});
 		
@@ -448,27 +452,25 @@ function ScenarioView(){
 		
 		m_current_dialog.html(utils.getMCQResults(mcq, userResponses, validResponses, validAnswer));
 		
+		m_current_quizz_ready=true;
+		
 		// Select which buttons are displied
 		if (configModule.getShowMCQAnswers() && !validAnswer){
 			m_current_dialog.dialog('option', 'buttons', {
 			    'Show Answers': function() {
 			    	quizzAnswers();
 			    },			
-				"Close": function(){
-					finishQuizz();
-					$(this).dialog("close");
+				"Back": function(){
+					m_current_quizz_ready=false;
+					$("#maindialog").dialog("close");
+					showScenarioQuizz();
 				}
 			});			
 		}else{
-			m_current_dialog.dialog('option', 'buttons', {			
-				"Close": function(){
-					finishQuizz();
-					$(this).dialog("close");
-				}
-			});				
+			m_current_dialog.dialog('option', 'buttons', {});				
 		}
 		
-		m_current_dialog.dialog("open");		
+		m_current_dialog.dialog("open");	
 	}
 	
 	// Move to private function section
@@ -476,26 +478,25 @@ function ScenarioView(){
 		
 		//TODO: show answers here
 		var mcq = m_scenarioPlay.getMCQ();
+		
 		m_current_dialog.html(utils.getMCQAnswers(mcq));
 		
-		m_current_dialog.dialog('option', 'buttons', {
-		    'Close': function() {
-		    	finishQuizz();
-		        $(this).dialog('close');
-		    }
-		});
+		m_current_dialog.dialog('option', 'buttons', {});
 		
 		m_current_dialog.dialog("open");
 	}
 	
 	function finishQuizz(){
-		m_scenarioPlay.processMCQ();
-		
-		var event = $.Event( "ScenarioPlayQuizzFinished" );
-		$(window).trigger( event );			
+		if (m_current_quizz_ready){
+			m_scenarioPlay.processMCQ();
+			
+			var event = $.Event( "ScenarioPlayQuizzFinished" );
+			$(window).trigger( event );
+		}
 	}
 	
 	function clearScenarioDisplay(){
+		m_current_quizz_ready=false;
 		m_scenarioContext=null;
 		m_scenarioPlay=null;
 	}	
@@ -571,7 +572,7 @@ function ScenarioView(){
 		var button=document.getElementById("bt_play");
 		button.disabled=false;
 		
-		button=document.getElementById("bt_stop");
+		button=document.getElementById("bt_clear");
 		button.disabled=false;
 		
 		button=document.getElementById("bt_mode");
@@ -588,7 +589,7 @@ function ScenarioView(){
 		var button=document.getElementById("bt_play");
 		button.disabled=true;
 		
-		button=document.getElementById("bt_stop");
+		button=document.getElementById("bt_clear");
 		button.disabled=true;
 		
 		button=document.getElementById("bt_mode");

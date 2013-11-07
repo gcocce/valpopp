@@ -347,7 +347,7 @@ function ScenarioController(){
 			button.value="Continue";
 			button.disabled=true;
 			
-			button=document.getElementById("bt_stop");
+			button=document.getElementById("bt_clear");
 			button.disabled=true;
 			
 			//button=document.getElementById("bt_mode");
@@ -363,7 +363,7 @@ function ScenarioController(){
 			button.value="Continue";
 			button.disabled=false;
 			
-			button=document.getElementById("bt_stop");
+			button=document.getElementById("bt_clear");
 			button.disabled=false;
 			
 			button=document.getElementById("bt_mode");
@@ -376,7 +376,7 @@ function ScenarioController(){
 				
 		
 		function quizzFinishedCommandButtons(){
-			var button=document.getElementById("bt_stop");
+			var button=document.getElementById("bt_clear");
 			button.disabled=false;
 			
 			button=document.getElementById("bt_mode");
