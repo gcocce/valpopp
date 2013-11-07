@@ -286,11 +286,15 @@ body {
 
 
 /* For the Scenario Data Dialog */
+#scenarioData{
+	background-color: white; overflow-x: hidden; overflow-y: hidden;
+}
 
 #ScenarioDataDialog{
 	height: 100%;
 	display:block;
     margin:auto;
+    background-color: white; overflow-x: auto; overflow-y: auto;
 }
 
 #ScenarioDataDialog .ScenarioDataButton{

@@ -45,6 +45,10 @@ function ScenarioView(){
 	
 	var m_scenario_data_dialog=null;
 	
+	var m_scenario_img_dialog_open=false;
+	var m_scenario_msg_dialog_open=false;
+	
+	
 	// ******************************************************************************
 	// Private Methods
 	// ******************************************************************************
@@ -322,16 +326,63 @@ function ScenarioView(){
 	function getCurrentScenarioPlay(){
 		return m_scenarioPlay;
 	}
-	
+
+	// Show Scenario Img Dialog with the current Scenario Image
 	function showScenarioImage(){
+		console.log("showScenarioImage");
+
+		m_scenario_img_dialog_open=true;
 		
+		console.log("Current img: " + configModule.getScenarioImgPath() + m_scenarioPlay.getCurrentScenarioImg());
+		
+		// Get the image from the context
+		var img = m_scenarioContext.getScenarioImg(configModule.getScenarioImgPath() + m_scenarioPlay.getCurrentScenarioImg());
+		
+		var scenimg_html= utils.getScenarioImgHtml(img, m_scenario_data_dialog.width(), m_scenario_data_dialog.height());
+		
+	    m_scenario_data_dialog = $("#scenarioData").dialog({
+			autoOpen: false,
+			modal: true,
+			resizable: true,
+			title: "Scenario Image",
+			buttons: {},
+			close: function( event, ui ) {
+				m_scenario_img_dialog_open=false;
+			}
+		});
+		
+	    m_scenario_data_dialog.html(scenimg_html);
+		
+	    m_scenario_data_dialog.dialog("open");		
 	}
 	
 	function showScenarioMessages(){
+		console.log("showScenarioMessages");
+		m_scenario_msg_dialog_open=true;
+				
+		var scenmsg_html= utils.getScenarioMsgHtml();
+		
+	    m_scenario_data_dialog = $("#scenarioData").dialog({
+			autoOpen: false,
+			modal: true,
+			position: {  my: "center", at: "center", of: window },
+			resizable: true,		
+			title: "Scenario Messages",
+			buttons: {},
+			close: function( event, ui ) {
+				m_scenario_msg_dialog_open=false;
+			}
+		});
+		
+	    m_scenario_data_dialog.html(scenmsg_html);
+		
+	    m_scenario_data_dialog.dialog("open");				
 		
 	}
 	
 	function showScenarioReferences(){
+		console.log("showScenarioReferences");
+		
 		
 	}
 	
@@ -360,11 +411,7 @@ function ScenarioView(){
 			width: width,
 			height: height,			
 			title: "Scenario Data",
-			buttons: {		
-				"Close": function(){
-					$(this).dialog("close");
-				}
-			}
+			buttons: {}
 		});
 		
 	    m_scenario_data_dialog.html(scendata_html);
@@ -475,8 +522,6 @@ function ScenarioView(){
 	
 	// Move to private function section
 	function quizzAnswers(){
-		
-		//TODO: show answers here
 		var mcq = m_scenarioPlay.getMCQ();
 		
 		m_current_dialog.html(utils.getMCQAnswers(mcq));
@@ -503,6 +548,10 @@ function ScenarioView(){
 	
 	function initiateScenarioDisplay(context){
 		console.log("ScenarioView.initiateScenarioDisplay(context)");
+		
+		m_scenario_img_dialog_open=false;
+		m_scenario_msg_dialog_open=false;
+		
 		m_scenarioContext=context;
 		
 		m_scenarioPlay=new ScenarioPlay(context);
@@ -615,10 +664,21 @@ function ScenarioView(){
 	
 	//$(window).on( "ScenarioPlayMandatoryQuizz", showScenarioQuizz);	
 	
+	$(window).on( "ScenarioImgChanged", changeScenarioImg);
+	
+	
 	
 	// ******************************************************************************
 	// Call back function for events
 	// ******************************************************************************	
+	
+	function changeScenarioImg(e){
+		console.log("changeScenarioImg");
+		
+		if (m_scenario_img_dialog_open){
+			showScenarioImage();
+		}
+	}
 	
 	function updateScenarioView(e){
 		console.log("ScenarioView.updateScenarioView");

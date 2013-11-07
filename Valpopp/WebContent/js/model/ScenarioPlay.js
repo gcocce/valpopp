@@ -116,7 +116,7 @@ function ScenarioPlay(context){
     var m_message_list=new Array();
     
     // Name of the scenario image currently displayed
-    var m_scenario_img=null;
+    var m_scenario_img=m_context.getFirstScenarioImage();
     
 	// ******************************************************************************
 	// Private Methods
@@ -131,7 +131,8 @@ function ScenarioPlay(context){
 		m_sequence_started=false;
 		m_currentSyncPoint=null;
 		m_quizz_processed=false;
-			
+		m_scenario_img=m_context.getFirstScenarioImage();
+				
 		m_sim_time=INITIAL_TIME;
 		m_last_msg_treatment=0;
 		m_scenCurrentMaxTime=0;
@@ -219,7 +220,6 @@ function ScenarioPlay(context){
 		
 		if (scenMessage.scenImg){
 			msg.setScenImg(scenMessage.scenImg);
-			//TODO: change scenario image
 		}
 		
 		var obj= new ScenObject(m_scenType.MESSAGE, msg);
@@ -347,6 +347,18 @@ function ScenarioPlay(context){
 		 					// Treatment should be managed here
 		 					if(transmited>=msg.getTransTime()){
 		 						msg.setReady(true);
+		 						
+		 						var scenImg=msg.getScenImg();
+		 						
+		 						// If the messages set a new scenario image
+		 						if (scenImg.localeCompare("")!=0){
+		 							
+		 							m_scenario_img=scenImg;
+		 							
+		 							var event = $.Event( "ScenarioImgChanged" );
+		 							$(window).trigger( event );	
+		 						}
+		 						
 		 						// Index of the messag in the ScenarioFile Array of Messages
 		 						var index=msg.getIndex();
 		 						//console.log("calculateScenarioPlay message completed index:" + index);
@@ -553,9 +565,15 @@ function ScenarioPlay(context){
 	this.getMCQ=getMCQ;
 	this.processMCQ=processMCQ;
 	
+	this.getCurrentScenarioImg=getCurrentScenarioImg;
+	
 	// ******************************************************************************
 	// Public Methods Definition
 	// ******************************************************************************
+	
+	function getCurrentScenarioImg(){
+		return m_scenario_img;
+	}
 	
 	function getMCQ(){
 		var m_current_sequence=m_context.getSequence(m_currentSequenceId);

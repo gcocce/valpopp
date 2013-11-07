@@ -13,10 +13,42 @@ function Utils(){
 	this.getScenarioDataMenu=getScenarioDataMenu;
 	this.wrapHtmlErrorMsg=wrapHtmlErrorMsg;
 	this.wrapHtmlMsg=wrapHtmlMsg;
+	this.getScenarioImgHtml=getScenarioImgHtml;
+	this.getScenarioMsgHtml=getScenarioMsgHtml;
 
 	//***************************************************************************
 	// Public Methods Definition	
 	//***************************************************************************
+	
+	function getScenarioMsgHtml(){
+		//TODO: develop code to build html
+		
+		
+	}
+	
+	function getScenarioImgHtml(img, width, height){
+		//img.getState();
+		var dlg_width=Math.round(width)-10;
+		var dlg_height=Math.round(height)-10;
+		
+		var img_width=img.getWidth();
+		var img_height=img.getHeight();
+
+		// Adapt image size to dialog size
+		if (dlg_width<img_width){
+			var prop= dlg_width / img_width;
+			img_width=dlg_width;
+			img_height=img_height * prop;
+		}
+		
+		if (dlg_height < img_height){
+			var prop= dlg_height / img_height;
+			img_height=dlg_height;
+			img_width=img_width * prop;
+		}		
+
+		return '<div id="ScenarioDataDialog"><img src="'+img.getUrl()+'" height="'+img_height+'" width="'+img_width+'"></div>';
+	}
 	
 	function wrapHtmlErrorMsg(html_msg){
 		return '<div id="msgContainer">'+html_msg+'</div>';
@@ -88,7 +120,6 @@ function Utils(){
 		return html;		
 	}
 	
-	// TODO: download right and wrong images previously
 	function getMCQAnswers(mcq){
 		var title="";
 		var responses="";

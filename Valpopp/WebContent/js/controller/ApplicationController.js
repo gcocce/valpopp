@@ -219,7 +219,8 @@ function ApplicationController(){
 				"Dismiss": function() {
 					$(this).dialog("close");
 				}
-	        }
+	        },
+			close: function( event, ui ) {}
 	    });
 	    
 	    $("#maindialog").html("");
@@ -263,7 +264,8 @@ function ApplicationController(){
 				"Cancel": function() {
 					$(this).dialog("close");
 				}				
-	        }
+	        },
+			close: function( event, ui ) {}
 	    });
 	    
 	    m_open_dialog.html(utils.getScenarioListLoading());

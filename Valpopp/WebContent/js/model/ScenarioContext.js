@@ -190,12 +190,18 @@ function ScenarioContext(){
 	
 	this.getPropagTime=getPropagTime;
 	this.getThroughput=getThroughput;
+	
+	this.getFirstScenarioImage=getFirstScenarioImage;
 
 		
 	// ******************************************************************************
 	// Public Methods Definition
 	// ******************************************************************************
 
+	function getFirstScenarioImage(){
+		return m_scenario_object.img;
+	}
+	
 	function getPropagTime(srcN, destN){
 		return m_def_prog[srcN][destN].propagTime;
 	}
