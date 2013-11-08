@@ -294,7 +294,12 @@ body {
 	height: 100%;
 	display:block;
     margin:auto;
+    font-size: 1.0em;
     background-color: white; overflow-x: auto; overflow-y: auto;
+}
+
+#ScenarioMessageList{
+	font-size: 0.8em;
 }
 
 #ScenarioDataDialog .ScenarioDataButton{

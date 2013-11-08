@@ -21,7 +21,7 @@ function Utils(){
 	//***************************************************************************
 	
 	function getScenarioMsgHtml(list){
-		var html='<div id="ScenarioDataDialog">';
+		var html='<div id="ScenarioDataDialog"><div id="ScenarioMessageList">';
 		
 		for (key in list) {
 			
@@ -30,7 +30,7 @@ function Utils(){
 			html+=msg+'<br>';
 		}
 		
-		html+='</div>';
+		html+='</div></div>';
 		
 		return html;
 	}

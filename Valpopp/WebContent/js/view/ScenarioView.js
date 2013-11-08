@@ -375,8 +375,14 @@ function ScenarioView(){
 		
 	    m_scenario_data_dialog.html(scenmsg_html);
 		
-	    m_scenario_data_dialog.dialog("open");				
-		
+	    m_scenario_data_dialog.dialog("open");
+	    
+	    // Check if scroll is necessary
+	    var el=document.getElementById("ScenarioDataDialog");
+	    
+	    if (el.clientHeight < el.scrollHeight){
+	    	el.scrollTop= el.scrollHeight-el.clientHeight;
+	    }
 	}
 	
 	function showScenarioReferences(){
