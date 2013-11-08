@@ -21,10 +21,18 @@ function Utils(){
 	//***************************************************************************
 	
 	function getScenarioMsgHtml(list){
-		//TODO: develop code to build html
+		var html='<div id="ScenarioDataDialog">';
 		
-		return "Hola";
+		for (key in list) {
+			
+			var msg=list[key];
+							
+			html+=msg+'<br>';
+		}
 		
+		html+='</div>';
+		
+		return html;
 	}
 	
 	function getScenarioImgHtml(img, width, height){

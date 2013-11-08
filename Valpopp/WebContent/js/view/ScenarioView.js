@@ -365,7 +365,6 @@ function ScenarioView(){
 	    m_scenario_data_dialog = $("#scenarioData").dialog({
 			autoOpen: false,
 			modal: true,
-			position: {  my: "center", at: "center", of: window },
 			resizable: true,		
 			title: "Scenario Messages",
 			buttons: {},
@@ -667,6 +666,8 @@ function ScenarioView(){
 	
 	$(window).on( "ScenarioImgChanged", changeScenarioImg);
 	
+	$(window).on( "ScenarioMessageListChanged", changeScenarioMessageList);
+	
 	$(window).on( "ScenarioStopClear", scenarioClear);
 	
 	// ******************************************************************************
@@ -685,6 +686,12 @@ function ScenarioView(){
 		if (m_scenario_img_dialog_open){
 			showScenarioImage();
 		}
+	}
+	
+	function changeScenarioMessageList(){
+		if (m_scenario_msg_dialog_open){
+			showScenarioMessages();
+		}		
 	}
 	
 	function updateScenarioView(e){

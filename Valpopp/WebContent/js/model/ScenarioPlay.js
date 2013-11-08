@@ -329,8 +329,6 @@ function ScenarioPlay(context){
 	 						
 	 						msg.setDisplay(true);
 	 						
-	 						m_message_list.push(msg.getMsg());
-	 						
 		 					// Update the amount of time used to transmit the message if it is already displayed
 		 					var transmited=msg.getTransmitedTime();
 		 					transmited = transmited + SIMULATION_TIME;
@@ -349,6 +347,13 @@ function ScenarioPlay(context){
 		 					// Treatment should be managed here
 		 					if(transmited>=msg.getTransTime()){
 		 						msg.setReady(true);
+		 						
+		 						// Add the message to the list to be shown in Scenario Message List
+		 						m_message_list.push(msg.getMsg());
+		 						
+		 						// Notify that the list has another message
+	 							var event = $.Event( "ScenarioMessageListChanged" );
+	 							$(window).trigger( event );		 						
 		 						
 		 						var scenImg=msg.getScenImg();
 		 						
