@@ -192,12 +192,17 @@ function ScenarioContext(){
 	this.getThroughput=getThroughput;
 	
 	this.getFirstScenarioImage=getFirstScenarioImage;
+	this.getScenarioReferences=getScenarioReferences;
 
 		
 	// ******************************************************************************
 	// Public Methods Definition
 	// ******************************************************************************
 
+	function getScenarioReferences(){
+		return m_scenario_object.references;
+	}
+	
 	function getFirstScenarioImage(){
 		return m_scenario_object.img;
 	}

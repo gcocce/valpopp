@@ -388,11 +388,36 @@ function ScenarioView(){
 	function showScenarioReferences(){
 		console.log("showScenarioReferences");
 		
+		var scenmsg_html= utils.getScenarioReferencesHtml(m_scenarioContext.getScenarioReferences());
+		
+	    m_scenario_data_dialog = $("#scenarioData").dialog({
+			autoOpen: false,
+			modal: true,
+			resizable: true,		
+			title: "Scenario References",
+			buttons: {},
+			close: function( event, ui ) {
+				m_scenario_msg_dialog_open=false;
+			}
+		});
+		
+	    m_scenario_data_dialog.html(scenmsg_html);
+		
+	    m_scenario_data_dialog.dialog("open");
+	    
+	    // Check if scroll is necessary
+	    var el=document.getElementById("ScenarioDataDialog");
+	    
+	    if (el.clientHeight < el.scrollHeight){
+	    	el.scrollTop= el.scrollHeight-el.clientHeight;
+	    }		
 		
 	}
 	
 	function showScenarioDataMenu(){
-		//
+		m_scenario_img_dialog_open=false;
+		m_scenario_msg_dialog_open=false;
+
 		console.log("ScenarioView.showScenarioQuizz");
 			
 		var scendata_html= utils.getScenarioDataMenu();

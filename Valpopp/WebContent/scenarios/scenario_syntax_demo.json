@@ -2,6 +2,11 @@
     "name": "Scenario Name",
     "img": "firstLU.gif",
 	"defaultmessage":{"type": "ONEWAY", "length": 240, "treatment": 0, "dash": "SEMI"},
+    "references":
+		[
+		{"title":"First Scenario Reference", "link":"http://en.wikipedia.org/wiki/GSM"},
+		{"title":"Second Scenario Reference", "link":"http://en.wikipedia.org/wiki/GSM_Radio_Frequency_optimization"}
+		],	
     "nodes":
 		[
         {"Id": 1, "name": "MS", "img" : "ms.gif"},

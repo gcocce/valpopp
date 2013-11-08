@@ -15,10 +15,30 @@ function Utils(){
 	this.wrapHtmlMsg=wrapHtmlMsg;
 	this.getScenarioImgHtml=getScenarioImgHtml;
 	this.getScenarioMsgHtml=getScenarioMsgHtml;
+	this.getScenarioReferencesHtml=getScenarioReferencesHtml;
 
 	//***************************************************************************
 	// Public Methods Definition	
 	//***************************************************************************
+	
+	function getScenarioReferencesHtml(references){
+		var html='<div id="ScenarioDataDialog"><div id="ScenarioReferenceList"><br>';
+		
+		if (references){
+			for (key in references) {
+				
+				var ref=references[key];
+								
+				html+='<a href="'+ref.link+'" target="_blank">'+ref.title+'</a><br><br>';
+			}			
+		}else{
+			html+='There are no reference for this Scenario<br><br>';			
+		}
+		
+		html+='</div></div>';
+		
+		return html;		
+	}
 	
 	function getScenarioMsgHtml(list){
 		var html='<div id="ScenarioDataDialog"><div id="ScenarioMessageList">';

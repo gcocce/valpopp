@@ -212,13 +212,13 @@ function ApplicationController(){
 	    $("#maindialog").dialog({ 
 	        modal: true,
 	        width: 300,
-	        height: 400,
+	        height: 300,
 	        position: {  my: "center", at: "center", of: window  },
 	        title: "Settings",
 	        buttons:{
-				"Dismiss": function() {
-					$(this).dialog("close");
-				}
+//				"Close": function() {
+//					$(this).dialog("close");
+//				}
 	        },
 			close: function( event, ui ) {}
 	    });
