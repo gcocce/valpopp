@@ -238,7 +238,20 @@ function ScenarioContext(){
 		return m_nodes_images[index];
 	}	
 	
+	// Clean Context and Change Scenario Object
 	function setScenario(obj){
+		m_error="";
+		m_state=CONTEXT_OK;
+		
+		m_nodes_number=0;
+		m_current_img="";
+		
+		m_default={};
+		
+		m_def_prog=new Array();
+		m_nodes_images = new Array();
+		m_scenario_images= new Array();
+		
 		m_scenario_object=obj;
 	}
 	

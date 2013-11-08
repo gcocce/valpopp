@@ -20,9 +20,10 @@ function Utils(){
 	// Public Methods Definition	
 	//***************************************************************************
 	
-	function getScenarioMsgHtml(){
+	function getScenarioMsgHtml(list){
 		//TODO: develop code to build html
 		
+		return "Hola";
 		
 	}
 	

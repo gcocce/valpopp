@@ -138,7 +138,7 @@ function ScenarioPlay(context){
 		m_scenCurrentMaxTime=0;
 		m_scenCurrentLastTime=INITIAL_TIME;
 		m_currentSequenceId=0;
-		m_messagesList= new Array();
+		m_message_list= new Array();
 		m_readyObjects = new Array();
 		m_processingObjects = new Array();
 		m_new_processingList= new Array();
@@ -328,6 +328,8 @@ function ScenarioPlay(context){
 	 					if (m_sim_time >= startTime){
 	 						
 	 						msg.setDisplay(true);
+	 						
+	 						m_message_list.push(msg.getMsg());
 	 						
 		 					// Update the amount of time used to transmit the message if it is already displayed
 		 					var transmited=msg.getTransmitedTime();
@@ -566,10 +568,15 @@ function ScenarioPlay(context){
 	this.processMCQ=processMCQ;
 	
 	this.getCurrentScenarioImg=getCurrentScenarioImg;
+	this.getCurrentListofMessages=getCurrentListofMessages;
 	
 	// ******************************************************************************
 	// Public Methods Definition
 	// ******************************************************************************
+	
+	function getCurrentListofMessages(){
+		return m_message_list;
+	}
 	
 	function getCurrentScenarioImg(){
 		return m_scenario_img;

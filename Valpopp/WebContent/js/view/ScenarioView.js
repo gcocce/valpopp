@@ -308,7 +308,6 @@ function ScenarioView(){
 	// ******************************************************************************
 	this.displayError=displayError;
 	this.displayMsg=displayMsg;
-	this.clearScenarioDisplay=clearScenarioDisplay;
 	this.initiateScenarioDisplay=initiateScenarioDisplay;	
 	this.enableScenarioCommands=enableScenarioCommands;
 	this.disableScenarioCommands=disableScenarioCommands;
@@ -318,6 +317,7 @@ function ScenarioView(){
 	this.showScenarioImage=showScenarioImage;
 	this.showScenarioMessages=showScenarioMessages;
 	this.showScenarioReferences=showScenarioReferences;
+	this.clearScenarioView=clearScenarioView;
 	
 	// ******************************************************************************
 	// Public Methods Definition
@@ -342,7 +342,7 @@ function ScenarioView(){
 		
 	    m_scenario_data_dialog = $("#scenarioData").dialog({
 			autoOpen: false,
-			modal: true,
+			modal: false,
 			resizable: true,
 			title: "Scenario Image",
 			buttons: {},
@@ -360,7 +360,7 @@ function ScenarioView(){
 		console.log("showScenarioMessages");
 		m_scenario_msg_dialog_open=true;
 				
-		var scenmsg_html= utils.getScenarioMsgHtml();
+		var scenmsg_html= utils.getScenarioMsgHtml(m_scenarioPlay.getCurrentListofMessages());
 		
 	    m_scenario_data_dialog = $("#scenarioData").dialog({
 			autoOpen: false,
@@ -405,7 +405,7 @@ function ScenarioView(){
 	    
 	    m_scenario_data_dialog = $("#scenarioData").dialog({
 			autoOpen: false,
-			modal: true,
+			modal: false,
 			position: {  my: "center", at: "center", of: window },
 			resizable: true,	
 			width: width,
@@ -540,11 +540,12 @@ function ScenarioView(){
 		}
 	}
 	
-	function clearScenarioDisplay(){
+	function clearScenarioView(){
 		m_current_quizz_ready=false;
 		m_scenarioContext=null;
 		m_scenarioPlay=null;
 	}	
+	
 	
 	function initiateScenarioDisplay(context){
 		console.log("ScenarioView.initiateScenarioDisplay(context)");
@@ -666,11 +667,17 @@ function ScenarioView(){
 	
 	$(window).on( "ScenarioImgChanged", changeScenarioImg);
 	
-	
+	$(window).on( "ScenarioStopClear", scenarioClear);
 	
 	// ******************************************************************************
 	// Call back function for events
 	// ******************************************************************************	
+	
+	function scenarioClear(e){
+		if (m_scenario_data_dialog){
+			m_scenario_data_dialog.dialog("close");	
+		}
+	}
 	
 	function changeScenarioImg(e){
 		console.log("changeScenarioImg");

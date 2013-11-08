@@ -79,9 +79,15 @@ function ScenarioController(){
 		button.disabled=true;
 		button.className="inactive";		
 		 
+		//If there is any scenarioPlay properly loaded
 		var scenarioPlay=scenarioView.getCurrentScenarioPlay();
 		if (scenarioPlay){
+			// Stop and clear the current scenario Play
 			scenarioPlay.stop();
+			
+			// Notify that the Scenario Stops
+			var event = $.Event( "ScenarioStopClear" );
+			$(window).trigger( event );				
 		}
 	}
 	

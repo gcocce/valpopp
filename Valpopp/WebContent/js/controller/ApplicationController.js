@@ -283,10 +283,10 @@ function ApplicationController(){
 		
 		applicationView.setProgressBar();
 			
-		scenarioView.clearScenarioDisplay();
+		scenarioView.clearScenarioView();
 		scenarioView.disableScenarioCommands();
 		
-		scenarioModelBuilder.loadScenarioRemoteFile(configModule.getScenarioPath()+ file_name);
+		scenarioModelBuilder.loadScenarioRemoteFile(configModule.getScenarioPath() + file_name);
 	}
 
 
