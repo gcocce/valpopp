@@ -77,7 +77,7 @@ function ApplicationView(){
 	// Display error message associated to the scenario
 	function displayError(html_msg){
 		
-		console.log("displayError: " + html_msg);   
+		console.log("displayError: " + html_msg);
 	    
 		$("#maindialog").dialog({
 			autoOpen: false,

@@ -48,6 +48,8 @@ function ScenarioView(){
 	var m_scenario_img_dialog_open=false;
 	var m_scenario_msg_dialog_open=false;
 	
+	var m_scenario_comments=true;
+	
 	
 	// ******************************************************************************
 	// Private Methods
@@ -318,10 +320,61 @@ function ScenarioView(){
 	this.showScenarioMessages=showScenarioMessages;
 	this.showScenarioReferences=showScenarioReferences;
 	this.clearScenarioView=clearScenarioView;
+	this.hideComments=hideComments;
+	this.showComments=showComments;
 	
 	// ******************************************************************************
 	// Public Methods Definition
 	// ******************************************************************************
+	
+	function hideComments(){
+		console.log("Hide Comments");
+		
+		m_scenario_comments=false;
+		
+		document.getElementById("vScenario").style.width="95%";
+		document.getElementById("vMessages").style.width="2%";
+		
+		var elCommentsBody=document.getElementById("vMessagesBody");
+		var elCommentsHeader=document.getElementById("vMessagesHeader");
+		
+		elCommentsBody.style.overflowY ="hidden";
+		
+		var commentsBodyHml="";
+		var commentsHeaderHtml='<a href="#" onClick="scenarioView.showComments();"><img src="img/show.jpg"></a>';
+		
+		elCommentsBody.innerHTML=commentsBodyHml;
+		elCommentsHeader.innerHTML=commentsHeaderHtml;
+		
+		//displayNodeImages();
+		
+		updateScenarioView(null);
+		
+		// TODO: MODIFY NODES DISPOSITION 
+	}
+	
+	function showComments(){
+		console.log("Show Comments");
+		
+		m_scenario_comments=true;
+		
+		document.getElementById("vScenario").style.width="70%";
+		document.getElementById("vMessages").style.width="26%";
+		
+		var elCommentsBody=document.getElementById("vMessagesBody");
+		var elCommentsHeader=document.getElementById("vMessagesHeader");
+		
+		elCommentsBody.style.overflowY ="scroll";
+		
+		var commentsBodyHml='<canvas id="vScenarioComments" style="background-color: white; border: 1px; border-color: black; display: block;">Your browser does not support HTML5 Canvas.</canvas>';
+		var commentsHeaderHtml='<a href="#" onClick="scenarioView.hideComments();"><img src="img/hide.jpg"></a>';
+		
+		elCommentsBody.innerHTML=commentsBodyHml;
+		elCommentsHeader.innerHTML=commentsHeaderHtml;
+		
+		//displayNodeImages();
+		updateScenarioView(null);
+	}
 	
 	function getCurrentScenarioPlay(){
 		return m_scenarioPlay;
