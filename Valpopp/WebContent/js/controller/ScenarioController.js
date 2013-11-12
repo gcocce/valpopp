@@ -296,7 +296,19 @@ function ScenarioController(){
 	  
 	  // This is triggered every time the canvas container is scrolled (whoever does it)
 	  function theContainerWasScrolled(e) {
-		//console.log("Container was Scrolled");
+		console.log("Container was Scrolled");
+		//TODO: TEST THIS CODE
+		  
+		var scroll = theContainer.scrollTop;
+		var scenarioPlay=scenarioView.getCurrentScenarioPlay();
+		scenarioPlay.setScrollPos(scroll);	
+		
+		var theCommentsContainer=document.getElementById("vMessagesBody");
+		
+		if (theCommentsContainer){
+			theCommentsContainer.scrollTop = scroll;
+		}
+		
 	  }
 	  
 	  function theDocumentWasScrolled(e) {

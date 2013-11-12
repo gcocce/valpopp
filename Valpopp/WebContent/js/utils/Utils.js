@@ -324,6 +324,10 @@ function ScenMessage(pi,pf, index, msgv){
 		
 	// Register the text message to be displayed with its parameters
 	var m_msg=msgv;
+	
+	// Register the comment to be displayed
+	var m_comment=null;
+	
 	var m_msg_pos=0;
 	
 	// Register type of message
@@ -392,6 +396,17 @@ function ScenMessage(pi,pf, index, msgv){
 	
 	this.setTransmitedTime=setTransmitedTime;
 	this.getTransmitedTime=getTransmitedTime;
+	
+	this.setComment=setComment;
+	this.getComment=getComment;
+	
+	function setComment(comment){
+		m_comment=comment;
+	}
+	
+	function getComment(){
+		return m_comment;
+	}
 	
 	function setTransmitedTime(time){
 		m_transmited_time=time;

@@ -11,25 +11,31 @@ console.log("ScenarioView Script");
 function ScenarioView(){
 	// ******************************************************************************
 	// Properties
-	// ******************************************************************************	
+	// ******************************************************************************
+	
 	var m_error="";
 	
 	// Reference to the model
 	var m_scenarioContext=null;
+	
 	// Reference to one instance of ScenarioPlay
 	var m_scenarioPlay=null;
 	
 	// Reference to the Html elements used to display the scenario
-	var theNodesContainer=document.getElementById("vNodes");
-    var theNodes = document.getElementById("vNodesCanvas");
-    var theNodesContext=theNodes.getContext("2d");
-    
     var theContainer = document.getElementById("vDraw");
     var theCanvas = document.getElementById("vScenarioCanvas");   
     var theCanvasContext=theCanvas.getContext("2d");
     
+	var theNodesContainer=document.getElementById("vNodes");
+    var theNodes = document.getElementById("vNodesCanvas");
+    var theNodesContext=theNodes.getContext("2d");
+    
+	var theCommentsContainer=document.getElementById("vMessagesBody");
+    var theCommentsCanvas = document.getElementById("vScenarioComments");
+    var theCommentsContext= theCommentsCanvas.getContext("2d");
     
     var m_drawing_canvas=new Canvas(theCanvasContext);
+    var m_comment_canvas=new Canvas(theCommentsContext);
     
 	var m_scenType= new ScenType();
 	
@@ -50,12 +56,45 @@ function ScenarioView(){
 	
 	var m_scenario_comments=true;
 	
+	var m_comment_section_width=0;
+	
+	var m_comment_text_size=12;
+	
 	
 	// ******************************************************************************
 	// Private Methods
 	// ******************************************************************************
     
-    function setupSize() {   	
+	// Set a responsive width for the scenario and comment section
+	function computeWindowSize(){
+    	var window_width= $(window).width();
+    	
+    	console.log("Window width: " + window_width );
+
+    	if (window_width <= 768){
+    		document.getElementById("vScenario").style.width="99%";
+    		document.getElementById("vMessages").style.display="none";
+    		
+    	}else{
+    		document.getElementById("vMessages").style.display="inline";
+    		
+        	if (m_scenario_comments){
+        		theCommentsContainer=document.getElementById("vMessagesBody");
+        	    theCommentsCanvas = document.getElementById("vScenarioComments");
+        	    theCommentsContext= theCommentsCanvas.getContext("2d");
+        	    
+        		document.getElementById("vScenario").style.width="72%";
+        		document.getElementById("vMessages").style.width="26%";                
+        	}else{
+        		document.getElementById("vScenario").style.width="96%";
+        		document.getElementById("vMessages").style.width="2%";
+        	}
+    	}
+    }
+    
+    function setupSize() {
+    	computeWindowSize();
+    	
         var theContainerHeight = window.getComputedStyle(theContainer).getPropertyValue('height');
         var theContainerWidth = window.getComputedStyle(theContainer).getPropertyValue('width');
         
@@ -76,10 +115,30 @@ function ScenarioView(){
     	theNodes.style.height = theNodesContainerHeight + 'px';
 	    theNodes.style.width = theContainerWidth + 'px';
 	    theNodes.setAttribute('height',theNodesContainerHeight);	    
-	    theNodes.setAttribute('width', theContainerWidth );    	    
+	    theNodes.setAttribute('width', theContainerWidth );
+	    
+	    // If the comment section is present adapt the size
+    	if (m_scenario_comments){
+    		
+            var theCommentsContainerHeight=window.getComputedStyle(theCommentsContainer).getPropertyValue('height');
+            var theCommentsContainerWidth=window.getComputedStyle(theCommentsContainer).getPropertyValue('width');
+            	           
+            theCommentsContainerHeight = parseInt(theCommentsContainerHeight);
+            theCommentsContainerWidth = parseInt(theCommentsContainerWidth);
+            
+            theCommentsCanvas.style.height = theCommentsContainerHeight + 'px';	    
+            theCommentsCanvas.style.width = theCommentsContainerWidth + 'px';
+            theCommentsCanvas.height = theCommentsContainerHeight;
+            theCommentsCanvas.width = theCommentsContainerWidth;
+            
+            m_comment_section_width = theCommentsContainerWidth;
+            
+            m_comment_text_size=calculateCommentTextSize(m_comment_section_width);
+    	}	    
     }
     
     function displayScenarioTitle(){
+    	
 		var header=document.getElementById("vHeader");
 		
 		header.innerHTML=m_scenarioContext.getScenarioName();
@@ -144,16 +203,28 @@ function ScenarioView(){
 	}
 	
 	
-	function calculateMsgTextSize(m_transfHeight){
+	function calculateMsgTextSize(){
 		var nodeDistance= m_nodesPosition[2] - m_nodesPosition[1];
 		
-		var size=Math.round(nodeDistance / 16 * m_transfHeight);
+		var size=Math.round(nodeDistance / 18);
+		
+		if (size > 20){
+			size = 20;
+		}
 		
 		return size;
 	}
 	
+	function calculateCommentTextSize(canvasWidth){
+
+		var size=Math.round(canvasWidth / 18);
+		
+		return size;
+	}	
+	
+	// Display objects of the scenario (messages, timer, treatment, comments, and so on...)
 	function displayObject(obj){
-//		console.log("displayObject of type: " + obj.getType());
+		//	console.log("displayObject of type: " + obj.getType());
 		
 		switch (obj.getType()){
 			case m_scenType.MESSAGE:
@@ -235,6 +306,13 @@ function ScenarioView(){
 					m_drawing_canvas.drawArrow(pi, pf, color, dashSize, complement, m_distBetweenNodes);
 					
 					m_drawing_canvas.drawMessage(name, messageX, messageY, textSize);
+					
+					// TODO: display comment
+					if (m_scenario_comments){
+						if (msg.getComment()){
+							m_comment_canvas.drawComment(msg.getComment(), 0 , pi.getY(), m_comment_text_size, m_comment_section_width);	
+						}
+					}
 				}
 				break;
 			case m_scenType.TREATMENT:
@@ -327,54 +405,64 @@ function ScenarioView(){
 	// Public Methods Definition
 	// ******************************************************************************
 	
+	// Hide scenario comments section
 	function hideComments(){
-		console.log("Hide Comments");
+		//console.log("Hide Comments");
 		
 		m_scenario_comments=false;
 		
-		document.getElementById("vScenario").style.width="95%";
+		document.getElementById("vScenario").style.width="96%";
 		document.getElementById("vMessages").style.width="2%";
 		
 		var elCommentsBody=document.getElementById("vMessagesBody");
 		var elCommentsHeader=document.getElementById("vMessagesHeader");
 		
-		elCommentsBody.style.overflowY ="hidden";
+		//elCommentsBody.style.overflowY ="hidden";
 		
 		var commentsBodyHml="";
 		var commentsHeaderHtml='<a href="#" onClick="scenarioView.showComments();"><img src="img/show.jpg"></a>';
 		
 		elCommentsBody.innerHTML=commentsBodyHml;
 		elCommentsHeader.innerHTML=commentsHeaderHtml;
-		
-		//displayNodeImages();
-		
+
+		// Update nodes disposition and scenario canvas size
 		updateScenarioView(null);
-		
-		// TODO: MODIFY NODES DISPOSITION 
 	}
 	
+	// Show scenario comments section
 	function showComments(){
-		console.log("Show Comments");
+		//console.log("Show Comments");
 		
 		m_scenario_comments=true;
 		
-		document.getElementById("vScenario").style.width="70%";
+		document.getElementById("vScenario").style.width="72%";
 		document.getElementById("vMessages").style.width="26%";
 		
 		var elCommentsBody=document.getElementById("vMessagesBody");
 		var elCommentsHeader=document.getElementById("vMessagesHeader");
 		
-		elCommentsBody.style.overflowY ="scroll";
+		//elCommentsBody.style.overflowY ="hidden";
 		
 		var commentsBodyHml='<canvas id="vScenarioComments" style="background-color: white; border: 1px; border-color: black; display: block;">Your browser does not support HTML5 Canvas.</canvas>';
-		var commentsHeaderHtml='<a href="#" onClick="scenarioView.hideComments();"><img src="img/hide.jpg"></a>';
+		var commentsHeaderHtml='<a href="#" onClick="scenarioView.hideComments();"><img src="img/hide.jpg"> Hide Comments</a>';
 		
 		elCommentsBody.innerHTML=commentsBodyHml;
 		elCommentsHeader.innerHTML=commentsHeaderHtml;
 		
-		//displayNodeImages();
+		// Update references to Comment Section and Canvas
+		theCommentsContainer=document.getElementById("vMessagesBody");
+	    theCommentsCanvas = document.getElementById("vScenarioComments");
+	    theCommentsContext= theCommentsCanvas.getContext("2d");
+	    m_comment_canvas=new Canvas(theCommentsContext);
+		
+		//Update nodes disposition and scenario canvas size
 		updateScenarioView(null);
+		
+		// The the scroll position that it has before
+		theContainer.scrollTop = m_scenarioPlay.getScrollPos();
+		theCommentsContainer.scrollTop = m_scenarioPlay.getScrollPos();
 	}
+	
 	
 	function getCurrentScenarioPlay(){
 		return m_scenarioPlay;
@@ -382,11 +470,11 @@ function ScenarioView(){
 
 	// Show Scenario Img Dialog with the current Scenario Image
 	function showScenarioImage(){
-		console.log("showScenarioImage");
+		//console.log("showScenarioImage");
 
 		m_scenario_img_dialog_open=true;
 		
-		console.log("Current img: " + configModule.getScenarioImgPath() + m_scenarioPlay.getCurrentScenarioImg());
+		//console.log("Current img: " + configModule.getScenarioImgPath() + m_scenarioPlay.getCurrentScenarioImg());
 		
 		// Get the image from the context
 		var img = m_scenarioContext.getScenarioImg(configModule.getScenarioImgPath() + m_scenarioPlay.getCurrentScenarioImg());
@@ -409,8 +497,9 @@ function ScenarioView(){
 	    m_scenario_data_dialog.dialog("open");		
 	}
 	
+	// Show the list of scenario messages already exchanged in the scenario simulation
 	function showScenarioMessages(){
-		console.log("showScenarioMessages");
+		//console.log("showScenarioMessages");
 		m_scenario_msg_dialog_open=true;
 				
 		var scenmsg_html= utils.getScenarioMsgHtml(m_scenarioPlay.getCurrentListofMessages());
@@ -438,8 +527,9 @@ function ScenarioView(){
 	    }
 	}
 	
+	// Show the list of reference of the scenario file
 	function showScenarioReferences(){
-		console.log("showScenarioReferences");
+		//console.log("showScenarioReferences");
 		
 		var scenmsg_html= utils.getScenarioReferencesHtml(m_scenarioContext.getScenarioReferences());
 		
@@ -466,6 +556,7 @@ function ScenarioView(){
 	    }		
 		
 	}
+	
 	
 	function showScenarioDataMenu(){
 		m_scenario_img_dialog_open=false;
@@ -543,11 +634,8 @@ function ScenarioView(){
 			}
 		});
 		
-		//$("#maindialog").html("<h1>Answer the quizz!</h1>");
-		//$("#maindialog").html(mcq_html);
 	    m_current_dialog.html(mcq_html);
 		
-		//$("#maindialog").dialog("open");		
 	    m_current_dialog.dialog("open");
 	}
 	
@@ -627,8 +715,7 @@ function ScenarioView(){
 		m_current_quizz_ready=false;
 		m_scenarioContext=null;
 		m_scenarioPlay=null;
-	}	
-	
+	}
 	
 	function initiateScenarioDisplay(context){
 		console.log("ScenarioView.initiateScenarioDisplay(context)");
@@ -649,6 +736,7 @@ function ScenarioView(){
 		enableScenarioCommands();		
 	}
 	
+	// Display a dialog with an information message
 	function displayMsg(html_msg){
 		console.log("ScenarioView.displayMsg");   
 	    
@@ -672,7 +760,7 @@ function ScenarioView(){
 		$("#maindialog").dialog("open");		
 	}
 	
-	// Display error message associated to the scenario
+	// Display a dialog with an error message associated to the scenario
 	function displayError(html_msg){
 		console.log("ScenarioView.displayError");   
 	    
@@ -696,8 +784,7 @@ function ScenarioView(){
 		$("#maindialog").dialog("open");
 	}
 	
-	// Setup Layout When the Language Module Was Fully Loaded
-
+	// Setup a valid Scenario Command buttons state 
 	function enableScenarioCommands(){
 		console.log("ApplicationView.enableScenarioCommands()");
 		
@@ -805,10 +892,22 @@ function ScenarioView(){
 		
 		height = m_scenarioPlay.getCurrentMaxTime() * m_transfHeight + 20;
 		
+		// The next lines force the canvas component to get clean
 	    theCanvas.style.height = height + 'px';	    
 	    theCanvas.style.width = width + 'px';
 	    theCanvas.height = height;
 	    theCanvas.width = width;
+	    
+	    // Clean also the comment section if it is present
+	    if (m_scenario_comments){
+			var c_width= theCommentsCanvas.width;
+			//var c_height = theCommentsCanvas.height;
+			
+	    	theCommentsCanvas.style.height = height + 'px';	    
+	    	theCommentsCanvas.style.width = c_width + 'px';
+	    	theCommentsCanvas.height = height;
+	    	theCommentsCanvas.width = c_width;	    	
+	    }
 	        
 	    // Display horizontal lines if there is anything to be displayed
 	    if (m_scenarioPlay.getCurrentMaxTime() > 0){

@@ -118,6 +118,9 @@ function ScenarioPlay(context){
     // Name of the scenario image currently displayed
     var m_scenario_img=m_context.getFirstScenarioImage();
     
+    // Register the current scroll position
+    var m_scenario_scroll=0;
+    
 	// ******************************************************************************
 	// Private Methods
 	// ******************************************************************************
@@ -216,7 +219,11 @@ function ScenarioPlay(context){
 		msg.setDash(scenMessage.dash);
 		msg.setTransTime(trans_time);
 		
-		console.log("Message Total Transmision Time: " + msg.getTransTime());
+		if (scenMessage.comment){
+			msg.setComment(scenMessage.comment.text);
+		}
+		
+		//console.log("Message Total Transmision Time: " + msg.getTransTime());
 		
 		if (scenMessage.scenImg){
 			msg.setScenImg(scenMessage.scenImg);
@@ -253,7 +260,7 @@ function ScenarioPlay(context){
 	}
 	
 	function processSyncPoint(syncpoint, index, lastmsgTime, treatment){
-		console.log("processSyncPoint "+ syncpoint);
+		//console.log("processSyncPoint "+ syncpoint);
 		
 		var count=0;
 		for (var x=index; x < m_current_messageList.length; x++){
@@ -265,7 +272,7 @@ function ScenarioPlay(context){
 			}
 		}
 		
-		console.log("number of syncronizing messages "+ count);
+		//console.log("number of syncronizing messages "+ count);
 	}
 	
 	/* Calculate the time of ocurrence and create the Scenario Objects
@@ -280,7 +287,7 @@ function ScenarioPlay(context){
  			
  			// If the current sequence has not started to be processed
  			if (!m_sequence_started){
- 				console.log("ScenarioPlay Start CurrentSequence:" + m_currentSequenceId);
+ 				//console.log("ScenarioPlay Start CurrentSequence:" + m_currentSequenceId);
  				
  				m_sequence_started=true;
  				m_quizz_processed=false;
@@ -575,9 +582,20 @@ function ScenarioPlay(context){
 	this.getCurrentScenarioImg=getCurrentScenarioImg;
 	this.getCurrentListofMessages=getCurrentListofMessages;
 	
+	this.setScrollPos=setScrollPos;
+	this.getScrollPos=getScrollPos;
+	
 	// ******************************************************************************
 	// Public Methods Definition
 	// ******************************************************************************
+	
+	function setScrollPos(scroll){
+		m_scenario_scroll=scroll;
+	}
+	
+	function getScrollPos(){
+		return m_scenario_scroll;
+	}
 	
 	function getCurrentListofMessages(){
 		return m_message_list;

@@ -14,14 +14,42 @@ function Canvas(drawing_context){
 	
 	var m_context=drawing_context;
 	
-	var m_width=0;
+	var m_width=drawing_context.width;
 	var m_height=0;
 	
 	
 	// ******************************************************************************
 	// Private Methods
 	// ******************************************************************************
-	
+
+	// Wrap the line of the comment but no more than two lines are possible (the remaining is not printed)
+	function wrapText(text, x, y, maxWidth, lineHeight) {
+        var words = text.split(' ');
+        var line = '';
+        var lines=0;
+
+        for(var n = 0; n < words.length; n++) {
+          var testLine = line + words[n] + ' ';
+          var metrics = m_context.measureText(testLine);
+          var testWidth = metrics.width;
+          if (testWidth > maxWidth && n > 0) {
+        	  lines++;
+        	  m_context.fillText(line, x, y);
+        	  //m_context.strokeText(line, x, y);
+        	  line = words[n] + ' ';
+        	  y += lineHeight;
+        	  
+        	  // If another line is required go out
+        	  if (lines==2) return;
+          }
+          else {
+            line = testLine;
+          }
+        }
+        
+        m_context.fillText(line, x, y);
+        //m_context.strokeText(line, x, y);
+      }	
 	
 	// ******************************************************************************
 	// Public Methods Publication
@@ -34,6 +62,7 @@ function Canvas(drawing_context){
 	this.drawArrow=drawArrow;
 	this.drawMessage=drawMessage;
 	this.drawTreatmentLine=drawTreatmentLine;
+	this.drawComment=drawComment;
 	
 	// ******************************************************************************
 	// Public Methods Definition
@@ -79,6 +108,7 @@ function Canvas(drawing_context){
         //console.log("Canvas.drawArrow final point: "+pf.getX()+","+pf.getY());
 		m_context.fillStyle = '#000000';  
 		m_context.strokeStyle  = color;
+		
 		// The following function does not works on firefox older versions
 		//m_context.setLineDash([dash]);
 		m_context.lineWidth  = 1;
@@ -160,6 +190,34 @@ function Canvas(drawing_context){
 		m_context.fillStyle    = "black";
 		m_context.fillText  ( msg,  posx , posy);		
 	}
+	
+	function drawComment(msg, posx, posy, textSize, canvasWidth){
+//		console.log("drawMessage " + msg);
+		
+		var lineHeight = textSize + 2;
+		
+		// Clear the below space of the canvas from posy
+		m_context.fillStyle = 'white';
+		m_context.fillRect(posx, posy, canvasWidth, lineHeight * 2);
+
+		// Draw the text comment
+		var fontSize = textSize;
+		var fontFace = "serif";
+		var textBaseline = "top";
+		var textAlign = "left";
+		var fontWeight ="normal";
+		var fontStyle = "normal";
+
+		m_context.textBaseline = textBaseline;
+		m_context.textAlign = textAlign;
+		m_context.font = fontWeight + " " + fontStyle + " " + fontSize + "px " + fontFace;
+
+		m_context.fillStyle = "black";
+		
+		var text = 'All the world \'s a stage, and all the men and women merely players. They have their exits and their entrances; And one man in his time plays many parts.';
+
+		wrapText(text, posx, posy, canvasWidth, lineHeight);		
+	}	
 
 	function drawAction(msg, posx, posy, textSize){
 		
@@ -184,4 +242,5 @@ function Canvas(drawing_context){
 		m_context.fillStyle    = "black";
 		m_context.fillText  ( msg,  posx , posy);		
 	}
+	
 }
