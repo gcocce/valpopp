@@ -293,9 +293,9 @@ function ScenarioView(){
 						break;
 					}
 					
-					var dashSize=0;
+					var dashSize=[];
 					if (dash.localeCompare("FULL")!=0){
-						dashSize=4;
+						dashSize=[6];
 					}
 					
 					// Calculate the complement of the angle of the arrow

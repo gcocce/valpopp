@@ -49,7 +49,25 @@ function Canvas(drawing_context){
         
         m_context.fillText(line, x, y);
         //m_context.strokeText(line, x, y);
-      }	
+      }
+	
+	// Function to set dash line if possible regarding browser and function availability
+	function setDash(context, array) {
+	    offset = (typeof offset === 'number') ? offset : 0;
+
+	    if (typeof context.setLineDash == 'undefined') { //Firefox
+	        context.mozDash = array;
+	        context.mozDashOffset = 0;
+	    } else { //Chrome
+	    	// If the function is defined we used it, otherwise we do the normal line
+	    	if (context.setLineDash) {
+		        context.setLineDash(array);
+	    	}else{
+	    		console.log("setLineDash is no present, using straight line.");
+	    	}
+	    	
+	    }
+	}	
 	
 	// ******************************************************************************
 	// Public Methods Publication
@@ -81,6 +99,8 @@ function Canvas(drawing_context){
 	}
 	
 	function drawVerticalLine(pi,pf){
+		// Clear dash parameter
+		setDash(m_context, []);
 		m_context.strokeStyle  = "blue";
 		m_context.lineWidth  = 1;
 		m_context.lineCap  = 'square';
@@ -94,8 +114,9 @@ function Canvas(drawing_context){
 	function drawTreatmentLine(pi, pf){
 		m_context.strokeStyle  = "black";
 		m_context.lineWidth  = 2;
-		// The following function does not works on firefox older versions
-		//m_context.setLineDash([0]);
+
+		// Set dash parameter
+		setDash(m_context, []);
 		m_context.lineCap  = 'square';
 		m_context.beginPath();
 		m_context.moveTo(pi.getX(), pi.getY());
@@ -108,9 +129,9 @@ function Canvas(drawing_context){
         //console.log("Canvas.drawArrow final point: "+pf.getX()+","+pf.getY());
 		m_context.fillStyle = '#000000';  
 		m_context.strokeStyle  = color;
-		
-		// The following function does not works on firefox older versions
-		//m_context.setLineDash([dash]);
+
+		// Set dash parameter
+		setDash(m_context, dash);
 		m_context.lineWidth  = 1;
 		m_context.lineCap  = 'square';
 		m_context.beginPath();
@@ -120,9 +141,10 @@ function Canvas(drawing_context){
 		m_context.closePath();
 		
 		// Draw the point of the arrow
-		// The following function does not works on firefox older versions
-		//m_context.setLineDash([0]);
+		// Clear dash parameter
+		setDash(m_context, []);
 		
+		// Establish direction
 		var direction = -1;
 		if (pf.getX() < pi.getX()){
 			direction = 1;

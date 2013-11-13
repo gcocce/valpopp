@@ -25,7 +25,7 @@
         {"Id": 1, "nextId":2,
 			"messages":
 				[
-				{"srcN":1,"destN" : 2, "name": "MM_LOCATION_UPDATE", "param": "IMSI, LS1",  "type": "REQUEST", "length": 230, "treatment": 0, "dash": "FULL", "startTime": "", "synchPoint": "", "comment": {"text": "This messages do some work..."}}
+				{"srcN":1,"destN" : 2, "name": "MM_LOCATION_UPDATE", "param": "IMSI, LS1",  "type": "REQUEST", "length": 230, "treatment": 0, "dash": "SEMI", "startTime": "", "synchPoint": "", "comment": {"text": "This messages do some work..."}}
 				],
 			"mcq": {"title": "Gestion de la mobilité", "text":"Lors de la primier mise sous tension du terminal:", "points": 3 ,
 				"answers":
@@ -45,9 +45,9 @@
 				{"srcN": 4, "destN" : 2, "name": "MAP_SEND_AUTHENTIFICATION", "type": "RESPONSE", "length": 230, "treatment": 20, "dash": "SEMI", "startTime": "", "synchPoint": "A", "action": {"text": "This node does some work 1"}},
 				{"srcN": 2, "destN" : 1, "name": "MAP_SEND_AUTHENTIFICATION", "type": "RESPONSE", "length": 230, "treatment": 0, "dash": "SEMI", "startTime": "A", "scenImg": "LU-France1.gif", "comment": {"text": "This messages do some work 2"}},
 				{"srcN": 1, "destN" : 2, "name": "MAP_SEND_AUTHENTIFICATION", "type": "ONEWAY", "length": 230, "treatment": 5, "dash": "SEMI", "startTime": "", "scenImg": "LU-France2.gif", "comment": {"text": "This messages do some work 3"}},
-				{"srcN": 2, "destN" : 1, "name": "MAP_SEND_AUTHENTIFICATION", "type": "RESPONSE", "length": 230, "treatment": 5, "dash": "SEMI", "startTime": "", "scenImg": "LU-France3.gif", "comment": {"text": "This messages do some work 4"}},
-				{"srcN": 1, "destN" : 2, "name": "MAP_SEND_AUTHENTIFICATION", "type": "REQUEST", "length": 230, "treatment": 10, "dash": "SEMI", "startTime": "", "scenImg": "LU-France4.gif"},				
-				{"srcN": 2, "destN" : 4, "name": "MAP_SEND_AUTHENTIFICATION", "type": "RESPONSE", "length": 230, "treatment": 5, "dash": "SEMI", "startTime": "A"},
+				{"srcN": 2, "destN" : 1, "name": "MAP_SEND_AUTHENTIFICATION", "type": "RESPONSE", "length": 230, "treatment": 5, "dash": "FULL", "startTime": "", "scenImg": "LU-France3.gif", "comment": {"text": "This messages do some work 4"}},
+				{"srcN": 1, "destN" : 2, "name": "MAP_SEND_AUTHENTIFICATION", "type": "REQUEST", "length": 230, "treatment": 10, "dash": "FULL", "startTime": "", "scenImg": "LU-France4.gif"},				
+				{"srcN": 2, "destN" : 4, "name": "MAP_SEND_AUTHENTIFICATION", "type": "RESPONSE", "length": 230, "treatment": 5, "dash": "FULL", "startTime": "A"},
 				{"srcN": 4, "destN" : 2, "name": "MAP_SEND_AUTHENTIFICATION", "type": "RESPONSE", "length": 230, "treatment": 0, "dash": "SEMI", "startTime": ""},
 				{"srcN": 2, "destN" : 3, "name": "MAP_SEND_AUTHENTIFICATION", "type": "RESPONSE", "length": 230, "treatment": 30, "dash": "SEMI", "startTime": ""},
 				{"srcN": 3, "destN" : 2, "name": "MAP_SEND_AUTHENTIFICATION", "type": "RESPONSE", "length": 230, "treatment": 5, "dash": "SEMI", "startTime": "", "action": {"text": "This node does some work..."}}
