@@ -251,17 +251,32 @@ body {
 #DialogContainer{
 	height: 100%;
 	width: 100%;
+	display: block;
 	background-color: white; overflow-x: hidden; overflow-y: hidden;
 	position: relative;	
 }
 
+#OpenDialogHeader .OpenDialogTitle{
+	font-size: 1.2em;
+	float: left;	
+}
+
+#OpenDialogHeader .OpenLocalFileButton{
+	font-size: 0.8em;
+	float: right;
+}
+
 #ScenarioFilter{
+	font-size: 0.8em;
+	padding-top: 4px;
+	padding-bottom: 2px;
 	width: 100%;
 }
 
 #ScenarioListContainer {
-	height: 85%;
-	width: 100%;
+	height: 75%;
+	width: 99%;
+	border: 1px solid grey;
 	background-color: white; overflow-x: hidden; overflow-y: auto;
 	position: relative;
 }
@@ -292,6 +307,16 @@ body {
 #ScenarioList img{
     display:block;
     margin:auto;	
+}
+
+#OpenFileHeader {
+	font-size: 1.2em;
+	padding:5px;
+}
+
+#OpenFileBody{
+	padding: 10px;
+	font-size: 0.8em;
 }
 
 

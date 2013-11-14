@@ -106,10 +106,67 @@ function ApplicationController(){
 	this.settingsButton=settingsButton;
 	this.selectExample=selectExample;
 	this.FilterList=FilterList;
+	this.OpenLocalFile=OpenLocalFile;
 	
 	// ******************************************************************************
 	// Public Methods Definition
 	// ******************************************************************************
+	
+	function OpenLocalFile(){
+		console.log("OpenLocalFile");
+		
+		m_selected_example=-1;
+		
+	    var width = window.innerWidth * 0.8;
+	    var height = window.innerHeight * 0.8;
+	    
+	    if (width > 500){
+	    	width = 500;
+	    }
+	    
+	    if (height > 400){
+	    	height = 400;
+	    }
+	    
+		var m_open_dialog=$("#maindialog").show();
+		
+		m_open_dialog.dialog({ 
+	        modal: true,
+	        width: width,
+	        height: height,
+	        position: {  my: "center top+5%", at: "center top+5%", of: window  },
+	        title: "Load Scenario",
+	        buttons:{
+				"Accept": function() {
+					//$("#maindialog").dialog("close");					
+					openLocalScenario();
+				},
+				"Cancel": function() {
+					$(this).dialog("close");
+				}				
+	        },
+			close: function( event, ui ) {}
+	    });
+	    
+	    m_open_dialog.html(utils.getOpenLocalScenarioDialog());
+	    
+    
+	    m_open_dialog.dialog("open");		
+	}
+	
+	function openLocalScenario(){
+		
+		var m_open_dialog=$("#maindialog");
+		
+		applicationView.setProgressBar();
+		scenarioView.clearScenarioView();
+		scenarioView.disableScenarioCommands();
+		
+		
+		//scenarioModelBuilder.loadScenarioRemoteFile(configModule.getScenarioPath() + file_name);		
+	
+		m_open_dialog.dialog("close");
+	}
 	
 	function FilterList(){
 		console.log("ApplicationController Filter List");
@@ -182,7 +239,7 @@ function ApplicationController(){
 				
 				if (title.search(key)>=0){
 					return true;
-				}				
+				}
 			}
 		}
 		
@@ -254,7 +311,7 @@ function ApplicationController(){
 	        modal: true,
 	        width: width,
 	        height: height,
-	        position: {  my: "center", at: "center", of: "#vScenario"  },
+	        position: {  my: "center top+5%", at: "center top+5%", of: window  },
 	        title: "Load Scenario",
 	        buttons:{
 				"Select": function() {

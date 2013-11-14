@@ -16,6 +16,7 @@ function Utils(){
 	this.getScenarioImgHtml=getScenarioImgHtml;
 	this.getScenarioMsgHtml=getScenarioMsgHtml;
 	this.getScenarioReferencesHtml=getScenarioReferencesHtml;
+	this.getOpenLocalScenarioDialog=getOpenLocalScenarioDialog;
 
 	//***************************************************************************
 	// Public Methods Definition	
@@ -175,20 +176,39 @@ function Utils(){
 		var html='<div id="mcq" class="MCQcontainer" >' + title + responses + '</div>';
 		
 		return html;		
-	}	
+	}
 	
+	function getOpenLocalScenarioDialog(){
+		var html='<div id="DialogContainer">';
+		
+		html+='<div class="openfileheader" id="OpenFileHeader">Open Local Scenario File</div>';
+		
+		html+='<div class="openfilebody" id="OpenFileBody"><br>';
+			html+='<p style="font-weight:bold">Select Scenario File</p><br>';
+			html+='<p><input type="file" name="LocalScenarioFile" id="LocalScenarioFile" size="40" placeholder="Local Scenario File" /></p><br><br>';
+			html+='<p style="font-weight:bold">Select Scenario Images (Select all of them at the same time)</p><br>';
+			html+='<p><input type="file" name="ScenarioImagesFile" id="ScenarioImagesFile" size="40" multiple placeholder="Scenario Images"/></p>';
+		html+='</div>';
+		
+		html+='</div>';
+		
+		return html;
+	}
 	
 	function getScenarioListLoading(){
 		var html='<div id="DialogContainer">';
-			
-		html+='<div id="ScenarioFilter" class="Filter">';
-		  
-		html+='<input type="text" name="btscenario_filterkeyword" id="btscenario_filterkeyword" onkeyup="applicationController.FilterList();" maxlength="30" width="80%" /><input type="button" name="bt_filter" id="btscenario_filter" onClick="applicationController.FilterList();" value="Search" width="20%" />';
-
+		
+		// Header with the title, the text fiel for the filter and the button to open a local file
+		html+='<div id="OpenDialogHeader">';
+		html+='<span class="OpenDialogTitle">Scenario Example List</span><input type="button" class="OpenLocalFileButton" name="bt_openlocalfile" id="btscenario_openfile" onClick="applicationController.OpenLocalFile();" value="Open Local File" width="20%"/>';
 		html+='</div>';
 		
-		html+='<div id="ScenarioListContainer"><div id="ScenarioList" class="ScenarioList"><br><br><img src="img/progress_bar.gif"/></div></div>';
+		html+='<div id="ScenarioFilter" class="Filter">';
+		html+='<input type="text" name="btscenario_filterkeyword" id="btscenario_filterkeyword" placeholder="Filter List" onkeyup="applicationController.FilterList();" maxlength="30" width="80%" />';
+		html+='</div>';
 		
+		// Body with the scenario examples list
+		html+='<div id="ScenarioListContainer"><div id="ScenarioList" class="ScenarioList"><br><br><img src="img/progress_bar.gif"/></div></div>';
 		html+='</div>';
 		
 		return html;
