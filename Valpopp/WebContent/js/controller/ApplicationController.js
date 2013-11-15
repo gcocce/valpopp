@@ -26,7 +26,7 @@ function ApplicationController(){
 	
 	var appImagesLoaded=false;
 	
-	
+
 	// ******************************************************************************
 	// Private Methods
 	// ******************************************************************************
@@ -113,7 +113,7 @@ function ApplicationController(){
 	// ******************************************************************************
 	
 	function OpenLocalFile(){
-		console.log("OpenLocalFile");
+		console.log("OpenLocalFileDialog");
 		
 		m_selected_example=-1;
 		
@@ -149,23 +149,26 @@ function ApplicationController(){
 	    });
 	    
 	    m_open_dialog.html(utils.getOpenLocalScenarioDialog());
-	    
     
 	    m_open_dialog.dialog("open");		
 	}
 	
 	function openLocalScenario(){
+		console.log("openLocalScenario");
 		
 		var m_open_dialog=$("#maindialog");
 		
-		applicationView.setProgressBar();
-		scenarioView.clearScenarioView();
-		scenarioView.disableScenarioCommands();
+		var thefile=document.getElementById('LocalScenarioFile');
 		
-		
-		//scenarioModelBuilder.loadScenarioRemoteFile(configModule.getScenarioPath() + file_name);		
-	
-		m_open_dialog.dialog("close");
+		if (!scenarioModelBuilder.openLocalFile(thefile)){
+			
+			m_open_dialog.dialog("close");
+			
+			applicationView.displayError(utils.wrapErrorMsg(scenarioModelBuilder.getError()));
+			
+		}else{
+			m_open_dialog.dialog("close");	
+		}
 	}
 	
 	function FilterList(){
@@ -326,7 +329,6 @@ function ApplicationController(){
 	    });
 	    
 	    m_open_dialog.html(utils.getScenarioListLoading());
-	    
     
 	    m_open_dialog.dialog("open");		
 	}
@@ -345,8 +347,6 @@ function ApplicationController(){
 		
 		scenarioModelBuilder.loadScenarioRemoteFile(configModule.getScenarioPath() + file_name);
 	}
-
-
 	
 	// ******************************************************************************
 	// Events Listeners
@@ -362,7 +362,6 @@ function ApplicationController(){
 	// ******************************************************************************
 	// Call back functions
 	// ******************************************************************************
-	
 
 	
 	function initializeLanguageModule(e){		
@@ -383,7 +382,6 @@ function ApplicationController(){
 			console.log("Language Module Error: " + languageModule.getError());
 		}
 	}
-		
 	
 	function preloadAppImages(){
 		if (!appImagesLoaded){

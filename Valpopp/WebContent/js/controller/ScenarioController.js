@@ -196,6 +196,7 @@ function ScenarioController(){
 	// Initiate Scenario Display if all images has been downloaded
 	// If one file is missing show error
 	function scenarioNodeImgProcessed(e){
+		
 		applicationView.removeProgressBar();
 		
 		if (scenarioModelBuilder.getState()==scenarioModelBuilder.SCENARIO_OK){

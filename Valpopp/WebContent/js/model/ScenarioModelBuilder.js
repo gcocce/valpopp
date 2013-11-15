@@ -42,7 +42,7 @@ function ScenarioModelBuilder() {
 	var m_file_content="";
 
 	// File Handler
-	var m_fh = new FileHandler();
+	var m_fhandle = new FileHandler();
 
 	// Error message
 	var m_error="";
@@ -227,7 +227,8 @@ function ScenarioModelBuilder() {
 		
     this.validateScenario=validateScenario;
 	this.loadScenarioRemoteFile=loadScenarioRemoteFile;
-	this.loadScenarioLocalFile=loadScenarioLocalFile;
+	//this.loadScenarioLocalFile=loadScenarioLocalFile;
+	this.openLocalFile=openLocalFile;
 	this.normalizeScenario=normalizeScenario;
 
 	// ******************************************************************************
@@ -323,38 +324,58 @@ function ScenarioModelBuilder() {
 			var event = $.Event( "RemoteScenarioFileLoadingError" );
 			$(window).trigger( event );			
 		});	
-	}   
+	}
+	
+	function openLocalFile(thefile){
 
-
-	// Start file reading, return true if there is no error
-	function loadScenarioLocalFile(file) {
-		
-		initModel();
-		
-		m_valid=false;
-		if (m_fh.isEnabled()) {
-			if (m_fh.openFile(file, readScenarioCallback)){
-				return true;
+        // Get File Object
+        var fPointer = thefile.files[0];
+        
+        if (fPointer) {
+			// If File and FileReader are available (the browser has implemented the html5 standard to manipulate local files)
+			if (m_fhandle.isEnabled()){
+				
+				// Read the local file using FileHandler Class
+				// The call back function should process the file after it is read
+				if (m_fhandle.openJsonFile(fPointer, readLocalScenarioCallback)){
+					
+					applicationView.setProgressBar();
+					
+					scenarioView.clearScenarioView();
+					
+					scenarioView.disableScenarioCommands();
+					
+					return true;
+				}else{
+					m_error=m_fhandle.getError();
+					return false;
+				}
 			}else{
-				m_error=m_fh.getError();
+		    	// The html5 standard is not fully implemented in the browser
+				m_error=m_fhandle.getError();
 				return false;
 			}
-		}else{
-			m_error="The browser does not allow to use File and FileReader APIs.";
-			console.error(m_error);
-			return false;
-		}
+			
+        } else {
+            m_error="It seems that there is no selected file!";
+            console.error(m_error);
+            return false;
+        }  			
+			
 	}
+
 
 	// ******************************************************************************
 	// Events Listeners
 	// ******************************************************************************
 	
 	// Events to control node image download
-	$(window).on( "RemoteNodeImageLoaded", scenarioNodesImgCtrl);	
+	$(window).on( "RemoteNodeImageLoaded", scenarioNodesImgCtrl);
+	
 	$(window).on( "RemoteNodeImageLoadingError", scenarioNodesImgCtrl);	
 	
-	$(window).on( "RemoteScenarioImageLoaded", scenarioImgCtrl);	
+	$(window).on( "RemoteScenarioImageLoaded", scenarioImgCtrl);
+	
 	$(window).on( "RemoteScenarioImageLoadingError", scenarioImgCtrl);	
 	
 	$(window).on( "ScenarioLoaded", preloadScenarioImages);	
@@ -461,15 +482,35 @@ function ScenarioModelBuilder() {
 		}
 	}
 	
-	// This callback method is called when the file was read
-	// This method start validations
-	function readScenarioCallback(e) {
-		console.log("Scenario file loaded.");
-
-		var cont=e.target.result;
-		m_file_content=cont;
-
-		validateScenario();
-	}    
+	function readLocalScenarioCallback(e){
+		console.log("readLocalScenarioCallback");
+		
+		var file_contents=e.target.result;
+		
+		setContents(file_contents);
+		
+		initModel();
+		
+		if(scenarioSchema.getState()==scenarioSchema.SCHEMA_LOADED){
+			
+			if (!validateScenario()){
+				
+				applicationView.removeProgressBar();
+				
+				if (configModule.getUserMode().localeCompare("editor")==0){
+					
+					scenarioView.displayError(scenarioModelBuilder.getError());
+				}else{
+					
+					scenarioView.displayError(utils.wrapErrorMsg("Scenario is not Valid!"));
+				}
+			}
+		}else{ 
+			console.log("Schema State: " + scenarioSchema.getState());
+			
+			scenarioView.displayError(utils.wrapErrorMsg("Scenario Schema is not Valid!"));
+		}			
+	}	
+	   
 }
 

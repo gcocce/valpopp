@@ -24,14 +24,7 @@ function FileHandler() {
         m_enabled=true;
     }else{
         console.error("File FileReader FileList Blob not Enabled!");
-    }
-    
-    function isEnabled() {
-        return m_enabled;
-    }
-    
-    function setCodification(arg) {
-        m_codification=arg;
+        m_error="The browser has not fully implemented the html5 standard. Try upgrading your browser.";
     }
     
 	// ******************************************************************************
@@ -39,14 +32,12 @@ function FileHandler() {
 	// ******************************************************************************
     
     
-    
-    
 	// ******************************************************************************
 	// Public Methods Publication
 	// ******************************************************************************    
     this.isEnabled=isEnabled;
     this.setCodification=setCodification;
-    this.openFile=openFile;
+    this.openJsonFile=openJsonFile;
     this.getName=getName;
     this.getType=getType;
     this.setType=setType;
@@ -57,14 +48,19 @@ function FileHandler() {
 	// Public Methods Definition
 	// ******************************************************************************
 
+    function isEnabled() {
+        return m_enabled;
+    }
+    
+    function setCodification(arg) {
+        m_codification=arg;
+    }
+    
     /* The parameter must be an input file html element */
     /* Returns true or false according to result */
-    function openFile(arg, readCallback) {
-        // Get File Object
-        var fHandler = arg.files[0];
-        
-        if (fHandler) {
-            try {
+    function openJsonFile(fHandler, readCallback) {
+    	
+   		try {
                 m_type=fHandler.type;
                 m_size=fHandler.size;
                 m_name=fHandler.name;
@@ -74,24 +70,21 @@ function FileHandler() {
                fReader.onerror = function (e){
                     console.log("Error code %s", e.target.error.code);
                     m_error=e.target.error;
-               }
+               };
                 
                 fReader.onload = readCallback;
                     
                 fReader.readAsText(fHandler, m_codification);
                 
                 console.log("FileHandler, file type: "+ fHandler.type);
-            } catch(e) {
-                console.error(e);
-                alert(e);
-                return false;
-            }
-            return true;
-        } else {
-            m_error="It seems that there is no selected file!";
-            console.error(m_error);
+        } catch(e) {
+            console.error(e);
+            m_error=e.message;
+            alert(e);
             return false;
-        }         
+        }
+        
+        return true;
     }
     
     function getName() {
