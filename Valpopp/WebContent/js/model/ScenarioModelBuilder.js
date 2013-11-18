@@ -19,14 +19,23 @@ function ScenarioModelBuilder() {
 	var SCENARIO_OK=0;
 	var SCENARIO_NOTLOADED=1;
 	var SCENARIO_LOADED=2;
-	var SCENARIO_LOADING_ERROR=3;
-	var SCENARIO_IMG_LOADING_ERROR=4;
+	var SCENARIO_INVALID=3;
+	var SCENARIO_LOADING_ERROR=4;
+	var SCENARIO_IMG_LOADING_ERROR=5;
 
 	this.SCENARIO_OK=SCENARIO_OK;
 	this.SCENARIO_NOTLOADED=SCENARIO_NOTLOADED;
 	this.SCENARIO_LOADED=SCENARIO_LOADED;
+	this.SCENARIO_INVALID=SCENARIO_INVALID;
 	this.SCENARIO_LOADING_ERROR=SCENARIO_LOADING_ERROR;	
 	this.SCENARIO_IMG_LOADING_ERROR=SCENARIO_IMG_LOADING_ERROR;
+	
+	// Scenario Type
+	var SCENARIO_REMOTE=9;
+	var SCENARIO_LOCAL=10;
+	
+	this.SCENARIO_REMOTE=SCENARIO_REMOTE;
+	this.SCENARIO_LOCAL=SCENARIO_LOCAL;
 
 	// ******************************************************************************
 	// Properties
@@ -50,6 +59,8 @@ function ScenarioModelBuilder() {
 
 	// The schema as a string loaded initially with the page
 	var m_scenario_state=SCENARIO_NOTLOADED;
+	
+	var m_scenario_type=SCENARIO_REMOTE;
 
 	// The structure of the scenario as a JavaScript Object (actually using scenario_obj)
 	var m_scenario_obj=null;
@@ -59,8 +70,18 @@ function ScenarioModelBuilder() {
 	var m_node_images_processed=0;
 	
 	var m_scenario_images=0;
+	
 	var m_scenario_images_processed=0;
-
+	
+	// Reference of the Scenario Images in the case of a local scenario file
+	// 
+	var m_scenario_local_images= null;
+	
+	// The number of images to be load
+	var m_scenario_total_local_images=0;
+	
+	var m_scenario_local_images_procesed=0;
+	
 	// ******************************************************************************
 	// Private Methods
 	// ******************************************************************************
@@ -199,14 +220,29 @@ function ScenarioModelBuilder() {
       
     // Initiate the download of the nodes images
 	function getRemoteNodeImages(){
+		console.log("getRemoteNodeImages");
 		var nodes= m_scenario_obj.nodes;
 
         for (var x = 0; x < nodes.length; x++) {
         	// Download and validate image
-        	m_scenarioContext.setNodeImg(x, configModule.getScenarioImgPath() + nodes[x].img);
+        	m_scenarioContext.setNodeImg(x, nodes[x].img, configModule.getScenarioImgPath() + nodes[x].img);
          }
 		
 		return true;
+	}
+	
+	function getLocalNodeImages(){
+		console.log("getLocalNodeImages");
+		
+		var nodes= m_scenario_obj.nodes;
+		m_error="";
+		
+        for (var x = 0; x < nodes.length; x++) {
+        	// Download and validate image
+            	m_scenarioContext.setNodeImg(x, nodes[x].img, m_scenario_local_images[nodes[x].img]);
+         }
+        		
+		return true;		
 	}
 
 	function initModel(){
@@ -230,11 +266,17 @@ function ScenarioModelBuilder() {
 	//this.loadScenarioLocalFile=loadScenarioLocalFile;
 	this.openLocalFile=openLocalFile;
 	this.normalizeScenario=normalizeScenario;
+	
+	this.setLocalImages=setLocalImages;
 
 	// ******************************************************************************
 	// Public Methods Definition
 	// ******************************************************************************
 
+	function setLocalImages(){
+		
+	}
+	
 	function getContext(){
 		return m_scenarioContext;
 	}
@@ -276,12 +318,14 @@ function ScenarioModelBuilder() {
 		console.log("scenarioModel.validateScenario.");
 		if(!scenarioSchema.validateScenario(m_file_content)){
 			m_error=scenarioSchema.getError();
+			m_scenario_state=SCENARIO_INVALID;
 			return false;
 		}
 		
 		m_scenario_obj=JSON.parse(m_file_content);
 		
 		if(!performAdditionalValidations()){
+			m_scenario_state=SCENARIO_INVALID;
 			return false;
 		}	
 		
@@ -292,15 +336,22 @@ function ScenarioModelBuilder() {
 		
 		m_scenario_state=SCENARIO_OK;
 		
-		if(!getRemoteNodeImages()){
-			return false
+		if (m_scenario_type==SCENARIO_REMOTE){
+			console.log("Get remote node images");
+			if(!getRemoteNodeImages()){
+				return false;
+			}
 		}
+		
 
 		return true;
 	}
 
 	// Asynchronous method to load the scenario file
 	function loadScenarioRemoteFile(file){
+		
+		m_scenario_type=SCENARIO_REMOTE;
+			
 		// Load Scenario File
 		console.log("loadScenarioRemoteFile: " + file);
 		
@@ -326,8 +377,20 @@ function ScenarioModelBuilder() {
 		});	
 	}
 	
-	function openLocalFile(thefile){
+	function openLocalFile(thefile, theimages){
+	
+		// Initiate variables
+		m_scenario_local_images= new Array();
 
+		m_scenario_local_images_procesed=0;
+		
+		m_scenario_type=SCENARIO_LOCAL;
+		
+		m_scenario_state=SCENARIO_NOTLOADED;
+		
+		m_scenario_total_local_images=theimages.files.length;
+		console.log("Total local images: " + m_scenario_total_local_images);
+		
         // Get File Object
         var fPointer = thefile.files[0];
         
@@ -344,6 +407,13 @@ function ScenarioModelBuilder() {
 					scenarioView.clearScenarioView();
 					
 					scenarioView.disableScenarioCommands();
+					
+					for (var x=0; x < theimages.files.length; x++){
+						if (!m_fhandle.openImageFile(theimages.files[x])){
+							
+							m_error=m_fhandle.getError();
+						}
+					}
 					
 					return true;
 				}else{
@@ -379,13 +449,16 @@ function ScenarioModelBuilder() {
 	$(window).on( "RemoteScenarioImageLoadingError", scenarioImgCtrl);	
 	
 	$(window).on( "ScenarioLoaded", preloadScenarioImages);	
-
+	
+	$(window).on( "LocalScenarioImageLoaded", readLocalImageFile);
+	
+	$(window).on( "LocalScenarioImageLoadingError", readLocalImageFileError);
 
 	// ******************************************************************************
 	// Call back functions
 	// ******************************************************************************
 
-	// Control Nodes Images Download and trigger event when all files has been processed
+	// Control Nodes Images Download and trigger ScenarioNodeImgsProccessed event when all files has been processed
 	function scenarioNodesImgCtrl(e){
 		m_node_images_processed++;
 		
@@ -402,8 +475,8 @@ function ScenarioModelBuilder() {
 				if (scimg.getState()!=scimg.IMG_OK){
 					m_scenario_state=SCENARIO_IMG_LOADING_ERROR;
 					
-					console.log("Error downloading image for node number: " + (x + 1) + ", file name: "+ scimg.getUrl());
-					m_error+="Error downloading image for node number: " + (x + 1)  + ", file name: "+ scimg.getUrl()+ "<br>";
+					console.log("Error downloading image for node number: " + (x + 1) + ", file name: "+ scimg.getName());
+					m_error+="Error downloading image for node number: " + (x + 1)  + ", file name: "+ scimg.getName()+ "<br>";
 				}
 			}
 						
@@ -413,12 +486,12 @@ function ScenarioModelBuilder() {
 		}
 	}
 	
+	// Preload de images of the remote scenario
 	function preloadScenarioImages(e){
 		m_scenario_images=0;
 		m_scenario_images_processed=0;
 		
 		// Count the amount of images of the scenario
-		
 		// For the first mandatory image of the scenario
 		m_scenario_images++;
 		
@@ -433,24 +506,42 @@ function ScenarioModelBuilder() {
 				}
 			}
 		}
-		
-		// Start downloading the images
-		m_scenarioContext.setScenarioImg(configModule.getScenarioImgPath() + m_scenario_obj.img);
-		
-		for (var x=0; x < m_scenario_obj.sequences.length; x++){
 
-			var messages=m_scenario_obj.sequences[x].messages;
+		if (m_scenario_type==SCENARIO_REMOTE){
+			// Start downloading the images
+			m_scenarioContext.setScenarioImg(m_scenario_obj.img, configModule.getScenarioImgPath() + m_scenario_obj.img);
 			
-			for (var y=0; y < messages.length; y++){
+			for (var x=0; x < m_scenario_obj.sequences.length; x++){
+	
+				var messages=m_scenario_obj.sequences[x].messages;
 				
-				if (messages[y].scenImg){
-					m_scenarioContext.setScenarioImg(configModule.getScenarioImgPath() + messages[y].scenImg);
+				for (var y=0; y < messages.length; y++){
+					
+					if (messages[y].scenImg){
+						m_scenarioContext.setScenarioImg(messages[y].scenImg, configModule.getScenarioImgPath() + messages[y].scenImg);
+					}
+				}
+			}
+		}else{
+			// Asign the images already loaded to the context
+			m_scenarioContext.setScenarioImg(m_scenario_obj.img, m_scenario_local_images[m_scenario_obj.img]);
+			
+			for (var x=0; x < m_scenario_obj.sequences.length; x++){
+	
+				var messages=m_scenario_obj.sequences[x].messages;
+				
+				for (var y=0; y < messages.length; y++){
+					
+					if (messages[y].scenImg){
+						m_scenarioContext.setScenarioImg(messages[y].scenImg, m_scenario_local_images[messages[y].scenImg]);
+					}
 				}
 			}
 		}
+		
 	}
 	
-	// Control the download of the images
+	// Control the download of the scenario images images
 	function scenarioImgCtrl(e){		
 		m_scenario_images_processed++;
 		
@@ -471,7 +562,7 @@ function ScenarioModelBuilder() {
 				// If the images has not been found
 				if (img.getState()!=img.IMG_OK){
 					there_is_error=true;
-					m_error+="Error downloading image: "+ img.getUrl() + "<br>";
+					m_error+="Error downloading image: "+ img.getName() + "<br>";
 				}				
 			}			
 			
@@ -484,6 +575,8 @@ function ScenarioModelBuilder() {
 	
 	function readLocalScenarioCallback(e){
 		console.log("readLocalScenarioCallback");
+		
+		m_scenario_state=SCENARIO_LOADED;
 		
 		var file_contents=e.target.result;
 		
@@ -510,7 +603,57 @@ function ScenarioModelBuilder() {
 			
 			scenarioView.displayError(utils.wrapErrorMsg("Scenario Schema is not Valid!"));
 		}			
-	}	
+	}
+	
+	// Process the images files read, add them to m_scenario_local_images array
+	// count the number of images processed, once all of them are processed
+	// initiate the scenario image validation process if the scenario file is valid.
+	function readLocalImageFile(e){
+		m_scenario_local_images_procesed++;
+		
+		processLocalImages(e, true);
+	}
+	
+	function readLocalImageFileError(e){
+		m_scenario_local_images_procesed++;
+		
+		processLocalImages(e, false);
+	}
+	
+
+	function processLocalImages(e, state){
+	
+		if (state){
+			
+			console.log("Local image successfully procesed: " + e.imageName);
+			
+			var file_contents=e.imageData;
+			
+			var file_name=e.imageName;
+			
+			m_scenario_local_images[file_name]=file_contents;
+			
+			if (m_scenario_total_local_images==m_scenario_local_images_procesed){
+				
+				console.log("All the local images has been procesed...");
+				
+				if (m_scenario_state==SCENARIO_OK){
+					
+					// Add node images to the ScenarioContext and validate node images existance		
+					if (!getLocalNodeImages()){
+						applicationView.removeProgressBar();
+						
+						scenarioView.displayError(utils.wrapErrorMsg(getError()));
+					}
+				}else{
+					console.error("The scenario file should be already validated");
+				}
+			}	
+		}else{
+			console.log("There was an error loading the local Image: "+ e.imageName);
+			console.log("Error: "+ e.imageError);
+		}
+	}
 	   
 }
 

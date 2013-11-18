@@ -236,9 +236,7 @@ function Canvas(drawing_context){
 
 		m_context.fillStyle = "black";
 		
-		var text = 'All the world \'s a stage, and all the men and women merely players. They have their exits and their entrances; And one man in his time plays many parts.';
-
-		wrapText(text, posx, posy, canvasWidth, lineHeight);		
+		wrapText(msg, posx, posy, canvasWidth, lineHeight);		
 	}	
 
 	function drawAction(msg, posx, posy, textSize){

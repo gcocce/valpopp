@@ -158,9 +158,10 @@ function ApplicationController(){
 		
 		var m_open_dialog=$("#maindialog");
 		
-		var thefile=document.getElementById('LocalScenarioFile');
+		var theScenariofile=document.getElementById('LocalScenarioFile');
+		var theScenarioImages=document.getElementById('ScenarioImagesFile');
 		
-		if (!scenarioModelBuilder.openLocalFile(thefile)){
+		if (!scenarioModelBuilder.openLocalFile(theScenariofile, theScenarioImages)){
 			
 			m_open_dialog.dialog("close");
 			
@@ -275,11 +276,7 @@ function ApplicationController(){
 	        height: 300,
 	        position: {  my: "center", at: "center", of: window  },
 	        title: "Settings",
-	        buttons:{
-//				"Close": function() {
-//					$(this).dialog("close");
-//				}
-	        },
+	        buttons:{},
 			close: function( event, ui ) {}
 	    });
 	    
@@ -394,6 +391,7 @@ function ApplicationController(){
 				var m_img = new AppImage(configModule.getAppImgPath() + appImagesNames[x]);
 				
 			}	
+			
 			appImagesLoaded=true;			
 		}
 	}

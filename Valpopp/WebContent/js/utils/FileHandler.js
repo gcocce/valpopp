@@ -38,11 +38,12 @@ function FileHandler() {
     this.isEnabled=isEnabled;
     this.setCodification=setCodification;
     this.openJsonFile=openJsonFile;
+    this.openImageFile=openImageFile;
     this.getName=getName;
     this.getType=getType;
     this.setType=setType;
     this.getSize=getSize;
-    this.getError=getError;    
+    this.getError=getError;   
     
 	// ******************************************************************************
 	// Public Methods Definition
@@ -85,6 +86,51 @@ function FileHandler() {
         }
         
         return true;
+    }
+    
+    /* The parameter must be an input file html element */
+    /* Returns true or false according to result */
+    function openImageFile(fHandler) {
+   		try {
+            console.log("FileHandler, process file : "+ fHandler.name);
+            
+            // Read the image using FileReader
+            readImage(fHandler, fHandler.name);
+            
+        } catch(e) {
+            console.error(e);
+            m_error=e.message;
+            return false;
+        }
+        
+        return true;
+    }
+    
+    function readImage(fHandler, file_name){
+        var fReader = new FileReader();
+        
+        fReader.onerror = function (e){
+        	console.log("Local Image loading error: ", file_name);
+            console.log("Error code %s", e.target.error.code);
+            
+ 			var event = $.Event( "LocalScenarioImageLoadingError" );
+            event.imageError=e.target.error.code;
+  			event.imageName=file_name; 			
+ 			
+ 			$(window).trigger( event );
+        };
+         
+         fReader.onload = function (e){
+        	console.log("Local Image succesfuly read: ", file_name);
+        	 
+  			var event = $.Event( "LocalScenarioImageLoaded" );
+  			event.imageData=e.target.result;
+  			event.imageName=file_name;
+  			
+ 			$(window).trigger( event );        	 
+         };
+             
+         fReader.readAsDataURL(fHandler);    	
     }
     
     function getName() {

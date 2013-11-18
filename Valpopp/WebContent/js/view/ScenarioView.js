@@ -69,7 +69,7 @@ function ScenarioView(){
 	function computeWindowSize(){
     	var window_width= $(window).width();
     	
-    	console.log("Window width: " + window_width );
+//    	console.log("Window width: " + window_width );
 
     	if (window_width <= 768){
     		document.getElementById("vScenario").style.width="99%";
@@ -477,7 +477,9 @@ function ScenarioView(){
 		//console.log("Current img: " + configModule.getScenarioImgPath() + m_scenarioPlay.getCurrentScenarioImg());
 		
 		// Get the image from the context
-		var img = m_scenarioContext.getScenarioImg(configModule.getScenarioImgPath() + m_scenarioPlay.getCurrentScenarioImg());
+		//TODO: review this
+		//var img = m_scenarioContext.getScenarioImg(configModule.getScenarioImgPath() + m_scenarioPlay.getCurrentScenarioImg());
+		var img = m_scenarioContext.getScenarioImg(m_scenarioPlay.getCurrentScenarioImg());
 		
 		var scenimg_html= utils.getScenarioImgHtml(img, m_scenario_data_dialog.width(), m_scenario_data_dialog.height());
 		
@@ -866,11 +868,11 @@ function ScenarioView(){
 	}
 	
 	function updateScenarioView(e){
-		console.log("ScenarioView.updateScenarioView");
+//		console.log("ScenarioView.updateScenarioView");
 		
 		if (m_scenarioPlay!=null){
 			
-			console.log("Valid scenario Play, attempt to resize...");
+//			console.log("Valid scenario Play, attempt to resize...");
 			
 			setupSize();
 			

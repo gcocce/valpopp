@@ -205,8 +205,6 @@ function ScenarioController(){
 			
 			scenarioView.initiateScenarioDisplay(scenarioModelBuilder.getContext());
 
-			//scenarioView.displayMsg(utils.wrapMsg(scenarioModelBuilder.getOutput()));		
-			
 			//Indicate to the application that it can preload other images
 			var event = $.Event( "ScenarioLoaded" );
 			$(window).trigger( event );				
@@ -270,12 +268,7 @@ function ScenarioController(){
 		
 		
 	  // Get the coordinates for a mouse or touch event
-	  function getCoords(e) {
-//		console.log("Canvas offsetLeft: " + theCanvas.offsetLeft);
-//		console.log("Canvas offsetTop: " + theCanvas.offsetTop);
-//		console.log("e.pageX: " + e.pageX);
-//		console.log("e.pageY: " + e.pageY);
-		
+	  function getCoords(e) {		
 		return { x: e.pageX - theCanvas.offsetLeft, y: e.pageY - theCanvas.offsetTop };
 	  }
 	  
@@ -298,8 +291,7 @@ function ScenarioController(){
 	  // This is triggered every time the canvas container is scrolled (whoever does it)
 	  function theContainerWasScrolled(e) {
 		console.log("Container was Scrolled");
-		//TODO: TEST THIS CODE
-		  
+
 		var scroll = theContainer.scrollTop;
 		var scenarioPlay=scenarioView.getCurrentScenarioPlay();
 		scenarioPlay.setScrollPos(scroll);	
@@ -309,7 +301,6 @@ function ScenarioController(){
 		if (theCommentsContainer){
 			theCommentsContainer.scrollTop = scroll;
 		}
-		
 	  }
 	  
 	  function theDocumentWasScrolled(e) {

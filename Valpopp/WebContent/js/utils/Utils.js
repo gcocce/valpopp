@@ -595,8 +595,9 @@ function ScenAction(node, initpos, finalpos, action){
 }
 
 
-
-function ScenarioImage(url_param, isNode){
+/* This class is used both for node and scenario images
+ * The third parameter establish which one it is */
+ function ScenarioImage(img_name, url_param, isNode){
 	// ******************************************************************************
 	// Constants
 	// ******************************************************************************
@@ -610,7 +611,8 @@ function ScenarioImage(url_param, isNode){
 	// Properties
 	// ******************************************************************************	
 	
-	var m_img=new Image();
+	var m_name=img_name;
+	var m_img= new Image();
 	var m_url=url_param;
 	var m_state=IMG_ERROR;
 	var m_width=0;
@@ -619,9 +621,9 @@ function ScenarioImage(url_param, isNode){
 	// ******************************************************************************
 	// Constructor
 	// ******************************************************************************	
-	
+		
 	m_img.onerror = function () {
-	    console.log("Fail to download: " + url_param);
+	    console.log("Fail to download: " + img_name);
 	    m_state=IMG_ERROR;
 	    
 	    //Dispatch Event
@@ -635,9 +637,8 @@ function ScenarioImage(url_param, isNode){
 	};
 	
 	m_img.onload = function () {
-	    console.log("Successful download: " + url_param);
+	    console.log("Successful download: " + img_name);
 	    m_state=IMG_OK;
-	    m_other=1;
 	    
 	    m_width=m_img.width;
 	    m_height=m_img.height;
@@ -654,6 +655,7 @@ function ScenarioImage(url_param, isNode){
 	
 	m_img.src = url_param;
 	
+	
 	// ******************************************************************************
 	// Public Methods Publication
 	// ******************************************************************************
@@ -663,10 +665,15 @@ function ScenarioImage(url_param, isNode){
 	this.getUrl=getUrl;
 	this.getWidth=getWidth;
 	this.getHeight=getHeight;
+	this.getName=getName;
 
 	// ******************************************************************************
 	// Public Methods Definition
 	// ******************************************************************************
+	
+	function getName(){
+		return m_name;
+	}
 	
 	function getWidth(){
 		return m_width;

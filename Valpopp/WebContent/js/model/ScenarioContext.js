@@ -38,6 +38,7 @@ function ScenarioContext(){
 	var m_def_prog=new Array();
 	
 	var m_nodes_images = new Array();
+	
 	var m_scenario_images= new Array();
 	
 	var m_scenario_object=null;
@@ -223,20 +224,22 @@ function ScenarioContext(){
 		return m_scenario_object.name;
 	}
 	
-	function setScenarioImg(img_url){
-		m_scenario_images[img_url]=new ScenarioImage(img_url, false);	
+	function setScenarioImg(img_name, img_url){
+		// The third parameter indicate that it is not a node image
+		m_scenario_images[img_name]=new ScenarioImage(img_name, img_url, false);	
 	}
 	
-	function getScenarioImg(img_url){
-		return m_scenario_images[img_url];
+	function getScenarioImg(img_name){
+		return m_scenario_images[img_name];
 	}	
 	
 	function getScenarioImgList(){
 		return m_scenario_images;
 	}
 	
-	function setNodeImg(index, img_url){
-		m_nodes_images[index]=new ScenarioImage(img_url, true);
+	function setNodeImg(index, img_name, img_url){
+		// The third parameter indicate that it is a node image
+		m_nodes_images[index]=new ScenarioImage(img_name, img_url, true);
 	}
 	
 	function getNodeImg(index){
@@ -259,8 +262,6 @@ function ScenarioContext(){
 		
 		m_scenario_object=obj;
 	}
-	
-
 	
 	function getError(){
 		return m_error;
