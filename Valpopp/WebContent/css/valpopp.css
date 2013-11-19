@@ -44,7 +44,7 @@ body {
 	height: 20%;
 	min-height: 20%;
 	display:block;
-	background-color: #CCCCCC;
+	background-color: #eeeeee;
 }
 
 #title{
@@ -68,14 +68,20 @@ body {
 	min-height:5%;
 	clear: both;
 	text-align: center;
-	background-color: #CCCCCC;
+	background-color: #eeeeee;
 	font-size: 1em;
 }
 
 #vHeader {
 	height: 5%;	
 	display:block;
-	border: 1px dashed;
+	background-color:#FFFFFF;
+}
+
+#ScenarioTitle{
+	margin-left: 20px;
+	font-size: 1.2em;
+	font-family: serif, Times, verdana;
 }
 
 #vMain{
@@ -87,13 +93,15 @@ body {
 	height: 100%;	
 	width: 72%;
 	float: left;
-	border: 1px dashed;
 }
 
 #vNodes{
 	height: 15%;
 	width: 100%;
 	background-color: white; overflow-x: hidden; overflow-y: hidden;	
+	border-top: 1px solid;
+	border-left: 1px solid;
+	border-right: 1px solid;	
 }
 
 #vDraw{
@@ -125,7 +133,7 @@ body {
 	height: 100%;
 	min-height: 100%;
 	float: right;
-	border: 1px dashed;
+	border: 1px solid;
 }
 
 #vMessagesHeader{
@@ -144,7 +152,6 @@ body {
 	height: 9%;
 	clear: both;
 	display:block;
-	border: 1px dashed;
 }
 
 #Commands {

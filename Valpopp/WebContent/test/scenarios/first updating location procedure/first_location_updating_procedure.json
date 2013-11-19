@@ -1,0 +1,74 @@
+{
+    "name": "First Location Updating procedure",
+    "img": "firstLU.gif",
+	"defaultmessage":{"type": "ONEWAY", "length": 20, "treatment": 0, "dash": "FULL"},
+    "nodes":
+		[
+        {"Id": 1, "name": "MS", "img" : "ms.gif"},
+        {"Id": 2, "name": "BSS", "img" : "bss.gif"},
+        {"Id": 3, "name": "MSC/VLR F1", "img" : "mscvlr.gif"},
+        {"Id": 4, "name": "HLR F", "img" : "vlr_hlr.gif"}
+		],
+    "propagthroughputs":
+		[
+        {"srcN": 1,"destN": 2,"propagTime" : 40, "throughput": 6400},
+        {"srcN": 1,"destN": 3,"propagTime" : 40, "throughput": 900},
+        {"srcN": 1,"destN": 4,"propagTime" : 40, "throughput": 900}    
+		],
+    "sequences":
+		[		
+        {"Id": 1, "nextId": 20,
+			"messages":
+				[
+				{"srcN": 2, "destN": 1 , "name": "SYSTEM_INFORMATION", "type": "ONEWAY", "length": 160, "treatment": 2, "dash": "SEMI", "comment": {"text": "The Base Station SubSystem broadcasts signalling"}},
+				{"srcN": 1, "destN": 2, "name": "RR_CHANNEL_REQUEST", "type": "REQUEST", "length": 160, "treatment": 2, "dash": "SEMI", "comment": {"text": "The mobile station is switched on"}},
+				{"srcN": 2, "destN" : 1, "name": "RR_IMMEDIATE_ASSIGNMENT", "type": "RESPONSE", "length": 160, "treatment": 2, "dash": "SEMI"},
+				{"srcN": 1, "destN" : 2, "name": "MM_LOCATION_UPDATING_REQUEST", "param": "TMSI", "type": "REQUEST", "length": 48, "treatment": 2, "dash": "FULL"},
+				{"srcN": 2, "destN" : 3, "name": "LOCATION_UPDATING_REQUEST", "param": "TMSI, LAI 1", "type": "REQUEST", "length": 20, "treatment": 2, "dash": "FULL"},
+				{"srcN": 3, "destN" : 4, "name": "MAP_SEND_AUTHENTICATION_INFO","type": "REQUEST", "length": 200, "treatment": 2, "dash": "SEMI"},
+				{"srcN": 3, "destN" : 2, "name": "SSCP_CONNECTION_CONFIRM", "type": "RESPONSE", "length": 20, "treatment": 2, "dash": "FULL"},
+				{"srcN": 4, "destN" : 3, "name": "MAP_SEND_AUTHENTICATION_INFO_ACK", "type": "RESPONSE", "length": 200, "treatment": 2, "dash": "SEMI"},
+				{"srcN": 3, "destN" : 1, "name": "MM_AUTHENTICATION_REQUEST", "param": "RAND", "type": "REQUEST", "length": 160, "treatment": 2, "dash": "FULL"},
+				{"srcN": 1, "destN" : 3, "name": "MM_AUTHENTICATION_RESPONSE", "param": "SRES", "type": "RESPONSE", "length":64, "treatment": 20, "dash": "FULL"},
+				{"srcN": 3, "destN" : 4, "name": "MAP_UPDATE_LOCATION", "param": "IMSI MS, MSC/VLR F1", "type": "REQUEST", "length": 72, "treatment": 2, "dash": "SEMI"},
+				{"srcN": 4, "destN" : 3, "name": "MAP_INSERT_SUBSCRIBER_DATA", "type": "REQUEST", "length": 64, "treatment": 2, "dash": "SEMI"},
+				{"srcN": 3, "destN" : 4, "name": "MAP_INSERT_SUBSCRIBER_DATA_ACK", "type": "RESPONSE", "length": 42, "treatment": 2, "dash": "SEMI"},
+				{"srcN": 4, "destN" : 3, "name": "MAP_UPDATE_LOCATION_ACK", "type": "RESPONSE", "length": 72, "treatment": 2, "dash": "SEMI"}
+				],
+			"mcq": {"title": "First Location Updating procedure", "text": "Is the cyphering complete?", "points": 3 ,
+				"answers":
+					[
+					{"text": "Yes", "feedback": "The feedback goes here"},
+					{"text": "No", "feedback": "Here goes the feedback", "valid": "y"}
+					]
+			}
+		},
+        {"Id": 20, "nextId": 30,
+			"messages":
+				[
+				{"srcN": 3, "destN": 2 , "name": "BSSMAP_CIPHER_MODE_COMMAND", "type": "REQUEST", "length": 72, "treatment": 2, "dash": "FULL"},
+				{"srcN": 2, "destN": 1, "name": "RR_CIPHER_MODE_COMMAND", "type": "REQUEST", "length": 72, "treatment": 2, "dash": "FULL"},				
+				{"srcN": 1, "destN" : 2, "name": "RR_CIPHERING_MODE_COMPLETE", "type": "RESPONSE", "length": 72, "treatment": 2, "dash": "FULL"},
+				{"srcN": 2, "destN" : 3, "name": "BSSMAP_CIPHER_MODE_COMPLETE", "type": "REQUEST", "length": 72, "treatment": 2, "dash": "FULL"}
+				],
+			"mcq": {"title": "First Location Updating procedure", "text": "Is the TMSI Reallocated?", "points": 3 ,
+				"answers":
+					[
+					{"text": "Yes", "feedback": "The feedback goes here"},
+					{"text": "No", "feedback": "May not be feedback at all", "valid": "y"}
+					]
+			}
+		},
+        {"Id": 30, "nextId": 0,
+			"messages":
+				[
+				{"srcN": 3, "destN": 1 , "name": "MM_TMSI_REALLOCATION_COMMAND", "param": "TMSI-new", "type": "REQUEST", "length": 10, "treatment": 2, "dash": "FULL"},
+				{"srcN": 1, "destN": 3, "name": "MM_TMSI_REALLOCATION_COMPLETE", "type": "RESPONSE", "length": 48, "treatment": 2, "dash": "SEMI"},
+				{"srcN": 3, "destN": 1, "name": "MM_LOCATION_UPDATING_ACCEPT", "type": "RESPONSE", "length": 48, "treatment": 2, "dash": "FULL", "startTime": "", "synchPoint": "T0"},
+				{"srcN": 3, "destN": 2, "name": "BSSMAP_CLEAR_COMMAND", "type": "REQUEST", "length": 48, "treatment": 2, "dash": "FULL", "startTime": "T0", "synchPoint": "T1"},
+				{"srcN": 2, "destN": 1, "name": "RR_CHANNEL_RELEASE", "type": "ONEWAY", "length": 10, "treatment": 20, "dash": "SEMI", "startTime": "T1"},
+				{"srcN": 2, "destN" : 3, "name": "BSSMAP_CLEAR_COMPLETE", "type": "RESPONSE", "length": 48, "treatment": 2, "dash": "FULL", "startTime": "T1"}
+				]
+		}		
+		]	
+}

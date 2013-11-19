@@ -141,7 +141,7 @@ function ScenarioView(){
     	
 		var header=document.getElementById("vHeader");
 		
-		header.innerHTML=m_scenarioContext.getScenarioName();
+		header.innerHTML='<div id="ScenarioTitle">' + m_scenarioContext.getScenarioName() + '</div>';
 	}
 	
     

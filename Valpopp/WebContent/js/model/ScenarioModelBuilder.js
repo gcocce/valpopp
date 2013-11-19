@@ -169,10 +169,13 @@ function ScenarioModelBuilder() {
               return false;
            }
            
-           // Check MCQ validity
-           if (!validateMCQ(m_scenario_obj.sequences[x].mcq)) {
-              return false;
-           }         
+           // If there is a MCQ Check MCQ validity
+           if (m_scenario_obj.sequences[x].mcq){
+               if (!validateMCQ(m_scenario_obj.sequences[x].mcq)) {
+                   return false;
+                }           	   
+           }
+      
            
         }
         

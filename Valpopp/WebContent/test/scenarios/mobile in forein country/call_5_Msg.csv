@@ -1,0 +1,30 @@
+# Data format: node i; node j;name;type;length;treatment;dash;step;startTime;syncpoint
+1;0;SYSTEM_INFORMATION();ONEWAY;30;2;full;0;t0;
+0;1;RR_CHANNEL_REQUEST();REQUEST;30;2;full;0; ;
+1;0;RR_IMMEDIATE_ASSIGNMENT(signalling channel);RESPONSE;30;2;full;0; ;
+0;1;MM_CM_SERVICE_REQUEST(TMSI);REQUEST;30;2;full;0;;
+1;2;MM_CM_SERVICE_REQUEST(TMSI);REQUEST;30;2;full;0;;
+2;0;MAP_AUTHENTICATION_REQUEST(Rand);REQUEST;30;2;full;0;;
+0;2;MAP_AUTHENTICATION_RESPONSE(Sres);RESPONSE;30;2;full;0;;
+2;1;BSSMAP_CIPHER_MODE_COMMAND(Kc);REQUEST;30;2;full;0;;
+1;0;RR_CIPHERING_MODE_COMMAND();REQUEST;30;2;full;0;;
+0;1;RR_CIPHERING_MODE_COMPLETE();RESPONSE;30;2;full;0;;
+1;2;BSSMAP_CIPHER_MODE_COMPLETE();RESPONSE;30;2;full;0;*;T0
+0;2;CC_SETUP(called PSTN number);REQUEST;30;2;full;0;T0;T1
+2;3;ISUP_IAM(called PSTN number);REQUEST;30;30;full;0;T1;
+3;4;ISUP_IAM(called PSTN number);REQUEST;30;30;full;0;*;T3
+4;3;ISUP_ACM;RESPONSE;30;30;full;0;;
+3;2;ISUP_ACM;RESPONSE;30;30;full;0;;;
+2;0;CC_ALERTING(RING_BACK);RESPONSE;30;2;full;0;*;T4;40
+4;5;Ring, Ring;REQUEST;30;2;full;0;T3;;
+2;0;CC_CALL_PROCEEDING();ONEWAY;30;2;full;0;T1;T2;5
+2;1;BSSMAP_ASSIGMENT_REQUEST(Traffic Channel);REQUEST;30;2;full;0;T2;;
+1;0;RR_ASSIGMENT_COMMAND(Traffic Channel);REQUEST;30;2;full;0;;;
+0;1;RR_ASSIGMENT_COMPLETE();RESPONSE;30;2;full;0;;;
+1;2;BSSMAP_ASSIGMENT_COMPLETE();RESPONSE;30;2;full;0;;;
+999;999;The mobile phone is ringing, play to hang up ;The mobile phone is hanged up!;it-call-pr-pr.gif;A mobile phone in a foreign country is calling a fixed  phone inthe same country;;;;;
+5;4;HANG_UP();ONEWAY;30;0;semi;0;T4;;
+4;3;ISUP_ANS();ONEWAY;30;2;full;0;;;
+3;2;ISUP_ANS();ONEWAY;30;2;full;0;;;
+2;0;CC_CONNECT();REQUEST;30;2;full;0;;;
+0;2;CC_CONNECT_ACKNOWLEDGE();RESPONSE;30;2;full;0;;;

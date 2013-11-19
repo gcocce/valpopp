@@ -1,0 +1,97 @@
+{
+    "name": "Scenario GSM Example",
+    "img": "local_img_scenario1.gif",
+	"defaultmessage":{"type": "ONEWAY", "length": 240, "treatment": 0, "dash": "SEMI"},
+    "nodes":
+		[
+        {"Id": 1, "name": "MS", "img" : "local_nodo1.gif"},
+        {"Id": 2, "name": "BTS", "img" : "local_nodo2.gif"},
+        {"Id": 3, "name": "MS", "img" : "local_nodo3.gif"},
+        {"Id": 4, "name": "BTS", "img" : "local_nodo4.gif"}        
+		],
+    "propagthroughputs":
+		[
+        {"srcN": 1,"destN": 2,"propagTime" : 40, "throughput": 7200},
+        {"srcN": 2,"destN": 1,"propagTime" : 30, "throughput": 6400},
+        {"srcN": 1,"destN": 4,"propagTime" : 40, "throughput": 64}        
+		],
+    "sequences":
+		[
+        {"Id": 1, "nextId":2,
+			"messages":
+				[
+				{"srcN":1,"destN" : 2, "name": "MM_LOCATION_UPDATE", "param": "IMSI, LS1",  "type": "REQUEST", "length": 230, "treatment": 0, "dash": "FULL", "startTime": "", "synchPoint": ""}
+				],
+			"mcq": {"title": "Gestion de la mobilité", "text":"Lors de la primier mise sous tension du terminal:", "points": 3 ,
+				"answers":
+					[
+					{"text": "La terminal transmit tout son profil au réseau", "feedback": "That's not true"},
+					{"text": "Le HLR transmet le profil au VLR ou le terminal se trouve", "valid": "y"},
+					{"text": "Le profil de l'abonné est transmit a tous les VLR de réseau", "feedback": "This is not true"}
+					]
+			}
+		},		
+        {"Id": 2, "nextId": 123,
+			"messages":
+				[
+				{"srcN": 1, "destN": 2 , "name": "MM_LOCATION_UPDATE", "param": "IMSI, LS1", "type": "REQUEST", "length": 230, "treatment": 15, "dash": "FULL", "startTime": "", "synchPoint": ""},
+				{"srcN": 2, "destN": 1, "name": "MM_LOCATION_UPDATE", "param": "TMSI", "type": "REQUEST"},
+				{"srcN": 1, "destN" : 4, "name": "MAP_SEND_AUTHENTIFICATION", "type": "ONEWAY", "length": 2230, "treatment": 0, "dash": "SEMI", "startTime": "", "action": {"text": "This node does some work..."}},
+				{"srcN": 4, "destN" : 2, "name": "MAP_SEND_AUTHENTIFICATION", "type": "RESPONSE", "length": 230, "treatment": 20, "dash": "SEMI", "startTime": "", "synchPoint": "A", "action": {"text": "This node does some work..."}},
+				{"srcN": 2, "destN" : 1, "name": "MAP_SEND_AUTHENTIFICATION", "type": "RESPONSE", "length": 230, "treatment": 0, "dash": "SEMI", "startTime": "A"},
+				{"srcN": 1, "destN" : 2, "name": "MAP_SEND_AUTHENTIFICATION", "type": "ONEWAY", "length": 230, "treatment": 5, "dash": "SEMI", "startTime": ""},
+				{"srcN": 2, "destN" : 1, "name": "MAP_SEND_AUTHENTIFICATION", "type": "RESPONSE", "length": 230, "treatment": 5, "dash": "SEMI", "startTime": ""},
+				{"srcN": 1, "destN" : 2, "name": "MAP_SEND_AUTHENTIFICATION", "type": "REQUEST", "length": 230, "treatment": 10, "dash": "SEMI", "startTime": ""},				
+				{"srcN": 2, "destN" : 4, "name": "MAP_SEND_AUTHENTIFICATION", "type": "RESPONSE", "length": 230, "treatment": 5, "dash": "SEMI", "startTime": "A"},
+				{"srcN": 4, "destN" : 2, "name": "MAP_SEND_AUTHENTIFICATION", "type": "RESPONSE", "length": 230, "treatment": 0, "dash": "SEMI", "startTime": ""},
+				{"srcN": 2, "destN" : 3, "name": "MAP_SEND_AUTHENTIFICATION", "type": "RESPONSE", "length": 230, "treatment": 30, "dash": "SEMI", "startTime": ""},
+				{"srcN": 3, "destN" : 2, "name": "MAP_SEND_AUTHENTIFICATION", "type": "RESPONSE", "length": 230, "treatment": 5, "dash": "SEMI", "startTime": "", "action": {"text": "This node does some work..."}}
+				],
+			"mcq": {"title": "Appel mobile vers fixe", "text": "Alice a un téléphone GSM. Elle appelle Bob sur post fixe.", "points": 3 ,
+				"answers":
+					[
+					{"text": "Le premier message envoyé par le terminal d'Alice contient son TMSI", "feedback": "The feedback goes here"},
+					{"text": "Le HLR est consulté pour vérifier la localisation d'Alice", "feedback": "Here goes the feedback", "valid": "y"},
+					{"text": "La communication transite par le HLR", "feedback": "May not be feedback at all", "valid": "y"}
+					]
+			}
+		},
+        {"Id": 123, "nextId": 130,
+			"messages":
+				[
+				{"srcN":2,"destN" : 1, "name": "MM_LOCATION_UPDATE", "param": "IMSI, LS1",  "type": "REQUEST", "length": 230, "treatment": 5, "dash": "FULL", "startTime": "", "synchPoint": ""},
+				{"srcN":1,"destN" : 2, "name": "MM_LOCATION_UPDATE", "param": "IMSI, LS1",  "type": "REQUEST", "length": 430, "treatment": 40, "dash": "FULL", "startTime": "", "synchPoint": "B"},
+				{"srcN":2,"destN" : 1, "name": "MM_LOCATION_UPDATE", "param": "IMSI",  "type": "REQUEST", "length": 230, "treatment": 0, "dash": "SEMI", "startTime": "B", "synchPoint": "", "scenImg": "local_img_scenario2.gif"},
+				{"srcN":2,"destN" : 3, "name": "MM_LOCATION_UPDATE", "param": "IMSI",  "type": "REQUEST", "length": 230, "treatment": 0, "dash": "SEMI", "startTime": "B", "synchPoint": "", "scenImg": "local_img_scenario3.gif"},				
+				{"srcN":3,"destN" : 1, "name": "MAP_SEND_AUTHENTIFICATION", "param": "SRS1, Kc",  "type": "RESPONSE", "action": {"text": "This node does some work..."}},
+				{"srcN":1,"destN" : 3, "name": "MAP_SEND_AUTHENTIFICATION", "param": "SRS1, Kc",  "type": "RESPONSE"},
+				{"srcN":3,"destN" : 2, "name": "MM_LOCATION_UPDATE", "param": "IMSI, LS1",  "type": "REQUEST", "length": 430, "treatment": 40, "dash": "FULL", "startTime": "", "synchPoint": "C"}				
+				],
+			"mcq": {"title": "Introduction á GPRS","text":"Vrai ou Faux", "points": 3 ,
+				"answers":
+					[
+					{"text": "Un réseau coeur GPRS peut transporter tout type de paquet", "feedback": "This has feedback", "valid": "y"},
+					{"text": "Le débit en EDGE-GPRS est typiquement de quelques dizaines de kbit/s", "valid": "y"},
+					{"text": "Pour mettre en ceuvre GPRS, les opérateurs ont du installer un nouveau réseau coeur", "feedback": "This has feedback also", "valid": "y"}
+					]
+			}
+		},
+        {"Id": 130, "nextId":0,
+			"messages":
+				[
+				{"srcN":2,"destN" : 1, "name": "MM_LOCATION_UPDATE", "param": "IMSI, LS1",  "type": "REQUEST", "length": 230, "treatment": 0, "dash": "FULL", "startTime": "C", "synchPoint": ""},
+				{"srcN":2,"destN" : 3, "name": "MM_LOCATION_UPDATE", "param": "IMSI",  "type": "REQUEST", "length": 230, "treatment": 0, "dash": "SEMI", "startTime": "C", "synchPoint": ""},		
+				{"srcN":3,"destN" : 1, "name": "MAP_SEND_AUTHENTIFICATION", "param": "SRS1, Kc",  "type": "RESPONSE", "action": {"text": "This node does some work..."}},
+				{"srcN":1,"destN" : 3, "name": "MAP_SEND_AUTHENTIFICATION", "param": "SRS1, Kc",  "type": "RESPONSE"}
+				],
+			"mcq": {"title": "Mobilité GPRS","text":"Vrai ou Faux", "points": 3 ,
+				"answers":
+					[
+					{"text": "En GPRS le terminal s'identifie systématiquement par son IMSI", "feedback": "This has feedback"},
+					{"text": "Le réseau sait á tout moment dans quelle cellule se trouve un terminal GPRS en veille"},
+					{"text": "Le HLR sait á tout moment quel est le SGSN qui prend en charge un terminal GPRS", "feedback": "This has feedback also", "valid": "y"}
+					]
+			}
+		}		
+		]	
+}

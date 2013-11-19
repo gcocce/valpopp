@@ -1,0 +1,65 @@
+{
+    "name": "Scenario Name",
+    "img": "scenario.gif",
+    "nodes":
+		[
+        {"Id": 1, "name": "MS", "img" : "node1.jpg"},
+        {"Id": 2, "name": "BTS", "img" : "node2.gif"}
+		],
+    "propagthroughputs":
+		[
+        {"srcN": 1,"destN":2,"propagTime" : 20, "throughput": 6400},
+        {"srcN": 2,"destN":1,"propagTime" : 20, "throughput": 6400}
+		],
+    "sequences":
+		[
+        {"Id": 1, "nextId": 123,
+			"messages":
+				[
+				{"name": "MM_LOCATION_UPDATE", "param": "IMSI, LS1", "srcN": 1, "destN": 2, "type": "REQUEST"},
+				{"name": "MM_LOCATION_UPDATE", "param": "IMSI, LS1", "srcN": 1, "destN": 2, "type": "REQUEST", "action": {"text": "This node does some work..."}},
+				{"name": "MAP_SEND_AUTHENTIFICATION", "param": "SRE, Kc", "srcN": 2, "destN" : 1, "type": "RESPONSE"}
+				],
+			"mcq": {"title": "Request", "text": "¿Here goes the question?", "points": 3 ,
+				"answers":
+					[
+					{"text": "First Answer", "feedback": "The feedback goes here", "valid": "y"},
+					{"text": "Second Answer", "feedback": "Here goes the feedback", "valid": "y"},
+					{"text": "Therd Answer", "feedback": "May not be feedback at all"}
+					]
+			}
+		},
+        {"Id": 123, "nextId":324,
+			"messages":
+				[
+				{"name": "MM_LOCATION_UPDATE", "param": "TMSI, LS1", "srcN":1,"destN" : 2, "type": "REQUEST", "length": 230, "treatment": 4, "dash": "SEMI", "startTime": "", "synchPoint": "", "comment": {"text": "This messages do some work..."}, "action": {"text": "This node does some work..."}},
+				{"name": "MM_LOCATION_UPDATE", "param": "IMSI, LS1", "srcN":1,"destN" : 2, "type": "REQUEST", "length": 230, "treatment": 10, "dash": "SEMI", "startTime": "", "synchPoint": "", "scenImg": "scenario2.gif", "comment": {"text": "This messages do some work..."}},
+				{"name": "MAP_SEND_AUTHENTIFICATION", "param": "SRE, Kc", "srcN":2,"destN" : 1, "type": "RESPONSE", "comment": {"text": "This messages do some work..."}}
+				],
+			"mcq": {"title": "Appel dans l'extranger","text":"¡What would you choose?", "points": 3 ,
+				"answers":
+					[
+					{"text": "First Answer", "feedback": "This has feedback", "valid":"y"},
+					{"text": "Other Answer"},
+					{"text": "Last Answer", "feedback": "This has feedback also"}
+					]
+			}
+		},
+        {"Id": 324, "nextId":0,
+			"messages":
+				[
+				{"name": "MM_LOCATION_UPDATE", "param": "IMSI, LS1", "srcN":1,"destN" : 2, "type": "REQUEST", "length": 230, "treatment": 10, "dash": "SEMI", "startTime": "", "synchPoint": "", "comment": {"text": "This messages do some work..."}},
+				{"name": "MM_LOCATION_UPDATE", "param": "IMSI, LS1", "srcN":1,"destN" : 2, "type": "REQUEST", "length": 230, "treatment": 25, "dash": "SEMI", "startTime": "", "synchPoint": "", "scenImg": "scenario2.gif", "comment": {"text": "This messages do some work..."}, "action": {"text": "The node wait for a response"}},
+				{"name": "MAP_SEND_AUTHENTIFICATION", "param": "Kc", "srcN":2,"destN" : 1, "type": "RESPONSE", "comment": {"text": "This messages do some work..."}}
+				],
+			"mcq": {"title": "Appel dans l'extranger","text":"¡What would you choose?", "points": 3 ,
+				"answers":
+					[
+					{"text": "First Answer", "feedback": "This has feedback", "valid":"y"},
+					{"text": "Other Answer"},
+					{"text": "Last Answer", "feedback": "This has feedback also"}
+					]
+			}			
+		}
+		]	
+}

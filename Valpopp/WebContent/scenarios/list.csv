@@ -1,8 +1,10 @@
 #Scenario Title Name;File in the application directory
-First Example;scenario_syntax_demo.json
-Second Example with Comments;scenario_syntax_demo_with_comments.json
+Complete Example;scenario_complete_demo.json
 Two Nodes Example;scenario_demo_two_nodes.json
 Three Nodes Example;scenario_demo_three_nodes.json
 Seven Nodes Example;scenario_demo_seven_nodes.json
-GSM Example;scenario_demo_gsm.json
-Security Example;scenario_demo_security.json
+First Location Updation Procedure;first_location_updating_procedure.json
+Call to Fix Phone in Another Country;mobile_in_foreing_country.json
+Not existing file;scenario_missing.json
+Scenario with Error;scenario_syntax_demo_logic_error.json
+Scenario with Syntax Error;scenario_syntax_demo_syntax_error.json

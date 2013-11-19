@@ -1,0 +1,65 @@
+{
+    "name": "A mobile phone in a foreign country is calling a fixed  phone in the same country",
+    "img": "it-call-pr-pr.gif",
+	"defaultmessage":{"type": "ONEWAY", "length": 30, "treatment": 2, "dash": "FULL"},
+    "nodes":
+		[
+        {"Id": 1, "name": "MS", "img" : "ms.gif"},
+        {"Id": 2, "name": "BSS", "img" : "bss.gif"},
+        {"Id": 3, "name": "MSC/VLR P1", "img" : "mscvlr.gif"},
+        {"Id": 4, "name": "MSC/VLR P3", "img" : "mscvlr.gif"},
+        {"Id": 5, "name": "LE P1", "img" : "gmsc_caa.gif"},
+        {"Id": 6, "name": "PTSN Subsc.", "img" : "pstn.gif"}		
+		],
+    "propagthroughputs":
+		[
+        {"srcN": 1,"destN": 2,"propagTime" : 30, "throughput": 6400},
+        {"srcN": 1,"destN": 3,"propagTime" : 50, "throughput": 1000},
+        {"srcN": 2,"destN": 1,"propagTime" : 30, "throughput": 1000},
+        {"srcN": 3,"destN": 1,"propagTime" : 50, "throughput": 1000}     
+		],
+    "sequences":
+		[		
+        {"Id": 1, "nextId": 0,
+			"messages":
+				[
+				{"srcN": 2, "destN": 1 , "name": "SYSTEM_INFORMATION", "type": "ONEWAY"},
+				{"srcN": 1, "destN": 2, "name": "RR_CHANNEL_REQUEST", "type": "REQUEST"},
+				{"srcN": 2, "destN" : 1, "name": "RR_IMMEDIATE_ASSIGNMENT", "param": "signalling channel", "type": "RESPONSE", "comment": {"text": "Asigning channel..."}},
+				{"srcN": 1, "destN" : 2, "name": "MM_CM_SERVICE_REQUEST", "param": "TMSI", "type": "REQUEST"},
+				{"srcN": 2, "destN" : 3, "name": "MM_CM_SERVICE_REQUEST", "param": "TMSI", "type": "REQUEST"},
+				{"srcN": 3, "destN" : 1, "name": "MAP_AUTHENTICATION_REQUEST", "param": "Rand","type": "REQUEST"},
+				{"srcN": 1, "destN" : 3, "name": "MAP_AUTHENTICATION_RESPONSE", "param": "Sres","type": "RESPONSE"},
+				{"srcN": 3, "destN" : 2, "name": "BSSMAP_CIPHER_MODE_COMMAND", "param": "Kc","type": "REQUEST"},
+				{"srcN": 2, "destN" : 1, "name": "RR_CIPHERING_MODE_COMMAND", "type": "REQUEST"},
+				{"srcN": 1, "destN" : 2, "name": "RR_CIPHERING_MODE_COMPLETE", "type": "RESPONSE"},
+				{"srcN": 2, "destN" : 3, "name": "BSSMAP_CIPHER_MODE_COMPLETE", "type": "RESPONSE", "synchPoint": "T0"},
+				{"srcN": 1, "destN" : 3, "name": "CC_SETUP", "param": "called PSTN number","type": "REQUEST", "startTime": "T0", "synchPoint": "T1"},
+				{"srcN": 3, "destN" : 4, "name": "ISUP_IAM", "param": "called PSTN number","type": "REQUEST", "treatment": 30, "startTime": "T1"},
+				{"srcN": 4, "destN" : 5, "name": "ISUP_IAM", "param": "called PSTN number","type": "REQUEST", "treatment": 30, "synchPoint": "T3"},
+				{"srcN": 5, "destN" : 4, "name": "ISUP_ACM", "type": "RESPONSE", "treatment": 30},
+				{"srcN": 4, "destN" : 3, "name": "ISUP_ACM", "type": "RESPONSE", "treatment": 30},
+				{"srcN": 3, "destN" : 1, "name": "CC_ALERTING", "param": "RING_BACK","type": "RESPONSE", "synchPoint": "T4", "comment": {"text": "The cell phone is ringing back ..."}},
+				{"srcN": 5, "destN" : 6, "name": "Ring, Ring", "type": "REQUEST", "startTime": "T3", "comment": {"text": "The phone is ringing..."}},
+				{"srcN": 3, "destN" : 1, "name": "CC_CALL_PROCEEDING", "type": "ONEWAY", "startTime": "T1", "synchPoint": "T2"},
+				{"srcN": 3, "destN" : 2, "name": "BSSMAP_ASSIGMENT_REQUEST", "param": "Traffic Channel","type": "REQUEST", "startTime": "T2"},
+				{"srcN": 2, "destN" : 1, "name": "RR_ASSIGMENT_COMMAND", "param": "Traffic Channel","type": "REQUEST"},
+				{"srcN": 1, "destN" : 2, "name": "RR_ASSIGMENT_COMPLETE","type": "RESPONSE"},
+				{"srcN": 2, "destN" : 3, "name": "BSSMAP_ASSIGMENT_COMPLETE","type": "RESPONSE"},
+				{"srcN": 6, "destN" : 5, "name": "HANG_UP","type": "ONEWAY", "treatment": 30, "dash": "SEMI", "startTime": "T4"},
+				{"srcN": 5, "destN" : 4, "name": "ISUP_ANS", "type": "ONEWAY"},
+				{"srcN": 4, "destN" : 3, "name": "ISUP_ANS", "type": "ONEWAY"},
+				{"srcN": 3, "destN" : 1, "name": "CC_CONNECT", "type": "REQUEST"},
+				{"srcN": 1, "destN" : 3, "name": "CC_CONNECT_ACKNOWLEDGE", "type": "RESPONSE"}
+				],
+			"mcq": {"title": "Appel mobile vers fixe", "text": "Alice a un téléphone GSM. Elle appelle Bob sur post fixe.", "points": 3 ,
+				"answers":
+					[
+					{"text": "Le premier message envoyé par le terminal d'Alice contient son TMSI", "feedback": "The feedback goes here"},
+					{"text": "Le HLR est consulté pour vérifier la localisation d'Alice", "feedback": "Here goes the feedback", "valid": "y"},
+					{"text": "La communication transite par le HLR", "feedback": "May not be feedback at all", "valid": "y"}
+					]
+			}
+		}	
+		]	
+}

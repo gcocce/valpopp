@@ -4,7 +4,7 @@ var configModule = {
 		// Config properties
 		lang:"en",
 		user:"basic", // {"basic", "editor"}
-		defScenario:"scenarios/scenario_syntax_demo.json",
+		defScenario:"scenarios/scenario_complete_demo.json",
 		defSchema:"js/model/schema/scenario_schema.json",
 		imgpath:"img/",
 		scenarioPath: "scenarios/",
