@@ -13,6 +13,11 @@
                 "startTime": {"type": "string", "required": false},
                 "synchPoint": {"type":"string", "required": false}},
             "additionalProperties": false},
+		"defaultpropagthroughputs": {"type": "object", "required":false,
+            "properties":{
+                "propagTime": {"type":"number", "minimum": 10, "maximum": 200, "required":true},
+                "throughput": {"type":"number", "minimum": 10, "maximum": 50000, "required":true}},
+            "additionalProperties": false},            
         "references":{"type": "array", "required": false,
             "items":{"type": "object",
                 "properties":{
@@ -31,8 +36,8 @@
                 "properties": {
                     "srcN": {"type": "number", "enum": [1,2,3,4,5,6,7], "required":true},
                     "destN": {"type":"number", "enum": [1,2,3,4,5,6,7], "required":true},
-                    "propagTime": {"type":"number", "minimum": 10, "maximum": 60, "required":true},
-                    "throughput": {"type":"number", "minimum": 10, "maximum": 8000, "required":true}},
+                    "propagTime": {"type":"number", "minimum": 10, "maximum": 200, "required":true},
+                    "throughput": {"type":"number", "minimum": 10, "maximum": 50000, "required":true}},
                 "additionalProperties": false}},
         "sequences" : { "type" : "array", "required": true, "minItems": 1,
             "items": {"type": "object",

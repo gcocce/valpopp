@@ -2,6 +2,7 @@
     "name": "A mobile phone in a foreign country is calling a fixed  phone in the same country",
     "img": "it-call-pr-pr.gif",
 	"defaultmessage":{"type": "ONEWAY", "length": 30, "treatment": 2, "dash": "FULL"},
+	"defaultpropagthroughputs":{"propagTime" : 15, "throughput": 1000},
     "nodes":
 		[
         {"Id": 1, "name": "MS", "img" : "ms.gif"},

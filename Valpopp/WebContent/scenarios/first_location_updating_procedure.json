@@ -2,6 +2,7 @@
     "name": "First Location Updating procedure",
     "img": "firstLU.gif",
 	"defaultmessage":{"type": "ONEWAY", "length": 20, "treatment": 0, "dash": "FULL"},
+	"defaultpropagthroughputs":{"propagTime" : 20, "throughput": 6400},
     "nodes":
 		[
         {"Id": 1, "name": "MS", "img" : "ms.gif"},

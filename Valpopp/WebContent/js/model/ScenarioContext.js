@@ -99,6 +99,13 @@ function ScenarioContext(){
 	}
 	
 	function createDefaultPropagthroughput(){
+		// If the scenario file has defaultpropagthroughputs
+		if (m_scenario_object.defaultpropagthroughputs){
+			DEFAULT_THROUGHPUT=m_scenario_object.defaultpropagthroughputs.throughput;
+			DEFAULT_PROPAGATION_TIME=m_scenario_object.defaultpropagthroughputs.propagTime;
+		}
+		
+		// Create the object with the default values
 		for (var x=1; x <= m_nodes_number; x++){
 			m_def_prog[x]={};
 			for (var y=1; y<= m_nodes_number; y++){
@@ -112,8 +119,10 @@ function ScenarioContext(){
 	function checkPropagthroughput(){
 		var prop=m_scenario_object.propagthroughputs;
 		
+		// Create the object with the default values
 		createDefaultPropagthroughput();
 		
+		// Modify the object with the propagthroughputs present in the scenario file
 		if (prop){
 			for (var i=0; i < prop.length; i++){
 				var data=prop[i];
