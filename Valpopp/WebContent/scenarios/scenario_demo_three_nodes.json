@@ -1,6 +1,6 @@
 {
     "name": "Scenario Three Nodes",
-    "img": "scenario.gif",
+    "img": "firstLU.gif",
 	"defaultmessage":{"type": "ONEWAY", "length": 240, "treatment": 0, "dash": "SEMI"},
     "nodes":
 		[
@@ -38,7 +38,7 @@
 				{"srcN": 1, "destN" : 3, "name": "MAP_SEND_AUTHENTIFICATION", "type": "ONEWAY", "length": 2230, "treatment": 0, "dash": "SEMI", "startTime": "", "action": {"text": "This node does some work..."}},
 				{"srcN": 3, "destN" : 2, "name": "MAP_SEND_AUTHENTIFICATION", "type": "RESPONSE", "length": 230, "treatment": 20, "dash": "SEMI", "startTime": "", "synchPoint": "A", "action": {"text": "This node does some work..."}},
 				{"srcN": 2, "destN" : 1, "name": "MAP_SEND_AUTHENTIFICATION", "type": "RESPONSE", "length": 230, "treatment": 0, "dash": "SEMI", "startTime": "A"},
-				{"srcN": 1, "destN" : 2, "name": "MAP_SEND_AUTHENTIFICATION", "type": "ONEWAY", "length": 230, "treatment": 5, "dash": "SEMI", "startTime": ""},
+				{"srcN": 1, "destN" : 2, "name": "MAP_SEND_AUTHENTIFICATION", "type": "ONEWAY", "length": 230, "treatment": 5, "dash": "SEMI", "startTime": "", "scenImg": "truc.gif"},
 				{"srcN": 2, "destN" : 1, "name": "MAP_SEND_AUTHENTIFICATION", "type": "RESPONSE", "length": 230, "treatment": 5, "dash": "SEMI", "startTime": ""},
 				{"srcN": 1, "destN" : 2, "name": "MAP_SEND_AUTHENTIFICATION", "type": "REQUEST", "length": 230, "treatment": 10, "dash": "SEMI", "startTime": ""},				
 				{"srcN": 2, "destN" : 3, "name": "MAP_SEND_AUTHENTIFICATION", "type": "RESPONSE", "length": 230, "treatment": 5, "dash": "SEMI", "startTime": "A"},
@@ -60,8 +60,8 @@
 				[
 				{"srcN":2,"destN" : 1, "name": "MM_LOCATION_UPDATE", "param": "IMSI, LS1",  "type": "REQUEST", "length": 230, "treatment": 5, "dash": "FULL", "startTime": "", "synchPoint": ""},
 				{"srcN":1,"destN" : 2, "name": "MM_LOCATION_UPDATE", "param": "IMSI, LS1",  "type": "REQUEST", "length": 430, "treatment": 40, "dash": "FULL", "startTime": "", "synchPoint": "B"},
-				{"srcN":2,"destN" : 1, "name": "MM_LOCATION_UPDATE", "param": "IMSI",  "type": "REQUEST", "length": 230, "treatment": 0, "dash": "SEMI", "startTime": "B", "synchPoint": "", "scenImg": "scenario2.gif"},
-				{"srcN":2,"destN" : 3, "name": "MM_LOCATION_UPDATE", "param": "IMSI",  "type": "REQUEST", "length": 230, "treatment": 0, "dash": "SEMI", "startTime": "B", "synchPoint": "", "scenImg": "scenario2.gif"},				
+				{"srcN":2,"destN" : 1, "name": "MM_LOCATION_UPDATE", "param": "IMSI",  "type": "REQUEST", "length": 230, "treatment": 0, "dash": "SEMI", "startTime": "B", "synchPoint": "", "scenImg": "itLUFr.gif"},
+				{"srcN":2,"destN" : 3, "name": "MM_LOCATION_UPDATE", "param": "IMSI",  "type": "REQUEST", "length": 230, "treatment": 0, "dash": "SEMI", "startTime": "B", "synchPoint": "", "scenImg": "itLUPr.gif"},				
 				{"srcN":3,"destN" : 1, "name": "MAP_SEND_AUTHENTIFICATION", "param": "SRS1, Kc",  "type": "RESPONSE", "action": {"text": "This node does some work..."}},
 				{"srcN":1,"destN" : 3, "name": "MAP_SEND_AUTHENTIFICATION", "param": "SRS1, Kc",  "type": "RESPONSE"},
 				{"srcN":3,"destN" : 2, "name": "MM_LOCATION_UPDATE", "param": "IMSI, LS1",  "type": "REQUEST", "length": 430, "treatment": 40, "dash": "FULL", "startTime": "", "synchPoint": "C"}				
@@ -79,7 +79,7 @@
 			"messages":
 				[
 				{"srcN":2,"destN" : 1, "name": "MM_LOCATION_UPDATE", "param": "IMSI, LS1",  "type": "REQUEST", "length": 230, "treatment": 0, "dash": "FULL", "startTime": "C", "synchPoint": ""},
-				{"srcN":2,"destN" : 3, "name": "MM_LOCATION_UPDATE", "param": "IMSI",  "type": "REQUEST", "length": 230, "treatment": 0, "dash": "SEMI", "startTime": "C", "synchPoint": "", "scenImg": "scenario2.gif"},		
+				{"srcN":2,"destN" : 3, "name": "MM_LOCATION_UPDATE", "param": "IMSI",  "type": "REQUEST", "length": 230, "treatment": 0, "dash": "SEMI", "startTime": "C", "synchPoint": "", "scenImg": "firstLU.gif"},		
 				{"srcN":3,"destN" : 1, "name": "MAP_SEND_AUTHENTIFICATION", "param": "SRS1, Kc",  "type": "RESPONSE", "action": {"text": "This node does some work..."}},
 				{"srcN":1,"destN" : 3, "name": "MAP_SEND_AUTHENTIFICATION", "param": "SRS1, Kc",  "type": "RESPONSE"}
 				],

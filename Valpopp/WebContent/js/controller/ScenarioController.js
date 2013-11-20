@@ -102,24 +102,33 @@ function ScenarioController(){
 				
 		var scenarioPlay=scenarioView.getCurrentScenarioPlay();
 		
-		theCheckButton = document.getElementById("bt_mode");
-				
-		scenarioPlay.changeMode(theCheckButton.checked);
+		// If the scenarioPlay objet is valid
+		if (scenarioPlay){
+			
+			theCheckButton = document.getElementById("bt_mode");
+			
+			// Change mode
+			scenarioPlay.changeMode(theCheckButton.checked);			
+		}
 	}
 	
 	function changeMode(){
 		
 		var scenarioPlay=scenarioView.getCurrentScenarioPlay();
 		
-		theCheckButton = document.getElementById("bt_mode");
-		
-		if (theCheckButton.checked){
-			theCheckButton.checked=false;
-		}else{
-			theCheckButton.checked=true;
+		// If the scenarioPlay objet is valid
+		if (scenarioPlay){
+			theCheckButton = document.getElementById("bt_mode");
+			
+			if (theCheckButton.checked){
+				theCheckButton.checked=false;
+			}else{
+				theCheckButton.checked=true;
+			}
+			
+			// Change mode
+			scenarioPlay.changeMode(theCheckButton.checked);		
 		}
-		
-		scenarioPlay.changeMode(theCheckButton.checked);		
 	}
 	
 	function dataButton(){

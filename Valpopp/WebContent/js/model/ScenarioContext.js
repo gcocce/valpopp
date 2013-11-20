@@ -99,10 +99,14 @@ function ScenarioContext(){
 	}
 	
 	function createDefaultPropagthroughput(){
+		
+		var def_propagTime=DEFAULT_PROPAGATION_TIME;
+		var def_throughput=DEFAULT_THROUGHPUT;
+		
 		// If the scenario file has defaultpropagthroughputs
 		if (m_scenario_object.defaultpropagthroughputs){
-			DEFAULT_THROUGHPUT=m_scenario_object.defaultpropagthroughputs.throughput;
-			DEFAULT_PROPAGATION_TIME=m_scenario_object.defaultpropagthroughputs.propagTime;
+			def_throughput=m_scenario_object.defaultpropagthroughputs.throughput;
+			def_propagTime=m_scenario_object.defaultpropagthroughputs.propagTime;
 		}
 		
 		// Create the object with the default values
@@ -110,7 +114,7 @@ function ScenarioContext(){
 			m_def_prog[x]={};
 			for (var y=1; y<= m_nodes_number; y++){
 				if(x!=y){
-					m_def_prog[x][y]={"srcN": x,"destN": y, "propagTime" : DEFAULT_PROPAGATION_TIME, "throughput": DEFAULT_THROUGHPUT};
+					m_def_prog[x][y]={"srcN": x,"destN": y, "propagTime" : def_propagTime, "throughput": def_throughput};
 				}
 			}
 		}
@@ -131,6 +135,7 @@ function ScenarioContext(){
 			}
 		}
 		
+		console.log("Propagation Array: ");
 		console.log(m_def_prog);
 	}
 	
