@@ -1,0 +1,48 @@
+ # scenario 1;;;
+ScenarioName;A mobile phone is calling a fixed phone in the same country;;
+File;nationalCall.gif;;
+#NbNode;6;;
+NodeName;0;  MS  ;ms.gif
+NodeName;1;  BSS ;bss.gif
+NodeName;2;MSC/VLR F1;mscvlr.gif
+NodeName;3;MSC/VLR F2;mscvlr.gif
+NodeName;4;  LE F1 ;gmsc_caa.gif
+NodeName;5;PTSN Subsc.;pstn.gif
+#######################################################################################################;;;
+#    The following lines describes the propaga;;;
+tion time and the throughput time for a link i,j         #;;;
+#    The first value indicates the source node id                                                     #;;;
+#    The seconde value indicates the destination node id                                              #;;;
+#    The thrid value indicates the the propagtaion time value                                         #;;;
+#    The last value indicates the the throughput value                                                #;;;;
+#######################################################################################################;;;;
+PropagThroughput;0;1;30;1000
+PropagThroughput;0;2;50;1000
+PropagThroughput;0;3;1;1000
+PropagThroughput;0;4;1;1000
+PropagThroughput;0;5;1;1000
+PropagThroughput;1;0;30;100
+PropagThroughput;1;2;15;1000
+PropagThroughput;1;3;1;1000
+PropagThroughput;1;4;1;1000
+PropagThroughput;1;5;1;1000
+PropagThroughput;2;0;50;1000
+PropagThroughput;2;1;15;1000
+PropagThroughput;2;3;15;1000
+PropagThroughput;2;4;1;1000
+PropagThroughput;2;5;1;1000
+PropagThroughput;3;0;1;1000
+PropagThroughput;3;1;1;1000
+PropagThroughput;3;2;15;1000
+PropagThroughput;3;4;15;1000
+PropagThroughput;3;5;1;1000
+PropagThroughput;4;0;1;1000
+PropagThroughput;4;1;1;1000
+PropagThroughput;4;2;1;1000
+PropagThroughput;4;3;15;1000
+PropagThroughput;4;5;15;1000
+PropagThroughput;5;0;1;1000
+PropagThroughput;5;1;1;1000
+PropagThroughput;5;2;1;1000
+PropagThroughput;5;3;1;1000
+PropagThroughput;5;4;15;1000

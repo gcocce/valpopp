@@ -1,0 +1,132 @@
+<html>
+<head>
+    <title>Scenario Translation</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <meta http-equiv="cache-control" content="max-age=0" />
+    <meta http-equiv="cache-control" content="no-cache" />
+    <meta http-equiv="expires" content="0" />
+    <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
+    <meta http-equiv="pragma" content="no-cache" />
+    
+    <style type="text/css">    
+        #result { padding: 20px; }
+        #result.valid { border: 1px solid #0f0; background-color: #efe; }
+        #result.invalid { border: 1px solid #f00; background-color: #fee; }
+    </style>
+    
+    <script type="text/javascript" src="js/app/ConfigModule.js"></script>
+
+    <script type="text/javascript">
+    <!--
+   
+    // This module is executed if the script of the page are not yet downloaded
+    var module=(function(){
+    	var m_error="Page Not Ready, Wait a moment Please!";
+    	
+		return { 
+			translateScenario: function(){
+				alert(m_error);
+			}
+		};    	
+    }());
+    
+    // When the contents of the page are already download we start downloading the schema file
+    window.onload=function(){
+    	
+    		// Jquery is already available, therefore we set eventlistener using jquery sintax
+	    	$(window).on( "SchemaFileLoaded", schemaLoaded);
+	    	$(window).on( "SchemaFileLoadingError", schemaError);
+    	
+    		// Start loading schema
+	    	scenarioSchema=new Schema();
+	    	scenarioSchema.loadSchema(configModule.getDefaultSchema());    		
+    };
+    
+	// When the schema file has already been loaded we replace the module with the next one
+	function schemaLoaded(){
+		// Set new module
+		module = (function () {
+			var m_error="";
+			
+			function doTranslation(){
+				
+				var thefile= document.getElementById("Scenariofile");
+				
+		        // Get File Object
+		        var filePointer = thefile.files[0];
+
+					var translator=new Translator();
+					
+					if(translator.translate(filePointer)){
+						console.log("Translation succed!");
+						// Do stuff
+						
+						
+
+					}else{
+						alert(translator.getError());
+					}
+			}
+
+			return { 
+				translateScenario: doTranslation,
+				getError: function (){
+					return m_error;
+				}
+			};
+		}());		
+	}
+	
+	function schemaError(){
+		var errormsg="There was an error with the schema file! It is no posible to continue!";
+		console.error(errormsg);
+		alert(errormsg);
+	}
+	
+    
+    // -->
+    </script>
+</head>
+<body>
+<table width="50%" border="1" align="center">
+  <tr>
+    <td><div align="center"><strong>Select Scenario File in CSV Format</strong></div></td>
+  </tr>
+  <tr>
+    <td>
+      <input name="Scenariofile" type="file" id="Scenariofile" size="120" maxlength="120">
+    </td>
+  </tr>
+  <tr>
+    <td>
+    <div align="center">
+        <input type="button" name="translate" id="translate" value="Translate" onclick='module.translateScenario();'>
+      </div>
+    </td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+<div id="result" style="text-align: center;"></div>
+<p>&nbsp;</p>
+
+	<!-- Valpo++ Script Files -->
+
+	<script type="text/javascript" src="lib/jsv/uri/uri.js"></script>
+	<script type="text/javascript" src="lib/jsv/uri/schemes/urn.js"></script>
+	<script type="text/javascript" src="lib/jsv/jsv.js"></script>
+	<script type="text/javascript" src="lib/jsv/json-schema-draft-03.js"></script>
+	
+	<script type="text/javascript" src="lib/modernizr.js"></script>	
+	<script type="text/javascript" src="lib/jquery-1.10.2.js"></script>	
+	
+	<script type="text/javascript" src="js/utils/Utils.js"></script>
+	
+	<script type="text/javascript" src="js/utils/Translator.js"></script>
+	
+    <script type="text/javascript" src="js/model/schema/Schema.js"></script>	
+		
+	<script type="text/javascript" src="js/model/ScenarioContext.js"></script>
+
+	<script type="text/javascript" src="js/model/ScenarioModelBuilder.js"></script>	
+</body>
+</html>

@@ -1,0 +1,32 @@
+# Data format node i; node j;name;type;length;treatment;dash;step;startTime;syncpoint;delta
+1;0;SYSTEM_INFORMATION();ONEWAY;30;2;full;0;t0;;
+0;1;RR_CHANNEL_REQUEST();REQUEST;30;2;semi;0;;;
+1;0;RR_IMMEDIATE_ASSIGNMENT(signalling channel);RESPONSE;30;2;semi;0;;;
+0;1;MM_CM_SERVICE_REQUEST(TMSI);REQUEST;30;2;full;0;;;
+1;2;MM_CM_SERVICE_REQUEST(TMSI);REQUEST;30;2;full;0; ;;
+2;0;MAP_AUTHENTICATION_REQUEST(RAND);REQUEST;30;2;semi;0; ;;
+0;2;MAP_AUTHENTICATION_RESPONSE(SRES);RESPONSE;30;2;semi;0; ;;
+2;1;BSSMAP_CIPHER_MODE_COMMAND();REQUEST;30;2;full;0; ;;
+1;0;RR_CIPHERING_MODE_COMMAND();REQUEST;30;50;full;0;*;T1;
+0;2;CC_SETUP(called PSTN number);REQUEST;30;2;full;0;*;T2;
+999;999;Is the call set up secured ?;<html>Yes, the mobile is authenticated and the<BR>called number is transmitted in cyphered mode</html>;nationalCall.gif;A mobile phone is calling a fixed phone in the same country;;;;;
+2;3;ISUP_IAM(called PSTN number);REQUEST;30;60;full;0;*;T21;
+3;4;ISUP_IAM(called PSTN number);REQUEST;30;60;full;0;*;T3;60
+4;3;ISUP_ACM();ONEWAY;30;2;full;0; ;;
+3;2;ISUP_ACM();ONEWAY;30;2;full;0; ;;
+999;999;Which event is related to ACM ?;<html>The fixed phone is ringing, the mobile user<br>can hear the ring back tone</html>;nationalCall.gif;A mobile phone is calling a fixed phone in the same country;;;;;
+2;0;CC_ALERTING(RING_BACK);RESPONSE;30;2;full;0;*;T4;60
+5;4;HANG_UP();ONEWAY;30;2;semi;1;T4;;
+999;999;<html>The fixed user has just hang up<br>click continue to see the following</html>;<html>  </html>;nationalCall.gif;A mobile phone is calling a fixed phone in the same country;;;;;
+4;3;ISUP_ANS();RESPONSE;30;2;full;2;;;
+3;2;ISUP_ANS();RESPONSE;30;2;full;3;;;
+2;0;CC_CONNECT();REQUEST;30;2;semi;4;;;
+0;2;CC_CONNECT_ACKNOWLEDGE();RESPONSE;30;2;semi;5;;;
+0;1;RR_CIPHERING_MODE_COMPLETE();RESPONSE;30;2;full;0;T1;;
+1;2;BSSMAP_CIPHER_MODE_COMPLETE();RESPONSE;30;2;full;0;;;
+2;0;CC_CALL_PROCEEDING();ONEWAY;30;2;full;0;T2;;
+4;5;Ring;REQUEST;30;150;full;0;T3;;
+2;1;BSSMAP_ASSIGMENT_REQUEST();REQUEST;30;2;full;0;T21;;
+1;0;RR_ASSIGMENT_COMMAND(Traffic channel);REQUEST;30;2;full;0;;;
+0;1;RR_ASSIGMENT_COMPLETE();RESPONSE;30;2;full;0;;;
+1;2;BSSMAP_ASSIGMENT_COMPLETE();RESPONSE;30;2;full;0;;;

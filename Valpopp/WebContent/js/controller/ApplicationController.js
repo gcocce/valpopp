@@ -112,6 +112,7 @@ function ApplicationController(){
 	// Public Methods Definition
 	// ******************************************************************************
 	
+	// Build Dialog
 	function OpenLocalFile(){
 		console.log("OpenLocalFileDialog");
 		
