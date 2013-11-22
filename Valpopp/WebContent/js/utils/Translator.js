@@ -4,6 +4,7 @@
 function Translator(){
 	var m_error="";
 	var m_file_content="";
+	var m_file_translated="";
     var m_codification="UTF-8";
 	
 	function readFile(fHandler, callbackFunction){
@@ -42,11 +43,32 @@ function Translator(){
 		console.log("File contents:");
 		console.log(m_file_content);
 		
+		if(processfile()){
+			//document.location = 'data:Application/octet-stream,' + encodeURIComponent(m_file_translated);
+			
+			var result=document.getElementById("result");
+			
+			result.className = "valid";
+			result.innerHTML ='<a href="data:Application/octet-stream,'+ encodeURIComponent(m_file_translated)+'" target="_blank" download="scenario.json">Download Scenario File</a>'
+			
+		}else{
+			var result=document.getElementById("result");
+			
+			result.className = "invalid";
+			
+			result.innerHTML = m_error;
+		}
+		
+	}
+	
+	function processfile(){
+		
+		m_file_translated=m_file_content;
 		
 		
+		m_error="se produjo un error";
 		
-		
-		
+		return true;
 	}
 	
 	// **************************************************************************
