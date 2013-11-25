@@ -9,9 +9,11 @@
     <meta http-equiv="pragma" content="no-cache" />
     
     <style type="text/css">    
-        #result { padding: 20px; }
-        #result.valid { border: 1px solid #0f0; background-color: #efe; }
-        #result.invalid { border: 1px solid #f00; background-color: #fee; }
+        #translation { padding: 20px; }
+        #validation { padding: 20px; }
+        #download { padding: 20px; }
+        .valid { border: 1px solid #0f0; background-color: #efe; }
+        .invalid { border: 1px solid #f00; background-color: #fee; }
     </style>
     
     <script type="text/javascript" src="js/app/ConfigModule.js"></script>
@@ -19,6 +21,9 @@
     <script type="text/javascript">
     <!--
    
+    // Schema object used to validay json syntax
+    var scenarioSchema=null;
+    
     // This module is executed if the script of the page are not yet downloaded
     var module=(function(){
     	var m_error="Page Not Ready, Wait a moment Please!";
@@ -58,17 +63,22 @@
 					var translator=new Translator();
 					
 					if(translator.translate(filePointer)){
-						
-						console.log("Translation succed!");
-						// Do stuff
 
 					}else{
 						alert(translator.getError());
 					}
 			}
+			
+			function doValidation(){
+				console.log("doValidation");
+				
+				
+				
+			}
 
 			return { 
 				translateScenario: doTranslation,
+				validateScenario: doValidation,
 				getError: function (){
 					return m_error;
 				}
@@ -105,7 +115,11 @@
   </tr>
 </table>
 <p>&nbsp;</p>
-<div id="result" style="text-align: center;"></div>
+<div id="translation" style="text-align: center;"></div>
+<p>&nbsp;</p>
+<div id="validation" style="text-align: center;"></div>
+<p>&nbsp;</p>
+<div id="download" style="text-align: center;"></div>
 <p>&nbsp;</p>
 	<!-- Valpo++ Script Files -->
 

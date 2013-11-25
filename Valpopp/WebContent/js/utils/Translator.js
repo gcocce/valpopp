@@ -75,13 +75,31 @@ function Translator(){
 		if(processfile()){
 			//document.location = 'data:Application/octet-stream,' + encodeURIComponent(m_file_translated);
 			
-			var result=document.getElementById("result");
+			// Show translation result
+			var result=document.getElementById("translation");
 			
 			result.className = "valid";
-			result.innerHTML ='<a href="data:Application/octet-stream,'+ encodeURIComponent(m_file_translated)+'" target="_blank" download="scenario.json">Download Scenario File</a>';
+			result.innerHTML = "The file was successfully translated to Json Format";
+				
+			// Check Json syntax
+			var result=document.getElementById("validation");
 			
+			if (!scenarioSchema.validateScenario(m_file_translated)){
+				result.className = "invalid";
+				result.innerHTML= "The Syntax of the Json file has the following errors: <br><br>" + scenarioSchema.getError();
+				
+			}else{
+				result.className = "valid";
+				result.innerHTML="The Syntax of the Json file complies with the Schema!";
+			}			
+			
+			// Show download link
+			var result=document.getElementById("download");
+			
+			result.innerHTML = '<a href="data:Application/octet-stream,'+ encodeURIComponent(m_file_translated)+'" target="_blank" download="scenario.json">Download Scenario File</a>';
 		}else{
-			var result=document.getElementById("result");
+			// Show translation result
+			var result=document.getElementById("translation");
 			
 			result.className = "invalid";
 			
@@ -293,7 +311,7 @@ function Translator(){
 		
 		switch (line_content[0]){
 		case "sequence":
-			console.log("Sequence Id: " + line_content[1]);
+			//console.log("Sequence Id: " + line_content[1]);
 			
 			if (!m_file_translated.sequences){
 				m_file_translated.sequences=[];
@@ -401,7 +419,7 @@ function Translator(){
 				
 				checkAtribute(message, "startTime", line_content[8], false);
 				
-				checkAtribute(message, "syncpoint", line_content[9], false);
+				checkAtribute(message, "synchPoint", line_content[9], false);
 				
 				// Process timer if present
 				if (line_content[10]){
