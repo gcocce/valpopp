@@ -4,7 +4,10 @@
 #                                                                                                        #;;;;
 #ScenarioName;Scenario Name                                                                              #;;;;
 ##########################################################################################################;;;;
+
+
 ScenarioName;A mobile phone is calling a fixed phone in the same country;;;;
+
 ##########################################################################################################;;;;
 # Scenario Image File (mandatory)                                                                        #;;;;
 # Only one line with this data is possible                                                               #;;;;
@@ -90,28 +93,28 @@ sequence;1;20;;;;
 ##########################################################################################################;;;
 #    Message (Mandatory at least one message)                                                            #;;;
 #                                                                                                        #;;;;
-#srcNode;destNode;name;parameters;type;length;treatment;dash;startTime;syncpoint;comment;action          #;;;;
+#srcNode;destNode;name;parameters;type;length;treatment;dash;startTime;syncpoint;timer;scenImg;comment;action#;;;;
 ##########################################################################################################;;;;
-1;0;SYSTEM_INFORMATION;;ONEWAY;30;2;full;0;;;
-0;1;RR_CHANNEL_REQUEST;;REQUEST;30;2;semi;0;;;
-1;0;RR_IMMEDIATE_ASSIGNMENT;signalling channel;RESPONSE;30;2;semi;0;;;
-0;1;MM_CM_SERVICE_REQUEST;TMSI;REQUEST;30;2;full;0;;;
-1;2;MM_CM_SERVICE_REQUEST;TMSI;REQUEST;30;2;full;0; ;;
-2;0;MAP_AUTHENTICATION_REQUEST;RAND;;REQUEST;30;2;semi;0; ;;
-0;2;MAP_AUTHENTICATION_RESPONSE;SRES;RESPONSE;30;2;semi;0; ;;
-2;1;BSSMAP_CIPHER_MODE_COMMAND;;REQUEST;30;2;full;0; ;;
-1;0;RR_CIPHERING_MODE_COMMAND;;REQUEST;30;50;full;0;;T1;
-0;2;CC_SETUP;called PSTN number;;REQUEST;30;2;full;0;;T2;
+1;0;SYSTEM_INFORMATION;;ONEWAY;30;2;full;;;;
+0;1;RR_CHANNEL_REQUEST;;REQUEST;30;2;semi;;;;
+1;0;RR_IMMEDIATE_ASSIGNMENT;signalling channel;RESPONSE;30;2;semi;;;;
+0;1;MM_CM_SERVICE_REQUEST;TMSI;REQUEST;30;2;full;;;;
+1;2;MM_CM_SERVICE_REQUEST;TMSI;REQUEST;30;2;full;; ;;
+2;0;MAP_AUTHENTICATION_REQUEST;RAND;REQUEST;30;2;semi;; ;;
+0;2;MAP_AUTHENTICATION_RESPONSE;SRES;RESPONSE;30;2;semi;; ;;
+2;1;BSSMAP_CIPHER_MODE_COMMAND;;REQUEST;30;2;full;; ;;
+1;0;RR_CIPHERING_MODE_COMMAND;;REQUEST;30;50;full;;T1;
+0;2;CC_SETUP;called PSTN number;REQUEST;30;2;full;;T2;
 ##########################################################################################################;;;
 #    MCQ (Optional)                                                                                      #;;;
 #                                                                                                        #;;;;
 #mcq;title;question;points;;;                                                                            #;;;;
 ##########################################################################################################;;;;
-mcq;A mobile phone is calling a fixed phone in the same country;Is the call set up secured ?;;;
+mcq;A mobile phone is calling a fixed phone in the same country;Is the call set up secured ?;100;;
 ##########################################################################################################;;;
 #    MCQ  answers (Mandatory, at least one)                                                              #;;;
 #                                                                                                        #;;;;
-#mcqanswer;answer;feedback;valid;;;                                                                      #;;;;
+#mcqanswer;answer;feedback;valid;;;                                                                   #;;;;
 ##########################################################################################################;;;;
 mcqanswer;yes;;y;;;
 mcqanswer;no;Yes, the mobile is authenticated and the<BR>called number is transmitted in cyphered mode;;;;
@@ -120,30 +123,30 @@ mcqanswer;no;Yes, the mobile is authenticated and the<BR>called number is transm
 #sequence;Id;nextId;;;;                                                                                  #;;;;
 ##########################################################################################################;;;;
 sequence;20;30;;;;
-#srcNode;destNode;name;parameters;type;length;treatment;dash;startTime;syncpoint;comment;action 
-2;3;ISUP_IAM;called PSTN number;REQUEST;30;60;full;0;;T21;
-3;4;ISUP_IAM;called PSTN number;REQUEST;30;60;full;0;;T3;
-4;3;ISUP_ACM;;ONEWAY;30;2;full;0; ;;
-3;2;ISUP_ACM;;ONEWAY;30;2;full;0; ;;
+#srcNode;destNode;name;parameters;type;length;treatment;dash;startTime;syncpoint;timer;scenImg;comment;action#;;;;
+2;3;ISUP_IAM;called PSTN number;REQUEST;30;60;full;;T21;
+3;4;ISUP_IAM;called PSTN number;REQUEST;30;60;full;;T3;
+4;3;ISUP_ACM;;ONEWAY;30;2;full;; ;;
+3;2;ISUP_ACM;;ONEWAY;30;2;full;; ;;
 #mcq;title;question;points;;; 
 mcq;A mobile phone is calling a fixed phone in the same country;Which event is related to ACM ?;;;
 #mcqanswer;answer;feedback;valid;;;
 mcqanswer;The ring of the phone;No feedback;y;;;
 #sequence;Id;nextId;;;;
 sequence;30;0;;;;
-#srcNode;destNode;name;parameters;type;length;treatment;dash;startTime;syncpoint;comment;action 
-2;0;CC_ALERTING;RING_BACK;RESPONSE;30;2;full;0;;T4;60
-5;4;HANG_UP;;ONEWAY;30;2;semi;1;T4;;
-4;3;ISUP_ANS;;RESPONSE;30;2;full;2;;;
-3;2;ISUP_ANS;;RESPONSE;30;2;full;3;;;
-2;0;CC_CONNECT;;REQUEST;30;2;semi;4;;;
-0;2;CC_CONNECT_ACKNOWLEDGE;;RESPONSE;30;2;semi;5;;;
-0;1;RR_CIPHERING_MODE_COMPLETE;;RESPONSE;30;2;full;0;T1;;
-1;2;BSSMAP_CIPHER_MODE_COMPLETE;;RESPONSE;30;2;full;0;;;
-2;0;CC_CALL_PROCEEDING;;ONEWAY;30;2;full;0;T2;;
-4;5;Ring;;REQUEST;;30;150;full;0;T3;;
-2;1;BSSMAP_ASSIGMENT_REQUEST;;REQUEST;30;2;full;0;T21;;
-1;0;RR_ASSIGMENT_COMMAND;Traffic channel;REQUEST;30;2;full;0;;;
-0;1;RR_ASSIGMENT_COMPLETE;;RESPONSE;30;2;full;0;;;
-1;2;BSSMAP_ASSIGMENT_COMPLETE;;RESPONSE;30;2;full;0;;;
+#srcNode;destNode;name;parameters;type;length;treatment;dash;startTime;syncpoint;timer;scenImg;comment;action#;;;;
+2;0;CC_ALERTING;RING_BACK;RESPONSE;30;2;full;;T4
+5;4;HANG_UP;;ONEWAY;30;2;semi;T4;;
+4;3;ISUP_ANS;;RESPONSE;30;2;full;;;;
+3;2;ISUP_ANS;;RESPONSE;30;2;full;;;;
+2;0;CC_CONNECT;;REQUEST;30;2;semi;;;;
+0;2;CC_CONNECT_ACKNOWLEDGE;;RESPONSE;30;2;semi;;;;
+0;1;RR_CIPHERING_MODE_COMPLETE;;RESPONSE;30;2;full;T1;;;;Este es un comentario;Esta es una acción
+1;2;BSSMAP_CIPHER_MODE_COMPLETE;;RESPONSE;30;2;full;;;;
+2;0;CC_CALL_PROCEEDING;;ONEWAY;30;2;full;T2;;
+4;5;Ring;;REQUEST;30;150;full;T3;;
+2;1;BSSMAP_ASSIGMENT_REQUEST;;REQUEST;30;2;full;T21;;
+1;0;RR_ASSIGMENT_COMMAND;Traffic channel;REQUEST;30;2;full;;;
+0;1;RR_ASSIGMENT_COMPLETE;;RESPONSE;30;2;full;;;;
+1;2;BSSMAP_ASSIGMENT_COMPLETE;;RESPONSE;30;2;full;;;
 
