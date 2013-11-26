@@ -1,6 +1,5 @@
 
 
-
 function Translator(){
 	
 	var PROCESS_HEADER=0;
@@ -89,8 +88,20 @@ function Translator(){
 				result.innerHTML= "The Syntax of the Json file has the following errors: <br><br>" + scenarioSchema.getError();
 				
 			}else{
-				result.className = "valid";
-				result.innerHTML="The Syntax of the Json file complies with the Schema!";
+				// Perform the additional validations
+				
+				var scenarioModelBuilder=new ScenarioModelBuilder();
+				
+				scenarioModelBuilder.setContents(m_file_translated);
+				
+				if (!scenarioModelBuilder.performAdditionalValidations()){
+					result.className = "invalid";
+					result.innerHTML= "The Scenario File has the following errors: <br><br>" + scenarioModelBuilder.getError();					
+					
+				}else{
+					result.className = "valid";
+					result.innerHTML="The Syntax of the Json file complies with the Schema!";					
+				}
 			}			
 			
 			// Show download link
@@ -523,10 +534,6 @@ function Translator(){
 		if(filePointer){
 			
 			if(readFile(filePointer, readFileCallBack)){
-				
-				
-				
-				
 				
 				return true;
 			}else{

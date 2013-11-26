@@ -85,30 +85,6 @@ function ScenarioModelBuilder() {
 	// ******************************************************************************
 	// Private Methods
 	// ******************************************************************************
-
-	/* Start the additional validations
-	 * 
-	 */
-	function performAdditionalValidations(){
-		m_error="";
-		
-        var title=m_scenario_obj.name;
-        m_output="";
-     
-        m_output='<span>Nodes: </span><br/>';
-        
-        if (!validateNodes(m_scenario_obj.nodes)) {
-           return false;
-        }
-             
-        m_output+='<br/><span>Sequences: </span><br/>';
-
-        if (!validateSequences(m_scenario_obj.sequences)) {
-           return false;
-        }
-                
-        return true;
-	}
       
       function validateNodes(nodes) {
         for (var x = 0; x < nodes.length; x++) {
@@ -125,7 +101,6 @@ function ScenarioModelBuilder() {
               return false;
            }
         }      
-        
         
         return true;
       }
@@ -265,20 +240,42 @@ function ScenarioModelBuilder() {
 	this.getContext=getContext;
 		
     this.validateScenario=validateScenario;
+    this.performAdditionalValidations=performAdditionalValidations;
 	this.loadScenarioRemoteFile=loadScenarioRemoteFile;
 	//this.loadScenarioLocalFile=loadScenarioLocalFile;
 	this.openLocalFile=openLocalFile;
 	this.normalizeScenario=normalizeScenario;
 	
-	this.setLocalImages=setLocalImages;
+	//this.setLocalImages=setLocalImages;
 
 	// ******************************************************************************
 	// Public Methods Definition
 	// ******************************************************************************
 
-	function setLocalImages(){
+	/* Start the additional validations
+	 * 
+	 */
+	function performAdditionalValidations(){
+		m_error="";
 		
+        var title=m_scenario_obj.name;
+        m_output="";
+     
+        m_output='<span>Nodes: </span><br/>';
+        
+        if (!validateNodes(m_scenario_obj.nodes)) {
+           return false;
+        }
+             
+        m_output+='<br/><span>Sequences: </span><br/>';
+
+        if (!validateSequences(m_scenario_obj.sequences)) {
+           return false;
+        }
+                
+        return true;
 	}
+	
 	
 	function getContext(){
 		return m_scenarioContext;
@@ -295,6 +292,9 @@ function ScenarioModelBuilder() {
 	
 	function setContents(arg){
 		m_file_content=arg;
+		
+		// Create Scenario Object
+		m_scenario_obj=JSON.parse(m_file_content);
 	}
 	
 	function getError() {
@@ -428,13 +428,11 @@ function ScenarioModelBuilder() {
 				m_error=m_fhandle.getError();
 				return false;
 			}
-			
         } else {
             m_error="It seems that there is no selected file!";
             console.error(m_error);
             return false;
-        }  			
-			
+        }
 	}
 
 

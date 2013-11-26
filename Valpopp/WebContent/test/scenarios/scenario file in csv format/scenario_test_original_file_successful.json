@@ -1,0 +1,510 @@
+{
+    "name": "A mobile phone is calling a fixed phone in the same country",
+    "img": "nationalCall.gif",
+    "defaultmessage": {
+        "type": "ONEWAY",
+        "length": 40,
+        "treatment": 0,
+        "dash": "SEMI"
+    },
+    "defaultpropagthroughputs": {
+        "propagTime": 15,
+        "throughput": 1000
+    },
+    "references": [
+        {
+            "title": "GSM Reference",
+            "link": "http://en.wikipedia.org/wiki/GSM"
+        }
+    ],
+    "nodes": [
+        {
+            "Id": 1,
+            "name": "  MS  ",
+            "img": "ms.gif"
+        },
+        {
+            "Id": 2,
+            "name": "  BSS ",
+            "img": "bss.gif"
+        },
+        {
+            "Id": 3,
+            "name": "MSC/VLR F1",
+            "img": "mscvlr.gif"
+        },
+        {
+            "Id": 4,
+            "name": "MSC/VLR F2",
+            "img": "mscvlr.gif"
+        },
+        {
+            "Id": 5,
+            "name": "  LE F1 ",
+            "img": "gmsc_caa.gif"
+        },
+        {
+            "Id": 6,
+            "name": "PTSN Subsc.",
+            "img": "pstn.gif"
+        }
+    ],
+    "propagthroughputs": [
+        {
+            "srcN": 1,
+            "destN": 2,
+            "propagTime": 30,
+            "throughput": 1000
+        },
+        {
+            "srcN": 1,
+            "destN": 3,
+            "propagTime": 50,
+            "throughput": 1000
+        },
+        {
+            "srcN": 1,
+            "destN": 4,
+            "propagTime": 1,
+            "throughput": 1000
+        },
+        {
+            "srcN": 1,
+            "destN": 5,
+            "propagTime": 1,
+            "throughput": 1000
+        },
+        {
+            "srcN": 1,
+            "destN": 6,
+            "propagTime": 1,
+            "throughput": 1000
+        },
+        {
+            "srcN": 2,
+            "destN": 1,
+            "propagTime": 30,
+            "throughput": 100
+        },
+        {
+            "srcN": 2,
+            "destN": 4,
+            "propagTime": 1,
+            "throughput": 1000
+        },
+        {
+            "srcN": 2,
+            "destN": 5,
+            "propagTime": 1,
+            "throughput": 1000
+        },
+        {
+            "srcN": 2,
+            "destN": 6,
+            "propagTime": 1,
+            "throughput": 1000
+        },
+        {
+            "srcN": 3,
+            "destN": 1,
+            "propagTime": 50,
+            "throughput": 1000
+        },
+        {
+            "srcN": 3,
+            "destN": 5,
+            "propagTime": 1,
+            "throughput": 1000
+        },
+        {
+            "srcN": 3,
+            "destN": 6,
+            "propagTime": 1,
+            "throughput": 1000
+        },
+        {
+            "srcN": 4,
+            "destN": 1,
+            "propagTime": 1,
+            "throughput": 1000
+        },
+        {
+            "srcN": 4,
+            "destN": 2,
+            "propagTime": 1,
+            "throughput": 1000
+        },
+        {
+            "srcN": 4,
+            "destN": 6,
+            "propagTime": 1,
+            "throughput": 1000
+        },
+        {
+            "srcN": 5,
+            "destN": 1,
+            "propagTime": 1,
+            "throughput": 1000
+        },
+        {
+            "srcN": 5,
+            "destN": 2,
+            "propagTime": 1,
+            "throughput": 1000
+        },
+        {
+            "srcN": 5,
+            "destN": 3,
+            "propagTime": 1,
+            "throughput": 1000
+        },
+        {
+            "srcN": 6,
+            "destN": 1,
+            "propagTime": 1,
+            "throughput": 1000
+        },
+        {
+            "srcN": 6,
+            "destN": 2,
+            "propagTime": 1,
+            "throughput": 1000
+        },
+        {
+            "srcN": 6,
+            "destN": 3,
+            "propagTime": 1,
+            "throughput": 1000
+        },
+        {
+            "srcN": 6,
+            "destN": 4,
+            "propagTime": 1,
+            "throughput": 1000
+        }
+    ],
+    "sequences": [
+        {
+            "Id": 1,
+            "nextId": 20,
+            "messages": [
+                {
+                    "srcN": 2,
+                    "destN": 1,
+                    "name": "SYSTEM_INFORMATION",
+                    "type": "ONEWAY",
+                    "length": 30,
+                    "treatment": 2,
+                    "dash": "FULL"
+                },
+                {
+                    "srcN": 1,
+                    "destN": 2,
+                    "name": "RR_CHANNEL_REQUEST",
+                    "type": "REQUEST",
+                    "length": 30,
+                    "treatment": 2,
+                    "dash": "SEMI"
+                },
+                {
+                    "srcN": 2,
+                    "destN": 1,
+                    "name": "RR_IMMEDIATE_ASSIGNMENT",
+                    "param": "signalling channel",
+                    "type": "RESPONSE",
+                    "length": 30,
+                    "treatment": 2,
+                    "dash": "SEMI"
+                },
+                {
+                    "srcN": 1,
+                    "destN": 2,
+                    "name": "MM_CM_SERVICE_REQUEST",
+                    "param": "TMSI",
+                    "type": "REQUEST",
+                    "length": 30,
+                    "treatment": 2,
+                    "dash": "FULL"
+                },
+                {
+                    "srcN": 2,
+                    "destN": 3,
+                    "name": "MM_CM_SERVICE_REQUEST",
+                    "param": "TMSI",
+                    "type": "REQUEST",
+                    "length": 30,
+                    "treatment": 2,
+                    "dash": "FULL"
+                },
+                {
+                    "srcN": 3,
+                    "destN": 1,
+                    "name": "MAP_AUTHENTICATION_REQUEST",
+                    "param": "RAND",
+                    "type": "REQUEST",
+                    "length": 30,
+                    "treatment": 2,
+                    "dash": "SEMI"
+                },
+                {
+                    "srcN": 1,
+                    "destN": 3,
+                    "name": "MAP_AUTHENTICATION_RESPONSE",
+                    "param": "SRES",
+                    "type": "RESPONSE",
+                    "length": 30,
+                    "treatment": 2,
+                    "dash": "SEMI"
+                },
+                {
+                    "srcN": 3,
+                    "destN": 2,
+                    "name": "BSSMAP_CIPHER_MODE_COMMAND",
+                    "type": "REQUEST",
+                    "length": 30,
+                    "treatment": 2,
+                    "dash": "FULL"
+                },
+                {
+                    "srcN": 2,
+                    "destN": 1,
+                    "name": "RR_CIPHERING_MODE_COMMAND",
+                    "type": "REQUEST",
+                    "length": 30,
+                    "treatment": 50,
+                    "dash": "FULL",
+                    "synchPoint": "T1"
+                },
+                {
+                    "srcN": 1,
+                    "destN": 3,
+                    "name": "CC_SETUP",
+                    "param": "called PSTN number",
+                    "type": "REQUEST",
+                    "length": 30,
+                    "treatment": 2,
+                    "dash": "FULL",
+                    "synchPoint": "T2"
+                }
+            ],
+            "mcq": {
+                "title": "A mobile phone is calling a fixed phone",
+                "text": "Is the call set up secured ?",
+                "points": 100,
+                "answers": [
+                    {
+                        "text": "yes",
+                        "valid": "y"
+                    },
+                    {
+                        "text": "no",
+                        "feedback": "Yes, the mobile is authenticated and the called number is transmitted in cyphered mode"
+                    }
+                ]
+            }
+        },
+        {
+            "Id": 20,
+            "nextId": 30,
+            "messages": [
+                {
+                    "srcN": 3,
+                    "destN": 4,
+                    "name": "ISUP_IAM",
+                    "param": "called PSTN number",
+                    "type": "REQUEST",
+                    "length": 30,
+                    "treatment": 60,
+                    "dash": "FULL",
+                    "synchPoint": "T21"
+                },
+                {
+                    "srcN": 4,
+                    "destN": 5,
+                    "name": "ISUP_IAM",
+                    "param": "called PSTN number",
+                    "type": "REQUEST",
+                    "length": 30,
+                    "treatment": 60,
+                    "dash": "FULL",
+                    "synchPoint": "T3"
+                },
+                {
+                    "srcN": 5,
+                    "destN": 4,
+                    "name": "ISUP_ACM",
+                    "type": "ONEWAY",
+                    "length": 30,
+                    "treatment": 2,
+                    "dash": "FULL"
+                },
+                {
+                    "srcN": 4,
+                    "destN": 3,
+                    "name": "ISUP_ACM",
+                    "type": "ONEWAY",
+                    "length": 30,
+                    "treatment": 2,
+                    "dash": "FULL"
+                }
+            ],
+            "mcq": {
+                "title": "A mobile phone is calling a fixed phone",
+                "text": "Which event is related to ACM ?",
+                "answers": [
+                    {
+                        "text": "The ring of the phone",
+                        "feedback": "No feedback",
+                        "valid": "y"
+                    }
+                ]
+            }
+        },
+        {
+            "Id": 30,
+            "nextId": 0,
+            "messages": [
+                {
+                    "srcN": 3,
+                    "destN": 1,
+                    "name": "CC_ALERTING",
+                    "param": "RING_BACK",
+                    "type": "RESPONSE",
+                    "length": 30,
+                    "treatment": 2,
+                    "dash": "FULL",
+                    "synchPoint": "T4"
+                },
+                {
+                    "srcN": 6,
+                    "destN": 5,
+                    "name": "HANG_UP",
+                    "type": "ONEWAY",
+                    "length": 30,
+                    "treatment": 2,
+                    "dash": "SEMI",
+                    "startTime": "T4"
+                },
+                {
+                    "srcN": 5,
+                    "destN": 4,
+                    "name": "ISUP_ANS",
+                    "type": "RESPONSE",
+                    "length": 30,
+                    "treatment": 2,
+                    "dash": "FULL"
+                },
+                {
+                    "srcN": 4,
+                    "destN": 3,
+                    "name": "ISUP_ANS",
+                    "type": "RESPONSE",
+                    "length": 30,
+                    "treatment": 2,
+                    "dash": "FULL"
+                },
+                {
+                    "srcN": 3,
+                    "destN": 1,
+                    "name": "CC_CONNECT",
+                    "type": "REQUEST",
+                    "length": 30,
+                    "treatment": 2,
+                    "dash": "SEMI"
+                },
+                {
+                    "srcN": 1,
+                    "destN": 3,
+                    "name": "CC_CONNECT_ACKNOWLEDGE",
+                    "type": "RESPONSE",
+                    "length": 30,
+                    "treatment": 2,
+                    "dash": "SEMI"
+                },
+                {
+                    "srcN": 1,
+                    "destN": 2,
+                    "name": "RR_CIPHERING_MODE_COMPLETE",
+                    "type": "RESPONSE",
+                    "length": 30,
+                    "treatment": 2,
+                    "dash": "FULL",
+                    "startTime": "T1",
+                    "comment": {
+                        "text": "Este es un comentario"
+                    },
+                    "action": {
+                        "text": "Esta es una acci�n"
+                    }
+                },
+                {
+                    "srcN": 2,
+                    "destN": 3,
+                    "name": "BSSMAP_CIPHER_MODE_COMPLETE",
+                    "type": "RESPONSE",
+                    "length": 30,
+                    "treatment": 2,
+                    "dash": "FULL"
+                },
+                {
+                    "srcN": 3,
+                    "destN": 1,
+                    "name": "CC_CALL_PROCEEDING",
+                    "type": "ONEWAY",
+                    "length": 30,
+                    "treatment": 2,
+                    "dash": "FULL",
+                    "startTime": "T2"
+                },
+                {
+                    "srcN": 5,
+                    "destN": 6,
+                    "name": "Ring",
+                    "type": "REQUEST",
+                    "length": 30,
+                    "treatment": 150,
+                    "dash": "FULL",
+                    "startTime": "T3"
+                },
+                {
+                    "srcN": 3,
+                    "destN": 2,
+                    "name": "BSSMAP_ASSIGMENT_REQUEST",
+                    "type": "REQUEST",
+                    "length": 30,
+                    "treatment": 2,
+                    "dash": "FULL",
+                    "startTime": "T21"
+                },
+                {
+                    "srcN": 2,
+                    "destN": 1,
+                    "name": "RR_ASSIGMENT_COMMAND",
+                    "param": "Traffic channel",
+                    "type": "REQUEST",
+                    "length": 30,
+                    "treatment": 2,
+                    "dash": "FULL"
+                },
+                {
+                    "srcN": 1,
+                    "destN": 2,
+                    "name": "RR_ASSIGMENT_COMPLETE",
+                    "type": "RESPONSE",
+                    "length": 30,
+                    "treatment": 2,
+                    "dash": "FULL"
+                },
+                {
+                    "srcN": 2,
+                    "destN": 3,
+                    "name": "BSSMAP_ASSIGMENT_COMPLETE",
+                    "type": "RESPONSE",
+                    "length": 30,
+                    "treatment": 2,
+                    "dash": "FULL"
+                }
+            ]
+        }
+    ]
+}

@@ -4,10 +4,7 @@
 #                                                                                                        #;;;;
 #ScenarioName;Scenario Name                                                                              #;;;;
 ##########################################################################################################;;;;
-
-
 ScenarioName;A mobile phone is calling a fixed phone in the same country;;;;
-
 ##########################################################################################################;;;;
 # Scenario Image File (mandatory)                                                                        #;;;;
 # Only one line with this data is possible                                                               #;;;;
@@ -89,7 +86,7 @@ PropagThroughput;5;3;1;1000
 #                                                                                                        #;;;;
 #sequence;Id;nextId;;;;                                                                                  #;;;;
 ##########################################################################################################;;;;
-sequence;1;20;;;;
+sequence;1;0;;;;
 ##########################################################################################################;;;
 #    Message (Mandatory at least one message)                                                            #;;;
 #                                                                                                        #;;;;
@@ -105,36 +102,10 @@ sequence;1;20;;;;
 2;1;BSSMAP_CIPHER_MODE_COMMAND;;REQUEST;30;2;full;; ;;
 1;0;RR_CIPHERING_MODE_COMMAND;;REQUEST;30;50;full;;T1;
 0;2;CC_SETUP;called PSTN number;REQUEST;30;2;full;;T2;
-##########################################################################################################;;;
-#    MCQ (Optional)                                                                                      #;;;
-#                                                                                                        #;;;;
-#mcq;title;question;points;;;                                                                            #;;;;
-##########################################################################################################;;;;
-mcq;A mobile phone is calling a fixed phone;Is the call set up secured ?;100;;
-##########################################################################################################;;;
-#    MCQ  answers (Mandatory, at least one)                                                              #;;;
-#                                                                                                        #;;;;
-#mcqanswer;answer;feedback;valid;;;                                                                   #;;;;
-##########################################################################################################;;;;
-mcqanswer;yes;;y;;;
-mcqanswer;no;Yes, the mobile is authenticated and the called number is transmitted in cyphered mode;;;;
-##########################################################################################################;;;
-#    Next Sequence                                                                                       #;;;
-#sequence;Id;nextId;;;;                                                                                  #;;;;
-##########################################################################################################;;;;
-sequence;20;30;;;;
-#srcNode;destNode;name;parameters;type;length;treatment;dash;startTime;syncpoint;timer;scenImg;comment;action#;;;;
 2;3;ISUP_IAM;called PSTN number;REQUEST;30;60;full;;T21;
 3;4;ISUP_IAM;called PSTN number;REQUEST;30;60;full;;T3;
 4;3;ISUP_ACM;;ONEWAY;30;2;full;; ;;
 3;2;ISUP_ACM;;ONEWAY;30;2;full;; ;;
-#mcq;title;question;points;;; 
-mcq;A mobile phone is calling a fixed phone;Which event is related to ACM ?;;;
-#mcqanswer;answer;feedback;valid;;;
-mcqanswer;The ring of the phone;No feedback;y;;;
-#sequence;Id;nextId;;;;
-sequence;30;0;;;;
-#srcNode;destNode;name;parameters;type;length;treatment;dash;startTime;syncpoint;timer;scenImg;comment;action#;;;;
 2;0;CC_ALERTING;RING_BACK;RESPONSE;30;2;full;;T4
 5;4;HANG_UP;;ONEWAY;30;2;semi;T4;;
 4;3;ISUP_ANS;;RESPONSE;30;2;full;;;;
@@ -149,4 +120,3 @@ sequence;30;0;;;;
 1;0;RR_ASSIGMENT_COMMAND;Traffic channel;REQUEST;30;2;full;;;
 0;1;RR_ASSIGMENT_COMPLETE;;RESPONSE;30;2;full;;;;
 1;2;BSSMAP_ASSIGMENT_COMPLETE;;RESPONSE;30;2;full;;;
-

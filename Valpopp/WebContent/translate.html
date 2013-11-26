@@ -23,6 +23,7 @@
    
     // Schema object used to validay json syntax
     var scenarioSchema=null;
+    var utils = null;
     
     // This module is executed if the script of the page are not yet downloaded
     var module=(function(){
@@ -44,7 +45,9 @@
     	
     		// Start loading schema
 	    	scenarioSchema=new Schema();
-	    	scenarioSchema.loadSchema(configModule.getDefaultSchema());    		
+	    	scenarioSchema.loadSchema(configModule.getDefaultSchema());
+	    	
+	    	utils = new Utils();
     };
     
 	// When the schema file has already been loaded we replace the module with the next one
@@ -68,17 +71,9 @@
 						alert(translator.getError());
 					}
 			}
-			
-			function doValidation(){
-				console.log("doValidation");
-				
-				
-				
-			}
 
 			return { 
 				translateScenario: doTranslation,
-				validateScenario: doValidation,
 				getError: function (){
 					return m_error;
 				}
@@ -136,6 +131,10 @@
 	<script type="text/javascript" src="js/utils/Translator.js"></script>
 	
     <script type="text/javascript" src="js/model/schema/Schema.js"></script>	
+		
+	<script type="text/javascript" src="js/utils/FileHandler.js"></script>
+	
+	<script type="text/javascript" src="js/utils/Utils.js"></script>
 		
 	<script type="text/javascript" src="js/model/ScenarioContext.js"></script>
 
