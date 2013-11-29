@@ -76,7 +76,7 @@ var configModule = {
 		},
 		
 		setLang: function (lang){
-			console.log("configModule.setLang("+lang+")");
+			//console.log("configModule.setLang("+lang+")");
 			this.lang=lang;	  
 		},		
 		
@@ -94,7 +94,7 @@ var configModule = {
 		 
 		// override the current configuration
 		setUserMode: function(user) {
-			console.log("configModule.setUserMode("+user+")");
+			//console.log("configModule.setUserMode("+user+")");
 			this.user=user;
 		 },
 		 

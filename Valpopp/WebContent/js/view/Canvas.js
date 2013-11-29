@@ -1,4 +1,3 @@
-console.log("Canvas Script");
 
 /* Responsabilities:
  * 

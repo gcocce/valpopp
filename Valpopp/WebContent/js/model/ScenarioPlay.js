@@ -1,14 +1,11 @@
 
-console.log("ScenarioPlay Script");
-
-
-/* Responsabilities:
+/* Responsibilities:
  * 
  * Contain Scenario Display Data (Associated to user activity) 
  * 
  * This class wraps the data used to display the scenario
  * 
- * It uses the scenario context 
+ * It uses the scenario context
  * 
  */
 

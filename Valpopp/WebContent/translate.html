@@ -23,7 +23,7 @@
    
     // Schema object used to validay json syntax
     var scenarioSchema=null;
-    var utils = null;
+    var htmlBuilder = null;
     
     // This module is executed if the script of the page are not yet downloaded
     var module=(function(){
@@ -47,7 +47,7 @@
 	    	scenarioSchema=new Schema();
 	    	scenarioSchema.loadSchema(configModule.getDefaultSchema());
 	    	
-	    	utils = new Utils();
+	    	htmlBuilder = new HtmlBuilder();
     };
     
 	// When the schema file has already been loaded we replace the module with the next one

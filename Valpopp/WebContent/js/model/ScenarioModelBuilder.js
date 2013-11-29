@@ -1,21 +1,28 @@
+
 /* This class is intended to handle the scenario */
 
-/* Responsabilities:
+/* Responsibilities:
  * 
  * Load Scenario File
  * 
  * Validate Scenario File
  * 
- * Build Scenario Data from Scenario File
+ * Build Scenario Model from Scenario File
+ * 
+ * Complete Scenario Model with default values
+ * 
+ * Check Images Existence and Download them
  * 
  */
 
 function ScenarioModelBuilder() {
-	console.log("Scenario Object is created.");
+	//console.log("Scenario Object is created.");
 
 	// ******************************************************************************
 	// Constants
 	// ******************************************************************************
+	
+	// Possible Scenario States
 	var SCENARIO_OK=0;
 	var SCENARIO_NOTLOADED=1;
 	var SCENARIO_LOADED=2;
@@ -30,8 +37,10 @@ function ScenarioModelBuilder() {
 	this.SCENARIO_LOADING_ERROR=SCENARIO_LOADING_ERROR;	
 	this.SCENARIO_IMG_LOADING_ERROR=SCENARIO_IMG_LOADING_ERROR;
 	
-	// Scenario Type
+	// *** Scenario Types ***
+	// Remote Scenario, those that are in the server, the scenario examples
 	var SCENARIO_REMOTE=9;
+	// Local Scenario, the scenario provided by the user
 	var SCENARIO_LOCAL=10;
 	
 	this.SCENARIO_REMOTE=SCENARIO_REMOTE;
@@ -86,6 +95,7 @@ function ScenarioModelBuilder() {
 	// Private Methods
 	// ******************************************************************************
       
+	// Method for validates node data, validates that node ids are unique
       function validateNodes(nodes) {
         for (var x = 0; x < nodes.length; x++) {
            // NotNeeded
@@ -97,7 +107,7 @@ function ScenarioModelBuilder() {
            var items = jQuery.grep(nodes, function (node) { return node.Id == id; });
            
            if (items.length!=1) {
-        	   m_error = utils.wrapErrorMsg("Node Id repeated, it must be unique.");
+        	   m_error = htmlBuilder.wrapErrorMsg("Node Id repeated, it must be unique.");
               return false;
            }
         }      
@@ -105,8 +115,14 @@ function ScenarioModelBuilder() {
         return true;
       }
       
+      // Method for validate Sequence data, validates that
+      // each sequence is the last one or it points to another sequence
+      // if it points to another sequence validates that the next sequence has a higher Id
+      // it validates that the sequence pointed to exists in the model
+      // it check that each sequence has a unique id
       function validateSequences(sequences) {
         for (var x = 0; x < sequences.length; x++) {
+        	
            // NotNeeded
         	m_output += '<br/><span>Sequence Id =' +  sequences[x].Id + ' nextId: ' + sequences[x].nextId + '</span><br/>';
         	m_output += '<br/><span>Messages:</span><br/>';
@@ -116,7 +132,7 @@ function ScenarioModelBuilder() {
            
            // Check that scenario id is less than nextId
            if (id >= nextId && nextId!=0) {
-        	   m_error=  utils.wrapErrorMsg("Sequence Id="+ id +" is greater or equal than nextId "+ nextId +", it must be the opposite unless nextId is 0.");
+        	   m_error=  htmlBuilder.wrapErrorMsg("Sequence Id="+ id +" is greater or equal than nextId "+ nextId +", it must be the opposite unless nextId is 0.");
                return false;
            }
            
@@ -126,7 +142,7 @@ function ScenarioModelBuilder() {
               var items = jQuery.grep(sequences, function (sequence) { return sequence.Id == nextId; });
               
               if (items.length<1) {
-                 m_error=utils.wrapErrorMsg("nextId "+ nextId +" does not point to an existing sequence Id.");
+                 m_error=htmlBuilder.wrapErrorMsg("nextId "+ nextId +" does not point to an existing sequence Id.");
                  return false;
               }                
            }
@@ -135,7 +151,7 @@ function ScenarioModelBuilder() {
            var items = jQuery.grep(sequences, function (sequence) { return sequence.Id == id; });
            
            if (items.length!=1) {
-              m_error=utils.wrapErrorMsg("Sequence Id repeated, it must be unique.");
+              m_error=htmlBuilder.wrapErrorMsg("Sequence Id repeated, it must be unique.");
               return false;
            }         
            
@@ -150,33 +166,41 @@ function ScenarioModelBuilder() {
                    return false;
                 }           	   
            }
-      
-           
         }
         
         return true;
       }
       
+      // Method for validate List of Messages validity, y validate that:
+      // Source and Destination node are different
+      // Source and Destination node number belong to the number of nodes of the model
       function validateMessages(messages) {      
         for (var y= 0; y < messages.length; y++) {
            
            // Check that a messages does not have same source and destination
            if (messages[y].srcN==messages[y].destN) {
-              m_error=utils.wrapErrorMsg("Source and destination node of a message can not be the same.");
+              m_error=htmlBuilder.wrapErrorMsg("Source and destination node of a message can not be the same.");
               return false;
            }
            
+           //TODO:
+           //Source and Destination node number belong to the number of nodes of the model
+           
+           
+           
+           // Not important for validation
            if (messages[y].param) {
               m_output += '<span>Message =' +  messages[y].name + '(' + messages[y].param + ')  srcN: ' + messages[y].srcN +' destN: ' + messages[y].destN + '</span><br/>';
            }else{
         	   m_output += '<span>Message =' +  messages[y].name + ' srcN: ' + messages[y].srcN +' destN: ' + messages[y].destN + '</span><br/>';   
            }
-           
         }
            
         return true;
       }
       
+      // Method for validate MCQ, y validate that:
+      // It has at least one right answer
       function validateMCQ(mcq) {
         var valids=0;
         
@@ -189,14 +213,14 @@ function ScenarioModelBuilder() {
       
         if (valids==0) {
      	   m_output += '<span>MCQ of title: ' + mcq.title + ', must have at least one valid answer.</span><br/>';
-            m_error=utils.wrapErrorMsg("MCQ of title: " + mcq.title + ", must have at least one valid answer.");
+            m_error=htmlBuilder.wrapErrorMsg("MCQ of title: " + mcq.title + ", must have at least one valid answer.");
            return false;
         }
         
         return true;
       }	
       
-    // Initiate the download of the nodes images
+    // Initiate the download of the nodes images in the case of a Remote Scenario
 	function getRemoteNodeImages(){
 		console.log("getRemoteNodeImages");
 		var nodes= m_scenario_obj.nodes;
@@ -209,6 +233,7 @@ function ScenarioModelBuilder() {
 		return true;
 	}
 	
+	// Load the node images in the case of a Local Scenario
 	function getLocalNodeImages(){
 		console.log("getLocalNodeImages");
 		
@@ -217,12 +242,13 @@ function ScenarioModelBuilder() {
 		
         for (var x = 0; x < nodes.length; x++) {
         	// Download and validate image
-            	m_scenarioContext.setNodeImg(x, nodes[x].img, m_scenario_local_images[nodes[x].img]);
+            m_scenarioContext.setNodeImg(x, nodes[x].img, m_scenario_local_images[nodes[x].img]);
          }
         		
 		return true;		
 	}
 
+	// Method used to initiate variables used by the class before loading an Scenario
 	function initModel(){
 		console.log("ScenarioModel.initModel()");
 		
@@ -242,11 +268,9 @@ function ScenarioModelBuilder() {
     this.validateScenario=validateScenario;
     this.performAdditionalValidations=performAdditionalValidations;
 	this.loadScenarioRemoteFile=loadScenarioRemoteFile;
-	//this.loadScenarioLocalFile=loadScenarioLocalFile;
 	this.openLocalFile=openLocalFile;
 	this.normalizeScenario=normalizeScenario;
 	
-	//this.setLocalImages=setLocalImages;
 
 	// ******************************************************************************
 	// Public Methods Definition
@@ -305,6 +329,7 @@ function ScenarioModelBuilder() {
 		return m_scenario_state;
 	}
 	
+	// Initiate Scenario Normalization, it involves the use of default values to complete the model
 	function normalizeScenario(){
 		m_scenarioContext.normalizeScenario();
 	}
@@ -345,7 +370,6 @@ function ScenarioModelBuilder() {
 				return false;
 			}
 		}
-		
 
 		return true;
 	}
@@ -366,7 +390,7 @@ function ScenarioModelBuilder() {
 			m_scenario_state=SCENARIO_LOADED;
 			
 			// Dispatch the event
-			console.log("Remote Scenario File Loaded: " + m_file_content);
+			//console.log("Remote Scenario File Loaded: " + m_file_content);
 			var event = $.Event( "RemoteScenarioFileLoaded" );
 			$(window).trigger(event);
 		})
@@ -380,6 +404,7 @@ function ScenarioModelBuilder() {
 		});	
 	}
 	
+	// Asynchronous method to load a local scenario and it images
 	function openLocalFile(thefile, theimages){
 	
 		// Initiate variables
@@ -440,19 +465,25 @@ function ScenarioModelBuilder() {
 	// Events Listeners
 	// ******************************************************************************
 	
-	// Events to control node image download
+	// Triggered when one node image of a remote scenario has been download successfully
 	$(window).on( "RemoteNodeImageLoaded", scenarioNodesImgCtrl);
 	
+	// Triggered when there was an error while downloading one node image of a remote scenario
 	$(window).on( "RemoteNodeImageLoadingError", scenarioNodesImgCtrl);	
 	
+	// Triggered when one scenario image of a remote scenario has been download successfully
 	$(window).on( "RemoteScenarioImageLoaded", scenarioImgCtrl);
 	
+	// Triggered when there was an error while downloading one scenario image of a remote scenario
 	$(window).on( "RemoteScenarioImageLoadingError", scenarioImgCtrl);	
 	
+	// Triggered when the The remote Scenario File has been download
 	$(window).on( "ScenarioLoaded", preloadScenarioImages);	
 	
+	// Triggered when one Local Scenario Image has been loaded successfully
 	$(window).on( "LocalScenarioImageLoaded", readLocalImageFile);
 	
+	// Triggered when there was an error while loading one Local Scenario Image
 	$(window).on( "LocalScenarioImageLoadingError", readLocalImageFileError);
 
 	// ******************************************************************************
@@ -487,7 +518,7 @@ function ScenarioModelBuilder() {
 		}
 	}
 	
-	// Preload de images of the remote scenario
+	// Preload the images of the scenario
 	function preloadScenarioImages(e){
 		m_scenario_images=0;
 		m_scenario_images_processed=0;
@@ -508,6 +539,7 @@ function ScenarioModelBuilder() {
 			}
 		}
 
+		// If it is the case of a Remote Scenario
 		if (m_scenario_type==SCENARIO_REMOTE){
 			// Start downloading the images
 			m_scenarioContext.setScenarioImg(m_scenario_obj.img, configModule.getScenarioImgPath() + m_scenario_obj.img);
@@ -523,8 +555,8 @@ function ScenarioModelBuilder() {
 					}
 				}
 			}
-		}else{
-			// Asign the images already loaded to the context
+		}else{ // If it is the case of a Local Scenario
+			// Assign the images already loaded to the context
 			m_scenarioContext.setScenarioImg(m_scenario_obj.img, m_scenario_local_images[m_scenario_obj.img]);
 			
 			for (var x=0; x < m_scenario_obj.sequences.length; x++){
@@ -574,6 +606,7 @@ function ScenarioModelBuilder() {
 		}
 	}
 	
+	// Executed when the Local Scenario File has been read
 	function readLocalScenarioCallback(e){
 		console.log("readLocalScenarioCallback");
 		
@@ -596,13 +629,13 @@ function ScenarioModelBuilder() {
 					scenarioView.displayError(scenarioModelBuilder.getError());
 				}else{
 					
-					scenarioView.displayError(utils.wrapErrorMsg("Scenario is not Valid!"));
+					scenarioView.displayError(htmlBuilder.wrapErrorMsg("Scenario is not Valid!"));
 				}
 			}
 		}else{ 
 			console.log("Schema State: " + scenarioSchema.getState());
 			
-			scenarioView.displayError(utils.wrapErrorMsg("Scenario Schema is not Valid!"));
+			scenarioView.displayError(htmlBuilder.wrapErrorMsg("Scenario Schema is not Valid!"));
 		}			
 	}
 	
@@ -644,7 +677,7 @@ function ScenarioModelBuilder() {
 					if (!getLocalNodeImages()){
 						applicationView.removeProgressBar();
 						
-						scenarioView.displayError(utils.wrapErrorMsg(getError()));
+						scenarioView.displayError(htmlBuilder.wrapErrorMsg(getError()));
 					}
 				}else{
 					console.error("The scenario file should be already validated");

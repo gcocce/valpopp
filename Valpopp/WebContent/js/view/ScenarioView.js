@@ -1,4 +1,3 @@
-console.log("ScenarioView Script");
 
 /* Responsabilities:
  * 
@@ -195,7 +194,7 @@ function ScenarioView(){
 				theNodesContext.fillText  ( m_scenarioContext.getNodeName(x) ,  border + (distNodos * x) , imgHeight);		
 			}catch (e){
 				console.error(e.toString());
-				displayError(utils.wrapErrorMsg(e.toString()));
+				displayError(htmlBuilder.wrapErrorMsg(e.toString()));
 			}	    	
 	    }
 	    
@@ -481,7 +480,7 @@ function ScenarioView(){
 		//var img = m_scenarioContext.getScenarioImg(configModule.getScenarioImgPath() + m_scenarioPlay.getCurrentScenarioImg());
 		var img = m_scenarioContext.getScenarioImg(m_scenarioPlay.getCurrentScenarioImg());
 		
-		var scenimg_html= utils.getScenarioImgHtml(img, m_scenario_data_dialog.width(), m_scenario_data_dialog.height());
+		var scenimg_html= htmlBuilder.getScenarioImgHtml(img, m_scenario_data_dialog.width(), m_scenario_data_dialog.height());
 		
 	    m_scenario_data_dialog = $("#scenarioData").dialog({
 			autoOpen: false,
@@ -504,7 +503,7 @@ function ScenarioView(){
 		//console.log("showScenarioMessages");
 		m_scenario_msg_dialog_open=true;
 				
-		var scenmsg_html= utils.getScenarioMsgHtml(m_scenarioPlay.getCurrentListofMessages());
+		var scenmsg_html= htmlBuilder.getScenarioMsgHtml(m_scenarioPlay.getCurrentListofMessages());
 		
 	    m_scenario_data_dialog = $("#scenarioData").dialog({
 			autoOpen: false,
@@ -533,7 +532,7 @@ function ScenarioView(){
 	function showScenarioReferences(){
 		//console.log("showScenarioReferences");
 		
-		var scenmsg_html= utils.getScenarioReferencesHtml(m_scenarioContext.getScenarioReferences());
+		var scenmsg_html= htmlBuilder.getScenarioReferencesHtml(m_scenarioContext.getScenarioReferences());
 		
 	    m_scenario_data_dialog = $("#scenarioData").dialog({
 			autoOpen: false,
@@ -566,7 +565,7 @@ function ScenarioView(){
 
 		console.log("ScenarioView.showScenarioQuizz");
 			
-		var scendata_html= utils.getScenarioDataMenu();
+		var scendata_html= htmlBuilder.getScenarioDataMenu();
 		
 	    var width = window.innerWidth * 0.8;
 	    var height = window.innerHeight * 0.8;
@@ -604,7 +603,7 @@ function ScenarioView(){
 		
 		var mcq_title= mcq.title;
 		
-		var mcq_html= utils.getMCQHTML(mcq);
+		var mcq_html= htmlBuilder.getMCQHTML(mcq);
 		
 	    var width = window.innerWidth * 0.8;
 	    var height = window.innerHeight * 0.8;
@@ -670,7 +669,7 @@ function ScenarioView(){
 			}			
 		}
 		
-		m_current_dialog.html(utils.getMCQResults(mcq, userResponses, validResponses, validAnswer));
+		m_current_dialog.html(htmlBuilder.getMCQResults(mcq, userResponses, validResponses, validAnswer));
 		
 		m_current_quizz_ready=true;
 		
@@ -697,7 +696,7 @@ function ScenarioView(){
 	function quizzAnswers(){
 		var mcq = m_scenarioPlay.getMCQ();
 		
-		m_current_dialog.html(utils.getMCQAnswers(mcq));
+		m_current_dialog.html(htmlBuilder.getMCQAnswers(mcq));
 		
 		m_current_dialog.dialog('option', 'buttons', {});
 		
@@ -757,7 +756,7 @@ function ScenarioView(){
 			}
 		});
 		
-		$("#maindialog").html(utils.wrapHtmlMsg(html_msg));
+		$("#maindialog").html(htmlBuilder.wrapHtmlMsg(html_msg));
 		
 		$("#maindialog").dialog("open");		
 	}
@@ -781,7 +780,7 @@ function ScenarioView(){
 			}
 		});
 		
-		$("#maindialog").html(utils.wrapHtmlErrorMsg(html_msg));
+		$("#maindialog").html(htmlBuilder.wrapHtmlErrorMsg(html_msg));
 		
 		$("#maindialog").dialog("open");
 	}

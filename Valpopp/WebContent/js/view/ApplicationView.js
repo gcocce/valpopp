@@ -1,9 +1,7 @@
-console.log("ApplicationView Script");
 
-
-/* Responsabilities:
+/* Responsibilities:
  * 
- * Perform the apropiate application layout display
+ * Perform the appropriate application layout display
  */
 
 function ApplicationView(){
@@ -12,15 +10,9 @@ function ApplicationView(){
 	// ******************************************************************************
 	
 	
-	
-	
-	
-	
-	
 	// ******************************************************************************
 	// Private Methods
 	// ******************************************************************************
-
 	
 	
 	// ******************************************************************************
@@ -37,6 +29,7 @@ function ApplicationView(){
 	// Public Methods Definition
 	// ******************************************************************************
 
+	// Hide Progress Bar
 	function removeProgressBar(){
 		var div=document.getElementById("progress_bar");
 		
@@ -46,33 +39,18 @@ function ApplicationView(){
 		}else{
 			alert("null progress bar");
 		}
-		
-		//Jquery mode
-		//$( ".hello" ).remove();
 	}
 	
+	// Show Progress Bar
 	function setProgressBar(){
 		var div=document.getElementById("progress_bar");
 		
 		if (div){
-			//div.parentNode.removeChild(div);
 			div.className="visible";
 		}else{
 			alert("null progress bar");
-		}		
-		
+		}
 	}
-	
-	function disableApplicationCommands(){
-		console.log("ApplicationView.disableApplicationCommands");
-	
-		// Enable buttons
-		var button=document.getElementById("bt_open");
-		button.disabled=true;
-		
-		button=document.getElementById("bt_settings");
-		button.disabled=true;	
-	}	
 	
 	// Display error message associated to the scenario
 	function displayError(html_msg){
@@ -107,8 +85,18 @@ function ApplicationView(){
 		removeProgressBar();
 		
 		enableApplicationCommands();
-		//TODO: get captin por buttons regarding configuration language
+		//TODO: get caption por buttons regarding configuration language
 	}
+	
+	function disableApplicationCommands(){
+
+		// Enable buttons
+		var button=document.getElementById("bt_open");
+		button.disabled=true;
+		
+		button=document.getElementById("bt_settings");
+		button.disabled=true;	
+	}	
 	
 	function enableApplicationCommands(){
 		var button=document.getElementById("bt_open");
@@ -118,31 +106,24 @@ function ApplicationView(){
 		button.disabled=false;			
 	}
 	
-	function disableApplicationCommands(){
-		
-		var button=document.getElementById("bt_open");
-		button.disabled=true;
-		
-		button=document.getElementById("bt_settings");
-		button.disabled=true;			
-	}
+//	function disableApplicationCommands(){
+//		
+//		var button=document.getElementById("bt_open");
+//		button.disabled=true;
+//		
+//		button=document.getElementById("bt_settings");
+//		button.disabled=true;			
+//	}
 	
-
-
 
 	// ******************************************************************************
 	// Events Listeners
 	// ******************************************************************************
-	
-	
 
 
 	// ******************************************************************************
 	// Call back functions
 	// ******************************************************************************
-	
-	
-	
 	
 	
 }

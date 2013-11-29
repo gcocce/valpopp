@@ -1,5 +1,7 @@
 
-function Utils(){
+//function Utils(){
+
+function HtmlBuilder(){
 	// **************************************************************************
 	// Public Methods Publication
 	//***************************************************************************
@@ -229,6 +231,7 @@ function Utils(){
 	}	
 }
 
+
 function ScenType(){
 	var MESSAGE=0;
 	var ACTION=1;
@@ -241,6 +244,17 @@ function ScenType(){
 	this.TREATMENT=TREATMENT;
 }
 
+/* This class is used to wrap Object that can be displayed in the Scenario.
+ * 
+ * It should be a base class, but in order to avoid the complexity of inheritance in Javascript
+ * we choose to use this class that contain objctes with the type.
+ * 
+ * The first parameter define the type of object that the second parameter is
+ * The second parameter is the object that will be displayed
+ * 
+ * Possible type the objects: ScenTimer, ScenTreatment, ScenMessage, ScenAction
+ * 
+ * */
 function ScenObject(type, object){
 	var m_type=type;
 	var m_obj=object;
@@ -596,7 +610,11 @@ function ScenAction(node, initpos, finalpos, action){
 
 
 /* This class is used both for node and scenario images
- * The third parameter establish which one it is */
+ * 
+ * First parameter is the file name
+ * Second parameter is the url of the image
+ * The third parameter establish which one it is
+ *  */
  function ScenarioImage(img_name, url_param, isNode){
 	// ******************************************************************************
 	// Constants
@@ -622,8 +640,9 @@ function ScenAction(node, initpos, finalpos, action){
 	// Constructor
 	// ******************************************************************************	
 		
+	// Callback Function in case of error while downloading
 	m_img.onerror = function () {
-	    console.log("Fail to download: " + img_name);
+	    //console.log("Fail to download: " + img_name);
 	    m_state=IMG_ERROR;
 	    
 	    //Dispatch Event
@@ -636,8 +655,9 @@ function ScenAction(node, initpos, finalpos, action){
 	    }
 	};
 	
+	// Callback Function in case of successful download
 	m_img.onload = function () {
-	    console.log("Successful download: " + img_name);
+	    //console.log("Successful download: " + img_name);
 	    m_state=IMG_OK;
 	    
 	    m_width=m_img.width;
@@ -696,6 +716,8 @@ function ScenAction(node, initpos, finalpos, action){
 	}
 }
 
+ /* This class is used to process image used for the application when they are preloaded
+  * */
 function AppImage(url_param){
 	// ******************************************************************************
 	// Constants
@@ -720,16 +742,14 @@ function AppImage(url_param){
 	// Constructor
 	// ******************************************************************************	
 	
+	// Callback Function used if there is an error while downloading
 	m_img.onerror = function () {
-	    console.log("Fail to download: " + url_param);
 	    m_state=IMG_ERROR;
 	};
 	
+	// Callback Function used if it is successfully downloaded
 	m_img.onload = function () {
-	    console.log("Successful download: " + url_param);
-	    m_state=IMG_OK;
-	    m_other=1;
-	    
+	    m_state=IMG_OK;    
 	    m_width=m_img.width;
 	    m_height=m_img.height;	
 	};
@@ -770,6 +790,7 @@ function AppImage(url_param){
 		return m_img;
 	}
 }
+
 // A point in the ScenarioView 
 // x for the x axe and y for the y axe
 function Point(xvalue,yvalue){

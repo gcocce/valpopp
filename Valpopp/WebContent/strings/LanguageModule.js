@@ -65,7 +65,7 @@ var languageModule = (function () {
 		//console.log(lflines);
 			
 		// Dispatch the event
-		console.log("Language File Loaded Event Dispatched");
+		//console.log("Language File Loaded Event Dispatched");
 		var eventLanguageFile = $.Event( "LanguageFileLoaded" );
 
 		state=LOADED;
@@ -80,7 +80,7 @@ var languageModule = (function () {
 
 	// Initialize Module
 	function doInitialization() {
-		console.log("languageModule.Initialize()");
+		//console.log("languageModule.Initialize()");
 		
 		// If there is no previous error
 		if (m_error.localeCompare("")==0){
@@ -144,7 +144,7 @@ var languageModule = (function () {
 		LOADED:LOADED,
 		INITIALIZED:INITIALIZED,
 		getCaption: function (caption){
-			console.log("languageModule.getCaption for: "+ caption + " in lang:"+ currentlang);
+			//console.log("languageModule.getCaption for: "+ caption + " in lang:"+ currentlang);
 			return captions[caption][currentlang];
 		},
 		initialize: doInitialization,

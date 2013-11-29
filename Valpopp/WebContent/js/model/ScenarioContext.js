@@ -1,10 +1,11 @@
 
-console.log("ScenarioContext Script");
 
-
-/* Responsabilities:
+/* Responsibilities:
  * 
  * Contain Scenario Data
+ * 
+ * Complete Scenario with default values to generate a complete Scenario Model
+ * 
  * 
  */
 
@@ -26,28 +27,32 @@ function ScenarioContext(){
 	// Properties
 	// ******************************************************************************	
 	var m_error="";
+	
 	var m_state=CONTEXT_OK;
 	
+	// Number of nodes of the Scenario
 	var m_nodes_number=0;
-	var m_current_img="";
-	
-	// Object with the default values of the scenario
+	 
+	// Object with the message default values of the scenario
 	var m_default={};
 	
 	// Matrix with the propagthrugput values
 	var m_def_prog=new Array();
 	
+	// Array with the nodes images encapsulated in the ScenarioImage class 
 	var m_nodes_images = new Array();
 	
+	// Array with the scenario images encapsulated in the ScenarioImage class	
 	var m_scenario_images= new Array();
 	
+	// Reference to the javascript object containing the Scenario Model
 	var m_scenario_object=null;
 	
 	// ******************************************************************************
 	// Private Methods
 	// ******************************************************************************
 	
-	// Complete the list of default values used for the scenario
+	// Complete the list of default values used for the scenario with the default values provided by the scenario if any
 	function completeDefaults(){
 		var def=m_scenario_object.defaultmessage;
 		
@@ -90,11 +95,6 @@ function ScenarioContext(){
 		}else{
 			m_default["synchPoint"]="";
 		}		
-			
-		/*
-		for(key in m_default) { 
-			alert("key " + key + " has value " + m_default[key]); 
-		}*/
 
 	}
 	
@@ -120,13 +120,14 @@ function ScenarioContext(){
 		}
 	} 
 	
+	// Build the Propagthroughput Object
 	function checkPropagthroughput(){
 		var prop=m_scenario_object.propagthroughputs;
 		
 		// Create the object with the default values
 		createDefaultPropagthroughput();
 		
-		// Modify the object with the propagthroughputs present in the scenario file
+		// Modify the object with the propagthroughputs present in the scenario file if any
 		if (prop){
 			for (var i=0; i < prop.length; i++){
 				var data=prop[i];
@@ -135,8 +136,11 @@ function ScenarioContext(){
 			}
 		}
 		
-		console.log("Propagation Array: ");
-		console.log(m_def_prog);
+		if (console){
+			console.log("Propagation Array: ");
+			console.log(m_def_prog);			
+		}
+
 	}
 	
 	function normalizeSequences(){
@@ -148,6 +152,7 @@ function ScenarioContext(){
 		
 	}
 	
+	// Complete messages with default values
 	function normalizeMessages(messages){
 		for (var x=0; x < messages.length; x++){
 			
@@ -312,14 +317,17 @@ function ScenarioContext(){
 		return m_state;
 	}	
 	
+	// Complete Scenario Model with default values
 	function normalizeScenario(){
-		
 		console.log("scenarioContext.normalizeScenario()");
 		
+		// Complete default message values object
 		completeDefaults();
 		
+		// Complete PropagThroughput Object
 		checkPropagthroughput();
 		
+		// Normalize Sequence Object (Messages in the sequences)
 		normalizeSequences();
 		
 		console.log(m_scenario_object);

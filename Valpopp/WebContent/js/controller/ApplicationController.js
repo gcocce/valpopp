@@ -1,4 +1,3 @@
-console.log("ApplicationController Script");
 
 /* Responsabilities:
  * 
@@ -10,20 +9,25 @@ function ApplicationController(){
 	// ******************************************************************************
 	// Properties
 	// ******************************************************************************
+	
 	var m_error="";
 	
+	// Reference to the dialog used by the application to show messages
 	var m_open_dialog=null;
 	
-	// The contento of the list file
+	// The content of the scenario example list file
 	var m_scenario_list=new Array();
 	
-	// A list with the file names
+	// A list with the file names of scenario examples
 	var m_scenario_filter_list=new Array();
 	
+	// Reference to the current scenario selected
 	var m_selected_example=-1;
 	
+	//
 	var SEP=";";
 	
+	//
 	var appImagesLoaded=false;
 	
 
@@ -40,6 +44,9 @@ function ApplicationController(){
 	
 	// This method load the contents of the list.csv file which contains the scenario list
 	function loadScenarioExampleList(){
+		
+		m_error="";
+		
 		// Load file languages content
 		var jqxhr=$.get('scenarios/list.csv', function(data){
 			
@@ -67,7 +74,7 @@ function ApplicationController(){
 		var listElement=document.getElementById("ScenarioList");
 		
 		if (m_error.localeCompare("")!=0){
-			listElement.innerHTML=utils.wrapErrorMsg("Ups! Something went worng while loading the list!");
+			listElement.innerHTML=htmlBuilder.wrapErrorMsg("Ups! Something went worng while loading the list!");
 		}else{
 
 			m_scenario_filter_list=new Array();
@@ -112,7 +119,7 @@ function ApplicationController(){
 	// Public Methods Definition
 	// ******************************************************************************
 	
-	// Build Dialog
+	// Dialog used to open a Local File
 	function OpenLocalFile(){
 		console.log("OpenLocalFileDialog");
 		
@@ -139,7 +146,7 @@ function ApplicationController(){
 	        title: "Load Scenario",
 	        buttons:{
 				"Accept": function() {
-					//$("#maindialog").dialog("close");					
+					//$("#maindialog").dialog("close");			
 					openLocalScenario();
 				},
 				"Cancel": function() {
@@ -149,30 +156,33 @@ function ApplicationController(){
 			close: function( event, ui ) {}
 	    });
 	    
-	    m_open_dialog.html(utils.getOpenLocalScenarioDialog());
+	    m_open_dialog.html(htmlBuilder.getOpenLocalScenarioDialog());
     
 	    m_open_dialog.dialog("open");		
 	}
 	
+	// Method used to open the local file selected by the user
 	function openLocalScenario(){
 		console.log("openLocalScenario");
 		
 		var m_open_dialog=$("#maindialog");
 		
 		var theScenariofile=document.getElementById('LocalScenarioFile');
+		
 		var theScenarioImages=document.getElementById('ScenarioImagesFile');
 		
 		if (!scenarioModelBuilder.openLocalFile(theScenariofile, theScenarioImages)){
 			
 			m_open_dialog.dialog("close");
 			
-			applicationView.displayError(utils.wrapErrorMsg(scenarioModelBuilder.getError()));
+			applicationView.displayError(htmlBuilder.wrapErrorMsg(scenarioModelBuilder.getError()));
 			
 		}else{
 			m_open_dialog.dialog("close");	
 		}
 	}
 	
+	// Method used to filter the list of scenario examples
 	function FilterList(){
 		console.log("ApplicationController Filter List");
 		
@@ -230,6 +240,7 @@ function ApplicationController(){
 		}
 	}
 	
+	// Method to check if the user filter match the scenario name
 	function checkFilter(keyword, name ){
 		
 		var title=name;
@@ -251,6 +262,8 @@ function ApplicationController(){
 		return false;
 	}
 	
+	// Method used to update the current selected scenario example
+	// Triggered when the user use the mouse or the finger to select an example
 	function selectExample(index){
 		console.log("selectExample:"+index);
 		
@@ -265,7 +278,8 @@ function ApplicationController(){
 		m_selected_example=index;		
 	}
 	
-	// Button Controllers
+	// Dialog used to show the setting options
+	// Triggered when the user use the Settings Button
 	function settingsButton(){
 		console.log("settingsButton");
 		
@@ -286,6 +300,8 @@ function ApplicationController(){
 	    dialog.dialog("open");
 	}
 	
+	// Dialog that show the list of scenario examples
+	// Triggered when the user press the Open Button
 	function openButton(){
 		console.log("openButton");
 		
@@ -326,11 +342,12 @@ function ApplicationController(){
 			close: function( event, ui ) {}
 	    });
 	    
-	    m_open_dialog.html(utils.getScenarioListLoading());
+	    m_open_dialog.html(htmlBuilder.getScenarioListLoading());
     
 	    m_open_dialog.dialog("open");		
 	}
 	
+	// Method used to open the current selected scenario example
 	function openScenarioExample(){
 		console.log("openScenarioExample selected Item: " + m_selected_example);
 		
@@ -350,23 +367,25 @@ function ApplicationController(){
 	// Events Listeners
 	// ******************************************************************************
 	
-	// Events handled by the ApplicationController 
+	// The language file has been loaded, therefore the module can be initiated
 	$(window).on( "LanguageFileLoaded", initializeLanguageModule);
 	
+	// The Schema file could not be download
 	$(window).on( "SchemaFileLoadingError", applicationView.disableApplicationCommands);
 		
+	// The Scenario File has been download
 	$(window).on( "ScenarioLoaded", preloadAppImages);
 	
 	// ******************************************************************************
 	// Call back functions
 	// ******************************************************************************
-
 	
 	function initializeLanguageModule(e){		
 		console.log("ApplicationController.initializeLanguageModule");
 		
-		// Test Language Module
+		// Initialize the Language Module
 		if (languageModule.initialize()){
+			
 			// Activate application commands layout
 			applicationView.initLayout();
 			
@@ -383,14 +402,13 @@ function ApplicationController(){
 	
 	function preloadAppImages(){
 		if (!appImagesLoaded){
+			
 			console.log("Preload application images");
 					
 			for (var x=0; x < appImagesNames.length; x++){
-				
-				console.log("preload appImage: "+ appImagesNames[x])
+				//console.log("preload appImage: "+ appImagesNames[x])
 
 				var m_img = new AppImage(configModule.getAppImgPath() + appImagesNames[x]);
-				
 			}	
 			
 			appImagesLoaded=true;			

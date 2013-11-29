@@ -1,14 +1,16 @@
-console.log("ScenarioController Script");
 
-/* Responsabilities:
+/* Responsibilities:
  * 
- * Capture Events associated to Scenario Layout and trigger the apropiate action
+ * Capture Events associated to Scenario Layout and trigger the appropriate action
  */
 
 function ScenarioController(){
+	
 	// ******************************************************************************
 	// Properties
 	// ******************************************************************************
+	
+	// Reference to html elements
     var theContainer = document.getElementById("vDraw");
     var theCanvas = document.getElementById("vScenarioCanvas");   
 	
@@ -177,7 +179,7 @@ function ScenarioController(){
 				if (configModule.getUserMode().localeCompare("editor")==0){
 					scenarioView.displayError(scenarioModelBuilder.getError());
 				}else{
-					scenarioView.displayError(utils.wrapErrorMsg("Scenario is not Valid!"));
+					scenarioView.displayError(htmlBuilder.wrapErrorMsg("Scenario is not Valid!"));
 				}
 				
 				return;
@@ -218,7 +220,7 @@ function ScenarioController(){
 			var event = $.Event( "ScenarioLoaded" );
 			$(window).trigger( event );				
 		}else{
-			scenarioView.displayError(utils.wrapErrorMsg(scenarioModelBuilder.getError()));
+			scenarioView.displayError(htmlBuilder.wrapErrorMsg(scenarioModelBuilder.getError()));
 			return;
 		}
 		

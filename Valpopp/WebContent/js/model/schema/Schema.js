@@ -1,6 +1,4 @@
 
-console.log("Schema Script");
-
 /* Responsabilities:
  * 
  * Contain the schema and perform the validation against it
