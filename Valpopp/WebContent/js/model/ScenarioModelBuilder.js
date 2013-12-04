@@ -270,6 +270,7 @@ function ScenarioModelBuilder() {
 	this.loadScenarioRemoteFile=loadScenarioRemoteFile;
 	this.openLocalFile=openLocalFile;
 	this.normalizeScenario=normalizeScenario;
+	this.getRemoteNodeImages=getRemoteNodeImages;
 	
 
 	// ******************************************************************************
@@ -359,17 +360,16 @@ function ScenarioModelBuilder() {
 		
 		m_scenarioContext.setScenario(m_scenario_obj);
 		
-		//TODO:this could be done by scenario context
-		m_scenarioContext.setNumberofNodes(m_scenario_obj.nodes.length);
-		
 		m_scenario_state=SCENARIO_OK;
 		
-		if (m_scenario_type==SCENARIO_REMOTE){
-			console.log("Get remote node images");
-			if(!getRemoteNodeImages()){
-				return false;
-			}
-		}
+		//m_scenarioContext.setNumberofNodes(m_scenario_obj.nodes.length);
+		
+//		if (m_scenario_type==SCENARIO_REMOTE){
+//			console.log("Get remote node images");
+//			if(!getRemoteNodeImages()){
+//				return false;
+//			}
+//		}
 
 		return true;
 	}
@@ -395,7 +395,9 @@ function ScenarioModelBuilder() {
 			$(window).trigger(event);
 		})
 		.error(function() {
-			console.error("There was an error while attempting to download the SCENARIO file.");
+			m_error="There was an error while attempting to download the SCENARIO file.";
+			
+			console.error(m_error);
 
 			m_scenario_state=SCENARIO_LOADING_ERROR;
 			
@@ -460,10 +462,24 @@ function ScenarioModelBuilder() {
         }
 	}
 
-
-	// ******************************************************************************
-	// Events Listeners
-	// ******************************************************************************
+	//***************************************************************************
+	// Events Listeners for Loading Process
+	//***************************************************************************
+		
+	// Trigger when the a remote scenario file is already loaded
+	$(window).on( "RemoteScenarioFileLoaded", initializeScenarioValidation);
+	
+	// Trigger when the schema file is already loaded the first time during the application initialization
+	$(window).on( "SchemaFileLoaded", initializeScenarioValidation);	
+	
+	// Trigger when the schema file couldn't be loaded
+	$(window).on( "SchemaFileLoadingError", schemaLoadingError);
+	
+	// Trigger when the scenario file couldn't be loaded
+	$(window).on( "RemoteScenarioFileLoadingError", remoteScenarioLoadingError);
+	
+	// Trigger when all the nodes images download attempt has been processed
+	$(window).on( "ScenarioNodeImgsProccessed", scenarioNodeImgProcessed);
 	
 	// Triggered when one node image of a remote scenario has been download successfully
 	$(window).on( "RemoteNodeImageLoaded", scenarioNodesImgCtrl);
@@ -477,18 +493,96 @@ function ScenarioModelBuilder() {
 	// Triggered when there was an error while downloading one scenario image of a remote scenario
 	$(window).on( "RemoteScenarioImageLoadingError", scenarioImgCtrl);	
 	
-	// Triggered when the The remote Scenario File has been download
-	$(window).on( "ScenarioLoaded", preloadScenarioImages);	
-	
 	// Triggered when one Local Scenario Image has been loaded successfully
 	$(window).on( "LocalScenarioImageLoaded", readLocalImageFile);
 	
 	// Triggered when there was an error while loading one Local Scenario Image
 	$(window).on( "LocalScenarioImageLoadingError", readLocalImageFileError);
+	
+	// Triggered when the The remote Scenario File has been download and validated, and the node images have been download
+	//$(window).on( "ScenarioLoad", preloadScenarioImages);	
+	$(window).on( "ScenarioReady", preloadScenarioImages);		
 
-	// ******************************************************************************
-	// Call back functions
-	// ******************************************************************************
+	
+	//***************************************************************************
+	// Call back function for loading process
+	//***************************************************************************
+	
+	// Function to validate the default scenario loaded the first time any user start the application
+	// This function is called two times until both schema and scenario are already download
+	// If the syntax and logic of the scenario is ok it will automatically initiate the nodes images download
+	// Once the images are download the event ScenarioNodeImgsProccessed is triggered
+	function initializeScenarioValidation(){
+		console.log("ApplicationController.initializeScenarioValidation");
+		
+		if(scenarioSchema.getState()==scenarioSchema.SCHEMA_LOADED && scenarioModelBuilder.getState()==scenarioModelBuilder.SCENARIO_LOADED){	
+			if (!scenarioModelBuilder.validateScenario()){
+				
+				// If there is an error
+				applicationView.removeProgressBar();
+				
+				if (configModule.getUserMode().localeCompare("editor")==0){
+					scenarioView.displayError(scenarioModelBuilder.getError());
+				}else{
+					scenarioView.displayError(htmlBuilder.wrapErrorMsg("Scenario is not Valid!"));
+				}
+				
+				return;
+			}else{
+				
+				// Proceeds downloading the node images
+				if(!getRemoteNodeImages()){
+					if (configModule.getUserMode().localeCompare("editor")==0){
+						scenarioView.displayError(scenarioModelBuilder.getError());
+					}else{
+						scenarioView.displayError(htmlBuilder.wrapErrorMsg("Scenario is not Valid!"));
+					}
+				}
+				
+			}
+		}else{ 
+			// In the case one of the files is not ready
+			console.log("Scenario schema or scenario file not ready");
+			console.log("Scenario State: " + scenarioModelBuilder.getState());
+			console.log("Schema State: " + scenarioSchema.getState());	
+		}	
+	}
+	
+	function schemaLoadingError(e){
+		scenarioView.disableScenarioCommands();
+	}
+	
+	function remoteScenarioLoadingError(e){
+		applicationView.removeProgressBar();
+		
+		scenarioView.disableScenarioCommands();
+
+		scenarioView.displayError(htmlBuilder.wrapErrorMsg(scenarioModelBuilder.getError()));
+	}
+	
+	// Initiate Scenario Display if all images has been downloaded
+	// If one file is missing show error
+	function scenarioNodeImgProcessed(e){
+		
+		applicationView.removeProgressBar();
+		
+		if (scenarioModelBuilder.getState()==scenarioModelBuilder.SCENARIO_OK){
+			// In this case nodes images has been downloaded correctly.
+			
+			scenarioModelBuilder.normalizeScenario();
+			
+			scenarioView.initiateScenarioDisplay(scenarioModelBuilder.getContext());
+
+			//Indicate to the application that it can preload other images
+			//var event = $.Event( "ScenarioLoaded" );
+			var event = $.Event( "ScenarioReady" );
+			$(window).trigger( event );				
+		}else{
+			scenarioView.displayError(htmlBuilder.wrapErrorMsg(scenarioModelBuilder.getError()));
+			return;
+		}
+	}	
+
 
 	// Control Nodes Images Download and trigger ScenarioNodeImgsProccessed event when all files has been processed
 	function scenarioNodesImgCtrl(e){
@@ -627,6 +721,7 @@ function ScenarioModelBuilder() {
 				if (configModule.getUserMode().localeCompare("editor")==0){
 					
 					scenarioView.displayError(scenarioModelBuilder.getError());
+					
 				}else{
 					
 					scenarioView.displayError(htmlBuilder.wrapErrorMsg("Scenario is not Valid!"));

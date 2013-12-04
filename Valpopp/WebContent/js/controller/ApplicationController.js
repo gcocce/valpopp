@@ -35,13 +35,6 @@ function ApplicationController(){
 	// Private Methods
 	// ******************************************************************************
 	
-	// Start Application Setup
-	function startApplicationSetup(){
-		console.log("ApplicationController.startApplicationSetup");
-		
-		setupApplication(null);
-	}
-	
 	// This method load the contents of the list.csv file which contains the scenario list
 	function loadScenarioExampleList(){
 		
@@ -358,6 +351,7 @@ function ApplicationController(){
 		applicationView.setProgressBar();
 			
 		scenarioView.clearScenarioView();
+		
 		scenarioView.disableScenarioCommands();
 		
 		scenarioModelBuilder.loadScenarioRemoteFile(configModule.getScenarioPath() + file_name);
@@ -370,11 +364,15 @@ function ApplicationController(){
 	// The language file has been loaded, therefore the module can be initiated
 	$(window).on( "LanguageFileLoaded", initializeLanguageModule);
 	
-	// The Schema file could not be download
-	$(window).on( "SchemaFileLoadingError", applicationView.disableApplicationCommands);
+	// Trigger when the schema file couldn't be loaded
+	$(window).on( "SchemaFileLoadingError", schemaFileLoadingError);
 		
-	// The Scenario File has been download
-	$(window).on( "ScenarioLoaded", preloadAppImages);
+	// The Scenario File has been download, and validated and the node images have been download
+	//$(window).on( "ScenarioLoaded", preloadAppImages);
+	$(window).on( "ScenarioReady", preloadAppImages);
+	
+	// Listen for the event on load (everything is download from the server) 
+	$(window).on( "load", setupApplication);	
 	
 	// ******************************************************************************
 	// Call back functions
@@ -390,7 +388,7 @@ function ApplicationController(){
 			applicationView.initLayout();
 			
 			// Is mandatory to call to application setup
-			startApplicationSetup();
+			setupApplication(null);
 			
 			console.log("Language Module Initialization Succeded");
 		}else{
@@ -399,6 +397,54 @@ function ApplicationController(){
 			console.log("Language Module Error: " + languageModule.getError());
 		}
 	}
+	
+	// Starting Process:
+	// Every Thing that needs to be done before running the application
+	// This function is called when all the scripts have been download and the languageModule has been initialized
+	function setupApplication(e){
+		//console.log("setupApplication called");
+		//console.log("appState:" + appState);
+		//console.log("languageModule.getState:" + languageModule.getState());
+
+		if (appState==appConstants.STARTING){
+			appState=appConstants.LOADED;
+		}else if (appState==appConstants.INITIATED){
+			//console.log("Application already Setup");
+		}
+
+		// Once both things are ready the function is executed
+		if(appState==appConstants.LOADED && languageModule.getState()==languageModule.INITIALIZED){
+			if (console){
+				console.log("setupApplication started");
+				console.log("Selected Language: " + configModule.getLang());
+				console.log("User Type: " + configModule.getUserMode());
+			}
+			
+			// Show progress bar until schema and scenario file are both download
+			applicationView.setProgressBar();
+			
+			// Load Scenario Schema
+			scenarioSchema=new Schema();
+			scenarioSchema.loadSchema(configModule.getDefaultSchema());
+
+			// Create Scenario View
+			scenarioView= new ScenarioView();
+			
+			// Create Scenario Controller
+			scenarioController= new ScenarioController();
+			
+			// Create Scenario Model Builder
+			scenarioModelBuilder = new ScenarioModelBuilder();
+			scenarioModelBuilder.loadScenarioRemoteFile(configModule.getDefaultScenario());
+
+			appState=appConstants.INITIATED; 	
+			
+			if (console){
+				console.log("setupApplication Acomplished");
+			}
+		}
+
+	}	
 	
 	function preloadAppImages(){
 		if (!appImagesLoaded){
@@ -414,6 +460,12 @@ function ApplicationController(){
 			appImagesLoaded=true;			
 		}
 	}
+	
+	function schemaFileLoadingError(e){
+		applicationView.removeProgressBar();
+		applicationView.disableApplicationCommands();
+		applicationView.displayError('<div id="msg" class="error">There was an error while attempting to download the Schema file.</div>');		
+	}	
 	
 }
 

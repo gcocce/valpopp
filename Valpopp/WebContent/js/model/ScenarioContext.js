@@ -201,7 +201,7 @@ function ScenarioContext(){
 	this.getNodeName=getNodeName;
 	this.getSequence=getSequence;
 	
-	this.setNumberofNodes=setNumberofNodes;
+	//this.setNumberofNodes=setNumberofNodes;
 	this.setNodeImg=setNodeImg;
 	this.setScenarioImg=setScenarioImg;
 	this.getScenarioImg=getScenarioImg;
@@ -256,7 +256,7 @@ function ScenarioContext(){
 		return m_scenario_images;
 	}
 	
-	function setNodeImg(index, img_name, img_url){
+	function setNodeImg (index, img_name, img_url){
 		// The third parameter indicate that it is a node image
 		m_nodes_images[index]=new ScenarioImage(img_name, img_url, true);
 	}
@@ -280,6 +280,8 @@ function ScenarioContext(){
 		m_scenario_images= new Array();
 		
 		m_scenario_object=obj;
+		
+		setNumberofNodes(m_scenario_object.nodes.length);
 	}
 	
 	function getError(){

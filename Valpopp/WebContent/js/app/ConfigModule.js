@@ -1,8 +1,19 @@
 
 
+/* This module is used to register application parameters
+ * 
+ * The first thing to do is to load this script and set the chosen parameters
+ * 
+ * To set a parameters it is necesary to cal one of the set method like this:
+ * 
+ * configModule.setParameterName(value);
+ * 
+ */
+
 var configModule = {
 		// Config properties
 		lang:"en",
+		//TODO: use constants to specify type of users
 		user:"basic", // {"basic", "editor"}
 		defScenario:"scenarios/scenario_complete_demo.json",
 		defSchema:"js/model/schema/scenario_schema.json",
@@ -76,7 +87,6 @@ var configModule = {
 		},
 		
 		setLang: function (lang){
-			//console.log("configModule.setLang("+lang+")");
 			this.lang=lang;	  
 		},		
 		
@@ -92,9 +102,7 @@ var configModule = {
 			return this.user;
 		 },
 		 
-		// override the current configuration
 		setUserMode: function(user) {
-			//console.log("configModule.setUserMode("+user+")");
 			this.user=user;
 		 },
 		 

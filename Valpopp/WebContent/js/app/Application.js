@@ -14,7 +14,7 @@ function AppConstants(){
 }
 
 //***************************************************************************
-//Application Objects
+// Application Objects Section
 //***************************************************************************
 
 var appConstants = new AppConstants();
@@ -44,8 +44,16 @@ appImagesNames.push("mcq_wrong.gif");
 appImagesNames.push("show.jpg");
 appImagesNames.push("hide.jpg");
 
+
+
+//***************************************************************************
+// End of Application Objects Section
+//***************************************************************************
+
+
+
 //*******************************************************************************
-//Detect system
+// Detect system
 //*******************************************************************************
 var OSName="Unknown OS";
 if (navigator.appVersion.indexOf("Win")!=-1) OSName="Windows";
@@ -126,61 +134,8 @@ if (console){
 	console.log('navigator.userAgent = ' + navigator.userAgent);
 }
 
-//*******************************************************************************
-// Setup Section
-//*******************************************************************************
 
-// Listen for the event on load (everything is download from the server) 
-$(window).on( "load", setupApplication);
 
-// Starting Process:
-// Every Thing that needs to be done before running the application
-// This function is called when all the scripts have been loaded and when the languageModule has been loaded
-
-function setupApplication(e){
-	//console.log("setupApplication called");
-	//console.log("appState:" + appState);
-	//console.log("languageModule.getState:" + languageModule.getState());
-
-	if (appState==appConstants.STARTING){
-		appState=appConstants.LOADED;
-	}else if (appState==appConstants.INITIATED){
-		//console.log("Application already Setup");
-	}
-
-	// Once both things are ready the function is executed
-	if(appState==appConstants.LOADED && languageModule.getState()==languageModule.INITIALIZED){
-		if (console){
-			console.log("setupApplication started");
-			console.log("Selected Language: " + configModule.getLang());
-			console.log("User Type: " + configModule.getUserMode());
-		}
-		
-		// Show progress bar until schema and scenario file are both download
-		applicationView.setProgressBar();
-		
-		// Load Scenario Schema
-		scenarioSchema=new Schema();
-		scenarioSchema.loadSchema(configModule.getDefaultSchema());
-
-		// Create Scenario View
-		scenarioView= new ScenarioView();
-		
-		// Create Scenario Controller
-		scenarioController= new ScenarioController();
-		
-		// Create Scenario Model Builder
-		scenarioModelBuilder = new ScenarioModelBuilder();
-		scenarioModelBuilder.loadScenarioRemoteFile(configModule.getDefaultScenario());
-
-		appState=appConstants.INITIATED; 	
-		
-		if (console){
-			console.log("setupApplication Finised");
-		}
-	}
-
-}
 
 
 
