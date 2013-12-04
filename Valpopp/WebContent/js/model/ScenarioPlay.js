@@ -21,21 +21,22 @@ function ScenarioPlay(context){
 	var SCENARIO_QUIZZING=3;
 	var SCENARIO_FINISHED=4;
 	
-	// Every Cicle of the simulations take place every LOOP_UPDATE_TIME miliseconds
-	var LOOP_UPDATE_TIME=200;
-	
-	// Every cicle the time advance SIMULATION_TIME
-	var SIMULATION_TIME = 4;
-
-	// ScenarioPlay starts at INITIAL_TIME
-	var INITIAL_TIME=configModule.getInitialSimulationTime();
-
 	// Public constants
 	this.SCENARIO_STOPPED=SCENARIO_STOPPED;
 	this.SCENARIO_PLAYING=SCENARIO_PLAYING;
 	this.SCENARIO_PAUSED=SCENARIO_PAUSED;
 	this.SCENARIO_QUIZZING=SCENARIO_QUIZZING;	
 	this.SCENARIO_FINISHED=SCENARIO_FINISHED;
+	
+	// Each Simulation Cicle take place every LOOP_UPDATE_TIME (computer miliseconds)
+	var LOOP_UPDATE_TIME = configModule.getSimulationLoopTime();
+	
+	// Every Simulation Cicle the Simulation Time advance SIMULATION_TIME value (miliseconds)
+	var SIMULATION_TIME = configModule.getSimulationTimeAdvance();
+
+	// ScenarioPlay starts at INITIAL_TIME
+	var INITIAL_TIME = configModule.getInitialSimulationTime();
+	
 	
 	// ******************************************************************************
 	// Properties

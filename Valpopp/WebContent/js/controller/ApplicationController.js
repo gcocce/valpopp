@@ -114,7 +114,6 @@ function ApplicationController(){
 	
 	// Dialog used to open a Local File
 	function OpenLocalFile(){
-		console.log("OpenLocalFileDialog");
 		
 		m_selected_example=-1;
 		
@@ -156,7 +155,6 @@ function ApplicationController(){
 	
 	// Method used to open the local file selected by the user
 	function openLocalScenario(){
-		console.log("openLocalScenario");
 		
 		var m_open_dialog=$("#maindialog");
 		
@@ -177,7 +175,6 @@ function ApplicationController(){
 	
 	// Method used to filter the list of scenario examples
 	function FilterList(){
-		console.log("ApplicationController Filter List");
 		
 		var keywords= new String();
 		
@@ -188,7 +185,6 @@ function ApplicationController(){
 		keywords=keywords.toLowerCase();
 			
 		if (keywords.localeCompare("")!=0){
-			console.log("some keywords");
 	
 			var keyword=keywords.split(" ");
 			
@@ -258,7 +254,6 @@ function ApplicationController(){
 	// Method used to update the current selected scenario example
 	// Triggered when the user use the mouse or the finger to select an example
 	function selectExample(index){
-		console.log("selectExample:"+index);
 		
 		var listItem=document.getElementById("ScenarioListItem" + index);
 		
@@ -296,8 +291,7 @@ function ApplicationController(){
 	// Dialog that show the list of scenario examples
 	// Triggered when the user press the Open Button
 	function openButton(){
-		console.log("openButton");
-		
+
 		scenarioController.stopButton();
 		
 		m_selected_example=-1;
@@ -342,11 +336,11 @@ function ApplicationController(){
 	
 	// Method used to open the current selected scenario example
 	function openScenarioExample(){
-		console.log("openScenarioExample selected Item: " + m_selected_example);
+		//console.log("openScenarioExample selected Item: " + m_selected_example);
 		
 		var file_name=m_scenario_filter_list[m_selected_example];
 		
-		console.log("File: " + file_name);
+		//console.log("File: " + file_name);
 		
 		applicationView.setProgressBar();
 			
@@ -379,7 +373,7 @@ function ApplicationController(){
 	// ******************************************************************************
 	
 	function initializeLanguageModule(e){		
-		console.log("ApplicationController.initializeLanguageModule");
+		//console.log("ApplicationController.initializeLanguageModule");
 		
 		// Initialize the Language Module
 		if (languageModule.initialize()){
@@ -443,13 +437,12 @@ function ApplicationController(){
 				console.log("setupApplication Acomplished");
 			}
 		}
-
 	}	
 	
 	function preloadAppImages(){
 		if (!appImagesLoaded){
 			
-			console.log("Preload application images");
+			//console.log("Preload application images");
 					
 			for (var x=0; x < appImagesNames.length; x++){
 				//console.log("preload appImage: "+ appImagesNames[x])
@@ -468,17 +461,6 @@ function ApplicationController(){
 	}	
 	
 }
-
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -306,7 +306,6 @@ function ScenarioView(){
 					
 					m_drawing_canvas.drawMessage(name, messageX, messageY, textSize);
 					
-					// TODO: display comment
 					if (m_scenario_comments){
 						if (msg.getComment()){
 							m_comment_canvas.drawComment(msg.getComment(), 0 , pi.getY(), m_comment_text_size, m_comment_section_width);	
@@ -377,7 +376,9 @@ function ScenarioView(){
 				
 				break;
 			default:
-				console.log("displayObject, nor recognized type: " + obj.getType());
+				if (console){
+					console.error("displayObject, nor recognized type: " + obj.getType());
+				}
 				break;
 		}
 	}
@@ -406,8 +407,7 @@ function ScenarioView(){
 	
 	// Hide scenario comments section
 	function hideComments(){
-		//console.log("Hide Comments");
-		
+	
 		m_scenario_comments=false;
 		
 		document.getElementById("vScenario").style.width="96%";
@@ -430,7 +430,6 @@ function ScenarioView(){
 	
 	// Show scenario comments section
 	function showComments(){
-		//console.log("Show Comments");
 		
 		m_scenario_comments=true;
 		
@@ -439,9 +438,7 @@ function ScenarioView(){
 		
 		var elCommentsBody=document.getElementById("vMessagesBody");
 		var elCommentsHeader=document.getElementById("vMessagesHeader");
-		
-		//elCommentsBody.style.overflowY ="hidden";
-		
+				
 		var commentsBodyHml='<canvas id="vScenarioComments" style="background-color: white; border: 1px; border-color: black; display: block;">Your browser does not support HTML5 Canvas.</canvas>';
 		var commentsHeaderHtml='<a href="#" onClick="scenarioView.hideComments();"><img src="img/hide.jpg"> Hide Comments</a>';
 		
@@ -469,15 +466,10 @@ function ScenarioView(){
 
 	// Show Scenario Img Dialog with the current Scenario Image
 	function showScenarioImage(){
-		//console.log("showScenarioImage");
-
+		
 		m_scenario_img_dialog_open=true;
 		
-		//console.log("Current img: " + configModule.getScenarioImgPath() + m_scenarioPlay.getCurrentScenarioImg());
-		
 		// Get the image from the context
-		//TODO: review this
-		//var img = m_scenarioContext.getScenarioImg(configModule.getScenarioImgPath() + m_scenarioPlay.getCurrentScenarioImg());
 		var img = m_scenarioContext.getScenarioImg(m_scenarioPlay.getCurrentScenarioImg());
 		
 		var scenimg_html= htmlBuilder.getScenarioImgHtml(img, m_scenario_data_dialog.width(), m_scenario_data_dialog.height());
@@ -500,7 +492,7 @@ function ScenarioView(){
 	
 	// Show the list of scenario messages already exchanged in the scenario simulation
 	function showScenarioMessages(){
-		//console.log("showScenarioMessages");
+
 		m_scenario_msg_dialog_open=true;
 				
 		var scenmsg_html= htmlBuilder.getScenarioMsgHtml(m_scenarioPlay.getCurrentListofMessages());
@@ -530,7 +522,6 @@ function ScenarioView(){
 	
 	// Show the list of reference of the scenario file
 	function showScenarioReferences(){
-		//console.log("showScenarioReferences");
 		
 		var scenmsg_html= htmlBuilder.getScenarioReferencesHtml(m_scenarioContext.getScenarioReferences());
 		
@@ -867,11 +858,8 @@ function ScenarioView(){
 	}
 	
 	function updateScenarioView(e){
-//		console.log("ScenarioView.updateScenarioView");
 		
 		if (m_scenarioPlay!=null){
-			
-//			console.log("Valid scenario Play, attempt to resize...");
 			
 			setupSize();
 			

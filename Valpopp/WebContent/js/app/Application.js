@@ -14,12 +14,11 @@ function AppConstants(){
 }
 
 //***************************************************************************
-// Application Objects Section
+// Application Main Objects Section
 //***************************************************************************
 
 var appConstants = new AppConstants();
 
-//var utils = new Utils();
 var htmlBuilder = new HtmlBuilder();
 
 // Scenario View
@@ -47,7 +46,7 @@ appImagesNames.push("hide.jpg");
 
 
 //***************************************************************************
-// End of Application Objects Section
+// End of Application Main Objects Section
 //***************************************************************************
 
 
@@ -66,7 +65,7 @@ if(console){
 }
 
 //*******************************************************************************
-//Detect browser info
+// Detect browser
 //*******************************************************************************
 var nVer = navigator.appVersion;
 var nAgt = navigator.userAgent;

@@ -4,30 +4,69 @@
  * 
  * The first thing to do is to load this script and set the chosen parameters
  * 
- * To set a parameters it is necesary to cal one of the set method like this:
+ * To set a parameters it is necessary to call one of the set method like this:
  * 
  * configModule.setParameterName(value);
  * 
  */
 
 var configModule = {
-		// Config properties
 		lang:"en",
-		//TODO: use constants to specify type of users
-		user:"basic", // {"basic", "editor"}
+		user: "basic", // must be one of {"basic", "advance", "editor"}
 		defScenario:"scenarios/scenario_complete_demo.json",
 		defSchema:"js/model/schema/scenario_schema.json",
+		langFile:"strings/language.csv",
 		imgpath:"img/",
 		scenarioPath: "scenarios/",
 		scenarioImgPath:"scenarios/img/",
 		spaceBetweenMessages: 0,
 		initialSimulationTime: 10,
+		simulationLoop:200,  //Each Simulation Cicle take place every LOOP_UPDATE_TIME (computer miliseconds)
+		simulationTimeAdvance: 4, //Every Simulation Cicle the Simulation Time advance SIMULATION_TIME value (miliseconds) 
 		mandatoryMCQ: true,
 		continueAfterMCQ:true,
 		showMCQAnswers:true,
 		
+		getSimulationLoopTime:function(){
+			return this.simulationLoop;
+		},
+		
+		setSimulationLoopTime:function (time){
+			if (!isNaN(parseFloat(time)) && isFinite(time) && time >= 10){
+				this.simulationLoop=time;
+			}else{
+				if (console){
+					console.error("ConfigModule: SimulationLoopTime should be a number greater or equal than 10.");
+				}				
+			}			
+		},
+		
+		getSimulationTimeAdvance:function (){
+			return this.simulationTimeAdvance;
+		},
+		
+		setSimulationTimeAdvance:function(time){
+			if (!isNaN(parseFloat(time)) && isFinite(time) && time > 0){
+				this.simulationTimeAdvance=time;
+			}else{
+				if (console){
+					console.error("ConfigModule: SimulationTimeAdvance should be a number greater than 0.");
+				}				
+			}				
+		},
+		
+		getLanguageFile:function(){
+			return this.langFile;
+		},
+
 		setShowMCQAnswers:function (value){
-			this.showMCQAnswers=value;
+			if (value==true || value==false){
+				this.showMCQAnswers=value;
+			}else{
+				if (console){
+					console.error("ConfigModule: ShowMCQAnswer should be whether \"true\" or \"false\".");
+				}	
+			}
 		},
 		
 		getShowMCQAnswers:function (){
@@ -35,7 +74,13 @@ var configModule = {
 		},
 		
 		setContinueAfterMCQ:function (value){
-			this.continueAfterMCQ=value;
+			if (value==true || value==false){
+				this.continueAfterMCQ=value;
+			}else{
+				if (console){
+					console.error("ConfigModule: ContinueAfterMCQ should be whether \"true\" or \"false\".");
+				}	
+			}
 		},
 		
 		getContinueAfterMCQ:function (){
@@ -43,7 +88,14 @@ var configModule = {
 		},
 		
 		setMandatoryMCQ:function (value){
-			this.mandatoryMCQ=value;
+			if (value==true || value==false){
+				this.mandatoryMCQ=value;
+			}else{
+				if (console){
+					console.error("ConfigModule: MandatoryMCQ should be whether \"true\" or \"false\".");
+				}	
+			}			
+			
 		},
 		
 		getMandatoryMCQ:function (){
@@ -51,7 +103,13 @@ var configModule = {
 		},
 		
 		setInitialSimulationTime:function (time){
-			this.initialSimulationTime=time;
+			if (!isNaN(parseFloat(space)) && isFinite(space) && space >= 0){
+				this.initialSimulationTime=time;
+			}else{
+				if (console){
+					console.error("ConfigModule: InitialSimulationTime should be a number greater or equal than zero.");
+				}				
+			}			
 		},
 		
 		getInitialSimulationTime:function (){
@@ -59,7 +117,13 @@ var configModule = {
 		},
 		
 		setSpaceBetweenMessages:function (space){
-			this.spaceBetweenMessages=space;
+			if (!isNaN(parseFloat(space)) && isFinite(space) && space >= 0){
+				this.spaceBetweenMessages=space;
+			}else{
+				if (console){
+					console.error("ConfigModule: SpaceBetweenMessages should be a number greater or equal than zero.");
+				}				
+			}
 		},
 		
 		getSpaceBetweenMessages:function (){
@@ -103,7 +167,13 @@ var configModule = {
 		 },
 		 
 		setUserMode: function(user) {
-			this.user=user;
+			if (user.localeCompare("basic")==0 || user.localeCompare("advance")==0 || user.localeCompare("editor")==0){
+				this.user=user;	
+			}else{
+				if (console){
+					console.error("ConfigModule: User parameter is not accepted.");
+				}
+			}
 		 },
 		 
 		 getAppImgPath:function(){

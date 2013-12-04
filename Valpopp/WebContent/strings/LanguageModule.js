@@ -5,7 +5,6 @@ var languageModule = (function () {
 	var LOADED=1;
 	var INITIALIZED=2;
 	
-	
 	// Field Separator
 	var SEP=";";
 	
@@ -37,7 +36,7 @@ var languageModule = (function () {
 	var lflines = new Array();
 	
 	// Load file languages content
-	var jqxhr=$.get('strings/language.csv', function(data){
+	var jqxhr=$.get(configModule.getLanguageFile(), function(data){
 		// For deguggin purpuse
 		fileContents=data;
 		
@@ -49,7 +48,7 @@ var languageModule = (function () {
 		
 		numLanguages=langArr.length;
 		if (numLanguages < 1){
-			m_error="Problem in the Language File Header";
+			m_error="LanguageModule: There is an inconsistency in the Language File Header";
 		}else{
 			// Process language file header, get the id and caption for each available language
 			for (var l=0; l < langArr.length; l++){
@@ -74,7 +73,7 @@ var languageModule = (function () {
 	
 	// Set another completion function for the request above
 	jqxhr.fail(function() {
-	  m_error="Error reading file!";
+	  m_error="LanguageModule: There was an error while downloading the Language File!";
 	});
 	
 
@@ -99,8 +98,6 @@ var languageModule = (function () {
 				}
 			}	
 			
-			//console.log(captions);
-			
 			// For each line in the Language File
 			for (var c=0; c < lflines.length; c++){
 				// Separate each line into its contents
@@ -114,7 +111,7 @@ var languageModule = (function () {
 						m_error="Missing translation for: " + line[0];
 						return false;
 					}else if (line.length - 1 > numLanguages){
-						m_error="More translation than languages availables("+numLanguages+") for: " + line[0];
+						m_error="LanguageModule: More translation than languages availables("+numLanguages+") for: " + line[0];
 						return false;
 					}
 					
@@ -129,8 +126,7 @@ var languageModule = (function () {
 						//console.log(captions[line[0]][langIdList[l-1]]);
 					}
 				}
-			}
-			//console.log(captions);			
+			}		
 		}
 		
 		state=INITIALIZED;
@@ -144,7 +140,6 @@ var languageModule = (function () {
 		LOADED:LOADED,
 		INITIALIZED:INITIALIZED,
 		getCaption: function (caption){
-			//console.log("languageModule.getCaption for: "+ caption + " in lang:"+ currentlang);
 			return captions[caption][currentlang];
 		},
 		initialize: doInitialization,

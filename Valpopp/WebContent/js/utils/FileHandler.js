@@ -23,7 +23,11 @@ function FileHandler() {
     if (window.File && window.FileReader && window.FileList && window.Blob) {
         m_enabled=true;
     }else{
-        console.error("File FileReader FileList Blob not Enabled!");
+    	
+    	if (console){
+    		console.error("File FileReader FileList Blob not Enabled!");	
+    	}
+        
         m_error="The browser has not fully implemented the html5 standard. Try upgrading your browser.";
     }
     
@@ -69,7 +73,11 @@ function FileHandler() {
                var fReader = new FileReader();
                
                fReader.onerror = function (e){
-                    console.log("Error code %s", e.target.error.code);
+            	   
+            	   if (console){
+            		   console.log("Error code %s", e.target.error.code);
+            	   }
+                    
                     m_error=e.target.error;
                };
                 
@@ -77,7 +85,9 @@ function FileHandler() {
                     
                 fReader.readAsText(fHandler, m_codification);
                 
-                console.log("FileHandler, file type: "+ fHandler.type);
+                if (console){
+                	console.log("FileHandler, file type: "+ fHandler.type);
+                }
         } catch(e) {
             console.error(e);
             m_error=e.message;
@@ -92,13 +102,18 @@ function FileHandler() {
     /* Returns true or false according to result */
     function openImageFile(fHandler) {
    		try {
-            console.log("FileHandler, process file : "+ fHandler.name);
+   			if (console){
+   				console.log("FileHandler, process file : "+ fHandler.name);
+   			}
             
             // Read the image using FileReader
             readImage(fHandler, fHandler.name);
             
-        } catch(e) {
-            console.error(e);
+        }catch(e) {
+        	if (console){
+        		console.error(e);	
+        	}
+            
             m_error=e.message;
             return false;
         }
@@ -110,8 +125,11 @@ function FileHandler() {
         var fReader = new FileReader();
         
         fReader.onerror = function (e){
-        	console.log("Local Image loading error: ", file_name);
-            console.log("Error code %s", e.target.error.code);
+        	
+        	if (console){
+            	console.log("Local Image loading error: ", file_name);
+                console.log("Error code %s", e.target.error.code);
+        	}
             
  			var event = $.Event( "LocalScenarioImageLoadingError" );
             event.imageError=e.target.error.code;
@@ -121,7 +139,7 @@ function FileHandler() {
         };
          
          fReader.onload = function (e){
-        	console.log("Local Image succesfuly read: ", file_name);
+        	//console.log("Local Image succesfuly read: ", file_name);
         	 
   			var event = $.Event( "LocalScenarioImageLoaded" );
   			event.imageData=e.target.result;

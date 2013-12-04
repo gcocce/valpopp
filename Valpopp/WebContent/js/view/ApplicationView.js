@@ -54,8 +54,7 @@ function ApplicationView(){
 	
 	// Display error message associated to the scenario
 	function displayError(html_msg){
-		
-		console.log("displayError: " + html_msg);
+		//console.log("displayError: " + html_msg);
 	    
 		$("#maindialog").dialog({
 			autoOpen: false,
@@ -85,6 +84,7 @@ function ApplicationView(){
 		removeProgressBar();
 		
 		enableApplicationCommands();
+		
 		//TODO: get caption por buttons regarding configuration language
 	}
 	
@@ -105,27 +105,7 @@ function ApplicationView(){
 		button=document.getElementById("bt_settings");
 		button.disabled=false;			
 	}
-	
-//	function disableApplicationCommands(){
-//		
-//		var button=document.getElementById("bt_open");
-//		button.disabled=true;
-//		
-//		button=document.getElementById("bt_settings");
-//		button.disabled=true;			
-//	}
-	
-
-	// ******************************************************************************
-	// Events Listeners
-	// ******************************************************************************
-
-
-	// ******************************************************************************
-	// Call back functions
-	// ******************************************************************************
-	
-	
+		
 }
 
 

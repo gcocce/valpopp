@@ -34,13 +34,12 @@ function ScenarioController(){
 	//***************************************************************************
 	
 	function playButton(){
-		console.log("playButton");
 		
 		var scenarioPlay=scenarioView.getCurrentScenarioPlay();
 		
 		var state=scenarioPlay.getState();
 		
-		console.log("ScenarioController.playButton state:"+state);
+		//console.log("ScenarioController.playButton state:" + state);
 		
 		  theCommandButton = document.getElementById("bt_play");
 			
@@ -66,13 +65,12 @@ function ScenarioController(){
 			  
 			  break;
 			default:
-				console.log("ScenarioController.playButton known state");
+				console.error("ScenarioController.playButton known state");
 				break;
 		  }
 	}
 
 	function stopButton(){
-		console.log("stopButton");
 		
 		theCommandButton = document.getElementById("bt_play");
 		theCommandButton.value="Start";
@@ -94,13 +92,11 @@ function ScenarioController(){
 	}
 	
 	function quizButton(){
-		console.log("quizButton");
 		
 		scenarioView.showScenarioQuizz();
 	}
 
 	function modeCheckbox(){
-		console.log("modeCheckbox");
 				
 		var scenarioPlay=scenarioView.getCurrentScenarioPlay();
 		
@@ -134,11 +130,8 @@ function ScenarioController(){
 	}
 	
 	function dataButton(){
-		console.log("dataButton");   
 	    
 		scenarioView.showScenarioDataMenu();
-		
-		
 	}	
 
 	
@@ -200,8 +193,6 @@ function ScenarioController(){
 	  function getCoords(e) {		
 		return { x: e.pageX - theCanvas.offsetLeft, y: e.pageY - theCanvas.offsetTop };
 	  }
-	  
-	  
 
 	  
 	  function theContainerWasClicked(e) {

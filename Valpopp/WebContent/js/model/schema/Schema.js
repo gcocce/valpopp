@@ -77,12 +77,16 @@ function Schema(){
                    m_error= output;
                    return false;
            } else {
-        	   console.log("The scenario complies with the schema.");
+        	   //console.log("Schema: The scenario complies with the schema.");
                return true;
            }
         } catch (e) {
            m_error='<div id="msg" class="error">' + e + '</div>';
-           console.log(e.toString());
+           
+           if (console){
+        	   console.error(e.toString());
+           }
+           
            return false;
         }
       }
@@ -122,22 +126,23 @@ function Schema(){
 	// Asynchronous method to load the schema file
 	function loadSchema(file){
 	   // Load Scenario Schema Schema
-	   console.log("Schema.loadSchema: " + file);
+	   //console.log("Schema.loadSchema: " + file);
 	   
 	   jQuery.getJSON(file, function(data) {
-			// Dispatch the event
-			console.log("Schema File Loaded");
-			
-		    m_schema_string=JSON.stringify(data);
+
+		   m_schema_string=JSON.stringify(data);
 					 
 			m_schema_state=SCHEMA_LOADED;
 			
+			// Dispatch the event
 			var event = $.Event( "SchemaFileLoaded" );
 			$(window).trigger( event );		      
 	   })
 	   .error(function() {
-			console.error("getJSON ERROR. SCHEMA.JSON is not a valid json.");
+			//console.error("getJSON ERROR. SCHEMA.JSON is not a valid json.");
 			
+		    m_error="getJSON ERROR. SCHEMA.JSON is not a valid json.";
+		   
 			m_schema_state=SCHEMA_LOADING_ERROR;
 			
 			// Dispatch the event

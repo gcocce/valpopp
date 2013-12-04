@@ -321,7 +321,7 @@ function ScenarioContext(){
 	
 	// Complete Scenario Model with default values
 	function normalizeScenario(){
-		console.log("scenarioContext.normalizeScenario()");
+		//console.log("scenarioContext.normalizeScenario()");
 		
 		// Complete default message values object
 		completeDefaults();
@@ -332,7 +332,10 @@ function ScenarioContext(){
 		// Normalize Sequence Object (Messages in the sequences)
 		normalizeSequences();
 		
-		console.log(m_scenario_object);
+		if (console){
+			console.log("Normalized Scenario:");
+			console.log(m_scenario_object);
+		}
 	}
 	
 

@@ -45,7 +45,11 @@ function Translator(){
            
            fReader.onerror = function (e){
         	   	m_error=e.target.error;
-                console.log("Error code %s", m_error);
+        	   	
+        	   	if (console){
+        	   		console.log("Error code %s", m_error);	
+        	   	}
+                
                 alert(m_error);
            };
             
@@ -53,9 +57,14 @@ function Translator(){
                 
             fReader.readAsText(fHandler, m_codification);
             
-            console.log("FileHandler, file type: "+ fHandler.type);
+    	   	if (console){
+    	   		console.log("FileHandler, file type: "+ fHandler.type);
+    	   	}            
 	    } catch(e) {
-	        console.error(e);
+	    	if (console){
+	    		console.error(e);
+	    	}
+	        
 	        m_error=e.message;
 	        return false;
 	    }
@@ -114,7 +123,10 @@ function Translator(){
 			
 			result.className = "invalid";
 			
-			console.log("getError: "+ m_line_number);
+			if (console){
+				console.log("getError: "+ m_line_number);	
+			}
+			
 			if (m_line_number!=0){
 				m_error= "Line: " + m_line_number + "<br> Error: " + m_error;
 			}		
@@ -125,7 +137,6 @@ function Translator(){
 	}
 	
 	function processfile(){
-		console.log("processfile...");
 		
 		var data=m_file_content;
 		
@@ -156,12 +167,8 @@ function Translator(){
 				}
 			}
 		}
-
-		//console.log("Generate File:");
 		
 		m_file_translated= JSON.stringify(m_file_translated, null, 4); 
-				
-		//console.log(m_file_translated);
 		
 		return true;
 	}
@@ -169,8 +176,6 @@ function Translator(){
 	function processLine(line){
 		
 		var line_content=line.split(";");
-		
-		//console.log("line_content.length: " + line_content.length);
 		
 		switch (m_process){
 			case PROCESS_HEADER:
@@ -198,14 +203,10 @@ function Translator(){
 		switch (line_content[0]){
 		case "ScenarioName":
 			
-			console.log("Scenario Name: " + line_content[1]);
-			
 			m_file_translated["name"]=line_content[1];
 			
 			break;
 		case "ImageFile":
-
-			//console.log("Scenario Image: " + line_content[1]);
 			
 			m_file_translated["img"]=line_content[1];
 			
@@ -303,8 +304,6 @@ function Translator(){
 			
 			m_process=PROCESS_SEQUENCE;
 			
-			//TODO: control header state and initiate the process of the sequence
-			
 			return processSequenceLineContent(line_content);
 			
 			break;					
@@ -322,7 +321,6 @@ function Translator(){
 		
 		switch (line_content[0]){
 		case "sequence":
-			//console.log("Sequence Id: " + line_content[1]);
 			
 			if (!m_file_translated.sequences){
 				m_file_translated.sequences=[];
@@ -540,8 +538,13 @@ function Translator(){
 				return false;
 			}
 		}else{
+			
 			m_error="Error: there is no selected file!";
-			console.error(m_error);
+			
+			if (console){
+				console.error(m_error);
+			}
+			
 			return false;
 		}
 	}

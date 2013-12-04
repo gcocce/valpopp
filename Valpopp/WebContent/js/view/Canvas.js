@@ -125,7 +125,7 @@ function Canvas(drawing_context){
 	}
 	
 	function drawArrow(pi,pf, color, dash, angle, distBetweenNodes){
-        //console.log("Canvas.drawArrow final point: "+pf.getX()+","+pf.getY());
+
 		m_context.fillStyle = '#000000';  
 		m_context.strokeStyle  = color;
 
@@ -150,8 +150,10 @@ function Canvas(drawing_context){
 		}
 		
 		m_context.save();
+		
 		// Translate to the point of the arrow
 		m_context.translate(pf.getX(), pf.getY());
+		
 		// Rotate in the opposite direction
 		m_context.rotate(direction * angle);
 		
@@ -195,7 +197,6 @@ function Canvas(drawing_context){
 	}
 	
 	function drawMessage(msg, posx, posy, textSize){
-//		console.log("drawMessage " + msg);
 		var fontSize = textSize;
 		var fontFace = "serif";
 		var textFillColor ="#ff0000";
@@ -213,7 +214,6 @@ function Canvas(drawing_context){
 	}
 	
 	function drawComment(msg, posx, posy, textSize, canvasWidth){
-//		console.log("drawMessage " + msg);
 		
 		var lineHeight = textSize + 2;
 		
@@ -245,7 +245,6 @@ function Canvas(drawing_context){
 //		context.lineWidth   = 4;		
 //		context.strokeRect(0,  60, 150, 50);
 		
-//		console.log("drawMessage " + msg);
 		var fontSize = textSize;
 		var fontFace = "serif";
 		var textFillColor ="#ff0000";
