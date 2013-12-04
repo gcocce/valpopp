@@ -12,9 +12,6 @@ function ApplicationController(){
 	
 	var m_error="";
 	
-	// Reference to the dialog used by the application to show messages
-	var m_open_dialog=null;
-	
 	// The content of the scenario example list file
 	var m_scenario_list=new Array();
 	
@@ -108,6 +105,9 @@ function ApplicationController(){
 	this.FilterList=FilterList;
 	this.OpenLocalFile=OpenLocalFile;
 	
+	this.openScenarioExample=openScenarioExample;
+	this.openLocalScenario=openLocalScenario;
+	
 	// ******************************************************************************
 	// Public Methods Definition
 	// ******************************************************************************
@@ -117,46 +117,11 @@ function ApplicationController(){
 		
 		m_selected_example=-1;
 		
-	    var width = window.innerWidth * 0.8;
-	    var height = window.innerHeight * 0.8;
-	    
-	    if (width > 500){
-	    	width = 500;
-	    }
-	    
-	    if (height > 400){
-	    	height = 400;
-	    }
-	    
-		var m_open_dialog=$("#maindialog").show();
-		
-		m_open_dialog.dialog({ 
-	        modal: true,
-	        width: width,
-	        height: height,
-	        position: {  my: "center top+5%", at: "center top+5%", of: window  },
-	        title: "Load Scenario",
-	        buttons:{
-				"Accept": function() {
-					//$("#maindialog").dialog("close");			
-					openLocalScenario();
-				},
-				"Cancel": function() {
-					$(this).dialog("close");
-				}				
-	        },
-			close: function( event, ui ) {}
-	    });
-	    
-	    m_open_dialog.html(htmlBuilder.getOpenLocalScenarioDialog());
-    
-	    m_open_dialog.dialog("open");		
+		applicationView.showOpenLocalScenarioDialog();
 	}
 	
 	// Method used to open the local file selected by the user
 	function openLocalScenario(){
-		
-		var m_open_dialog=$("#maindialog");
 		
 		var theScenariofile=document.getElementById('LocalScenarioFile');
 		
@@ -164,12 +129,12 @@ function ApplicationController(){
 		
 		if (!scenarioModelBuilder.openLocalFile(theScenariofile, theScenarioImages)){
 			
-			m_open_dialog.dialog("close");
+			applicationView.closeOpenLocalScenarioDialog();
 			
 			applicationView.displayError(htmlBuilder.wrapErrorMsg(scenarioModelBuilder.getError()));
 			
 		}else{
-			m_open_dialog.dialog("close");	
+			applicationView.closeOpenLocalScenarioDialog();	
 		}
 	}
 	
@@ -271,21 +236,7 @@ function ApplicationController(){
 	function settingsButton(){
 		console.log("settingsButton");
 		
-		var dialog=$("#maindialog").show();
-		
-	    $("#maindialog").dialog({ 
-	        modal: true,
-	        width: 300,
-	        height: 300,
-	        position: {  my: "center", at: "center", of: window  },
-	        title: "Settings",
-	        buttons:{},
-			close: function( event, ui ) {}
-	    });
-	    
-	    $("#maindialog").html("");
-	    
-	    dialog.dialog("open");
+		applicationView.showSettingsDialog();
 	}
 	
 	// Dialog that show the list of scenario examples
@@ -294,44 +245,11 @@ function ApplicationController(){
 
 		scenarioController.stopButton();
 		
+		applicationView.showOpenScenarioDialog();
+		
 		m_selected_example=-1;
 		
-	    loadScenarioExampleList();		
-		
-	    var width = window.innerWidth * 0.8;
-	    var height = window.innerHeight * 0.8;
-	    
-	    if (width > 500){
-	    	width = 500;
-	    }
-	    
-	    if (height > 400){
-	    	height = 400;
-	    }
-	    
-		var m_open_dialog=$("#maindialog").show();
-		
-		m_open_dialog.dialog({ 
-	        modal: true,
-	        width: width,
-	        height: height,
-	        position: {  my: "center top+5%", at: "center top+5%", of: window  },
-	        title: "Load Scenario",
-	        buttons:{
-				"Select": function() {
-					$("#maindialog").dialog("close");					
-					openScenarioExample();
-				},
-				"Cancel": function() {
-					$(this).dialog("close");
-				}				
-	        },
-			close: function( event, ui ) {}
-	    });
-	    
-	    m_open_dialog.html(htmlBuilder.getScenarioListLoading());
-    
-	    m_open_dialog.dialog("open");		
+	    loadScenarioExampleList();
 	}
 	
 	// Method used to open the current selected scenario example

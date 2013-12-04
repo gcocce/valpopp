@@ -424,8 +424,11 @@ function ScenarioView(){
 		elCommentsBody.innerHTML=commentsBodyHml;
 		elCommentsHeader.innerHTML=commentsHeaderHtml;
 
-		// Update nodes disposition and scenario canvas size
-		updateScenarioView(null);
+		// If there is a valid ScanarioPlay
+		if (m_scenarioPlay){
+			//Update nodes disposition and scenario canvas size
+			updateScenarioView(null);		
+		}		
 	}
 	
 	// Show scenario comments section
@@ -451,12 +454,16 @@ function ScenarioView(){
 	    theCommentsContext= theCommentsCanvas.getContext("2d");
 	    m_comment_canvas=new Canvas(theCommentsContext);
 		
-		//Update nodes disposition and scenario canvas size
-		updateScenarioView(null);
-		
-		// The the scroll position that it has before
-		theContainer.scrollTop = m_scenarioPlay.getScrollPos();
-		theCommentsContainer.scrollTop = m_scenarioPlay.getScrollPos();
+
+		// If there is a valid ScanarioPlay
+		if (m_scenarioPlay){
+			//Update nodes disposition and scenario canvas size
+			updateScenarioView(null);
+			
+			// The the scroll position that it has before
+			theContainer.scrollTop = m_scenarioPlay.getScrollPos();
+			theCommentsContainer.scrollTop = m_scenarioPlay.getScrollPos();			
+		}
 	}
 	
 	
@@ -607,7 +614,7 @@ function ScenarioView(){
 	    	height = 400;
 	    }
 	    
-	    m_current_dialog = $("#maindialog").dialog({
+	    m_current_dialog = $("#scenariodialog").dialog({
 			autoOpen: false,
 			modal: true,
 			position: {  my: "center", at: "center", of: "#vScenario"  },
@@ -617,7 +624,7 @@ function ScenarioView(){
 			title: mcq_title,
 			buttons: {
 				"Submit": function() {
-					$("#maindialog").dialog("close");					
+					$("#scenariodialog").dialog("close");					
 					quizzResults();
 				}
 			},
@@ -672,7 +679,7 @@ function ScenarioView(){
 			    },			
 				"Back": function(){
 					m_current_quizz_ready=false;
-					$("#maindialog").dialog("close");
+					$("#scenariodialog").dialog("close");
 					showScenarioQuizz();
 				}
 			});			
@@ -732,7 +739,7 @@ function ScenarioView(){
 	function displayMsg(html_msg){
 		console.log("ScenarioView.displayMsg");   
 	    
-		$("#maindialog").dialog({
+		$("#scenariodialog").dialog({
 			autoOpen: false,
 			modal: true,
 			width: 500,
@@ -747,16 +754,16 @@ function ScenarioView(){
 			}
 		});
 		
-		$("#maindialog").html(htmlBuilder.wrapHtmlMsg(html_msg));
+		$("#scenariodialog").html(htmlBuilder.wrapHtmlMsg(html_msg));
 		
-		$("#maindialog").dialog("open");		
+		$("#scenariodialog").dialog("open");		
 	}
 	
 	// Display a dialog with an error message associated to the scenario
 	function displayError(html_msg){
 		console.log("ScenarioView.displayError");   
 	    
-		$("#maindialog").dialog({
+		$("#scenariodialog").dialog({
 			autoOpen: false,
 			modal: true,
 			width: 500,
@@ -771,9 +778,9 @@ function ScenarioView(){
 			}
 		});
 		
-		$("#maindialog").html(htmlBuilder.wrapHtmlErrorMsg(html_msg));
+		$("#scenariodialog").html(htmlBuilder.wrapHtmlErrorMsg(html_msg));
 		
-		$("#maindialog").dialog("open");
+		$("#scenariodialog").dialog("open");
 	}
 	
 	// Setup a valid Scenario Command buttons state 

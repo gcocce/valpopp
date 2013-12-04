@@ -226,7 +226,15 @@ body {
 #msg.comment { border: 1px solid #000; font-size: 1.0em; background-color: #fff; }
 
 /* It works for the content of the dialog */
-#maindialog{
+#applicationdialog{
+	height: 100%;
+	width: 100%;
+	display:none;
+	font-size: 1.0em;
+	background-color: white; overflow-x: hidden; overflow-y: hidden;
+}
+
+#scenariodialog{
 	height: 100%;
 	width: 100%;
 	display:none;

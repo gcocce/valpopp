@@ -35,7 +35,7 @@ var configModule = {
 			if (!isNaN(parseFloat(time)) && isFinite(time) && time >= 10){
 				this.simulationLoop=time;
 			}else{
-				if (console){
+				if (console && debug){
 					console.error("ConfigModule: SimulationLoopTime should be a number greater or equal than 10.");
 				}				
 			}			
@@ -49,7 +49,7 @@ var configModule = {
 			if (!isNaN(parseFloat(time)) && isFinite(time) && time > 0){
 				this.simulationTimeAdvance=time;
 			}else{
-				if (console){
+				if (console && debug){
 					console.error("ConfigModule: SimulationTimeAdvance should be a number greater than 0.");
 				}				
 			}				
@@ -63,7 +63,7 @@ var configModule = {
 			if (value==true || value==false){
 				this.showMCQAnswers=value;
 			}else{
-				if (console){
+				if (console && debug){
 					console.error("ConfigModule: ShowMCQAnswer should be whether \"true\" or \"false\".");
 				}	
 			}
@@ -77,7 +77,7 @@ var configModule = {
 			if (value==true || value==false){
 				this.continueAfterMCQ=value;
 			}else{
-				if (console){
+				if (console && debug){
 					console.error("ConfigModule: ContinueAfterMCQ should be whether \"true\" or \"false\".");
 				}	
 			}
@@ -91,7 +91,7 @@ var configModule = {
 			if (value==true || value==false){
 				this.mandatoryMCQ=value;
 			}else{
-				if (console){
+				if (console && debug){
 					console.error("ConfigModule: MandatoryMCQ should be whether \"true\" or \"false\".");
 				}	
 			}			
@@ -106,7 +106,7 @@ var configModule = {
 			if (!isNaN(parseFloat(space)) && isFinite(space) && space >= 0){
 				this.initialSimulationTime=time;
 			}else{
-				if (console){
+				if (console && debug){
 					console.error("ConfigModule: InitialSimulationTime should be a number greater or equal than zero.");
 				}				
 			}			
@@ -120,7 +120,7 @@ var configModule = {
 			if (!isNaN(parseFloat(space)) && isFinite(space) && space >= 0){
 				this.spaceBetweenMessages=space;
 			}else{
-				if (console){
+				if (console && debug){
 					console.error("ConfigModule: SpaceBetweenMessages should be a number greater or equal than zero.");
 				}				
 			}
@@ -170,7 +170,7 @@ var configModule = {
 			if (user.localeCompare("basic")==0 || user.localeCompare("advance")==0 || user.localeCompare("editor")==0){
 				this.user=user;	
 			}else{
-				if (console){
+				if (console && debug){
 					console.error("ConfigModule: User parameter is not accepted.");
 				}
 			}

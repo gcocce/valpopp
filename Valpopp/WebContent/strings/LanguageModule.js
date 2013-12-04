@@ -44,8 +44,7 @@ var languageModule = (function () {
 		var firstline=lflines[0];
 		var langArr=firstline.split(SEP);
 		langArr.shift();
-		console.log(langArr);
-		
+			
 		numLanguages=langArr.length;
 		if (numLanguages < 1){
 			m_error="LanguageModule: There is an inconsistency in the Language File Header";
@@ -61,10 +60,8 @@ var languageModule = (function () {
 	
 		// Remove the header of the language file
 		lflines.shift();
-		//console.log(lflines);
 			
 		// Dispatch the event
-		//console.log("Language File Loaded Event Dispatched");
 		var eventLanguageFile = $.Event( "LanguageFileLoaded" );
 
 		state=LOADED;
@@ -79,7 +76,6 @@ var languageModule = (function () {
 
 	// Initialize Module
 	function doInitialization() {
-		//console.log("languageModule.Initialize()");
 		
 		// If there is no previous error
 		if (m_error.localeCompare("")==0){
@@ -122,7 +118,7 @@ var languageModule = (function () {
 						// Add property to the object with the Constant Name 
 						captions[line[0]][langIdList[l-1]]=line[l];
 						
-						// For debugging purpose
+						// For extreme debugging purpose
 						//console.log(captions[line[0]][langIdList[l-1]]);
 					}
 				}

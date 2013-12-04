@@ -44,12 +44,11 @@ appImagesNames.push("show.jpg");
 appImagesNames.push("hide.jpg");
 
 
-
 //***************************************************************************
 // End of Application Main Objects Section
 //***************************************************************************
 
-
+var debug=true;
 
 //*******************************************************************************
 // Detect system
@@ -60,7 +59,7 @@ if (navigator.appVersion.indexOf("Mac")!=-1) OSName="MacOS";
 if (navigator.appVersion.indexOf("X11")!=-1) OSName="UNIX";
 if (navigator.appVersion.indexOf("Linux")!=-1) OSName="Linux";
 
-if(console){
+if(console && debug){
 	console.log("OSName: "+ OSName);
 }
 
@@ -125,7 +124,7 @@ if (isNaN(majorVersion)) {
  majorVersion = parseInt(navigator.appVersion,10);
 }
 
-if (console){
+if (console && debug){
 	console.log('Browser name  = ' + browserName);
 	console.log('Full version  = ' + fullVersion);
 	console.log('Major version = ' + majorVersion);
