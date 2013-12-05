@@ -1,8 +1,15 @@
 
 /* Responsabilities:
  * 
- * Capture User Interface Events and Trigger Actions
- * Resolve Application Events
+ * 
+ * Control when the language.csv file is downloaded and initiate the Language Module.
+ * Trigger the setup process when all the scripts have been download and the Language module has been initialized.
+ * Create Scenario Objects and Initiate schema and default scenario file downloading process.
+ * Trigger actions for the application buttons Open and Settings.
+ * Preload application images.
+ * Handle list of scenario examples, show and filter the list.
+ * Start loading process for scenario examples and local files.
+ * 
  */
 
 function ApplicationController(){	
@@ -10,6 +17,7 @@ function ApplicationController(){
 	// Properties
 	// ******************************************************************************
 	
+	// Used to register an error description
 	var m_error="";
 	
 	// The content of the scenario example list file
@@ -21,10 +29,10 @@ function ApplicationController(){
 	// Reference to the current scenario selected
 	var m_selected_example=-1;
 	
-	//
+	// Character that is used in the Scenario List as Separator
 	var SEP=";";
 	
-	//
+	// Register if the application images have already been downloaded
 	var appImagesLoaded=false;
 	
 
@@ -234,8 +242,6 @@ function ApplicationController(){
 	// Dialog used to show the setting options
 	// Triggered when the user use the Settings Button
 	function settingsButton(){
-		console.log("settingsButton");
-		
 		applicationView.showSettingsDialog();
 	}
 	
@@ -254,11 +260,8 @@ function ApplicationController(){
 	
 	// Method used to open the current selected scenario example
 	function openScenarioExample(){
-		//console.log("openScenarioExample selected Item: " + m_selected_example);
-		
+
 		var file_name=m_scenario_filter_list[m_selected_example];
-		
-		//console.log("File: " + file_name);
 		
 		applicationView.setProgressBar();
 			
@@ -287,7 +290,6 @@ function ApplicationController(){
 	// ******************************************************************************
 	
 	function initializeLanguageModule(e){		
-		//console.log("ApplicationController.initializeLanguageModule");
 		
 		// Initialize the Language Module
 		if (languageModule.initialize()){
@@ -298,11 +300,16 @@ function ApplicationController(){
 			// Is mandatory to call to application setup
 			setupApplication(null);
 			
-			console.log("Language Module Initialization Succeded");
+			if (console && debug){
+				console.log("Language Module Initialization Succeded");	
+			}
+			
 		}else{
 			applicationView.displayError(languageModule.getError());		
 			
-			console.log("Language Module Error: " + languageModule.getError());
+			if (console){
+				console.error("Language Module Error: " + languageModule.getError());
+			}
 		}
 	}
 	
@@ -310,19 +317,16 @@ function ApplicationController(){
 	// Every Thing that needs to be done before running the application
 	// This function is called when all the scripts have been download and the languageModule has been initialized
 	function setupApplication(e){
-		//console.log("setupApplication called");
-		//console.log("appState:" + appState);
-		//console.log("languageModule.getState:" + languageModule.getState());
-
+		
 		if (appState==appConstants.STARTING){
 			appState=appConstants.LOADED;
 		}else if (appState==appConstants.INITIATED){
-			//console.log("Application already Setup");
+			//Application already Setup
 		}
 
 		// Once both things are ready the function is executed
 		if(appState==appConstants.LOADED && languageModule.getState()==languageModule.INITIALIZED){
-			if (console){
+			if (console && debug){
 				console.log("setupApplication started");
 				console.log("Selected Language: " + configModule.getLang());
 				console.log("User Type: " + configModule.getUserMode());
@@ -350,12 +354,13 @@ function ApplicationController(){
 			// Preload the images used by the application
 			preloadAppImages();
 			
-			if (console){
+			if (console && debug){
 				console.log("setupApplication Acomplished");
 			}
 		}
 	}	
 	
+	// Preload application images
 	function preloadAppImages(){
 		if (!appImagesLoaded){
 			
@@ -368,6 +373,7 @@ function ApplicationController(){
 		}
 	}
 	
+	// Handle Schema File Loading Error
 	function schemaFileLoadingError(e){
 		applicationView.removeProgressBar();
 		applicationView.disableApplicationCommands();

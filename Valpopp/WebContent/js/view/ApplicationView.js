@@ -58,6 +58,7 @@ function ApplicationView(){
 		m_open_dialog.dialog("close");
 	}
 	
+	// Show the dialog to open Local Files
 	function showOpenLocalScenarioDialog(){
 	    var width = window.innerWidth * 0.8;
 	    var height = window.innerHeight * 0.8;
@@ -95,6 +96,7 @@ function ApplicationView(){
 	    m_open_dialog.dialog("open");		
 	}
 	
+	// Show the Main Open Dialog
 	function showOpenScenarioDialog(){
 	    var width = window.innerWidth * 0.8;
 	    var height = window.innerHeight * 0.8;
@@ -182,7 +184,7 @@ function ApplicationView(){
 	
 	// Setup Layout When the Language Module Was Fully Loaded
 	function initLayout(e){
-		console.log("ApplicationView.initLayout");
+		//console.log("ApplicationView.initLayout");
 
 		removeProgressBar();
 		

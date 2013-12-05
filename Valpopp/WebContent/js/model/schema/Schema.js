@@ -1,7 +1,7 @@
 
 /* Responsabilities:
  * 
- * Contain the schema and perform the validation against it
+ * Contain the json schema and perform the validation against it
  *  
  */
 
@@ -22,16 +22,26 @@ function Schema(){
 	// ******************************************************************************
 	// Properties
 	// ******************************************************************************	
+	
+	// Register the state of the object
 	var m_schema_state=SCHEMA_NOTLOADED;
+	
+	// Json Schema File Contents
 	var m_schema_string=null;	
+	
+	// Used to register a description of an error
 	var m_error="";
+	
+	// Content of the scenario file
 	var m_scenario_string="";
 	
 	
 	// ******************************************************************************
 	// Private Methods
 	// ******************************************************************************
-    function validateAgainstSchema() {
+   
+	// Performs the validation
+	function validateAgainstSchema() {
         try {
            var environmentId = "json-schema-draft-03";
            var json =  m_scenario_string;
@@ -83,7 +93,7 @@ function Schema(){
         } catch (e) {
            m_error='<div id="msg" class="error">' + e + '</div>';
            
-           if (console){
+           if (console && debug){
         	   console.error(e.toString());
            }
            
@@ -119,6 +129,7 @@ function Schema(){
 		return m_error;
 	}
 	
+	// Get Object State
 	function getState(){
 		return m_schema_state;
 	}

@@ -1,5 +1,4 @@
 
-
 /* This module is used to register application parameters
  * 
  * The first thing to do is to load this script and set the chosen parameters
@@ -19,12 +18,19 @@ var configModule = {
 		imgpath:"img/",
 		scenarioPath: "scenarios/",
 		scenarioImgPath:"scenarios/img/",
+		// Space between the arrow of the preceding messages and the start point of the next one
 		spaceBetweenMessages: 0,
+		// Space between the top of the simulation area and the start point of the first message
 		initialSimulationTime: 10,
-		simulationLoop:200,  //Each Simulation Cicle take place every LOOP_UPDATE_TIME (computer miliseconds)
-		simulationTimeAdvance: 4, //Every Simulation Cicle the Simulation Time advance SIMULATION_TIME value (miliseconds) 
+		//Each Simulation Cicle take place every LOOP_UPDATE_TIME (computer miliseconds)
+		simulationLoop:200,  
+		 //Every Simulation Cicle the Simulation Time advance SIMULATION_TIME value (miliseconds) 
+		simulationTimeAdvance: 4,
+		// Establish if it is mandatory to answer every MCQ
 		mandatoryMCQ: true,
+		// Establish if it continues inmidiatly after a MCQ or the user has to press Continue button
 		continueAfterMCQ:true,
+		// Establish if the user can see the answers
 		showMCQAnswers:true,
 		
 		getSimulationLoopTime:function(){

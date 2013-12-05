@@ -36,8 +36,10 @@ function ScenarioView(){
     var m_drawing_canvas=new Canvas(theCanvasContext);
     var m_comment_canvas=new Canvas(theCommentsContext);
     
+    // Used to identify different types of Scenario Objects
 	var m_scenType= new ScenType();
 	
+	// Register the horizontal position of the nodes
     var m_nodesPosition= new Array();
     
     // This variable can be used to aply a transformation to the scenario object
@@ -46,21 +48,26 @@ function ScenarioView(){
     
 	var m_distBetweenNodes = 0;
 	
-	//var m_current_dialog=null;
+	// Reference to the dialog been displayed
+	var m_current_dialog=null;
 	
-	//var m_current_quizz_ready=false;
-	
+	// Reference to the scenario data dialog
 	var m_scenario_data_dialog=null;
 	
+	// Register if the scenario image dialog is open
 	var m_scenario_img_dialog_open=false;
+	
+	// Register if the scenario messages dialog is open
 	var m_scenario_msg_dialog_open=false;
 	
+	// Register if the Comment section is shown
 	var m_scenario_comments=true;
 	
+	// Register the width of the comment section
 	var m_comment_section_width=0;
 	
+	//TODO: review usability
 	var m_comment_text_size=12;
-	
 	
 	// ******************************************************************************
 	// Private Methods
@@ -195,7 +202,9 @@ function ScenarioView(){
 				theNodesContext.fillStyle    = "black";
 				theNodesContext.fillText  ( m_scenarioContext.getNodeName(x) ,  border + (distNodos * x) , imgHeight);		
 			}catch (e){
-				console.error(e.toString());
+				if (console){
+					console.error(e.toString());
+				}
 				displayError(htmlBuilder.wrapErrorMsg(e.toString()));
 			}	    	
 	    }
@@ -203,7 +212,7 @@ function ScenarioView(){
 		m_distBetweenNodes = m_nodesPosition[2] - m_nodesPosition[1];
 	}
 	
-	
+	// Determine the size of the Messages text
 	function calculateMsgTextSize(){
 		var nodeDistance= m_nodesPosition[2] - m_nodesPosition[1];
 		
@@ -216,6 +225,7 @@ function ScenarioView(){
 		return size;
 	}
 	
+	// Determine the size of the comments text
 	function calculateCommentTextSize(canvasWidth){
 
 		var size=Math.round(canvasWidth / 18);
@@ -473,10 +483,6 @@ function ScenarioView(){
 		}
 	}
 	
-	
-//	function getCurrentScenarioPlay(){
-//		return m_scenarioPlay;
-//	}
 
 	// Show Scenario Img Dialog with the current Scenario Image
 	function showScenarioImage(){
@@ -598,10 +604,7 @@ function ScenarioView(){
 	}
 	
 	function showScenarioQuizz(){
-		console.log("ScenarioView.showScenarioQuizz");
-		
-		// already replaced in controller
-		//m_current_quizz_ready=false;
+		//console.log("ScenarioView.showScenarioQuizz");
 		
 		var mcq = m_scenarioPlay.getMCQ();
 		
@@ -647,8 +650,9 @@ function ScenarioView(){
 	    m_current_dialog.dialog("open");
 	}
 	
+	// Show the results for the user answer to the quiz in the case of Practice mode
 	function showQuizCorrectionForPracticeMode(html){
-		console.log("showQuizCorrectionForPracticeMode");
+		//console.log("showQuizCorrectionForPracticeMode");
 		
 		m_current_dialog.html(html);
 		
@@ -670,8 +674,9 @@ function ScenarioView(){
 		m_current_dialog.dialog("open");
 	}	
 	
+	// Show the results for the user answer to the quiz in the case of Evaluation mode
 	function showQuizCorrectionForEvaluationMode(html){
-		console.log("showQuizCorrectionForEvaluationMode");
+		//console.log("showQuizCorrectionForEvaluationMode");
 		
 		m_current_dialog.html(html);
 		
@@ -680,8 +685,6 @@ function ScenarioView(){
 		
 		m_current_dialog.dialog("open");
 	}
-	
-	
 
 	function showQuizzAnswers(){
 		var mcq = m_scenarioPlay.getMCQ();
@@ -698,8 +701,11 @@ function ScenarioView(){
 		m_scenarioPlay=null;
 	}
 	
+	// Get the current ScenarioPlay and initiate the layout for the current Scenario
 	function initiateScenarioDisplay(context){
-		console.log("ScenarioView.initiateScenarioDisplay(context)");
+		if (console && debug){
+			console.log("ScenarioView.initiateScenarioDisplay(context)");
+		}
 		
 		m_scenario_img_dialog_open=false;
 		m_scenario_msg_dialog_open=false;
@@ -719,7 +725,7 @@ function ScenarioView(){
 	
 	// Display a dialog with an information message
 	function displayMsg(html_msg){
-		console.log("ScenarioView.displayMsg");   
+		//console.log("ScenarioView.displayMsg");   
 	    
 		$("#scenariodialog").dialog({
 			autoOpen: false,
@@ -743,7 +749,7 @@ function ScenarioView(){
 	
 	// Display a dialog with an error message associated to the scenario
 	function displayError(html_msg){
-		console.log("ScenarioView.displayError");   
+		//console.log("ScenarioView.displayError");   
 	    
 		$("#scenariodialog").dialog({
 			autoOpen: false,
@@ -767,7 +773,7 @@ function ScenarioView(){
 	
 	// Setup a valid Scenario Command buttons state 
 	function enableScenarioCommands(){
-		console.log("ApplicationView.enableScenarioCommands()");
+		//console.log("ApplicationView.enableScenarioCommands()");
 		
 		// Enable buttons
 		var button=document.getElementById("bt_play");
@@ -784,7 +790,7 @@ function ScenarioView(){
 	}
 	
 	function disableScenarioCommands(){
-		console.log("ApplicationView.disableScenarioCommands");
+		//console.log("ApplicationView.disableScenarioCommands");
 		
 		// Enable buttons
 		var button=document.getElementById("bt_play");
@@ -810,16 +816,22 @@ function ScenarioView(){
 	// ******************************************************************************
 	// Events handled by the ApplicationController 
 	
+	// Trigger when the screen is resized
 	$(window).on( "resize", updateScenarioView);
 	
+	// Triggered when there is a change in the ScenarioPlay
 	$(window).on( "ScenarioPlayChanged", drawScenarioScreen);
 	
-	//$(window).on( "ScenarioPlayMandatoryQuizz", showScenarioQuizz);	
+	// Triggered if the configuration demand that the Quiz dialog is shown inmediatly
+	$(window).on( "ScenarioPlayMandatoryQuizz", showScenarioQuizz);	
 	
+	// Triggered when the scenario image changes
 	$(window).on( "ScenarioImgChanged", changeScenarioImg);
 	
+	// Triggered when the scenario message list changes
 	$(window).on( "ScenarioMessageListChanged", changeScenarioMessageList);
 	
+	// Triggered when the scenario play is stopped
 	$(window).on( "ScenarioStopClear", scenarioClear);
 	
 	// ******************************************************************************
@@ -833,7 +845,9 @@ function ScenarioView(){
 	}
 	
 	function changeScenarioImg(e){
-		console.log("changeScenarioImg");
+		if (console && debug){
+			console.log("changeScenarioImg");
+		}
 		
 		if (m_scenario_img_dialog_open){
 			showScenarioImage();

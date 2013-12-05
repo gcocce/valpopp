@@ -26,8 +26,11 @@ function ScenarioContext(){
 	// ******************************************************************************
 	// Properties
 	// ******************************************************************************	
+	
+	// Used to register a description of the error
 	var m_error="";
 	
+	// Register the state of the object
 	var m_state=CONTEXT_OK;
 	
 	// Number of nodes of the Scenario
@@ -106,6 +109,7 @@ function ScenarioContext(){
 
 	}
 	
+	// Create Propagthroughtput Object with default values
 	function createDefaultPropagthroughput(){
 		
 		var def_propagTime=DEFAULT_PROPAGATION_TIME;
@@ -151,13 +155,13 @@ function ScenarioContext(){
 
 	}
 	
+	// Complete the Scenario Context Messages With the Default Values if no other present
 	function normalizeSequences(){
 		for (var x=0; x < m_scenario_object.sequences.length; x++){
 			normalizeMessages(m_scenario_object.sequences[x].messages);
 			
 			//normalizeMCQ(m_scenario_object.sequences[x].mcq);
 		}
-		
 	}
 	
 	// Complete messages with default values
@@ -232,7 +236,9 @@ function ScenarioContext(){
 
 	// Create a new ScenarioPlay, add it to the array and returns its id
 	function createScenarioPlay(){
-		console.log("CreateScenarioPlay: " + m_scenario_play.length);
+		if (console && debug){
+			console.log("CreateScenarioPlay: " + m_scenario_play.length);
+		}
 		
 		// Create the ScenarioPlay with the context
 		var scenarioPlay=new ScenarioPlay(this);
@@ -278,7 +284,9 @@ function ScenarioContext(){
 		return m_scenario_object.name;
 	}
 	
+	// Set a scenario image, the url parameter may contain the image data
 	function setScenarioImg(img_name, img_url){
+		
 		// The third parameter indicate that it is not a node image
 		m_scenario_images[img_name]=new ScenarioImage(img_name, img_url, false);	
 	}
@@ -287,11 +295,14 @@ function ScenarioContext(){
 		return m_scenario_images[img_name];
 	}	
 	
+	// Returns the array of scenario images
 	function getScenarioImgList(){
 		return m_scenario_images;
 	}
 	
+	// Set the node mages, the url parameter may contain the image data
 	function setNodeImg (index, img_name, img_url){
+		
 		// The third parameter indicate that it is a node image
 		m_nodes_images[index]=new ScenarioImage(img_name, img_url, true);
 	}
@@ -356,7 +367,6 @@ function ScenarioContext(){
 	
 	// Complete Scenario Model with default values
 	function normalizeScenario(){
-		//console.log("scenarioContext.normalizeScenario()");
 		
 		// Complete default message values object
 		completeDefaults();
@@ -382,6 +392,7 @@ function ScenarioContext(){
 	// Events Listeners
 	// ******************************************************************************
 	
+	// TODO: review utility of this event
 	$(window).on( "RemoteScenarioImageLoadingError", scenarioImgLoadingError);
 
 	// ******************************************************************************

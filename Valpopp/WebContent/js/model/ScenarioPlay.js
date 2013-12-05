@@ -126,9 +126,12 @@ function ScenarioPlay(context){
 	// Private Methods
 	// ******************************************************************************
 	
-    // Clean objects and variables used to play 
+    // Clean objects and variables used to in ScenarioPlay 
 	function cleanScenarioPlay(){
-		console.log("ScenarioPlay.cleanScenarioPlay");
+		if (console && debug){
+			console.log("ScenarioPlay.cleanScenarioPlay");
+		}
+		
 		
 		m_finished=false;
 		m_userscroll=false;
@@ -152,8 +155,12 @@ function ScenarioPlay(context){
 		theContainer.scrollTop = 0;		
 	}
 	
+	// Notify the view to clear the display section
 	function cleanScenarioPlayScreen(){
-		console.log("ScenarioPlay.cleanScenarioPlayScreen");
+		if (console && debug){
+			console.log("ScenarioPlay.cleanScenarioPlayScreen");
+		}
+		
 		
 		//TODO: replace for a proper call
 		notifyChange();
@@ -167,7 +174,9 @@ function ScenarioPlay(context){
 	 * treatment: the treatment time of the previous message
 	 */
 	function processMessage(scenMessage, index, lastmsgTime, treatment){
-		console.log("ProcessMessage Message index:" + index);	
+		if (console && debug){
+			console.log("ProcessMessage Message index:" + index);	
+		}
 
 		// Create an Action if it exists
 		var action_displacement=0;
@@ -227,12 +236,14 @@ function ScenarioPlay(context){
 		
 		//console.log("Message Total Transmision Time: " + msg.getTransTime());
 		
+		// If the message informs to change the scenario image
 		if (scenMessage.scenImg){
 			msg.setScenImg(scenMessage.scenImg);
 		}
 		
 		var obj= new ScenObject(m_scenType.MESSAGE, msg);
 		
+		// If the message has treatment
 		if (scenMessage.treatment > 0){
 			
 			if (lastTime + scenMessage.treatment > m_scenCurrentMaxTime){
@@ -261,6 +272,7 @@ function ScenarioPlay(context){
 		}
 	}
 	
+	// Add to the processing list all the message that start at the Synchronization point
 	function processSyncPoint(syncpoint, index, lastmsgTime, treatment){
 		//console.log("processSyncPoint "+ syncpoint);
 		
@@ -277,7 +289,7 @@ function ScenarioPlay(context){
 		//console.log("number of syncronizing messages "+ count);
 	}
 	
-	/* Calculate the time of ocurrence and create the Scenario Objects
+	/* Create the Scenario Objects and Calculate the start time of objects 
 	 * 
 	 */
 	function calculateScenarioPlay(){
@@ -470,7 +482,9 @@ function ScenarioPlay(context){
 	 					
 	 					break;
 	 					default:
-	 						console.log("calculateScenarioPlay: object type unknown");
+	 						if (console){
+	 							console.error("calculateScenarioPlay: object type unknown");
+	 						}
 	 						break;
 	 				}
 	 			}
@@ -479,8 +493,9 @@ function ScenarioPlay(context){
 	 			m_processingObjects=m_new_processingList;
 			}else{
 			// If there are no more objects in the Processing List
-				console.log("ScenarioPlay no more obj in processing list " + configModule.getMandatoryMCQ());
-				
+				if (console && debug){
+					console.log("ScenarioPlay no more obj in processing list");
+				}
 				
 				// If the CurrentSequence does have an MCQ and it has not been processed 
 				if (m_current_sequence.mcq && !m_quizz_processed){
@@ -504,7 +519,10 @@ function ScenarioPlay(context){
 					
 					// Get next Sequence ID
 					var nextSequence=m_current_sequence.nextId;
-					console.log("Next Sequence Id: " + nextSequence);
+					
+					if (console && debug){
+						console.log("Next Sequence Id: " + nextSequence);
+					}
 					
 					m_quizz_processed=false;
 					m_sequence_started=false;
@@ -528,13 +546,14 @@ function ScenarioPlay(context){
 			
 			}
 
+			// Notify change to the view
 			notifyChange();
 		}
 	}
 	
 	// Start the ScenarioPlay execution
 	function start(){
-		console.log("ScenarioPlay.start");
+		//console.log("ScenarioPlay.start");
 		
 		cleanScenarioPlay();
 		
@@ -626,7 +645,9 @@ function ScenarioPlay(context){
 	}
 	
 	function processMCQ(){
-		console.log("scenarioPlay.processMCQ");
+		//console.log("scenarioPlay.processMCQ");
+		
+		//TODO: Estimate the points
 		
 		m_quizz_processed=true;
 	}
@@ -660,7 +681,7 @@ function ScenarioPlay(context){
 	}
 	
 	function play(){
-		console.log("ScenarioPlay.play m_state:", m_state);
+		//console.log("ScenarioPlay.play m_state:", m_state);
 		
 		if (m_state==SCENARIO_STOPPED){
 			m_state=SCENARIO_PLAYING;
@@ -672,7 +693,7 @@ function ScenarioPlay(context){
 	}
 	
 	function pause(){
-		console.log("ScenarioPlay.pause m_state:", m_state);
+		//console.log("ScenarioPlay.pause m_state:", m_state);
 		
 		m_state=SCENARIO_PAUSED;
 		 
@@ -680,7 +701,7 @@ function ScenarioPlay(context){
 	}
 	
 	function continuePlay(){
-		console.log("ScenarioPlay.continuePlay m_state:", m_state);
+		//console.log("ScenarioPlay.continuePlay m_state:", m_state);
 		
 		m_userscroll=false;
 		m_state=SCENARIO_PLAYING;
@@ -689,7 +710,7 @@ function ScenarioPlay(context){
 	}
 	
 	function stop(){
-		console.log("ScenarioPlay.stop m_state:", m_state);
+		//console.log("ScenarioPlay.stop m_state:", m_state);
 		
 		window.clearTimeout(m_loop);
 		
@@ -701,7 +722,8 @@ function ScenarioPlay(context){
 	}
 	
 	function changeMode(continious){
-		console.log("ScenarioPlay.changeMode");
+		//console.log("ScenarioPlay.changeMode");
+		
 		m_continious_mode=continious;
 	}
 	

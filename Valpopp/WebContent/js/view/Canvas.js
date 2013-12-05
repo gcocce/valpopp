@@ -62,7 +62,9 @@ function Canvas(drawing_context){
 	    	if (context.setLineDash) {
 		        context.setLineDash(array);
 	    	}else{
-	    		console.log("setLineDash is no present, using straight line.");
+	    		if (console){
+	    			console.log("setLineDash is no present, using straight line.");
+	    		}
 	    	}
 	    	
 	    }

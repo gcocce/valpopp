@@ -73,21 +73,25 @@ function ScenarioModelBuilder() {
 	// The structure of the scenario as a JavaScript Object (actually using scenario_obj)
 	var m_scenario_obj=null;
 	
+	// Reference to the ScenarioContext
 	var m_scenarioContext=new ScenarioContext();
 	
+	// Number of node images processed during scenario loading
 	var m_node_images_processed=0;
 	
+	// Number of Scenrio Images
 	var m_scenario_images=0;
 	
+	// Number of scenario images processed during loading
 	var m_scenario_images_processed=0;
 	
 	// Reference of the Scenario Images in the case of a local scenario file
-	// 
 	var m_scenario_local_images= null;
 	
-	// The number of images to be load
+	// The number of images to be load in the case of a local scenario file
 	var m_scenario_total_local_images=0;
 	
+	// The number of images processed in the case of a local scenario file
 	var m_scenario_local_images_procesed=0;
 	
 	// ******************************************************************************
@@ -248,7 +252,9 @@ function ScenarioModelBuilder() {
 
 	// Method used to initiate variables used by the class before loading an Scenario
 	function initModel(){
-		console.log("ScenarioModelBuilder.initModel()");
+		if (console && debug){
+			console.log("ScenarioModelBuilder.initModel()");
+		}
 		
 		m_node_images_processed=0;
 	}
@@ -275,9 +281,7 @@ function ScenarioModelBuilder() {
 	// Public Methods Definition
 	// ******************************************************************************
 
-	/* Start the additional validations
-	 * 
-	 */
+	// Performs the additional validations
 	function performAdditionalValidations(){
 		m_error="";
 		
@@ -333,7 +337,7 @@ function ScenarioModelBuilder() {
 		m_scenarioContext.normalizeScenario();
 	}
 	
-	/* Validate scenario against schema and then perform aditional validations
+	/* Validate scenario against schema and then perform additional validations
 	 * 
 	 * returns true if it is ok, false in other case
 	 * a message error is set in the m_error variable
@@ -342,8 +346,9 @@ function ScenarioModelBuilder() {
 	 * 
 	 */
 	function validateScenario(){
-		
-		console.log("scenarioModelBuilder.validateScenario");
+		if (console && debug){
+			console.log("scenarioModelBuilder.validateScenario");
+		}
 		
 		if(!scenarioSchema.validateScenario(m_file_content)){
 			m_error=scenarioSchema.getError();
@@ -371,7 +376,9 @@ function ScenarioModelBuilder() {
 		m_scenario_type=SCENARIO_REMOTE;
 			
 		// Load Scenario File
-		console.log("loadScenarioRemoteFile: " + file);
+		if (console && debug){
+			console.log("loadScenarioRemoteFile: " + file);
+		}
 		
 		initModel();
 
@@ -381,14 +388,15 @@ function ScenarioModelBuilder() {
 			m_scenario_state=SCENARIO_LOADED;
 			
 			// Dispatch the event
-			//console.log("Remote Scenario File Loaded: " + m_file_content);
 			var event = $.Event( "RemoteScenarioFileLoaded" );
 			$(window).trigger(event);
 		})
 		.error(function() {
 			m_error="There was an error while attempting to download the SCENARIO file.";
 			
-			console.error(m_error);
+			if (console){
+				console.error(m_error);
+			}
 
 			m_scenario_state=SCENARIO_LOADING_ERROR;
 			
@@ -411,7 +419,7 @@ function ScenarioModelBuilder() {
 		
 		m_scenario_total_local_images=theimages.files.length;
 		
-		console.log("Total local images: " + m_scenario_total_local_images);
+		//console.log("Total local images: " + m_scenario_total_local_images);
 		
         // Get File Object
         var fPointer = thefile.files[0];
@@ -450,7 +458,9 @@ function ScenarioModelBuilder() {
         } else {
             m_error="It seems that there is no selected file!";
             
-            console.error(m_error);
+            if (console){
+            	console.error(m_error);
+            }
             
             return false;
         }
@@ -503,7 +513,9 @@ function ScenarioModelBuilder() {
 	// If the syntax and logic of the scenario is ok it will automatically initiate the nodes images download
 	// Once the images are download the event ScenarioNodeImgsProccessed is triggered
 	function initializeScenarioValidation(){
-		console.log("ApplicationController.initializeScenarioValidation");
+		if (console && debug){
+			console.log("ApplicationController.initializeScenarioValidation");
+		}
 		
 		if(scenarioSchema.getState()==scenarioSchema.SCHEMA_LOADED && scenarioModelBuilder.getState()==scenarioModelBuilder.SCENARIO_LOADED){	
 			if (!scenarioModelBuilder.validateScenario()){
@@ -531,9 +543,11 @@ function ScenarioModelBuilder() {
 			}
 		}else{ 
 			// In the case one of the files is not ready
-			console.log("Scenario schema or scenario file not ready");
-			console.log("Scenario State: " + scenarioModelBuilder.getState());
-			console.log("Schema State: " + scenarioSchema.getState());	
+			if (console && debug){
+				console.log("Scenario schema or scenario file not ready");
+				console.log("Scenario State: " + scenarioModelBuilder.getState());
+				console.log("Schema State: " + scenarioSchema.getState());				
+			}
 		}	
 	}
 	
@@ -580,7 +594,9 @@ function ScenarioModelBuilder() {
 		if (m_node_images_processed==m_scenarioContext.getNumberofNodes()){
 			m_error="";
 			
-			console.log("Check for Nodes Images State");
+			if (console && debug){
+				console.log("Check for Nodes Images State");
+			}
 		
 			for (var x=0; x < m_scenarioContext.getNumberofNodes(); x++){
 				
@@ -589,7 +605,7 @@ function ScenarioModelBuilder() {
 				if (scimg.getState()!=scimg.IMG_OK){
 					m_scenario_state=SCENARIO_IMG_LOADING_ERROR;
 					
-					console.log("Error downloading image for node number: " + (x + 1) + ", file name: "+ scimg.getName());
+					//console.log("Error downloading image for node number: " + (x + 1) + ", file name: "+ scimg.getName());
 					m_error+="Error downloading image for node number: " + (x + 1)  + ", file name: "+ scimg.getName()+ "<br>";
 				}
 			}
@@ -664,7 +680,7 @@ function ScenarioModelBuilder() {
 		if (m_scenario_images_processed==m_scenario_images){
 			var there_is_error=false;
 			
-			console.log("Check scenario images");
+			//console.log("Check scenario images");
 			
 			var list=m_scenarioContext.getScenarioImgList();
 			
@@ -715,7 +731,9 @@ function ScenarioModelBuilder() {
 				}
 			}
 		}else{ 
-			console.log("Schema State: " + scenarioSchema.getState());
+			if (console){
+				console.error("Schema State: " + scenarioSchema.getState());
+			}
 			
 			scenarioView.displayError(htmlBuilder.wrapErrorMsg("Scenario Schema is not Valid!"));
 		}			
@@ -725,23 +743,23 @@ function ScenarioModelBuilder() {
 	// count the number of images processed, once all of them are processed
 	// initiate the scenario image validation process if the scenario file is valid.
 	function readLocalImageFile(e){
-		m_scenario_local_images_procesed++;
-		
 		processLocalImages(e, true);
 	}
 	
 	function readLocalImageFileError(e){
-		m_scenario_local_images_procesed++;
-		
 		processLocalImages(e, false);
 	}
 	
-
+	// Executed each time that a local image file is processed
+	// It count the number of images and when all are already processed
+	// it initiate the scenario image validation process
 	function processLocalImages(e, state){
 	
+		m_scenario_local_images_procesed++;
+		
 		if (state){
 			
-			//console.log("Local image successfully procesed: " + e.imageName);
+			//console.log("Local image successfully processed: " + e.imageName);
 			
 			var file_contents=e.imageData;
 			
@@ -751,23 +769,27 @@ function ScenarioModelBuilder() {
 			
 			if (m_scenario_total_local_images==m_scenario_local_images_procesed){
 				
-				console.log("All the local images has been procesed...");
+				//console.log("All the local images has been procesed...");
 				
 				if (m_scenario_state==SCENARIO_OK){
 					
-					// Add node images to the ScenarioContext and validate node images existance		
+					// Add node images to the ScenarioContext and validate node images existence		
 					if (!getLocalNodeImages()){
 						applicationView.removeProgressBar();
 						
 						scenarioView.displayError(htmlBuilder.wrapErrorMsg(getError()));
 					}
 				}else{
-					console.error("The scenario file should be already validated.");
+					if (console){
+						console.error("The scenario file should be already validated.");
+					}
 				}
 			}	
 		}else{
-			console.log("There was an error loading the local Image: "+ e.imageName);
-			console.log("Error: "+ e.imageError);
+			if (console && debug){
+				console.log("There was an error loading the local Image: "+ e.imageName);
+				console.log("Error: "+ e.imageError);
+			}
 		}
 	}
 	   

@@ -2,6 +2,7 @@
 /* Responsibilities:
  * 
  * Capture Events associated to Scenario Layout and trigger the appropriate action
+ * 
  */
 
 function ScenarioController(){
@@ -14,6 +15,7 @@ function ScenarioController(){
     var theContainer = document.getElementById("vDraw");
     var theCanvas = document.getElementById("vScenarioCanvas");   
     
+    // Reference to the ScenarioContext
     var m_scenarioContext = null;
 	
 	// ******************************************************************************
@@ -60,8 +62,9 @@ function ScenarioController(){
 		scenarioView.showScenarioQuizz();
 	}
 	
+	// Resolve the user answer for a quiz
 	function processQuizzAnswer(){
-		console.log("scenarioController.processQuizzAnswer");
+		//console.log("scenarioController.processQuizzAnswer");
 		
 		var scenarioPlay=m_scenarioContext.getCurrentScenarioPlay();
 		
@@ -109,11 +112,13 @@ function ScenarioController(){
 		}
 	}
 	
+	// Executed when the user close a quiz dialog
 	function finishQuizz(){
-		console.log("scenarioController.finishQuiz");
+		//console.log("scenarioController.finishQuiz");
 		
 		var scenarioPlay=m_scenarioContext.getCurrentScenarioPlay();	
 		
+		// If it has already been answered
 		if (scenarioPlay.getQuizReady()){
 			
 			scenarioPlay.processMCQ();
@@ -154,7 +159,10 @@ function ScenarioController(){
 			  
 			  break;
 			default:
-				console.error("ScenarioController.playButton known state");
+				if (console){
+					console.error("ScenarioController.playButton known state");
+				}
+			
 				break;
 		  }
 	}
@@ -180,11 +188,12 @@ function ScenarioController(){
 		}
 	}
 	
+	
 	function modeCheckbox(){
 				
 		var scenarioPlay=m_scenarioContext.getCurrentScenarioPlay();
 		
-		// If the scenarioPlay objet is valid
+		// If the scenarioPlay object is valid
 		if (scenarioPlay){
 			
 			theCheckButton = document.getElementById("bt_mode");
@@ -198,7 +207,7 @@ function ScenarioController(){
 		
 		var scenarioPlay=m_scenarioContext.getCurrentScenarioPlay();
 		
-		// If the scenarioPlay objet is valid
+		// If the scenarioPlay object is valid
 		if (scenarioPlay){
 			theCheckButton = document.getElementById("bt_mode");
 			
@@ -225,9 +234,13 @@ function ScenarioController(){
 	//***************************************************************************	
 		
 	  document.addEventListener('scroll', theDocumentWasScrolled, null);
+	  
 	  theContainer.addEventListener('click', theContainerWasClicked, null);
+	  
 	  theContainer.addEventListener('scroll', theContainerWasScrolled, null);
+	  
 	  theContainer.addEventListener('mousewheel', theContainerWasMouseWheeled, null);
+	  
 	  theContainer.addEventListener('mousedown', theContainerWasPressedDown, null);
 	  
 	  theContainer.addEventListener('DOMMouseScroll', theContainerWasMouseWheeled, null);
@@ -289,7 +302,7 @@ function ScenarioController(){
 	  
 	  // This is triggered every time the canvas container is scrolled (whoever does it)
 	  function theContainerWasScrolled(e) {
-		console.log("Container was Scrolled");
+		//console.log("Container was Scrolled");
 
 		var scroll = theContainer.scrollTop;
 		var scenarioPlay=m_scenarioContext.getCurrentScenarioPlay();
@@ -388,7 +401,7 @@ function ScenarioController(){
 				
 		
 		function quizzFinishedCommandButtons(){
-			console.log("quizzFinishedCommandButtons");
+			//console.log("quizzFinishedCommandButtons");
 			
 			var button=document.getElementById("bt_clear");
 			button.disabled=false;

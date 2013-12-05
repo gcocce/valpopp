@@ -1,6 +1,8 @@
 
 //***************************************************************************
 //Application Constants
+//
+//Used to register the state of the application
 //***************************************************************************
 
 function AppConstants(){
@@ -17,8 +19,13 @@ function AppConstants(){
 // Application Main Objects Section
 //***************************************************************************
 
+// Constants used to identify the state of the application
 var appConstants = new AppConstants();
 
+// Application Initial State
+var appState=appConstants.STARTING;
+
+// Object used to build html elements for the view
 var htmlBuilder = new HtmlBuilder();
 
 // Scenario View
@@ -27,26 +34,28 @@ var applicationView=new ApplicationView();
 // Scenario Controller
 var applicationController= new ApplicationController();
 
-//Scenario Objects
+//Scenario Schema used to validate the scenario file against a json schema
 var scenarioSchema = null;
+
+// Used to generate the ScenarioContext, perform validations and grant access to ScenarioPlay instances
 var scenarioModelBuilder = null;
+
+// Used to handle scenario user commands regarding the scenario display and the mcq
 var scenarioController = null;
+
+// Used to handle the view of the application, mainly dedicated to display ScenarioPlay contents
 var scenarioView = null;
 
-// Application Initial State
-var appState=appConstants.STARTING;
+//***************************************************************************
+//End of Application Main Objects Section
+//***************************************************************************
 
-// Application images (for preload)
+// Application images (for preload, any other application image should be added here)
 var appImagesNames = new Array();
 appImagesNames.push("mcq_right.gif");
 appImagesNames.push("mcq_wrong.gif");
 appImagesNames.push("show.jpg");
 appImagesNames.push("hide.jpg");
-
-
-//***************************************************************************
-// End of Application Main Objects Section
-//***************************************************************************
 
 var debug=true;
 
