@@ -119,6 +119,9 @@ function ScenarioPlay(context){
     // Register the current scroll position
     var m_scenario_scroll=0;
     
+    // Register the state of the current quizz
+    var m_current_quizz_ready=false;
+    
 	// ******************************************************************************
 	// Private Methods
 	// ******************************************************************************
@@ -132,6 +135,7 @@ function ScenarioPlay(context){
 		m_sequence_started=false;
 		m_currentSyncPoint=null;
 		m_quizz_processed=false;
+		m_current_quizz_ready=false;
 		m_scenario_img=m_context.getFirstScenarioImage();
 				
 		m_sim_time=INITIAL_TIME;
@@ -583,9 +587,20 @@ function ScenarioPlay(context){
 	this.setScrollPos=setScrollPos;
 	this.getScrollPos=getScrollPos;
 	
+	this.getQuizReady=getQuizReady;
+	this.setQuizReady=setQuizReady;
+	
 	// ******************************************************************************
 	// Public Methods Definition
 	// ******************************************************************************
+	
+	function getQuizReady(){
+		return m_current_quizz_ready;
+	}
+	
+	function setQuizReady(value){
+		m_current_quizz_ready=value;
+	}
 	
 	function setScrollPos(scroll){
 		m_scenario_scroll=scroll;
@@ -611,6 +626,8 @@ function ScenarioPlay(context){
 	}
 	
 	function processMCQ(){
+		console.log("scenarioPlay.processMCQ");
+		
 		m_quizz_processed=true;
 	}
 	

@@ -48,6 +48,14 @@ function ScenarioContext(){
 	// Reference to the javascript object containing the Scenario Model
 	var m_scenario_object=null;
 	
+	// Array with ScenarioPlay instances
+	// In the first version of the application the array will contains only one objet
+	var m_scenario_play = new Array();
+	
+	// Actually it will always be 0 but if could be ued for further development 
+	// if the application is extended to have several ScenarioPlays
+    var m_currentScenarioPlayId=0;
+	
 	// ******************************************************************************
 	// Private Methods
 	// ******************************************************************************
@@ -214,11 +222,38 @@ function ScenarioContext(){
 	this.getFirstScenarioImage=getFirstScenarioImage;
 	this.getScenarioReferences=getScenarioReferences;
 
+	this.createScenarioPlay=createScenarioPlay;
+	this.getCurrentScenarioPlay=getCurrentScenarioPlay;
+	this.setCurrentScenarioPlayId=setCurrentScenarioPlayId;
 		
 	// ******************************************************************************
 	// Public Methods Definition
 	// ******************************************************************************
 
+	// Create a new ScenarioPlay, add it to the array and returns its id
+	function createScenarioPlay(){
+		console.log("CreateScenarioPlay: " + m_scenario_play.length);
+		
+		// Create the ScenarioPlay with the context
+		var scenarioPlay=new ScenarioPlay(this);
+		
+		m_currentScenarioPlayId= m_scenario_play.length;
+		
+		m_scenario_play[m_currentScenarioPlayId]=scenarioPlay;
+		
+		return m_currentScenarioPlayId;
+	}
+	
+	// Returns the current used ScenarioPlay object
+	function getCurrentScenarioPlay(){
+		return m_scenario_play[m_currentScenarioPlayId];
+	}
+	
+	// Not used in this version, it should be used to change the current ScenarioPlay
+	function setCurrentScenarioPlayId(id){
+		m_currentScenarioPlayId=id;
+	}
+	
 	function getScenarioReferences(){
 		return m_scenario_object.references;
 	}
@@ -336,6 +371,10 @@ function ScenarioContext(){
 			console.log("Normalized Scenario:");
 			console.log(m_scenario_object);
 		}
+		
+		// Create the first ScenarioPlay
+		
+		
 	}
 	
 

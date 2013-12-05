@@ -279,10 +279,6 @@ function ApplicationController(){
 	// Trigger when the schema file couldn't be loaded
 	$(window).on( "SchemaFileLoadingError", schemaFileLoadingError);
 		
-	// The Scenario File has been download, and validated and the node images have been download
-	//$(window).on( "ScenarioLoaded", preloadAppImages);
-	$(window).on( "ScenarioReady", preloadAppImages);
-	
 	// Listen for the event on load (everything is download from the server) 
 	$(window).on( "load", setupApplication);	
 	
@@ -351,6 +347,9 @@ function ApplicationController(){
 
 			appState=appConstants.INITIATED; 	
 			
+			// Preload the images used by the application
+			preloadAppImages();
+			
 			if (console){
 				console.log("setupApplication Acomplished");
 			}
@@ -360,10 +359,7 @@ function ApplicationController(){
 	function preloadAppImages(){
 		if (!appImagesLoaded){
 			
-			//console.log("Preload application images");
-					
 			for (var x=0; x < appImagesNames.length; x++){
-				//console.log("preload appImage: "+ appImagesNames[x])
 
 				var m_img = new AppImage(configModule.getAppImgPath() + appImagesNames[x]);
 			}	

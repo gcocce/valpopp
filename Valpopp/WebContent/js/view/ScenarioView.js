@@ -17,7 +17,7 @@ function ScenarioView(){
 	// Reference to the model
 	var m_scenarioContext=null;
 	
-	// Reference to one instance of ScenarioPlay
+	// Reference to the current instance of ScenarioPlay
 	var m_scenarioPlay=null;
 	
 	// Reference to the Html elements used to display the scenario
@@ -40,13 +40,15 @@ function ScenarioView(){
 	
     var m_nodesPosition= new Array();
     
+    // This variable can be used to aply a transformation to the scenario object
+    // The vertical position is escalated by this variable.
     var m_transfHeight=1.0;
     
 	var m_distBetweenNodes = 0;
 	
-	var m_current_dialog=null;
+	//var m_current_dialog=null;
 	
-	var m_current_quizz_ready=false;
+	//var m_current_quizz_ready=false;
 	
 	var m_scenario_data_dialog=null;
 	
@@ -391,8 +393,13 @@ function ScenarioView(){
 	this.initiateScenarioDisplay=initiateScenarioDisplay;	
 	this.enableScenarioCommands=enableScenarioCommands;
 	this.disableScenarioCommands=disableScenarioCommands;
-	this.getCurrentScenarioPlay=getCurrentScenarioPlay;
+	//this.getCurrentScenarioPlay=getCurrentScenarioPlay;
+	
 	this.showScenarioQuizz=showScenarioQuizz;
+	this.showQuizzAnswers=showQuizzAnswers;
+	this.showQuizCorrectionForEvaluationMode=showQuizCorrectionForEvaluationMode;
+	this.showQuizCorrectionForPracticeMode=showQuizCorrectionForPracticeMode;
+	
 	this.showScenarioDataMenu=showScenarioDataMenu;
 	this.showScenarioImage=showScenarioImage;
 	this.showScenarioMessages=showScenarioMessages;
@@ -467,9 +474,9 @@ function ScenarioView(){
 	}
 	
 	
-	function getCurrentScenarioPlay(){
-		return m_scenarioPlay;
-	}
+//	function getCurrentScenarioPlay(){
+//		return m_scenarioPlay;
+//	}
 
 	// Show Scenario Img Dialog with the current Scenario Image
 	function showScenarioImage(){
@@ -556,13 +563,11 @@ function ScenarioView(){
 		
 	}
 	
-	
 	function showScenarioDataMenu(){
+		
 		m_scenario_img_dialog_open=false;
 		m_scenario_msg_dialog_open=false;
 
-		console.log("ScenarioView.showScenarioQuizz");
-			
 		var scendata_html= htmlBuilder.getScenarioDataMenu();
 		
 	    var width = window.innerWidth * 0.8;
@@ -595,7 +600,8 @@ function ScenarioView(){
 	function showScenarioQuizz(){
 		console.log("ScenarioView.showScenarioQuizz");
 		
-		m_current_quizz_ready=false;
+		// already replaced in controller
+		//m_current_quizz_ready=false;
 		
 		var mcq = m_scenarioPlay.getMCQ();
 		
@@ -624,12 +630,15 @@ function ScenarioView(){
 			title: mcq_title,
 			buttons: {
 				"Submit": function() {
-					$("#scenariodialog").dialog("close");					
-					quizzResults();
+					// If the user answer the MCQ
+					$("#scenariodialog").dialog("close");	
+					
+					scenarioController.processQuizzAnswer();
 				}
 			},
 			close: function( event, ui ) {
-				finishQuizz();
+				// If the user close the dialog
+				scenarioController.finishQuizz();
 			}
 		});
 		
@@ -638,60 +647,43 @@ function ScenarioView(){
 	    m_current_dialog.dialog("open");
 	}
 	
-	// Move to private function section
-	function quizzResults(){
+	function showQuizCorrectionForPracticeMode(html){
+		console.log("showQuizCorrectionForPracticeMode");
 		
-		var mcq = m_scenarioPlay.getMCQ();
+		m_current_dialog.html(html);
 		
-		var userResponses = new Array();
-		var validResponses = new Array();
-		var validAnswer=true;		
-		
-		for (var i=0; i < mcq.answers.length; i++ ){
-			var userAnswer=document.getElementById("ValpoppMCQanswer" + (i+1));
-			
-			if (userAnswer.checked){
-				userResponses[i]=true;
-			}else{
-				userResponses[i]=false;
+		m_current_dialog.dialog('option', 'buttons', {
+		    'Show Answers': function() {
+		    	showQuizzAnswers();
+		    },			
+			"Back": function(){
+				//m_current_quizz_ready=false;
+				// If the user choose to go back set the Quiz sate to not ready so he can answer again
+				m_scenarioPlay.setQuizReady(false);
+				
+				$("#scenariodialog").dialog("close");
+				
+				showScenarioQuizz();
 			}
-			
-			if (mcq.answers[i].valid){
-				validResponses[i]=true;
-			}else{
-				validResponses[i]=false;			
-			}			
-			
-			if (userResponses[i]!=validResponses[i]){
-				validAnswer=false;
-			}			
-		}
+		});		
 		
-		m_current_dialog.html(htmlBuilder.getMCQResults(mcq, userResponses, validResponses, validAnswer));
+		m_current_dialog.dialog("open");
+	}	
+	
+	function showQuizCorrectionForEvaluationMode(html){
+		console.log("showQuizCorrectionForEvaluationMode");
 		
-		m_current_quizz_ready=true;
+		m_current_dialog.html(html);
 		
-		// Select which buttons are displied
-		if (configModule.getShowMCQAnswers() && !validAnswer){
-			m_current_dialog.dialog('option', 'buttons', {
-			    'Show Answers': function() {
-			    	quizzAnswers();
-			    },			
-				"Back": function(){
-					m_current_quizz_ready=false;
-					$("#scenariodialog").dialog("close");
-					showScenarioQuizz();
-				}
-			});			
-		}else{
-			m_current_dialog.dialog('option', 'buttons', {});				
-		}
+		// In this case the user does not have the option to go back and answer again
+		m_current_dialog.dialog('option', 'buttons', {});
 		
-		m_current_dialog.dialog("open");	
+		m_current_dialog.dialog("open");
 	}
 	
-	// Move to private function section
-	function quizzAnswers(){
+	
+
+	function showQuizzAnswers(){
 		var mcq = m_scenarioPlay.getMCQ();
 		
 		m_current_dialog.html(htmlBuilder.getMCQAnswers(mcq));
@@ -701,17 +693,7 @@ function ScenarioView(){
 		m_current_dialog.dialog("open");
 	}
 	
-	function finishQuizz(){
-		if (m_current_quizz_ready){
-			m_scenarioPlay.processMCQ();
-			
-			var event = $.Event( "ScenarioPlayQuizzFinished" );
-			$(window).trigger( event );
-		}
-	}
-	
 	function clearScenarioView(){
-		m_current_quizz_ready=false;
 		m_scenarioContext=null;
 		m_scenarioPlay=null;
 	}
@@ -724,7 +706,7 @@ function ScenarioView(){
 		
 		m_scenarioContext=context;
 		
-		m_scenarioPlay=new ScenarioPlay(context);
+		m_scenarioPlay = m_scenarioContext.getCurrentScenarioPlay();
 	
 		setupSize();
 		
@@ -866,7 +848,7 @@ function ScenarioView(){
 	
 	function updateScenarioView(e){
 		
-		if (m_scenarioPlay!=null){
+		if (m_scenarioPlay){
 			
 			setupSize();
 			
@@ -883,9 +865,7 @@ function ScenarioView(){
 
 		var width= theCanvas.width;
 		var height = theCanvas.height;
-
-		m_transfHeight=1.0;
-		
+	
 		height = m_scenarioPlay.getCurrentMaxTime() * m_transfHeight + 20;
 		
 		// The next lines force the canvas component to get clean

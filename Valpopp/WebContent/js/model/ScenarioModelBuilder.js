@@ -493,10 +493,6 @@ function ScenarioModelBuilder() {
 	// Triggered when there was an error while loading one Local Scenario Image
 	$(window).on( "LocalScenarioImageLoadingError", readLocalImageFileError);
 	
-	// Triggered when the The remote Scenario File has been download and validated, and the node images have been download
-	//$(window).on( "ScenarioLoad", preloadScenarioImages);	
-	$(window).on( "ScenarioReady", preloadScenarioImages);		
-
 	
 	//***************************************************************************
 	// Call back function for loading process
@@ -564,12 +560,11 @@ function ScenarioModelBuilder() {
 			
 			scenarioModelBuilder.normalizeScenario();
 			
-			scenarioView.initiateScenarioDisplay(scenarioModelBuilder.getContext());
+			// Indicate to the controller to set the context
+			scenarioController.setScenarioContext(scenarioModelBuilder.getContext());
 
-			//Indicate to the application that it can preload other images
-			//var event = $.Event( "ScenarioLoaded" );
-			var event = $.Event( "ScenarioReady" );
-			$(window).trigger( event );				
+			// Preload the others scenario images
+			preloadScenarioImages();
 		}else{
 			scenarioView.displayError(htmlBuilder.wrapErrorMsg(scenarioModelBuilder.getError()));
 			return;

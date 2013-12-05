@@ -13,6 +13,8 @@ function ScenarioController(){
 	// Reference to html elements
     var theContainer = document.getElementById("vDraw");
     var theCanvas = document.getElementById("vScenarioCanvas");   
+    
+    var m_scenarioContext = null;
 	
 	// ******************************************************************************
 	// Private Methods
@@ -22,6 +24,8 @@ function ScenarioController(){
 	// **************************************************************************
 	// Public Methods Publication
 	//***************************************************************************
+    this.setScenarioContext=setScenarioContext;
+    
 	this.playButton=playButton;
 	this.stopButton=stopButton;
 	this.modeCheckbox=modeCheckbox;
@@ -29,13 +33,98 @@ function ScenarioController(){
 	this.dataButton=dataButton;	
 	this.changeMode=changeMode;
 	
+	
+	this.processQuizzAnswer=processQuizzAnswer;
+	this.finishQuizz=finishQuizz;
+	
 	//***************************************************************************
 	// Public Methods Definition	
 	//***************************************************************************
 	
-	function playButton(){
+	// Function initially called when the Scenario Model is ready to be displayed
+	// It ask the context to create a ScenarioPlay and indicate to the view to initialize the display
+	function setScenarioContext(context){
+		m_scenarioContext = context;
 		
-		var scenarioPlay=scenarioView.getCurrentScenarioPlay();
+		m_scenarioContext.createScenarioPlay();
+		
+		// Notify the view that the context can be used
+		scenarioView.initiateScenarioDisplay(context);
+	}
+	
+	function quizButton(){
+		var scenarioPlay=m_scenarioContext.getCurrentScenarioPlay();
+		
+		scenarioPlay.setQuizReady(false);
+		
+		scenarioView.showScenarioQuizz();
+	}
+	
+	function processQuizzAnswer(){
+		console.log("scenarioController.processQuizzAnswer");
+		
+		var scenarioPlay=m_scenarioContext.getCurrentScenarioPlay();
+		
+		// Get the current MCQ to be processed
+		var mcq = scenarioPlay.getMCQ();
+		
+		var userResponses = new Array();
+		var validResponses = new Array();
+		var validAnswer=true;		
+		
+		// Determine it the answer was right
+		for (var i=0; i < mcq.answers.length; i++ ){
+			var userAnswer=document.getElementById("ValpoppMCQanswer" + (i+1));
+			
+			if (userAnswer.checked){
+				userResponses[i]=true;
+			}else{
+				userResponses[i]=false;
+			}
+			
+			if (mcq.answers[i].valid){
+				validResponses[i]=true;
+			}else{
+				validResponses[i]=false;			
+			}			
+			
+			if (userResponses[i]!=validResponses[i]){
+				validAnswer=false;
+			}			
+		}
+		
+		var html=htmlBuilder.getMCQResults(mcq, userResponses, validResponses, validAnswer);
+		
+		// Set quiz state to ready because the user already answer the quiz
+		scenarioPlay.setQuizReady(true);
+		
+		// Select which buttons that are displayed regarding the mode (practice or evaluation)
+		if (configModule.getShowMCQAnswers() && !validAnswer){
+			
+			// Show dialog for practice mode
+			scenarioView.showQuizCorrectionForPracticeMode(html)		
+		}else{
+			// Show Dialog for Evaluation Mode
+			scenarioView.showQuizCorrectionForEvaluationMode(html);	
+		}
+	}
+	
+	function finishQuizz(){
+		console.log("scenarioController.finishQuiz");
+		
+		var scenarioPlay=m_scenarioContext.getCurrentScenarioPlay();	
+		
+		if (scenarioPlay.getQuizReady()){
+			
+			scenarioPlay.processMCQ();
+			
+			var event = $.Event( "ScenarioPlayQuizzFinished" );
+			$(window).trigger( event );
+		}
+	}
+	
+	function playButton(){
+		var scenarioPlay=m_scenarioContext.getCurrentScenarioPlay();
 		
 		var state=scenarioPlay.getState();
 		
@@ -80,7 +169,7 @@ function ScenarioController(){
 		button.className="inactive";		
 		 
 		//If there is any scenarioPlay properly loaded
-		var scenarioPlay=scenarioView.getCurrentScenarioPlay();
+		var scenarioPlay=m_scenarioContext.getCurrentScenarioPlay();
 		if (scenarioPlay){
 			// Stop and clear the current scenario Play
 			scenarioPlay.stop();
@@ -91,14 +180,9 @@ function ScenarioController(){
 		}
 	}
 	
-	function quizButton(){
-		
-		scenarioView.showScenarioQuizz();
-	}
-
 	function modeCheckbox(){
 				
-		var scenarioPlay=scenarioView.getCurrentScenarioPlay();
+		var scenarioPlay=m_scenarioContext.getCurrentScenarioPlay();
 		
 		// If the scenarioPlay objet is valid
 		if (scenarioPlay){
@@ -112,7 +196,7 @@ function ScenarioController(){
 	
 	function changeMode(){
 		
-		var scenarioPlay=scenarioView.getCurrentScenarioPlay();
+		var scenarioPlay=m_scenarioContext.getCurrentScenarioPlay();
 		
 		// If the scenarioPlay objet is valid
 		if (scenarioPlay){
@@ -133,7 +217,6 @@ function ScenarioController(){
 	    
 		scenarioView.showScenarioDataMenu();
 	}	
-
 	
 
 	
@@ -182,7 +265,7 @@ function ScenarioController(){
 		
 		theContainer.scrollTop = theContainer.scrollTop - diffY;
 		
-		var scenarioPlay=scenarioView.getCurrentScenarioPlay();
+		var scenarioPlay=m_scenarioContext.getCurrentScenarioPlay();
 		scenarioPlay.setUserScroll(true);
 		
 		userscroll=true;
@@ -199,11 +282,9 @@ function ScenarioController(){
 		//console.log("Container Was Clicked");
 		
 		userscroll=true;
-		var scenarioPlay=scenarioView.getCurrentScenarioPlay();
+		var scenarioPlay=m_scenarioContext.getCurrentScenarioPlay();
 		scenarioPlay.setUserScroll(true);		
 		
-		var scenarioPlay=scenarioView.getCurrentScenarioPlay();
-		scenarioPlay.setUserScroll(true);
 	  }
 	  
 	  // This is triggered every time the canvas container is scrolled (whoever does it)
@@ -211,7 +292,7 @@ function ScenarioController(){
 		console.log("Container was Scrolled");
 
 		var scroll = theContainer.scrollTop;
-		var scenarioPlay=scenarioView.getCurrentScenarioPlay();
+		var scenarioPlay=m_scenarioContext.getCurrentScenarioPlay();
 		scenarioPlay.setScrollPos(scroll);	
 		
 		var theCommentsContainer=document.getElementById("vMessagesBody");
@@ -227,7 +308,7 @@ function ScenarioController(){
 	  
 	  function theContainerWasMouseWheeled(e) {
 		userscroll=true;
-		var scenarioPlay=scenarioView.getCurrentScenarioPlay();
+		var scenarioPlay=m_scenarioContext.getCurrentScenarioPlay();
 		scenarioPlay.setUserScroll(true);
 		
 		//console.log("Container Was MouseWheeled");
@@ -235,7 +316,7 @@ function ScenarioController(){
 	  
 	  function theContainerWasPressedDown(e) {
 		userscroll=true;
-		var scenarioPlay=scenarioView.getCurrentScenarioPlay();
+		var scenarioPlay=m_scenarioContext.getCurrentScenarioPlay();
 		scenarioPlay.setUserScroll(true);
 		
 		//console.log("Container Was Mouse Pressed Down");		
@@ -249,12 +330,18 @@ function ScenarioController(){
 		// Trigger when the schema file is already loaded
 		$(window).on( "ScenarioPlayFinished", initCommandButton);
 	
+		// If the Quiz is mandatory this Event is triggered, the controller should arrange the buttons
+		// to obligate the user to answer
 		$(window).on( "ScenarioPlayMandatoryQuizz", quizzMandatoryCommandButtons);
 		
+		// If the Quiz is not mandatory this Event is triggered, the controller should arrange the buttons
+		// to offer the possibility to answer to the user
 		$(window).on( "ScenarioPlayQuizzOffer", quizzOfferCommandButtons);
 		
+		// This Event is triggered if the Quiz has finished
 		$(window).on( "ScenarioPlayQuizzFinished", quizzFinishedCommandButtons);
 		
+		// This Event if a pause is necessary in the simulation
 		$(window).on( "ScenarioPause", scenarioPausedCommandButtons);
 		
   
@@ -301,6 +388,8 @@ function ScenarioController(){
 				
 		
 		function quizzFinishedCommandButtons(){
+			console.log("quizzFinishedCommandButtons");
+			
 			var button=document.getElementById("bt_clear");
 			button.disabled=false;
 			
