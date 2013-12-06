@@ -70,9 +70,17 @@ function ScenarioView(){
 	var m_comment_text_size=12;
 	
 	// ******************************************************************************
+	// Constructor
+	// ******************************************************************************
+	
+	initScenarioLayout();
+	
+	// ******************************************************************************
 	// Private Methods
 	// ******************************************************************************
     
+
+	
 	// Set a responsive width for the scenario and comment section
 	function computeWindowSize(){
     	var window_width= $(window).width();
@@ -395,6 +403,13 @@ function ScenarioView(){
 		}
 	}
 	
+	function initScenarioLayout(){
+		
+		var commentsHeaderElement=document.getElementById("vMessagesHeader");
+		
+		commentsHeaderElement.innerHTML=htmlBuilder.getCommentsVisibleHeader();
+	}
+	
 	// ******************************************************************************
 	// Public Methods Publication
 	// ******************************************************************************
@@ -436,7 +451,7 @@ function ScenarioView(){
 		//elCommentsBody.style.overflowY ="hidden";
 		
 		var commentsBodyHml="";
-		var commentsHeaderHtml='<a href="#" onClick="scenarioView.showComments();"><img src="img/show.jpg"></a>';
+		var commentsHeaderHtml=htmlBuilder.getCommentsHiddenHeader();
 		
 		elCommentsBody.innerHTML=commentsBodyHml;
 		elCommentsHeader.innerHTML=commentsHeaderHtml;
@@ -460,7 +475,8 @@ function ScenarioView(){
 		var elCommentsHeader=document.getElementById("vMessagesHeader");
 				
 		var commentsBodyHml='<canvas id="vScenarioComments" style="background-color: white; border: 1px; border-color: black; display: block;">Your browser does not support HTML5 Canvas.</canvas>';
-		var commentsHeaderHtml='<a href="#" onClick="scenarioView.hideComments();"><img src="img/hide.jpg"> Hide Comments</a>';
+		
+		var commentsHeaderHtml=htmlBuilder.getCommentsVisibleHeader();
 		
 		elCommentsBody.innerHTML=commentsBodyHml;
 		elCommentsHeader.innerHTML=commentsHeaderHtml;

@@ -38,17 +38,20 @@ function ApplicationView(){
 	function showSettingsDialog(){
 		var dialog=$("#applicationdialog").show();
 		
+		//TODO: Complete html construction
+		var html_content=htmlBuilder.getSettingsDialogHtml();
+		
 	    $("#applicationdialog").dialog({ 
 	        modal: true,
 	        width: 300,
 	        height: 300,
 	        position: {  my: "center", at: "center", of: window  },
-	        title: "Settings",
+	        title: languageModule.getCaption("TITLE_SETTINGS_DIALOG"),
 	        buttons:{},
 			close: function( event, ui ) {}
 	    });
 	    
-	    $("#applicationdialog").html("");
+	    $("#applicationdialog").html(html_content);
 	    
 	    dialog.dialog("open");		
 	}
@@ -184,13 +187,31 @@ function ApplicationView(){
 	
 	// Setup Layout When the Language Module Was Fully Loaded
 	function initLayout(e){
-		//console.log("ApplicationView.initLayout");
-
+		if (console && debug){
+			console.log("ApplicationView.initLayout");
+			
+			console.log("Number of languages: " + languageModule.getNumberofLanguages());
+			
+			console.log("Languages: " + languageModule.getAvailableLanguages());
+		}
+		
 		removeProgressBar();
 		
-		enableApplicationCommands();
+		insertCommandButtons();
 		
-		//TODO: get caption por buttons regarding configuration language
+		enableApplicationCommands();
+	}
+	
+	// Set Captions buttons and other text used in the layout using the Language Module
+	function insertCommandButtons(){
+		if (console && debug){
+			console.log("Insert Command Buttons...");
+		}
+		
+		var CommnadsElement=document.getElementById("Commands");
+		
+		// Insert the list of buttons in the Commands div section
+		CommnadsElement.innerHTML=htmlBuilder.getAppCommandButtonsHtml();
 	}
 	
 	function disableApplicationCommands(){

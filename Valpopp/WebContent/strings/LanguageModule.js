@@ -8,19 +8,22 @@ var languageModule = (function () {
 	// Field Separator
 	var SEP=";";
 	
+	// State of the object
 	var state=DOWNLOADING;
 	
-	// Error message
+	// Description of an error message
 	var m_error="";
 	
 	// Number of available languages
 	var numLanguages=0;
+	
+	// Number of defined text captions
 	var numConstants=0;
 	
-	// List of available languages Ids
+	// List of available languages Ids ("en", "es", ...)
 	var langIdList=new Array();
-
-	// List of available languages Captions
+	
+	// List of available languages Captions (English, Spanish, ...)
 	var langCaptionList=new Array();
 	
 	// Default Language
@@ -136,7 +139,43 @@ var languageModule = (function () {
 		LOADED:LOADED,
 		INITIALIZED:INITIALIZED,
 		getCaption: function (caption){
-			return captions[caption][currentlang];
+			
+			// Check if the caption is in the list
+			if (captions[caption]){
+				
+				var text= new String();
+				
+				text = captions[caption][currentlang];
+				
+				text = text.trim();
+
+				// If the captions is different than ""
+				if (text.localeCompare("")!=0){
+					return text;	
+				}else{
+					// If the caption is not defined for the selected language try to use the default language
+					if (console && debug){
+						console.log("Caption Not found in lang: " + currentlang + " for "+ caption);
+					}
+					
+					text = captions[caption][configModule.getDefaultLanguage()];
+					text = text.trim();
+					
+					if (text.localeCompare("")!=0){
+						return text;	
+					}else{
+						if (console){
+							console.error("Caption Not found in lang: " + configModule.getDefaultLanguage() + " for "+ caption);
+						}
+						return "Undefined";
+					}
+				}				
+			}else{
+				// The caption is not defined
+				if (console){
+					console.error("LangModule: Caption Not found: "+ caption);
+				}
+			}
 		},
 		initialize: doInitialization,
 		getError: function (){
@@ -160,6 +199,9 @@ var languageModule = (function () {
 		},
 		getNumConstants: function (){
 			return numConstants;
+		},
+		setCurrentLanguage:function (pos){
+			this.currentlang=langIdList[pos];
 		}
 	};
 }());

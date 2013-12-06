@@ -294,7 +294,7 @@ function ApplicationController(){
 		// Initialize the Language Module
 		if (languageModule.initialize()){
 			
-			// Activate application commands layout
+			// Activate application commands layout and use Language Module to set Captions
 			applicationView.initLayout();
 			
 			// Is mandatory to call to application setup
@@ -317,7 +317,6 @@ function ApplicationController(){
 	// Every Thing that needs to be done before running the application
 	// This function is called when all the scripts have been download and the languageModule has been initialized
 	function setupApplication(e){
-		
 		if (appState==appConstants.STARTING){
 			appState=appConstants.LOADED;
 		}else if (appState==appConstants.INITIATED){

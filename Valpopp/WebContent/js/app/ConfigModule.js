@@ -10,7 +10,8 @@
  */
 
 var configModule = {
-		lang:"en",
+		deflang:"en", // must be in the header of the language.csv file
+		lang:"en",  // must be in the header of the language.csv file
 		user: "basic", // must be one of {"basic", "advance", "editor"}
 		defScenario:"scenarios/scenario_complete_demo.json",
 		defSchema:"js/model/schema/scenario_schema.json",
@@ -32,6 +33,14 @@ var configModule = {
 		continueAfterMCQ:true,
 		// Establish if the user can see the answers
 		showMCQAnswers:true,
+		
+		setDefaultLanguage:function (value){
+			this.deflang=value;
+		},
+		
+		getDefaultLanguage:function (){
+			return this.deflang;
+		},
 		
 		getSimulationLoopTime:function(){
 			return this.simulationLoop;

@@ -19,10 +19,55 @@ function HtmlBuilder(){
 	this.getScenarioMsgHtml=getScenarioMsgHtml;
 	this.getScenarioReferencesHtml=getScenarioReferencesHtml;
 	this.getOpenLocalScenarioDialog=getOpenLocalScenarioDialog;
+	
+	this.getAppCommandButtonsHtml=getAppCommandButtonsHtml;
+	
+	this.getCommentsVisibleHeader=getCommentsVisibleHeader;
+	this.getCommentsHiddenHeader=getCommentsHiddenHeader;
+	
+	this.getSettingsDialogHtml=getSettingsDialogHtml;
 
 	//***************************************************************************
 	// Public Methods Definition	
 	//***************************************************************************
+	
+	function getSettingsDialogHtml(){
+		var html="";
+		
+		
+		
+		return html;
+	}
+	
+	function getCommentsHiddenHeader(){
+		
+		var html='<a href="#" onClick="scenarioView.showComments();"><img src="img/show.jpg"></a>';
+		
+		return html;
+	}
+	
+	function getCommentsVisibleHeader(){
+
+		var html='<a href="#" onClick="scenarioView.hideComments();"><img src="img/hide.jpg"></a>';
+		
+		return html;
+	}
+	
+	function getAppCommandButtonsHtml(){
+		var html="";
+		
+		html='<ul>'+
+	    '<li><input id="bt_open" type="button" onclick="applicationController.openButton();" value="'+languageModule.getCaption("BUTTON_OPEN")+'" disabled></li>'+
+	    '<li><input id="bt_play" class="play" type="button" onclick="scenarioController.playButton();" value="'+languageModule.getCaption("BUTTON_START")+'" disabled></li>'+
+	    '<li><input id="bt_quiz" class="inactive" type="button" onclick="scenarioController.quizButton();" value="'+languageModule.getCaption("BUTTON_QUIZ")+'" disabled></li>'+
+	    '<li><input id="bt_clear" type="button" onclick="scenarioController.stopButton();" value="'+languageModule.getCaption("BUTTON_CLEAR")+'" disabled></li>'+
+	    '<li><input id="bt_mode" type="checkbox" onclick="scenarioController.modeCheckbox();" checked disabled><a href="#" onclick="scenarioController.changeMode();" >'+languageModule.getCaption("BUTTON_MODE")+'</a></li>'+
+	    '<li><input id="bt_data" type="button" onclick="scenarioController.dataButton();" value="'+languageModule.getCaption("BUTTON_DATA")+'" disabled></li>'+
+	    '<li><input id="bt_settings" type="button" onclick="applicationController.settingsButton();" value="'+languageModule.getCaption("BUTTON_SETTINGS")+'" disabled></li>'+
+	    '</ul>';
+		
+		return html;
+	}
 	
 	function getScenarioReferencesHtml(references){
 		var html='<div id="ScenarioDataDialog"><div id="ScenarioReferenceList"><br>';

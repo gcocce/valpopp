@@ -139,19 +139,19 @@ function ScenarioController(){
 			
 		  switch (state) {
 			case scenarioPlay.SCENARIO_STOPPED: // Play
-			  theCommandButton.value="Pause";
+			  theCommandButton.value=languageModule.getCaption("BUTTON_PAUSE");
 			  scenarioPlay.play();
 			  break;
 			case scenarioPlay.SCENARIO_PLAYING: // Pause
-			  theCommandButton.value="Continue";
+			  theCommandButton.value=languageModule.getCaption("BUTTON_CONTINUE");
 			  scenarioPlay.pause();
 			  break;
 			case scenarioPlay.SCENARIO_PAUSED: // Continue
-			  theCommandButton.value="Pause";
+			  theCommandButton.value=languageModule.getCaption("BUTTON_PAUSE");
 			  scenarioPlay.continuePlay();		  
 			  break;
 			case scenarioPlay.SCENARIO_QUIZZING:
-			  theCommandButton.value="Pause";
+			  theCommandButton.value=languageModule.getCaption("BUTTON_PAUSE");
 			  var button=document.getElementById("bt_quiz");
 			  button.disabled=true;
 			  button.className="inactive";
@@ -170,7 +170,7 @@ function ScenarioController(){
 	function stopButton(){
 		
 		theCommandButton = document.getElementById("bt_play");
-		theCommandButton.value="Start";
+		theCommandButton.value=languageModule.getCaption("BUTTON_START");
 		
 		var button=document.getElementById("bt_quiz");
 		button.disabled=true;
@@ -364,12 +364,12 @@ function ScenarioController(){
 	  
 		function initCommandButton(){			
 			theCommandButton = document.getElementById("bt_play");
-			theCommandButton.value="Start";			
+			theCommandButton.value=languageModule.getCaption("BUTTON_START");			
 		}
 		
 		function quizzMandatoryCommandButtons(){	
 			var button=document.getElementById("bt_play");
-			button.value="Continue";
+			button.value=languageModule.getCaption("BUTTON_CONTINUE");
 			button.disabled=true;
 			
 			button=document.getElementById("bt_clear");
@@ -385,7 +385,7 @@ function ScenarioController(){
 		
 		function quizzOfferCommandButtons(){	
 			var button=document.getElementById("bt_play");
-			button.value="Continue";
+			button.value=languageModule.getCaption("BUTTON_CONTINUE");
 			button.disabled=false;
 			
 			button=document.getElementById("bt_clear");
@@ -417,16 +417,16 @@ function ScenarioController(){
 			
 			// Continue Simulation
 			if (configModule.getContinueAfterMCQ()){
-				button.value="Pause";
+				button.value=languageModule.getCaption("BUTTON_PAUSE");
 				playButton();
 			}else{
-				button.value="Continue";
+				button.value=languageModule.getCaption("BUTTON_CONTINUE");
 			}
 		}
 		
 		function scenarioPausedCommandButtons(){
 			var button=document.getElementById("bt_play");
-			button.value="Continue";			
+			button.value=languageModule.getCaption("BUTTON_CONTINUE");			
 		}
 	  
 }

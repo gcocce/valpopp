@@ -1,10 +1,13 @@
 CONSTANTS;en:Engish;es:Spanish
 BUTTON_OPEN;Open;Abrir
-BUTTON_PLAY;Play;Ejecutar
+BUTTON_START;Start;Ejecutar
 BUTTON_PAUSE;Pause;Pausar
 BUTTON_CONTINUE;Continue;Continuar
-BUTTON_STOP;Stop;Detener
-BUTTON_OPTIONS;Options;Opciones
-BUTTON_QUIZ;Quiz;Quiz
+BUTTON_CLEAR;Clear;Limpiar
+BUTTON_DATA;Data;Datos
+BUTTON_SETTINGS;Settings;Ajustes
+BUTTON_QUIZ;Quiz;Examen
+BUTTON_MODE;Continious Mode;Modo continuo
+BUTTON_HIDE_COMMENTS;Hide;Ocultar
 TITLE_SETTINGS_DIALOG;Settings;Ajustes
 TITLE_OPEN_DIALOG;Open Scenario;Abrir Escenario
