@@ -357,11 +357,56 @@ function ScenarioController(){
 		// This Event if a pause is necessary in the simulation
 		$(window).on( "ScenarioPause", scenarioPausedCommandButtons);
 		
-  
+		// This Event if a pause is necessary in the simulation
+		$(window).on( "ApplicationLanguageChange", updateCommandButtonsCaption);
+		
 		//***************************************************************************
 		// Call back function for ScenarioPlay State
 		//***************************************************************************	 
 	  
+		function updateCommandButtonsCaption(){
+			var scenarioPlay=m_scenarioContext.getCurrentScenarioPlay();
+			
+			var state=scenarioPlay.getState();
+			
+			var button = document.getElementById("bt_play");
+		 	
+			// Change the play button caption regarding the ScenarioPlay state
+		    switch (state) {
+			case scenarioPlay.SCENARIO_STOPPED: // Play
+				button.value=languageModule.getCaption("BUTTON_START");
+			  break;
+			case scenarioPlay.SCENARIO_PLAYING: // Pause
+				button.value=languageModule.getCaption("BUTTON_PAUSE");
+			  break;
+			case scenarioPlay.SCENARIO_PAUSED: // Continue
+			  theCommandButton.value=languageModule.getCaption("BUTTON_CONTINUE");  
+			  break;
+			case scenarioPlay.SCENARIO_QUIZZING:
+			  theCommandButton.value=languageModule.getCaption("BUTTON_CONTINUE");
+			  break;
+			default:
+				if (console){
+					console.error("ScenarioController.playButton known state");
+				}
+				break;
+		    }	
+			
+			button=document.getElementById("bt_quiz");
+			button.value=languageModule.getCaption("BUTTON_QUIZ");
+			
+			button=document.getElementById("bt_clear");
+			button.value=languageModule.getCaption("BUTTON_CLEAR");
+			
+			button=document.getElementById("bta_mode");
+			button.innerHTML=languageModule.getCaption("BUTTON_MODE");
+			
+			button=document.getElementById("bt_data");
+			button.value=languageModule.getCaption("BUTTON_DATA");	
+			
+			
+		}
+		
 		function initCommandButton(){			
 			theCommandButton = document.getElementById("bt_play");
 			theCommandButton.value=languageModule.getCaption("BUTTON_START");			

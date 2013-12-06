@@ -11,6 +11,12 @@ function ApplicationView(){
 	// Reference to the dialog used by the application to show messages
 	var m_open_dialog=null;	
 	
+	// Register if the user change any settings in the settings dialog
+	var m_settings_modify=false;
+	
+	// Current selected language in the settings dialog
+	var m_selected_language=0;
+	
 	// ******************************************************************************
 	// Private Methods
 	// ******************************************************************************
@@ -31,15 +37,23 @@ function ApplicationView(){
 	this.closeOpenLocalScenarioDialog=closeOpenLocalScenarioDialog;
 	this.showSettingsDialog=showSettingsDialog;
 	
+	this.selectLanguage=selectLanguage;
+	
 	// ******************************************************************************
 	// Public Methods Definition
 	// ******************************************************************************
 
 	function showSettingsDialog(){
+		
+		m_settings_modify=false;
+		
 		var dialog=$("#applicationdialog").show();
 		
-		//TODO: Complete html construction
-		var html_content=htmlBuilder.getSettingsDialogHtml();
+		var currentLanguagePos= languageModule.getCurrentLanguagePos();
+		
+		m_selected_language=currentLanguagePos;
+		
+		var html_content=htmlBuilder.getSettingsDialogHtml(m_selected_language);
 		
 	    $("#applicationdialog").dialog({ 
 	        modal: true,
@@ -47,13 +61,64 @@ function ApplicationView(){
 	        height: 300,
 	        position: {  my: "center", at: "center", of: window  },
 	        title: languageModule.getCaption("TITLE_SETTINGS_DIALOG"),
-	        buttons:{},
-			close: function( event, ui ) {}
+	        buttons:{
+				"Apply": function() {	
+					applySettings();
+					$("#applicationdialog").dialog("close");		
+				}				
+	        },
+	        close: function( event, ui ) {}
 	    });
-	    
+
+        
 	    $("#applicationdialog").html(html_content);
 	    
 	    dialog.dialog("open");		
+	}
+	
+	// Method used to update the current selected scenario example
+	// Triggered when the user use the mouse or the finger to select an example
+	function selectLanguage(index){
+		
+		m_settings_modify=true;
+		
+		var listItem=document.getElementById("ScenarioListItem" + index);
+		
+		var previouslistItem=document.getElementById("ScenarioListItem" + m_selected_language);
+		
+		previouslistItem.className="";
+		
+		listItem.className="ScenarioSelected";
+		
+		m_selected_language=index;		
+	}	
+	
+	function applySettings(){
+		if (m_settings_modify){
+			if (console && debug){
+				console.log("Apply new settings...");	
+			}
+
+			languageModule.setCurrentLanguage(m_selected_language);
+			
+			console.log("Current Language: " + languageModule.getCurrentLanguage());
+			
+			setApplicationButtonsCaption();
+			
+			// Create an event to notify ScenarioController or ScenarioView
+			var eventLanguageFile = $.Event( "ApplicationLanguageChange" );
+			$(window).trigger( eventLanguageFile );			
+		}
+	}
+	
+	function setApplicationButtonsCaption(){
+		
+		var button=document.getElementById("bt_open");
+		button.value=languageModule.getCaption("BUTTON_OPEN");
+		
+		button=document.getElementById("bt_settings");
+		button.value=languageModule.getCaption("BUTTON_SETTINGS");
+		
 	}
 	
 	function closeOpenLocalScenarioDialog(){

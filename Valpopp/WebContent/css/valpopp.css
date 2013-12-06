@@ -296,6 +296,33 @@ body {
 	position: relative;
 }
 
+#SettingsContainer {
+	height: 99%;
+	width: 100%;
+	background-color: white; overflow-x: hidden; overflow-y: auto;
+	position: relative;
+}
+
+#SettingElement{
+	padding-top: 4px;
+	padding-bottom: 6px;
+	width: 100%;
+	
+	border-bottom: 1px solid #333;	
+}
+
+.SettingTitle{
+	font-size: 1.2em;
+}
+
+#LanguageListContainer {	
+	font-size: 0.8em;
+	width: 99%;
+	border: 1px solid grey;
+	background-color: white; overflow-x: hidden; overflow-y: hidden;
+	position: relative;
+}
+
 #ScenarioList{
 	height: 100%;
 	width: 100%;

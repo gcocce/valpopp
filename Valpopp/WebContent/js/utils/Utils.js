@@ -31,10 +31,59 @@ function HtmlBuilder(){
 	// Public Methods Definition	
 	//***************************************************************************
 	
-	function getSettingsDialogHtml(){
-		var html="";
+	function getSettingsDialogHtml(m_selected_language){
 		
+		var html='<div id="DialogContainer">';
 		
+		html+='<div id="SettingsContainer">';
+
+		html+='<div id="SettingElement">';
+		html+='<span class="SettingTitle">Select Language</span>';
+
+		// Body with the scenario examples list
+		html+='<div id="LanguageListContainer"><div id="ScenarioList">';
+		
+		var arrayofLang = languageModule.getAvailableLanguages();
+		
+		console.log(arrayofLang);
+		
+		html+='<ul>';
+		
+		for (var l=0; l < arrayofLang.length; l++){
+			
+			var language= new String();
+			
+			language=arrayofLang[l];
+			
+			language=language.trim();
+			
+			if (language.localeCompare("")!=0){
+				
+				if (l==m_selected_language){
+					html+='<li id="ScenarioListItem'+l+'" class="ScenarioSelected" onClick="applicationView.selectLanguage('+l+');">' + language + '</li>';
+					m_selected_example=0;
+				}else{
+					html+='<li id="ScenarioListItem'+l+'" onClick="applicationView.selectLanguage('+l+');">' + language + '</li>';	
+				}
+			}
+		}
+		
+		html+='</ul>';
+		
+		html+='</div>'; // End of ScenarioList
+		
+		html+='</div>'; // End of Language List Container
+		
+		html+='</div>'; // End of SettingElement
+
+// 		//Add other settings here
+//		html+='<div id="SettingElement">';
+//		html+='<span class="SettingTitle">Another Setting...</span>';
+//		html+='</div>';			
+		
+		html+='</div>'; // End of SettingsContainer		
+		
+		html+='</div>'; // End of DialogContainer		
 		
 		return html;
 	}
@@ -61,7 +110,7 @@ function HtmlBuilder(){
 	    '<li><input id="bt_play" class="play" type="button" onclick="scenarioController.playButton();" value="'+languageModule.getCaption("BUTTON_START")+'" disabled></li>'+
 	    '<li><input id="bt_quiz" class="inactive" type="button" onclick="scenarioController.quizButton();" value="'+languageModule.getCaption("BUTTON_QUIZ")+'" disabled></li>'+
 	    '<li><input id="bt_clear" type="button" onclick="scenarioController.stopButton();" value="'+languageModule.getCaption("BUTTON_CLEAR")+'" disabled></li>'+
-	    '<li><input id="bt_mode" type="checkbox" onclick="scenarioController.modeCheckbox();" checked disabled><a href="#" onclick="scenarioController.changeMode();" >'+languageModule.getCaption("BUTTON_MODE")+'</a></li>'+
+	    '<li><input id="bt_mode" type="checkbox" onclick="scenarioController.modeCheckbox();" checked disabled><a href="#" id="bta_mode" onclick="scenarioController.changeMode();" >'+languageModule.getCaption("BUTTON_MODE")+'</a></li>'+
 	    '<li><input id="bt_data" type="button" onclick="scenarioController.dataButton();" value="'+languageModule.getCaption("BUTTON_DATA")+'" disabled></li>'+
 	    '<li><input id="bt_settings" type="button" onclick="applicationController.settingsButton();" value="'+languageModule.getCaption("BUTTON_SETTINGS")+'" disabled></li>'+
 	    '</ul>';

@@ -131,6 +131,14 @@ var languageModule = (function () {
 		state=INITIALIZED;
 		return true;
 	}
+	
+	function setLanguage(pos){
+		currentlang=langIdList[pos];
+		
+		console.log("setLanguage: " + currentlang );		
+	}			
+	
+
 
 
   // Return an object exposed to the public
@@ -197,11 +205,14 @@ var languageModule = (function () {
 			var pos = langIdList.indexOf(currentlang);
 			return langCaptionList[pos];
 		},
+		getCurrentLanguagePos:function(){
+			return langIdList.indexOf(currentlang);
+		},
 		getNumConstants: function (){
 			return numConstants;
 		},
 		setCurrentLanguage:function (pos){
-			this.currentlang=langIdList[pos];
+			setLanguage(pos);
 		}
 	};
 }());
