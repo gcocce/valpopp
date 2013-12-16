@@ -257,6 +257,11 @@ function ScenarioModelBuilder() {
 		}
 		
 		m_node_images_processed=0;
+		
+		// Init context if it already exists
+		if (m_scenarioContext){
+			m_scenarioContext.initContext();
+		}
 	}
 	
 	// ******************************************************************************

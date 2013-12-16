@@ -57,7 +57,7 @@ function ScenarioContext(){
 	
 	// Actually it will always be 0 but if could be ued for further development 
 	// if the application is extended to have several ScenarioPlays
-    var m_currentScenarioPlayId=0;
+    var m_currentScenarioPlayId=-1;
 	
 	// ******************************************************************************
 	// Private Methods
@@ -213,6 +213,8 @@ function ScenarioContext(){
 	this.getNodeName=getNodeName;
 	this.getSequence=getSequence;
 	
+	this.initContext=initContext;
+	
 	//this.setNumberofNodes=setNumberofNodes;
 	this.setNodeImg=setNodeImg;
 	this.setScenarioImg=setScenarioImg;
@@ -234,6 +236,11 @@ function ScenarioContext(){
 	// Public Methods Definition
 	// ******************************************************************************
 
+	function initContext(){
+		m_scenario_play=new Array();
+		m_currentScenarioPlayId=-1;
+	}
+	
 	// Create a new ScenarioPlay, add it to the array and returns its id
 	function createScenarioPlay(){
 		if (console && debug){
@@ -252,7 +259,11 @@ function ScenarioContext(){
 	
 	// Returns the current used ScenarioPlay object
 	function getCurrentScenarioPlay(){
-		return m_scenario_play[m_currentScenarioPlayId];
+		if (m_currentScenarioPlayId!=-1){
+			return m_scenario_play[m_currentScenarioPlayId];	
+		}else{
+			return null;
+		}
 	}
 	
 	// Not used in this version, it should be used to change the current ScenarioPlay

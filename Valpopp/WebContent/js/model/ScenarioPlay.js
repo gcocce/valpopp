@@ -132,7 +132,6 @@ function ScenarioPlay(context){
 			console.log("ScenarioPlay.cleanScenarioPlay");
 		}
 		
-		
 		m_finished=false;
 		m_userscroll=false;
 		m_sequence_started=false;

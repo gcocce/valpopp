@@ -68,14 +68,13 @@ var languageModule = (function () {
 		var eventLanguageFile = $.Event( "LanguageFileLoaded" );
 
 		state=LOADED;
-		$(window).trigger( eventLanguageFile );
+		$(window).trigger(eventLanguageFile);
 	});	
 	
 	// Set another completion function for the request above
 	jqxhr.fail(function() {
 	  m_error="LanguageModule: There was an error while downloading the Language File!";
 	});
-	
 
 	// Initialize Module
 	function doInitialization() {
@@ -137,9 +136,6 @@ var languageModule = (function () {
 		
 		console.log("setLanguage: " + currentlang );		
 	}			
-	
-
-
 
   // Return an object exposed to the public
 	return { 
