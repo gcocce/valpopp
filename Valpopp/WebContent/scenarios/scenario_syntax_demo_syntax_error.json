@@ -20,7 +20,7 @@
 				{"name": "MM_LOCATION_UPDATE", "srcN": 1, "destN": 2, "type": "REQUEST"},
 				{"name": "MAP_SEND_AUTHENTIFICATION","srcN": 2, "destN" : 1, "type": "RESPONSE", "length": 230, "treatment": 5, "dash": "SEMI", "startTime": "", "synchPoint": ""}
 				],
-			"mcq": {"title": "Request", "text": "¿Here goes the question?", "points": 3 ,
+			"mcq": {"title": "Request", "text": "¿Here goes the question?",
 				"answers":
 					[
 					{"text": "First Answer", "feedback": "The feedback goes here", "valid": "y"},
@@ -36,7 +36,7 @@
 				{"name": "MM_LOCATION_UPDATE","srcN":1,"destN" : 2, "type": "REQUEST", "length": 230, "treatment": 5, "dash": "FULL", "startTime": "", "synchPoint": "", "scenImg": "scenario2.gif"},
 				{"name": "MAP_SEND_AUTHENTIFICATION","srcN":2,"destN" : 1, "type": "RESPONSE"}
 				],
-			"mcq": {"title": "Appel dans l'extranger","text":"¡What would you choose?", "points": 3 ,
+			"mcq": {"title": "Appel dans l'extranger","text":"¡What would you choose?",
 				"answers":
 					[
 					{"text": "First Answer", "feedback": "This has feedback"},

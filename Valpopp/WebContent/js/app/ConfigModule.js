@@ -10,6 +10,8 @@
  */
 
 var configModule = {
+		studentLastName:"Unknown",
+		studentName:"Unknown",
 		deflang:"en", // must be in the header of the language.csv file
 		lang:"en",  // must be in the header of the language.csv file
 		user: "basic", // must be one of {"basic", "advance", "editor"}
@@ -36,6 +38,22 @@ var configModule = {
 		continueAfterMCQ:true,
 		// Open MCQ dialgo automatically
 		automaticOpenMCQ:false,
+		
+		setStudentName:function (value){
+			this.studentName=value;
+		},
+		
+		getStudentName:function (value){
+			return this.studentName;
+		},		
+		
+		setStudentLastName:function (value){
+			this.studentLastName=value;
+		},
+
+		getStudentLastName:function (value){
+			return this.studentLastName;
+		},		
 		
 		setDefaultLanguage:function (value){
 			this.deflang=value;

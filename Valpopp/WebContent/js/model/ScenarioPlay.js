@@ -122,6 +122,10 @@ function ScenarioPlay(context){
     // Register the state of the current quizz
     var m_current_quizz_ready=false;
     
+    var m_current_quiz=null;
+    
+    var m_quiz_user_answers=null;
+    
 	// ******************************************************************************
 	// Private Methods
 	// ******************************************************************************
@@ -139,7 +143,9 @@ function ScenarioPlay(context){
 		m_quizz_processed=false;
 		m_current_quizz_ready=false;
 		m_scenario_img=m_context.getFirstScenarioImage();
-				
+		
+		m_current_quiz=new QuizResults(configModule.getStudentLastName(), configModule.getStudentName() , m_context.getScenarioName());
+		
 		m_sim_time=INITIAL_TIME;
 		m_last_msg_treatment=0;
 		m_scenCurrentMaxTime=0;
@@ -610,10 +616,55 @@ function ScenarioPlay(context){
 	this.getQuizReady=getQuizReady;
 	this.setQuizReady=setQuizReady;
 	
+	this.setQuizAnswers=setQuizAnswers;
+	this.getQuizResults=getQuizResults;
+	this.getQuizPointsWon=getQuizPointsWon;
+	this.getQuizTotalPoints=getQuizTotalPoints;
+	
 	// ******************************************************************************
 	// Public Methods Definition
 	// ******************************************************************************
 	
+	function setQuizAnswers(answers){
+		m_quiz_user_answers=answers;
+	}
+	
+	function getQuizPointsWon(){
+		m_current_quiz.getPointsWon();
+	}
+	
+	function getQuizTotalPoints(){
+		m_current_quiz.getTotalPoints();
+	}
+		
+	function getQuizResults(){
+		m_current_quiz.getResults();
+	}
+	
+	function processMCQ(){
+		console.log("scenarioPlay.processMCQ");
+		
+		var m_current_sequence=m_context.getSequence(m_currentSequenceId);
+		
+		// Resolve the points won for the user
+		m_current_quiz.addMCQ(m_current_sequence.mcq.title);
+		
+		for (var x=0; x < m_current_sequence.mcq.answers.length; x++){
+			m_current_quiz.setAnswerResult(x+1, m_current_sequence.mcq.answers[x].points, m_quiz_user_answers[x]);
+		}
+		
+		m_current_quiz.finishMCQ();
+		
+		if (console && debug){
+			console.log("Quiz Results:");
+			console.log(m_current_quiz.getResults());
+		}
+		
+		
+		m_quizz_processed=true;
+	}	
+	
+	//
 	function getQuizReady(){
 		return m_current_quizz_ready;
 	}
@@ -643,14 +694,6 @@ function ScenarioPlay(context){
 			
 		// Establish a reference to the messages of the sequence
 		return m_current_sequence.mcq;
-	}
-	
-	function processMCQ(){
-		//console.log("scenarioPlay.processMCQ");
-		
-		//TODO: Estimate the points
-		
-		m_quizz_processed=true;
 	}
 	
 	function getReadyObjects(){
@@ -737,4 +780,115 @@ function ScenarioPlay(context){
 	// ******************************************************************************	
 	
 
+}
+
+
+//Clases used by Scenario Play
+
+// Used to register each MCQ results and to provide a csv result
+function MCQ(titleValue){
+	var mcqTitle=titleValue;
+
+	var answers=new Array();
+
+	this.setAnswerResult=setAnswerResult;
+	this.getResults=getResults;
+	
+	
+	function setAnswerResult(number,result){
+		answers.push({"number":number, "result":result});
+	}
+	
+	function getResults(){
+		var results="";
+		
+		results+="mcqTitle;"+mcqTitle+"\n";
+		
+		for (var x=0; x < answers.length; x++){
+			results+="answer;"+ answers[x].number +";"+ answers[x].result+"\n";
+		}
+		
+		return results;
+	}
+}
+
+// Used to Quiz results and provides a  csv result
+function QuizResults(lastName, name, scenarioNameValue){
+	var scenarioName=scenarioNameValue;
+	var studentLastName=lastName;
+	var studenName=name;
+	
+	var pointsWon=0;
+	var totalPoints=0;
+	
+	var listOfMCQ=new Array();
+	
+	var m_currentMCQ=null;
+	
+	this.addMCQ=addMCQ;
+	this.finishMCQ=finishMCQ;
+	this.getResults=getResults;
+	
+	this.getScenarioName=getScenarioName;
+	this.getStudentLastName=getStudentLastName;
+	this.getStudentName=getStudentName;	
+	this.setAnswerResult=setAnswerResult;
+	this.getPointsWon=getPointsWon;
+	this.getTotalPoints=getTotalPoints;
+	
+	function getScenarioName(){
+		return scenarioName;
+	}
+	
+	function getStudentLastName(){
+		return studentLastName;		
+	}
+	
+	function getStudentName(){
+		return studentName;
+	}
+	
+	function getPointsWon(){
+		return pointsWon;
+	}
+	
+	function getTotalPoints(){
+		return totalPoints;
+	}
+	
+	function addMCQ(title){
+		m_currentMCQ=new MCQ(title);
+	}	
+	
+	function setAnswerResult(number, points, success){
+		m_currentMCQ.setAnswerResult(number,success);
+		
+		totalPoints+=points;
+		
+		if (success){
+			pointsWon+=points;
+		}
+	}
+	
+	function finishMCQ(){
+		listOfMCQ.push(m_currentMCQ);
+	}
+	
+	function getResults(){
+		var results="";
+			
+		results+="student;"+ studentLastName + ";" + studenName +"\n";
+		
+		results+="date;"+ getCurrentDate() + "\n";		
+		
+		results+="scenario;"+ scenarioName + "\n";
+		
+		results+="points;"+ pointsWon + ";" + totalPoints + ";"+ pointsWon + "/" + totalPoints + "\n";
+		
+		for (var x=0; x < listOfMCQ.length; x++ ){
+			results+=listOfMCQ[x].getResults();
+		}
+		
+		return results;
+	}
 }

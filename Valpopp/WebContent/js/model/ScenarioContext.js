@@ -160,7 +160,9 @@ function ScenarioContext(){
 		for (var x=0; x < m_scenario_object.sequences.length; x++){
 			normalizeMessages(m_scenario_object.sequences[x].messages);
 			
-			//normalizeMCQ(m_scenario_object.sequences[x].mcq);
+			if (m_scenario_object.sequences[x].mcq){
+				normalizeMCQ(m_scenario_object.sequences[x].mcq);
+			}
 		}
 	}
 	
@@ -196,6 +198,28 @@ function ScenarioContext(){
 				messages[x].synchPoint=m_default["synchPoint"];
 			}
 		}
+	}
+	
+	// Complete MCQ element, establish the points for the quiz
+	function normalizeMCQ(mcq){
+		var totalPoints=0;
+		
+		for (var x=0; x < mcq.answers.length; x++){
+			var points = 1;
+			if (mcq.answers[x].points){
+				points=mcq.answers[x].points;
+			}else{
+				mcq.answers[x]["points"]=points;
+			}
+				
+			points = mcq.answers[x].points;
+			
+			totalPoints+=mcq.answers[x].points;
+		}
+		
+		mcq["points"]=totalPoints;
+		
+		//console.log("Total Points: " + mcq.points);		
 	}
 	
 	

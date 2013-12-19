@@ -101,6 +101,8 @@ function ScenarioController(){
 		// Set quiz state to ready because the user already answer the quiz
 		scenarioPlay.setQuizReady(true);
 		
+		scenarioPlay.setQuizAnswers(userResponses);
+		
 		scenarioView.showQuizCorrections(html);
 	}
 	

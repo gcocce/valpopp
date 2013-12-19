@@ -53,7 +53,7 @@
 				{"srcN": 3, "destN" : 1, "name": "CC_CONNECT", "type": "REQUEST"},
 				{"srcN": 1, "destN" : 3, "name": "CC_CONNECT_ACKNOWLEDGE", "type": "RESPONSE"}
 				],
-			"mcq": {"title": "Appel mobile vers fixe", "text": "Alice a un téléphone GSM. Elle appelle Bob sur post fixe.", "points": 3 ,
+			"mcq": {"title": "Appel mobile vers fixe", "text": "Alice a un téléphone GSM. Elle appelle Bob sur post fixe.",
 				"answers":
 					[
 					{"text": "Le premier message envoyé par le terminal d'Alice contient son TMSI", "feedback": "The feedback goes here"},

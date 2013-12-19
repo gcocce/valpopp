@@ -36,7 +36,7 @@
 				{"srcN": 3, "destN" : 4, "name": "MAP_INSERT_SUBSCRIBER_DATA_ACK", "type": "RESPONSE", "length": 42, "treatment": 2, "dash": "SEMI"},
 				{"srcN": 4, "destN" : 3, "name": "MAP_UPDATE_LOCATION_ACK", "type": "RESPONSE", "length": 72, "treatment": 2, "dash": "SEMI"}
 				],
-			"mcq": {"title": "First Location Updating procedure", "text": "Is the cyphering complete?", "points": 3 ,
+			"mcq": {"title": "First Location Updating procedure", "text": "Is the cyphering complete?",
 				"answers":
 					[
 					{"text": "Yes", "feedback": "The feedback goes here"},
@@ -52,7 +52,7 @@
 				{"srcN": 1, "destN" : 2, "name": "RR_CIPHERING_MODE_COMPLETE", "type": "RESPONSE", "length": 72, "treatment": 2, "dash": "FULL"},
 				{"srcN": 2, "destN" : 3, "name": "BSSMAP_CIPHER_MODE_COMPLETE", "type": "REQUEST", "length": 72, "treatment": 2, "dash": "FULL"}
 				],
-			"mcq": {"title": "First Location Updating procedure", "text": "Is the TMSI Reallocated?", "points": 3 ,
+			"mcq": {"title": "First Location Updating procedure", "text": "Is the TMSI Reallocated?",
 				"answers":
 					[
 					{"text": "Yes", "feedback": "The feedback goes here"},

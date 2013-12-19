@@ -19,7 +19,7 @@
 				[
 				{"srcN":1,"destN" : 2, "name": "MM_LOCATION_UPDATE", "param": "IMSI, LS1",  "type": "REQUEST", "length": 230, "treatment": 0, "dash": "FULL", "startTime": "", "synchPoint": ""}
 				],
-			"mcq": {"title": "Gestion de la mobilité", "text":"Lors de la primier mise sous tension du terminal:", "points": 3 ,
+			"mcq": {"title": "Gestion de la mobilité", "text":"Lors de la primier mise sous tension du terminal:",
 				"answers":
 					[
 					{"text": "La terminal transmit tout son profil au réseau", "feedback": "That's not true"},
@@ -38,7 +38,7 @@
 				{"srcN": 2, "destN" : 1, "name": "MAP_SEND_AUTHENTIFICATION", "type": "RESPONSE", "length": 230, "treatment": 5, "dash": "SEMI", "startTime": ""},
 				{"srcN": 1, "destN" : 2, "name": "MAP_SEND_AUTHENTIFICATION", "type": "REQUEST", "length": 230, "treatment": 10, "dash": "SEMI", "startTime": ""}				
 				],
-			"mcq": {"title": "Appel mobile vers fixe", "text": "Alice a un téléphone GSM. Elle appelle Bob sur post fixe.", "points": 3 ,
+			"mcq": {"title": "Appel mobile vers fixe", "text": "Alice a un téléphone GSM. Elle appelle Bob sur post fixe.",
 				"answers":
 					[
 					{"text": "Le premier message envoyé par le terminal d'Alice contient son TMSI", "feedback": "The feedback goes here"},
@@ -58,7 +58,7 @@
 				{"srcN":1,"destN" : 2, "name": "MAP_SEND_AUTHENTIFICATION", "param": "SRS1, Kc",  "type": "RESPONSE"},
 				{"srcN":1,"destN" : 2, "name": "MM_LOCATION_UPDATE", "param": "IMSI, LS1",  "type": "REQUEST", "length": 430, "treatment": 40, "dash": "FULL", "startTime": "", "synchPoint": "C"}				
 				],
-			"mcq": {"title": "Introduction á GPRS","text":"Vrai ou Faux", "points": 3 ,
+			"mcq": {"title": "Introduction á GPRS","text":"Vrai ou Faux",
 				"answers":
 					[
 					{"text": "Un réseau coeur GPRS peut transporter tout type de paquet", "feedback": "This has feedback", "valid": "y"},

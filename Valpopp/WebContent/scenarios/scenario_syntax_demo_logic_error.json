@@ -21,7 +21,7 @@
 				{"srcN": 1, "destN": 2, "name": "MM_LOCATION_UPDATE", "param": "TMSI", "type": "REQUEST"},
 				{"srcN": 2, "destN" : 1, "name": "MAP_SEND_AUTHENTIFICATION", "type": "RESPONSE", "length": 230, "treatment": 5, "dash": "SEMI", "startTime": ""}
 				],
-			"mcq": {"title": "Request", "text": "¿Here goes the question?", "points": 3 ,
+			"mcq": {"title": "Request", "text": "¿Here goes the question?",
 				"answers":
 					[
 					{"text": "First Answer", "feedback": "The feedback goes here", "valid": "y"},
@@ -37,7 +37,7 @@
 				{"srcN":1,"destN" : 2, "name": "MM_LOCATION_UPDATE", "param": "IMSI",  "type": "REQUEST", "length": 230, "treatment": 0, "dash": "SEMI", "startTime": "", "synchPoint": "", "scenImg": "scenario2.gif"},
 				{"srcN":2,"destN" : 1, "name": "MAP_SEND_AUTHENTIFICATION", "param": "SRS1, Kc",  "type": "RESPONSE"}
 				],
-			"mcq": {"title": "Appel dans l'extranger","text":"¡What would you choose?", "points": 3 ,
+			"mcq": {"title": "Appel dans l'extranger","text":"¡What would you choose?",
 				"answers":
 					[
 					{"text": "First Answer", "feedback": "This has feedback", "valid": "y"},
