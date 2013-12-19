@@ -498,23 +498,24 @@ function ScenarioPlay(context){
 				
 				// If the CurrentSequence does have an MCQ and it has not been processed 
 				if (m_current_sequence.mcq && !m_quizz_processed){
+
 					m_state=SCENARIO_QUIZZING;
 					
 					window.clearTimeout(m_loop);
 					
-					if(!configModule.getMandatoryMCQ()){
+					if(!configModule.getTestModeMCQ()){
 						m_quizz_processed=true;
 					}					
 					
-					if (configModule.getMandatoryMCQ()){
-						var event = $.Event( "ScenarioPlayMandatoryQuizz" );
+					if (configModule.getTestModeMCQ()){
+						var event = $.Event( "ScenarioPlayTestQuizz" );
 						$(window).trigger( event );	
 					}else{
-						var event = $.Event( "ScenarioPlayQuizzOffer" );
+						var event = $.Event( "ScenarioPlayPracticeQuizz" );
 						$(window).trigger( event );	
 					}
 				}else{
-				// If the CurrentSequence does not have an MCQ or it has been processed
+				// If the CurrentSequence does not have an MCQ or it has already been processed
 					
 					// Get next Sequence ID
 					var nextSequence=m_current_sequence.nextId;
@@ -525,6 +526,7 @@ function ScenarioPlay(context){
 					
 					m_quizz_processed=false;
 					m_sequence_started=false;
+					m_current_quizz_ready=false;
 					
 					// Check if there are no more following sequence
 					if (nextSequence==0){

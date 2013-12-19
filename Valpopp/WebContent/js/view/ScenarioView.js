@@ -422,8 +422,7 @@ function ScenarioView(){
 	
 	this.showScenarioQuizz=showScenarioQuizz;
 	this.showQuizzAnswers=showQuizzAnswers;
-	this.showQuizCorrectionForEvaluationMode=showQuizCorrectionForEvaluationMode;
-	this.showQuizCorrectionForPracticeMode=showQuizCorrectionForPracticeMode;
+	this.showQuizCorrections=showQuizCorrections;
 	
 	this.showScenarioDataMenu=showScenarioDataMenu;
 	this.showScenarioImage=showScenarioImage;
@@ -619,6 +618,15 @@ function ScenarioView(){
 	    m_scenario_data_dialog.dialog("open");		
 	}
 	
+	// If the configuration establish that the MCQ is show automatically this functions does it
+	function showScenarioQuizzAutomatic(){
+		//console.log("ScenarioView.showScenarioQuizzAutomatic");
+		if(configModule.getAutomaticOpenMCQ()){
+			showScenarioQuizz();	
+		}
+	}
+	
+	// Show the MCQ dialog
 	function showScenarioQuizz(){
 		//console.log("ScenarioView.showScenarioQuizz");
 		
@@ -651,7 +659,6 @@ function ScenarioView(){
 				"Submit": function() {
 					// If the user answer the MCQ
 					$("#scenariodialog").dialog("close");	
-					
 					scenarioController.processQuizzAnswer();
 				}
 			},
@@ -666,41 +673,57 @@ function ScenarioView(){
 	    m_current_dialog.dialog("open");
 	}
 	
-	// Show the results for the user answer to the quiz in the case of Practice mode
-	function showQuizCorrectionForPracticeMode(html){
-		//console.log("showQuizCorrectionForPracticeMode");
+	// Show the results for the user answer to the quiz
+	function showQuizCorrections(html){
+		//console.log("showQuizCorrections");
 		
 		m_current_dialog.html(html);
-		
-		m_current_dialog.dialog('option', 'buttons', {
-		    'Show Answers': function() {
-		    	showQuizzAnswers();
-		    },			
-			"Back": function(){
-				//m_current_quizz_ready=false;
-				// If the user choose to go back set the Quiz sate to not ready so he can answer again
-				m_scenarioPlay.setQuizReady(false);
-				
-				$("#scenariodialog").dialog("close");
-				
-				showScenarioQuizz();
+
+		// Select the buttons to be shown in the quiz dialog
+		// If it is in Test Mode
+		if (configModule.getTestModeMCQ()){
+			// If the option ShowMCQAnswers is on
+			if (configModule.getShowMCQAnswers()){
+				m_current_dialog.dialog('option', 'buttons', {
+					"Show Answers": function() {
+						showQuizzAnswers(); 
+					}
+				});	
+			}else{
+				m_current_dialog.dialog('option', 'buttons', {});					
 			}
-		});		
+		// If it is not in Test Mode
+		}else{
+			if (configModule.getShowMCQAnswers()){
+				m_current_dialog.dialog('option', 'buttons', {
+					"Show Answers": function() {
+						showQuizzAnswers(); 
+					}, 
+					"Back": function(){
+						// If the user choose to go back set the Quiz sate to not ready so he can answer again
+						m_scenarioPlay.setQuizReady(false);
+					
+						$("#scenariodialog").dialog("close");
+					
+						showScenarioQuizz();
+				      }
+			    });					
+			}else{
+				m_current_dialog.dialog('option', 'buttons', {
+					"Back": function(){
+						// If the user choose to go back set the Quiz sate to not ready so he can answer again
+						m_scenarioPlay.setQuizReady(false);
+					
+						$("#scenariodialog").dialog("close");
+					
+						showScenarioQuizz();
+				      }
+			    });					
+			}
+		}
 		
 		m_current_dialog.dialog("open");
 	}	
-	
-	// Show the results for the user answer to the quiz in the case of Evaluation mode
-	function showQuizCorrectionForEvaluationMode(html){
-		//console.log("showQuizCorrectionForEvaluationMode");
-		
-		m_current_dialog.html(html);
-		
-		// In this case the user does not have the option to go back and answer again
-		m_current_dialog.dialog('option', 'buttons', {});
-		
-		m_current_dialog.dialog("open");
-	}
 
 	function showQuizzAnswers(){
 		var mcq = m_scenarioPlay.getMCQ();
@@ -838,8 +861,11 @@ function ScenarioView(){
 	// Triggered when there is a change in the ScenarioPlay
 	$(window).on( "ScenarioPlayChanged", drawScenarioScreen);
 	
-	// Triggered if the configuration demand that the Quiz dialog is shown inmediatly
-	$(window).on( "ScenarioPlayMandatoryQuizz", showScenarioQuizz);	
+	// Triggered when there is a Quizz to be shown
+	$(window).on( "ScenarioPlayTestQuizz", showScenarioQuizzAutomatic);	
+	
+	// Triggered when there is a Quizz to be shown
+	$(window).on( "ScenarioPlayPracticeQuizz", showScenarioQuizzAutomatic);	
 	
 	// Triggered when the scenario image changes
 	$(window).on( "ScenarioImgChanged", changeScenarioImg);

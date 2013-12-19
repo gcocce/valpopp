@@ -29,11 +29,13 @@ var configModule = {
 		 //Every Simulation Cicle the Simulation Time advance SIMULATION_TIME value (miliseconds) 
 		simulationTimeAdvance: 4,
 		// Establish if it is mandatory to answer every MCQ
-		mandatoryMCQ: true,
-		// Establish if it continues inmidiatly after a MCQ or the user has to press Continue button
-		continueAfterMCQ:true,
+		testModeMCQ: false,
 		// Establish if the user can see the answers
 		showMCQAnswers:true,
+		// Establish if it continues inmidiatly after a MCQ or the user has to press Continue button
+		continueAfterMCQ:true,
+		// Open MCQ dialgo automatically
+		automaticOpenMCQ:false,
 		
 		setDefaultLanguage:function (value){
 			this.deflang=value;
@@ -80,7 +82,7 @@ var configModule = {
 				this.showMCQAnswers=value;
 			}else{
 				if (console && debug){
-					console.error("ConfigModule: ShowMCQAnswer should be whether \"true\" or \"false\".");
+					console.error("ConfigModule: ShowMCQAnswer should be whether true or false.");
 				}	
 			}
 		},
@@ -89,12 +91,26 @@ var configModule = {
 			return this.showMCQAnswers;
 		},
 		
+		setAutomaticOpenMCQ:function (value){
+			if (value==true || value==false){
+				this.automaticOpenMCQ=value;
+			}else{
+				if (console && debug){
+					console.error("ConfigModule: ShowMCQAnswer should be whether true or false.");
+				}	
+			}
+		},
+		
+		getAutomaticOpenMCQ:function (){
+			return this.automaticOpenMCQ;
+		},		
+		
 		setContinueAfterMCQ:function (value){
 			if (value==true || value==false){
 				this.continueAfterMCQ=value;
 			}else{
 				if (console && debug){
-					console.error("ConfigModule: ContinueAfterMCQ should be whether \"true\" or \"false\".");
+					console.error("ConfigModule: ContinueAfterMCQ should be whether true or false.");
 				}	
 			}
 		},
@@ -103,19 +119,19 @@ var configModule = {
 			return this.continueAfterMCQ;
 		},
 		
-		setMandatoryMCQ:function (value){
+		setTestModeMCQ:function (value){
 			if (value==true || value==false){
-				this.mandatoryMCQ=value;
+				this.testModeMCQ=value;
 			}else{
 				if (console && debug){
-					console.error("ConfigModule: MandatoryMCQ should be whether \"true\" or \"false\".");
+					console.error("ConfigModule: MandatoryMCQ should be whether true or false.");
 				}	
 			}			
 			
 		},
 		
-		getMandatoryMCQ:function (){
-			return this.mandatoryMCQ;
+		getTestModeMCQ:function (){
+			return this.testModeMCQ;
 		},
 		
 		setInitialSimulationTime:function (time){

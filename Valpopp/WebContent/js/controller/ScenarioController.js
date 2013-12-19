@@ -101,15 +101,7 @@ function ScenarioController(){
 		// Set quiz state to ready because the user already answer the quiz
 		scenarioPlay.setQuizReady(true);
 		
-		// Select which buttons that are displayed regarding the mode (practice or evaluation)
-		if (configModule.getShowMCQAnswers() && !validAnswer){
-			
-			// Show dialog for practice mode
-			scenarioView.showQuizCorrectionForPracticeMode(html)		
-		}else{
-			// Show Dialog for Evaluation Mode
-			scenarioView.showQuizCorrectionForEvaluationMode(html);	
-		}
+		scenarioView.showQuizCorrections(html);
 	}
 	
 	// Executed when the user close a quiz dialog
@@ -345,11 +337,11 @@ function ScenarioController(){
 	
 		// If the Quiz is mandatory this Event is triggered, the controller should arrange the buttons
 		// to obligate the user to answer
-		$(window).on( "ScenarioPlayMandatoryQuizz", quizzMandatoryCommandButtons);
+		$(window).on( "ScenarioPlayTestQuizz", quizzMandatoryCommandButtons);
 		
 		// If the Quiz is not mandatory this Event is triggered, the controller should arrange the buttons
 		// to offer the possibility to answer to the user
-		$(window).on( "ScenarioPlayQuizzOffer", quizzOfferCommandButtons);
+		$(window).on( "ScenarioPlayPracticeQuizz", quizzOfferCommandButtons);
 		
 		// This Event is triggered if the Quiz has finished
 		$(window).on( "ScenarioPlayQuizzFinished", quizzFinishedCommandButtons);

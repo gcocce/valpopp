@@ -21,39 +21,39 @@
     <script type="text/javascript">
     <!--
    
+    // SET CONFIGURATION OPTIONS
+    
+    // TYPY OF USER AND LANGUAGE
     // Set Language
     //configModule.setLang("es"); // Default "en"
     
-    // Set user mode
+    // Set type of user mode
     configModule.setUserMode("editor");
     
-    //Set Space Between Messages
-    // configModule.setSpaceBetweenMessages(4); // default 0
+    // SET MCQ OPTIONS
+    // Open MCQ dialog automatically
+    configModule.setAutomaticOpenMCQ(true);  // Default false
     
-    // Set initial simulation time
-    //configModule.setInitialSimulationTime(20);  // default 10
-    
-    // To require that the user answer the quiz to continue
-    configModule.setMandatoryMCQ(false);  // default true
-    
-    // To set a new list of scenario examples 
-    //configModule.setExamplesList("scenarios/listexam.csv");  // Default  "scenarios/list.csv"
-    
-    // To continue automatically when the MCQ dialog is close
+    // To continue automatically when the MCQ is finish
     //configModule.setContinueAfterMCQ(false); // default true
     
     // Allow to show the right answers of the quiz
     //configModule.setShowMCQAnswers(false);  // default true
     
+    // To use the quiz as a Test, it oblige the student to solve the quiz
+    configModule.setTestModeMCQ(true);  // default false   
+    
+    
+    // CHANGING FILE SYSTEMS: SCHEMA FILE, DEFAULT SCENARIO, AND LIST OF SCENARIOS
+    // Set schema file
     //configModule.setDefaultSchema("js/model/schema/scenario_schema.json");
     
-    //configModule.setDefaultSchema("js/model/schema/scenario_schema.json");
-    
-    // Four Nodes
-    //configModule.setDefaultScenario("scenarios/scenario_syntax_demo.json");
-    
-    // Two Nodes
+    // Set default scenario
     //configModule.setDefaultScenario("scenarios/scenario_demo_working_copy.json");
+    
+    // To set a new list of scenario examples 
+    //configModule.setExamplesList("scenarios/listexam.csv");  // Default  "scenarios/list.csv"
+    
     
     
     // CHANGING SIMULATION PARAMETERS
@@ -63,9 +63,15 @@
     // Simulation Time Advance each Cicle
     //configModule.setSimulationTimeAdvance(1); // Default 4
     
+    //Set Space Between Messages
+    // configModule.setSpaceBetweenMessages(4); // default 0
+    
+    // Set initial simulation time
+    //configModule.setInitialSimulationTime(20);  // default 10
+    
+    
     
     // TO SEE ERRORS:
-    	
     // Wrong Schema File
     //configModule.setDefaultSchema("js/model/schema/schema_error.json");
     
