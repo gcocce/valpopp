@@ -16,6 +16,7 @@ var configModule = {
 		defScenario:"scenarios/scenario_complete_demo.json",
 		defSchema:"js/model/schema/scenario_schema.json",
 		langFile:"strings/language.csv",
+		examplesList:"scenarios/list.csv",
 		imgpath:"img/",
 		scenarioPath: "scenarios/",
 		scenarioImgPath:"scenarios/img/",
@@ -205,6 +206,13 @@ var configModule = {
 		 
 		 setDefaultSchema:function (schema){
 			 this.defSchema=schema;
-		 }		 
+		 },
+		 getExamplesList:function(){
+			 return this.examplesList;
+		 },
+		 
+		 setExamplesList:function (filename){
+			 this.examplesList=filename;
+		 }			 
 		 
 };

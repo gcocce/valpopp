@@ -45,8 +45,10 @@ function ApplicationController(){
 		
 		m_error="";
 		
+		examplesListFile=configModule.getExamplesList();
+		
 		// Load file languages content
-		var jqxhr=$.get('scenarios/list.csv', function(data){
+		var jqxhr=$.get(examplesListFile, function(data){
 			
 			var lflines = data.split('\n');
 			

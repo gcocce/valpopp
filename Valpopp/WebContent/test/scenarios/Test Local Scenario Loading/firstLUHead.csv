@@ -1,0 +1,27 @@
+# Parameters
+ScenarioName;First Location Updating procedure;
+File;firstLU.gif;
+#NbNode : 4
+NodeName;0;  MS  ;ms.gif
+NodeName;1;   BSS;bss.gif
+NodeName;2;MSC/VLR F1;mscvlr.gif
+NodeName;3;  HLR F;vlr_hlr.gif
+#######################################################################################################
+#    The following lines describes the propagtion time and the throughput time for a link i,j         #
+#    The first value indicates the source node id                                                     #
+#    The seconde value indicates the destination node id                                              #
+#    The thrid value indicates the the propagtaion time value                                         #
+#    The last value indicates the the throughput value                                                #
+#######################################################################################################
+PropagThroughput;0;1;40;64000
+PropagThroughput;0;2;40;900
+PropagThroughput;0;3;40;900
+PropagThroughput;1;0;20;6400
+PropagThroughput;1;2;20;6400
+PropagThroughput;1;3;20;6400
+PropagThroughput;2;0;20;6400
+PropagThroughput;2;1;20;6400
+PropagThroughput;2;3;20;6400
+PropagThroughput;3;0;20;6400
+PropagThroughput;3;1;20;6400
+PropagThroughput;3;2;20;6400

@@ -1,0 +1,149 @@
+##########################################################################################################;;;;
+# Scenario Name (mandatory)                                                                              #;;;;
+# Only one line with this data is possible                                                               #;;;;
+#                                                                                                        #;;;;
+#ScenarioName;Scenario Name                                                                              #;;;;
+##########################################################################################################;;;;
+ScenarioName;A mobile phone is calling a fixed phone in the same country;;;;
+##########################################################################################################;;;;
+# Scenario Image File (mandatory)                                                                        #;;;;
+# Only one line with this data is possible                                                               #;;;;
+#                                                                                                        #;;;;
+#ImageFile;validfilename.ext                                                                             #;;;;
+##########################################################################################################;;;;
+ImageFile;nationalCall.gif;;;;
+##########################################################################################################;;;;
+# Default Message Values (Optional).                                                                     #;;;;
+# Only one line with this data is possible                                                               #;;;;
+#                                                                                                        #;;;;
+#defaultmessage;type;lenght;treatment;dash                                                               #;;;;
+##########################################################################################################;;;;
+defaultmessage;ONEWAY;40;0;SEMI
+##########################################################################################################;;;;
+# Default propagthroughputs values (Optional)                                                            #;;;;
+# Only one line with this data is possible                                                               #;;;;
+#                                                                                                        #;;;;
+#defaultpropagthroughputs;propagTime;throughput                                                          #;;;;
+##########################################################################################################;;;;
+defaultpropagthroughputs;15;1000
+##########################################################################################################;;;;
+# Scenario References (Optional)                                                                         #;;;;
+# Several lines with this data are possible                                                              #;;;;
+#                                                                                                        #;;;;
+#scenarioreference;title;link                                                                            #;;;;
+##########################################################################################################;;;;
+scenarioreference;GSM Reference;http://en.wikipedia.org/wiki/GSM
+##########################################################################################################;;;;
+# Scenario Nodes (Mandatory)                                                                             #;;;;
+# As meny lines as nodes in the scenario (up to seven nodes)                                             #;;;;
+#                                                                                                        #;;;;
+#NodeName;Name;imagefile.ext                                                                             #;;;;
+##########################################################################################################;;;;
+NodeName;0;  MS  ;ms.gif;;;
+NodeName;1;  BSS ;bss.gif;;;
+NodeName;2;MSC/VLR F1;mscvlr.gif;;;
+NodeName;3;MSC/VLR F2;mscvlr.gif;;;
+NodeName;4;  LE F1 ;gmsc_caa.gif;;;
+NodeName;5;PTSN Subsc.;pstn.gif;;;
+##########################################################################################################;;;
+#    The following lines describes the propagation time and the throughput time for a link i,j           #;;;
+#    The first value indicates the source node id                                                        #;;;
+#    The seconde value indicates the destination node id                                                 #;;;
+#    The thrid value indicates the the propagtaion time value                                            #;;;
+#    The last value indicates the the throughput value                                                   #;;;;
+#    Only is necessary to define those propagation and throughput which are different from the default   #;;;;
+#                                                                                                        #;;;;
+#PropagThroughput;srcNode;destNode;propagationTime;throughput                                            #;;;;
+##########################################################################################################;;;;
+PropagThroughput;0;1;30;1000
+PropagThroughput;0;2;50;1000
+PropagThroughput;0;3;1;1000
+PropagThroughput;0;4;1;1000
+PropagThroughput;0;5;1;1000
+PropagThroughput;1;0;30;100
+PropagThroughput;1;3;1;1000
+PropagThroughput;1;4;1;1000
+PropagThroughput;1;5;1;1000
+PropagThroughput;2;0;50;1000
+PropagThroughput;2;4;1;1000
+PropagThroughput;2;5;1;1000
+PropagThroughput;3;0;1;1000
+PropagThroughput;3;1;1;1000
+PropagThroughput;3;5;1;1000
+PropagThroughput;4;0;1;1000
+PropagThroughput;4;1;1;1000
+PropagThroughput;4;2;1;1000
+PropagThroughput;5;0;1;1000
+PropagThroughput;5;1;1;1000
+PropagThroughput;5;2;1;1000
+PropagThroughput;5;3;1;1000
+##########################################################################################################;;;
+#    The following lines describes the sequences of messages, each sequence may have a MCQ               #;;;
+#    Each sequence start with a line that stablish the sequences properties                              #;;;
+#    That line is followed by several lines with the messages of the sequence                            #;;;
+#    After that eventually there could appear the lines of the MCQ                                       #;;;
+#    This is repeated for every sequence                                                                 #;;;;
+#                                                                                                        #;;;;
+#sequence;Id;nextId;;;;                                                                                  #;;;;
+##########################################################################################################;;;;
+sequence;1;20;;;;
+##########################################################################################################;;;
+#    Message (Mandatory at least one message)                                                            #;;;
+#                                                                                                        #;;;;
+#srcNode;destNode;name;parameters;type;length;treatment;dash;startTime;syncpoint;timer;scenImg;comment;action#;;;;
+##########################################################################################################;;;;
+1;0;SYSTEM_INFORMATION;;ONEWAY;30;2;full;;;;
+0;1;RR_CHANNEL_REQUEST;;REQUEST;30;2;semi;;;;
+1;0;RR_IMMEDIATE_ASSIGNMENT;signalling channel;RESPONSE;30;2;semi;;;;
+0;1;MM_CM_SERVICE_REQUEST;TMSI;REQUEST;30;2;full;;;;
+1;2;MM_CM_SERVICE_REQUEST;TMSI;REQUEST;30;2;full;; ;;
+2;0;MAP_AUTHENTICATION_REQUEST;RAND;REQUEST;30;2;semi;; ;;
+0;2;MAP_AUTHENTICATION_RESPONSE;SRES;RESPONSE;30;2;semi;; ;;
+2;1;BSSMAP_CIPHER_MODE_COMMAND;;REQUEST;30;2;full;; ;;
+1;0;RR_CIPHERING_MODE_COMMAND;;REQUEST;30;50;full;;T1;
+0;2;CC_SETUP;called PSTN number;REQUEST;30;2;full;;T2;
+##########################################################################################################;;;
+#    MCQ (Optional)                                                                                      #;;;
+#                                                                                                        #;;;;
+#mcq;title;question;points;;;                                                                            #;;;;
+##########################################################################################################;;;;
+mcq;A mobile phone is calling a fixed phone;Is the call set up secured ?;100;;
+##########################################################################################################;;;
+#    MCQ  answers (Mandatory, at least one)                                                              #;;;
+#                                                                                                        #;;;;
+#mcqanswer;answer;feedback;valid;;;                                                                   #;;;;
+##########################################################################################################;;;;
+mcqanswer;yes;;y;;;
+mcqanswer;no;Yes, the mobile is authenticated and the called number is transmitted in cyphered mode;;;;
+##########################################################################################################;;;
+#    Next Sequence                                                                                       #;;;
+#sequence;Id;nextId;;;;                                                                                  #;;;;
+##########################################################################################################;;;;
+sequence;20;30;;;;
+#srcNode;destNode;name;parameters;type;length;treatment;dash;startTime;syncpoint;timer;scenImg;comment;action#;;;;
+2;3;ISUP_IAM;called PSTN number;REQUEST;30;60;full;;T21;
+3;4;ISUP_IAM;called PSTN number;REQUEST;30;60;full;;T3;
+4;3;ISUP_ACM;;ONEWAY;30;2;full;; ;;
+3;2;ISUP_ACM;;ONEWAY;30;2;full;; ;;
+#mcq;title;question;points;;; 
+mcq;A mobile phone is calling a fixed phone;Which event is related to ACM ?;;;
+#mcqanswer;answer;feedback;valid;;;
+mcqanswer;The ring of the phone;No feedback;y;;;
+#sequence;Id;nextId;;;;
+sequence;30;0;;;;
+#srcNode;destNode;name;parameters;type;length;treatment;dash;startTime;syncpoint;timer;scenImg;comment;action#;;;;
+2;0;CC_ALERTING;RING_BACK;RESPONSE;30;2;full;;T4
+5;4;HANG_UP;;ONEWAY;30;2;semi;T4;;
+4;3;ISUP_ANS;;RESPONSE;30;2;full;;;;
+3;2;ISUP_ANS;;RESPONSE;30;2;full;;;;
+2;0;CC_CONNECT;;REQUEST;30;2;semi;;;;
+0;2;CC_CONNECT_ACKNOWLEDGE;;RESPONSE;30;2;semi;;;;
+0;1;RR_CIPHERING_MODE_COMPLETE;;RESPONSE;30;2;full;T1;;;;Este es un comentario;Esta es una acción
+1;2;BSSMAP_CIPHER_MODE_COMPLETE;;RESPONSE;30;2;full;;;;
+2;0;CC_CALL_PROCEEDING;;ONEWAY;30;2;full;T2;;
+4;5;Ring;;REQUEST;30;150;full;T3;;
+2;1;BSSMAP_ASSIGMENT_REQUEST;;REQUEST;30;2;full;T21;;
+1;0;RR_ASSIGMENT_COMMAND;Traffic channel;REQUEST;30;2;full;;;
+0;1;RR_ASSIGMENT_COMPLETE;;RESPONSE;30;2;full;;;;
+1;2;BSSMAP_ASSIGMENT_COMPLETE;;RESPONSE;30;2;full;;;
+
