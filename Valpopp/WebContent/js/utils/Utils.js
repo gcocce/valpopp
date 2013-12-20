@@ -26,10 +26,20 @@ function HtmlBuilder(){
 	this.getCommentsHiddenHeader=getCommentsHiddenHeader;
 	
 	this.getSettingsDialogHtml=getSettingsDialogHtml;
+	
+	this.getScenarioTitleHtml=getScenarioTitleHtml;
 
 	//***************************************************************************
 	// Public Methods Definition	
 	//***************************************************************************
+	
+	function getScenarioTitleHtml(title, points){
+		var html='<div id="ScenarioTitle">' + title + '</div>';
+		
+		html+='<div id="ScenarioPoints">' + points + '</div>';
+		
+		return html;		
+	}
 	
 	function getSettingsDialogHtml(m_selected_language){
 		

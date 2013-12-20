@@ -69,6 +69,8 @@ function ScenarioView(){
 	//TODO: review usability
 	var m_comment_text_size=12;
 	
+	var m_current_quiz_points="";
+	
 	// ******************************************************************************
 	// Constructor
 	// ******************************************************************************
@@ -154,10 +156,11 @@ function ScenarioView(){
     }
     
     function displayScenarioTitle(){
-    	
+
 		var header=document.getElementById("vHeader");
 		
-		header.innerHTML='<div id="ScenarioTitle">' + m_scenarioContext.getScenarioName() + '</div>';
+		//header.innerHTML='<div id="ScenarioTitle">' + m_scenarioContext.getScenarioName() + '</div>';
+		header.innerHTML=htmlBuilder.getScenarioTitleHtml(m_scenarioContext.getScenarioName(), m_current_quiz_points);	
 	}
 	
     
@@ -432,9 +435,17 @@ function ScenarioView(){
 	this.hideComments=hideComments;
 	this.showComments=showComments;
 	
+	this.showQuizFinalResults=showQuizFinalResults;
+	
 	// ******************************************************************************
 	// Public Methods Definition
 	// ******************************************************************************
+	
+
+	function showQuizFinalResults(){
+		
+	}
+	
 	
 	// Hide scenario comments section
 	function hideComments(){
@@ -738,6 +749,7 @@ function ScenarioView(){
 	function clearScenarioView(){
 		m_scenarioContext=null;
 		m_scenarioPlay=null;
+		
 	}
 	
 	// Get the current ScenarioPlay and initiate the layout for the current Scenario
@@ -750,6 +762,8 @@ function ScenarioView(){
 		m_scenario_msg_dialog_open=false;
 		
 		m_scenarioContext=context;
+		
+		m_current_quiz_points="";
 		
 		m_scenarioPlay = m_scenarioContext.getCurrentScenarioPlay();
 	
@@ -861,6 +875,9 @@ function ScenarioView(){
 	// Triggered when there is a change in the ScenarioPlay
 	$(window).on( "ScenarioPlayChanged", drawScenarioScreen);
 	
+	// Triggered when there is a change in the ScenarioPlay
+	$(window).on( "ScenarioQuizPartialResults", showQuizPartialResults);
+	
 	// Triggered when there is a Quizz to be shown
 	$(window).on( "ScenarioPlayTestQuizz", showScenarioQuizzAutomatic);	
 	
@@ -876,9 +893,32 @@ function ScenarioView(){
 	// Triggered when the scenario play is stopped
 	$(window).on( "ScenarioStopClear", scenarioClear);
 	
+	
+	$(window).on( "CleanScenarioPlayScreen", cleanScenarioPlayScreen);
+	
+	
+	
 	// ******************************************************************************
 	// Call back function for events
 	// ******************************************************************************	
+	
+	function cleanScenarioPlayScreen(e){
+		
+		m_current_quiz_points="";
+		
+		displayScenarioTitle();
+		
+		drawScenarioScreen();
+	}
+	
+	function showQuizPartialResults(e){
+
+		var partialResult=e.scorePoints + "/" + e.totalPoints;
+		
+		m_current_quiz_points = "Score: " + partialResult;
+		
+		displayScenarioTitle();
+	}
 	
 	function scenarioClear(e){
 		if (m_scenario_data_dialog){

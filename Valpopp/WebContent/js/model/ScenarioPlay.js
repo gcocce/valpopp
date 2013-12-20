@@ -165,10 +165,9 @@ function ScenarioPlay(context){
 		if (console && debug){
 			console.log("ScenarioPlay.cleanScenarioPlayScreen");
 		}
-		
-		
-		//TODO: replace for a proper call
-		notifyChange();
+
+		var event = $.Event( "CleanScenarioPlayScreen" );
+		$(window).trigger( event );			
 	}
 	
 	/* Process the Scenario File Message
@@ -625,6 +624,7 @@ function ScenarioPlay(context){
 	// Public Methods Definition
 	// ******************************************************************************
 	
+	// This method is used by the controller to set the user answers
 	function setQuizAnswers(answers){
 		m_quiz_user_answers=answers;
 	}
@@ -650,7 +650,14 @@ function ScenarioPlay(context){
 		m_current_quiz.addMCQ(m_current_sequence.mcq.title);
 		
 		for (var x=0; x < m_current_sequence.mcq.answers.length; x++){
-			m_current_quiz.setAnswerResult(x+1, m_current_sequence.mcq.answers[x].points, m_quiz_user_answers[x]);
+			var validResponse=false;
+			
+			// Get the valid response for this answer
+			if (m_current_sequence.mcq.answers[x].valid){
+				validResponse=true;
+			}
+			
+			m_current_quiz.setAnswerResult(x+1, m_current_sequence.mcq.answers[x].points, m_quiz_user_answers[x], validResponse);
 		}
 		
 		m_current_quiz.finishMCQ();
@@ -660,6 +667,13 @@ function ScenarioPlay(context){
 			console.log(m_current_quiz.getResults());
 		}
 		
+		// Trigger Event to inform ScenarioView
+		var event = $.Event( "ScenarioQuizPartialResults" );
+		
+		event.scorePoints=m_current_quiz.getPointsWon();
+		event.totalPoints=m_current_quiz.getTotalPoints();
+	
+		$(window).trigger( event );	
 		
 		m_quizz_processed=true;
 	}	
@@ -778,7 +792,6 @@ function ScenarioPlay(context){
 	// ******************************************************************************
 	// Call back functions
 	// ******************************************************************************	
-	
 
 }
 
@@ -795,8 +808,8 @@ function MCQ(titleValue){
 	this.getResults=getResults;
 	
 	
-	function setAnswerResult(number,result){
-		answers.push({"number":number, "result":result});
+	function setAnswerResult(number, userAnswer, expected){
+		answers.push({"number":number, "answer": userAnswer, "expected": expected});
 	}
 	
 	function getResults(){
@@ -805,7 +818,13 @@ function MCQ(titleValue){
 		results+="mcqTitle;"+mcqTitle+"\n";
 		
 		for (var x=0; x < answers.length; x++){
-			results+="answer;"+ answers[x].number +";"+ answers[x].result+"\n";
+			// Determine if the user answer is right
+			var result=false;
+			if (answers[x].answer == answers[x].expected){
+				result=true;
+			}
+			
+			results+="answer;"+ answers[x].number +";"+ result +  "\n";
 		}
 		
 		return results;
@@ -860,12 +879,12 @@ function QuizResults(lastName, name, scenarioNameValue){
 		m_currentMCQ=new MCQ(title);
 	}	
 	
-	function setAnswerResult(number, points, success){
-		m_currentMCQ.setAnswerResult(number,success);
+	function setAnswerResult(number, points, userAnswer, expected){
+		m_currentMCQ.setAnswerResult(number, userAnswer, expected);
 		
 		totalPoints+=points;
 		
-		if (success){
+		if (userAnswer==expected){
 			pointsWon+=points;
 		}
 	}

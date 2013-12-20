@@ -79,9 +79,19 @@ body {
 }
 
 #ScenarioTitle{
-	margin-left: 20px;
+	width: 70%;
+	float: left;
+	margin-left: 10px;
 	font-size: 1.2em;
 	font-family: serif, Times, verdana;
+}
+
+#ScenarioPoints{
+	width: 25%;
+	float: right;
+	font-size: 1.0em;
+	color: red;
+	font-weight:bold;
 }
 
 #vMain{

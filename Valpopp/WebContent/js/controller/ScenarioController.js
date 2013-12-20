@@ -78,19 +78,22 @@ function ScenarioController(){
 		// Determine it the answer was right
 		for (var i=0; i < mcq.answers.length; i++ ){
 			var userAnswer=document.getElementById("ValpoppMCQanswer" + (i+1));
-			
+
+			// User answers
 			if (userAnswer.checked){
 				userResponses[i]=true;
 			}else{
 				userResponses[i]=false;
 			}
 			
+			// Valid answers
 			if (mcq.answers[i].valid){
 				validResponses[i]=true;
 			}else{
 				validResponses[i]=false;			
 			}			
 			
+			// Determine if all the user answer is right
 			if (userResponses[i]!=validResponses[i]){
 				validAnswer=false;
 			}			
@@ -101,6 +104,7 @@ function ScenarioController(){
 		// Set quiz state to ready because the user already answer the quiz
 		scenarioPlay.setQuizReady(true);
 		
+		// Send to the model the user responses
 		scenarioPlay.setQuizAnswers(userResponses);
 		
 		scenarioView.showQuizCorrections(html);
@@ -397,8 +401,6 @@ function ScenarioController(){
 			
 			button=document.getElementById("bt_data");
 			button.value=languageModule.getCaption("BUTTON_DATA");	
-			
-			
 		}
 		
 		function initCommandButton(){			
