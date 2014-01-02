@@ -616,7 +616,7 @@ function ScenarioPlay(context){
 	this.setQuizReady=setQuizReady;
 	
 	this.setQuizAnswers=setQuizAnswers;
-	this.getQuizResults=getQuizResults;
+	this.getQuiz=getQuiz;
 	this.getQuizPointsWon=getQuizPointsWon;
 	this.getQuizTotalPoints=getQuizTotalPoints;
 	
@@ -637,8 +637,8 @@ function ScenarioPlay(context){
 		m_current_quiz.getTotalPoints();
 	}
 		
-	function getQuizResults(){
-		m_current_quiz.getResults();
+	function getQuiz(){
+		return m_current_quiz;
 	}
 	
 	// Executed when the Quiz is finished
@@ -663,33 +663,6 @@ function ScenarioPlay(context){
 		
 		m_current_quiz.finishMCQ();
 		
-		if (console && debug){
-			console.log("Quiz Results:");
-			console.log(m_current_quiz.getResults());
-		}
-		
-		// Send results
-		
-		
-
-		try{
-			var url = "http://localhost:8080/AppWebService/services/WebServer";
-			
-			var pl = new SOAPClientParameters();
-			
-			pl.add("name", "33");
-			pl.add("lastName", "Last Name");
-			pl.add("date", "Fecha");
-			pl.add("scenario", "Nombre del Scenario");
-			pl.add("points", 10);
-			pl.add("description", m_current_quiz.getResults());
-			
-			console.log("Se invoca al web service...");
-			
-			SOAPClient.invoke(url, "scenarioQuizResults", pl, true, scenarioController.processSOAPResult);
-		} catch (error){
-			console.log(error);
-		}
 		
 		// Trigger Event to inform ScenarioView
 		var event = $.Event( "ScenarioQuizPartialResults" );
@@ -858,7 +831,7 @@ function MCQ(titleValue){
 function QuizResults(lastName, name, scenarioNameValue){
 	var scenarioName=scenarioNameValue;
 	var studentLastName=lastName;
-	var studenName=name;
+	var studentName=name;
 	
 	var pointsWon=0;
 	var totalPoints=0;
@@ -919,7 +892,7 @@ function QuizResults(lastName, name, scenarioNameValue){
 	function getResults(){
 		var results="";
 			
-		results+="student;"+ studentLastName + ";" + studenName +"\n";
+		results+="student;"+ studentLastName + ";" + studentName +"\n";
 		
 		results+="date;"+ getCurrentDate() + "\n";		
 		

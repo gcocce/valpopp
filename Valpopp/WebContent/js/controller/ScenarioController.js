@@ -47,7 +47,9 @@ function ScenarioController(){
 	
 	function processSOAPResult(r)
 	{
-		//alert(r);
+		if(console && debug){
+			console.log(r);
+		}
 	}	
 	
 	// Function initially called when the Scenario Model is ready to be displayed
@@ -345,8 +347,8 @@ function ScenarioController(){
 		// Events associated to ScenarioPlay State
 		//***************************************************************************	  
 	  
-		// Trigger when the schema file is already loaded
-		$(window).on( "ScenarioPlayFinished", initCommandButton);
+		// Trigger when the scenario simulation finish
+		$(window).on( "ScenarioPlayFinished", processSimulationResult);
 	
 		// If the Quiz is mandatory this Event is triggered, the controller should arrange the buttons
 		// to obligate the user to answer
@@ -410,9 +412,56 @@ function ScenarioController(){
 			button.value=languageModule.getCaption("BUTTON_DATA");	
 		}
 		
-		function initCommandButton(){			
+		function processSimulationResult(){			
+			var webServiceURL = configModule.getWebServiceURL();
+			var webServiceMethod=configModule.getWebServiceMethod();
+			var testMode=configModule.getTestModeMCQ();
+			
+			// Send the answer if the simulation is running under test mode and there is a web service
+			if(testMode && webServiceURL!=null){
+				
+				var scenarioPlay=m_scenarioContext.getCurrentScenarioPlay();
+				
+				var quizResults=scenarioPlay.getQuiz();
+				
+				if (console && debug){
+					console.log("Send Quiz Results:");
+					console.log(quizResults.getResults());
+				}
+				
+				// Send results through the web service
+				try{
+					var pl = new SOAPClientParameters();
+
+					var name=quizResults.getStudentName();		
+					pl.add("name", name);
+
+					var lastName=quizResults.getStudentLastName();
+					pl.add("lastName", lastName);
+					
+					var date=getCurrentDate();			
+					pl.add("date", date);
+
+					var scenarioName=quizResults.getScenarioName();
+					pl.add("scenario", scenarioName );
+
+					var points=quizResults.getPointsWon();
+					pl.add("points", points);
+
+					var description=quizResults.getResults();
+					pl.add("description", description );
+					
+					SOAPClient.invoke(webServiceURL, webServiceMethod, pl, true, processSOAPResult);
+				} catch (error){
+					if (console && debug){
+						console.log("There was an error while invoking the web service");
+						console.error(error);					
+					}
+				}					
+			}
+			
 			theCommandButton = document.getElementById("bt_play");
-			theCommandButton.value=languageModule.getCaption("BUTTON_START");			
+			theCommandButton.value=languageModule.getCaption("BUTTON_START");	
 		}
 		
 		function quizzMandatoryCommandButtons(){	
@@ -422,9 +471,6 @@ function ScenarioController(){
 			
 			button=document.getElementById("bt_clear");
 			button.disabled=true;
-			
-			//button=document.getElementById("bt_mode");
-			//button.disabled=true;
 			
 			button=document.getElementById("bt_quiz");
 			button.className="active";			

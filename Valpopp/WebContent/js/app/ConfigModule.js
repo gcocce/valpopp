@@ -38,6 +38,26 @@ var configModule = {
 		continueAfterMCQ:true,
 		// Open MCQ dialgo automatically
 		automaticOpenMCQ:false,
+		// Web service URL (must be in the same domain that the valpo application or the browser security will not allow it)
+		webServiceURL:null,
+		// Web service method
+		webServiceMethod:null,
+		
+		getWebServiceURL:function(){
+			return this.webServiceURL;
+		},
+		
+		getWebServiceMethod:function(){
+			return this.webServiceMethod;
+		},
+		
+		setWebServiceURL:function(value){
+			this.webServiceURL=value;
+		},
+		
+		setWebServiceMethod:function(value){
+			this.webServiceMethod=value;
+		},		
 		
 		setStudentName:function (value){
 			this.studentName=value;
