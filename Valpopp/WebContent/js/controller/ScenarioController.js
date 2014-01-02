@@ -39,9 +39,16 @@ function ScenarioController(){
 	this.processQuizzAnswer=processQuizzAnswer;
 	this.finishQuizz=finishQuizz;
 	
+	this.processSOAPResult=processSOAPResult;
+	
 	//***************************************************************************
 	// Public Methods Definition	
 	//***************************************************************************
+	
+	function processSOAPResult(r)
+	{
+		//alert(r);
+	}	
 	
 	// Function initially called when the Scenario Model is ready to be displayed
 	// It ask the context to create a ScenarioPlay and indicate to the view to initialize the display

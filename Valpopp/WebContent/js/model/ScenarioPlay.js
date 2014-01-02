@@ -641,6 +641,7 @@ function ScenarioPlay(context){
 		m_current_quiz.getResults();
 	}
 	
+	// Executed when the Quiz is finished
 	function processMCQ(){
 		console.log("scenarioPlay.processMCQ");
 		
@@ -667,12 +668,34 @@ function ScenarioPlay(context){
 			console.log(m_current_quiz.getResults());
 		}
 		
+		// Send results
+		
+		
+
+		try{
+			var url = "http://localhost:8080/AppWebService/services/WebServer";
+			
+			var pl = new SOAPClientParameters();
+			
+			pl.add("name", "33");
+			pl.add("lastName", "Last Name");
+			pl.add("date", "Fecha");
+			pl.add("scenario", "Nombre del Scenario");
+			pl.add("points", 10);
+			pl.add("description", m_current_quiz.getResults());
+			
+			console.log("Se invoca al web service...");
+			
+			SOAPClient.invoke(url, "scenarioQuizResults", pl, true, scenarioController.processSOAPResult);
+		} catch (error){
+			console.log(error);
+		}
+		
 		// Trigger Event to inform ScenarioView
 		var event = $.Event( "ScenarioQuizPartialResults" );
 		
 		event.scorePoints=m_current_quiz.getPointsWon();
 		event.totalPoints=m_current_quiz.getTotalPoints();
-	
 		$(window).trigger( event );	
 		
 		m_quizz_processed=true;
