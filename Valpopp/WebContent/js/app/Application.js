@@ -56,6 +56,7 @@ appImagesNames.push("mcq_right.gif");
 appImagesNames.push("mcq_wrong.gif");
 appImagesNames.push("show.jpg");
 appImagesNames.push("hide.jpg");
+appImagesNames.push("sandclock.gif");
 
 var debug=true;
 

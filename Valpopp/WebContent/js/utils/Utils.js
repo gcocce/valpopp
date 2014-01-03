@@ -400,30 +400,48 @@ function ScenObject(type, object){
 	}
 }
 
-function ScenTimer(pi,pf){
-	var m_pi=pi;
-	var m_pf=pf;
-	var m_drawpercent=0;	
+function ScenTimer(node, initTime, endTime){
+	var m_node=node;
+	var m_current_time=initTime;
+	var m_initTime=initTime;
+	var m_endTime=endTime;
+	var m_display=false;
 	
-	this.getInitPos=getInitPos;
-	this.getEndPos=getEndPos;
-	this.getDrawPercent=getDrawPercent;
-	this.setDrawPercent=setDrawPercent;		
+	this.getInitTime=getInitTime;
+	this.getEndTime=getEndTime;
+	this.getCurrentTime=getCurrentTime;
+	this.setCurrentTime=setCurrentTime;	
+	this.getNode=getNode;
 	
-	function getInitPos(){
-		return m_pi;		
+	this.getDisplay=getDisplay;
+	this.setDisplay=setDisplay;
+	
+	function getDisplay(){
+		return m_display;
 	}
 	
-	function getEndPos(){
-		return m_pf;		
+	function setDisplay(display){
+		m_display=display;
 	}
 	
-	function getDrawPercent() {
-		return m_drawpercent;
+	function getCurrentTime(){
+		return m_current_time;
 	}
-
-	function setDrawPercent(drawpv) {
-		m_drawpercent=drawpv;
+	
+	function setCurrentTime(time){
+		m_current_time=time;
+	}
+	
+	function getNode(){
+		return m_node;
+	}
+	
+	function getInitTime(){
+		return m_initTime;		
+	}
+	
+	function getEndTime(){
+		return m_endTime;		
 	}		
 }
 

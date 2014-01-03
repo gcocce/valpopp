@@ -45,7 +45,8 @@
                                 "treatment": {"type": "number", "minimum": 0, "maximum": 100, "required": false},
                                 "dash": {"type": "string", "enum": ["FULL","SEMI"], "required": false},
                                 "startTime": {"type": "string", "required": false},
-                                "synchPoint": {"type":"string", "required": false},  
+                                "synchPoint": {"type":"string", "required": false},
+                                "timer": {"type":"number", "minimum": 1, "maximum": 100, "required": false}, 
                                 "scenImg": {"type": "string", "required": false, "pattern": "^[a-zA-Z0-9_./-]*$"},
                                 "action": {"type": "object",
                                     "properties": {

@@ -80,8 +80,11 @@ function Canvas(drawing_context){
 	this.drawVerticalLine=drawVerticalLine;
 	this.drawArrow=drawArrow;
 	this.drawMessage=drawMessage;
+	this.drawAction=drawAction;
 	this.drawTreatmentLine=drawTreatmentLine;
+	this.drawTimerLine=drawTimerLine;
 	this.drawComment=drawComment;
+	this.drawImage=drawImage;
 	
 	// ******************************************************************************
 	// Public Methods Definition
@@ -99,6 +102,10 @@ function Canvas(drawing_context){
 		return m_error;
 	}
 	
+	function drawImage(img, posx, posy, width, height){
+		m_context.drawImage(img, posx, posy, width, height);
+	}
+	
 	function drawVerticalLine(pi,pf){
 		// Clear dash parameter
 		setDash(m_context, []);
@@ -114,7 +121,7 @@ function Canvas(drawing_context){
 	
 	function drawTreatmentLine(pi, pf){
 		m_context.strokeStyle  = "black";
-		m_context.lineWidth  = 2;
+		m_context.lineWidth  = 3;
 
 		// Set dash parameter
 		setDash(m_context, []);
@@ -124,6 +131,23 @@ function Canvas(drawing_context){
 		m_context.lineTo(pf.getX(), pf.getY());
 		m_context.stroke();
 		m_context.closePath();			
+	}
+	
+	function drawTimerLine(pi, pf){
+		//m_context.strokeStyle  = "#F5B615";
+		m_context.strokeStyle  = "#F5A315";
+		
+		m_context.lineWidth  = 3;
+
+		// Set dash parameter
+		setDash(m_context, []);
+		
+		m_context.lineCap  = 'square';
+		m_context.beginPath();
+		m_context.moveTo(pi.getX(), pi.getY());
+		m_context.lineTo(pf.getX(), pf.getY());
+		m_context.stroke();
+		m_context.closePath();		
 	}
 	
 	function drawArrow(pi,pf, color, dash, angle, distBetweenNodes){
@@ -240,12 +264,16 @@ function Canvas(drawing_context){
 		wrapText(msg, posx, posy, canvasWidth, lineHeight);		
 	}	
 
-	function drawAction(msg, posx, posy, textSize){
+	function drawAction(msg, posx, posy, rectX, rectY, textSize, nodeDist){
 		
-//		context.fillStyle   = '#00f'; // blue
-//		context.strokeStyle = '#f00'; // red
-//		context.lineWidth   = 4;		
-//		context.strokeRect(0,  60, 150, 50);
+		var lineHeight = textSize + 2;
+		
+		// Rectangle
+		m_context.beginPath();
+		m_context.lineWidth=2;
+		m_context.strokeStyle="blue";
+		m_context.rect(rectX, rectY, nodeDist, 56);
+		m_context.stroke();		
 		
 		var fontSize = textSize;
 		var fontFace = "serif";
@@ -260,7 +288,9 @@ function Canvas(drawing_context){
 		m_context.font = fontWeight + " " + fontStyle + " " + fontSize + "px " + fontFace;
 
 		m_context.fillStyle    = "black";
-		m_context.fillText  ( msg,  posx , posy);		
+		//m_context.fillText  ( msg,  posx , posy);
+		
+		wrapText(msg, posx, posy, nodeDist, lineHeight);		
 	}
 	
 }

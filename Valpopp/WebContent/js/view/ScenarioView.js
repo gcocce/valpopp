@@ -14,6 +14,8 @@ function ScenarioView(){
 	
 	var m_error="";
 	
+	var m_border_distance = 30;
+	
 	// Reference to the model
 	var m_scenarioContext=null;
 	
@@ -70,6 +72,8 @@ function ScenarioView(){
 	var m_comment_text_size=12;
 	
 	var m_current_quiz_points="";
+	
+	var m_img_sandclock = new AppImage(configModule.getAppImgPath() + "sandclock.gif");
 	
 	// ******************************************************************************
 	// Constructor
@@ -183,7 +187,7 @@ function ScenarioView(){
 		var fontStyle = "normal";		
 
 		// Space the first and last node and the border
-		var border = 30;
+		var border = m_border_distance;
 		
 	    // Distance between nodes
 	    var distNodos = (width - (border * 2) ) / (m_scenarioContext.getNumberofNodes() -1);	
@@ -219,7 +223,7 @@ function ScenarioView(){
 				displayError(htmlBuilder.wrapErrorMsg(e.toString()));
 			}	    	
 	    }
-	    
+		
 		m_distBetweenNodes = m_nodesPosition[2] - m_nodesPosition[1];
 	}
 	
@@ -369,33 +373,87 @@ function ScenarioView(){
 				var endpos=actionObj.getFinalPos();
 				var text= actionObj.getAction();
 				
-				var nodeDist = m_nodesPosition[2] - m_nodesPosition[1];
+				var rectX = m_nodesPosition[1];
+				var rectY = initpos + 2;
 				
-				var messageY = Math.round( initpos + (endpos - initpos) / 2);
+				var nodeDist = m_nodesPosition[2] - m_nodesPosition[1];
+
 				var messageX = 0;
 				
 				var textSize=calculateMsgTextSize(m_transfHeight);
-				// The number of nodes depends on the scenario file configuration
 				
+				//var messageY = Math.round( initpos + (endpos - initpos) / 2);
+				var messageY = Math.round( initpos + textSize);
+				
+				// The number of nodes depends on the scenario file configuration
 				if (node==1){
-					messageX = Math.round(nodeDist / 4) + 20;
+					//messageX = Math.round(nodeDist / 4) + m_border_distance;
+					
+					messageX = Math.round(nodeDist / 2);
+					
+					rectX =  m_nodesPosition[1] - m_border_distance + 2;
 				}else{
 					if (node == m_scenarioContext.getNumberofNodes()){
-						messageX= m_nodesPosition[node] - Math.round(nodeDist / 4);
+						messageX= m_nodesPosition[node] - Math.round(nodeDist / 2) + m_border_distance;
+						
+						rectX =  Math.round(m_nodesPosition[node - 1] + m_border_distance - 1);
 					}else{
 						messageX= m_nodesPosition[node];
+						rectX =  Math.round(m_nodesPosition[node] - (nodeDist / 2));
 					}
 				}
 				
-				m_drawing_canvas.drawMessage(text, messageX, messageY, textSize);
-				//m_drawing_canvas.drawAction
+				//m_drawing_canvas.drawMessage(text, messageX, messageY, textSize);
+				m_drawing_canvas.drawAction(text, messageX, messageY, rectX, rectY, textSize, nodeDist);
 				
 				break;
 			case  m_scenType.TIMER:
 				// TODO: code to display TIMER objects
 				
+				var timerObj=obj.getObject();
 				
+				var initTime=timerObj.getInitTime();
 				
+				// Display timer line
+				var display=timerObj.getDisplay();
+				
+				if (display){
+					var node=timerObj.getNode();
+					
+					var endTime=timerObj.getEndTime();
+					
+					var heigth= theNodes.height;
+					
+					var imgHeight= Math.round(heigth * 0.6);
+					
+				    var img=m_img_sandclock.getImg();
+				    
+					var proportion = imgHeight / m_img_sandclock.getHeight();
+					
+					img.height = imgHeight;
+					
+					img.width = m_img_sandclock.getWidth() * proportion;
+					
+					// Draw sand clock
+					m_drawing_canvas.drawImage(img, m_nodesPosition[node] + 2, initTime, img.width, img.height);				
+				
+
+					// Display timer line
+					var currentTime=timerObj.getCurrentTime();
+	
+					// Calculate initial and final arrow points
+					var pi=new Point(m_nodesPosition[node], initTime);
+					var pf=null;
+					
+					if (endTime > currentTime){
+						pf= new Point(m_nodesPosition[node], currentTime);
+					}else{
+						pf= new Point(m_nodesPosition[node], endTime);
+					}
+								
+					m_drawing_canvas.drawTimerLine(pi, pf);				
+				
+				}
 				
 				break;
 			default:

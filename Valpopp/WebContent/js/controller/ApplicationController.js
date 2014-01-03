@@ -368,6 +368,7 @@ function ApplicationController(){
 			for (var x=0; x < appImagesNames.length; x++){
 
 				var m_img = new AppImage(configModule.getAppImgPath() + appImagesNames[x]);
+				
 			}	
 			
 			appImagesLoaded=true;			

@@ -193,17 +193,20 @@ function ScenarioPlay(context){
 			
 		// If the message has an action to be displayed
 		if (scenMessage.action){
-//			action_displacement=50;
-//			
-//			// Advance the time introduce some incoherences, we can not do this
-//			//m_sim_time = m_sim_time + action_displacement;
-//			
-//			var text = scenMessage.action.text;
-//					
-//			var scenAction= new ScenAction(scenMessage.srcN, initTime, initTime + action_displacement, text);
-//			var scenobj= new ScenObject(m_scenType.ACTION, scenAction);
-//			m_readyObjects.push(scenobj);
+			action_displacement=60;
+			
+			// Advance the time introduce some incoherences, we can not do this
+			//m_sim_time = m_sim_time + action_displacement;
+			
+			var text = scenMessage.action.text;
+					
+			var scenAction= new ScenAction(scenMessage.srcN, initTime, initTime + action_displacement, text);
+			var scenobj= new ScenObject(m_scenType.ACTION, scenAction);
+			
+			m_readyObjects.push(scenobj);
 		}
+		
+
 		
 		// Calculate Total Transmission Time for the message
 		// Total transmission time= propagation time + (Message length / rate)
@@ -272,6 +275,19 @@ function ScenarioPlay(context){
 				m_new_processingList.push(scenobj);
 			}
 		}
+		
+		if (scenMessage.timer){
+			var scenTimer = new ScenTimer(scenMessage.srcN, initTime + action_displacement,  initTime + action_displacement + scenMessage.timer);
+			var scenObj= new ScenObject(m_scenType.TIMER, scenTimer);
+			
+			if (index==0){
+				m_processingObjects.push(scenObj);
+			}else{
+				m_new_processingList.push(scenObj);
+			}			
+
+			//m_readyObjects.push(scenObj);
+		}		
 		
 		// The first message goes into the Processing List
 		if (index==0){
@@ -487,14 +503,40 @@ function ScenarioPlay(context){
 	 					}
 	 					break;
 	 				case m_scenType.TIMER:
+	 					//TODO: resolve this
+	 					var timerobj=obj.getObject();
 	 					
+	 					var startTime=timerobj.getInitTime();
+
+	 					// Display is true if simulation time is higher than the startTime of the treatment object
+	 					if (m_sim_time > startTime){
+	 						
+	 						timerobj.setDisplay(true);
+		 					
+		 					if( m_sim_time >= timerobj.getEndTime()){
+		 						timerobj.setCurrentTime(timerobj.getEndTime());
+		 					}else{
+		 						timerobj.setCurrentTime(m_sim_time);
+		 					}
+		 					
+		 					obj.setObject(timerobj);
+		 					
+		 					if( m_sim_time >= timerobj.getEndTime()){
+		 						// Add the current object to Ready List
+		 						m_readyObjects.push(obj);
+		 					}else{
+		 						m_new_processingList.push(obj);
+		 					}		 					
+	 					}else{
+	 						m_new_processingList.push(obj);
+	 					} 					
 	 					
 	 					break;
-	 					default:
-	 						if (console){
-	 							console.error("calculateScenarioPlay: object type unknown");
-	 						}
-	 						break;
+	 				default:
+ 						if (console){
+ 							console.error("calculateScenarioPlay: object type unknown");
+ 						}
+ 						break;
 	 				}
 	 			}
 	 			
