@@ -19,13 +19,15 @@ function ScenarioPlay(context){
 	var SCENARIO_PLAYING=1;
 	var SCENARIO_PAUSED=2;
 	var SCENARIO_QUIZZING=3;
-	var SCENARIO_FINISHED=4;
+	var SCENARIO_PATHSELECTING=4;
+	var SCENARIO_FINISHED=5;
 	
 	// Public constants
 	this.SCENARIO_STOPPED=SCENARIO_STOPPED;
 	this.SCENARIO_PLAYING=SCENARIO_PLAYING;
 	this.SCENARIO_PAUSED=SCENARIO_PAUSED;
-	this.SCENARIO_QUIZZING=SCENARIO_QUIZZING;	
+	this.SCENARIO_QUIZZING=SCENARIO_QUIZZING;
+	this.SCENARIO_PATHSELECTING=SCENARIO_PATHSELECTING;
 	this.SCENARIO_FINISHED=SCENARIO_FINISHED;
 	
 	// Each Simulation Cicle take place every LOOP_UPDATE_TIME (computer miliseconds)
@@ -126,6 +128,8 @@ function ScenarioPlay(context){
     
     var m_quiz_user_answers=null;
     
+    var m_next_sequence=0;
+    
 	// ******************************************************************************
 	// Private Methods
 	// ******************************************************************************
@@ -143,6 +147,7 @@ function ScenarioPlay(context){
 		m_quizz_processed=false;
 		m_current_quizz_ready=false;
 		m_scenario_img=m_context.getFirstScenarioImage();
+		m_next_sequence=0;
 		
 		m_current_quiz=new QuizResults(configModule.getStudentLastName(), configModule.getStudentName() , m_context.getScenarioName());
 		
@@ -503,27 +508,51 @@ function ScenarioPlay(context){
 				
 				// If the CurrentSequence does have an MCQ and it has not been processed 
 				if (m_current_sequence.mcq && !m_quizz_processed){
-
+					
 					m_state=SCENARIO_QUIZZING;
 					
+					// Stop timer
 					window.clearTimeout(m_loop);
 					
 					if(!configModule.getTestModeMCQ()){
 						m_quizz_processed=true;
-					}					
+					}	
 					
-					if (configModule.getTestModeMCQ()){
-						var event = $.Event( "ScenarioPlayTestQuizz" );
+					// Notify to the control and the view with an event if there is a mcq or a path Selector
+					if (m_current_sequence.mcq.pathSelector){
+						m_state=SCENARIO_PATHSELECTING;
+						
+						m_quizz_processed=true;
+						
+						var event = $.Event( "ScenarioPlayPathSelector" );
 						$(window).trigger( event );	
 					}else{
-						var event = $.Event( "ScenarioPlayPracticeQuizz" );
-						$(window).trigger( event );	
+						// If the scenario simulation is under test mode
+						if (configModule.getTestModeMCQ()){
+							var event = $.Event( "ScenarioPlayTestQuizz" );
+							$(window).trigger( event );	
+						}else{
+							var event = $.Event( "ScenarioPlayPracticeQuizz" );
+							$(window).trigger( event );	
+						}						
 					}
 				}else{
-				// If the CurrentSequence does not have an MCQ or it has already been processed
+				// If the CurrentSequence does not have an MCQ|pathSelector or it has already been processed
 					
 					// Get next Sequence ID
-					var nextSequence=m_current_sequence.nextId;
+					var nextSequence=0;
+					
+					// If there is a path Selector
+					if (m_current_sequence.mcq.pathSelector){
+						// If the user did not chose an option use default option
+						if (m_next_sequence==0){
+							m_next_sequence=m_current_sequence.nextId;
+						}
+						nextSequence=m_next_sequence;
+						m_next_sequence=0;
+					}else{
+						nextSequence=m_current_sequence.nextId;
+					}
 					
 					if (console && debug){
 						console.log("Next Sequence Id: " + nextSequence);
@@ -548,8 +577,7 @@ function ScenarioPlay(context){
 						
 						m_current_sequence=m_context.getSequence(m_currentSequenceId);
 					}
-				}				
-			
+				}
 			}
 
 			// Notify change to the view
@@ -620,9 +648,15 @@ function ScenarioPlay(context){
 	this.getQuizPointsWon=getQuizPointsWon;
 	this.getQuizTotalPoints=getQuizTotalPoints;
 	
+	this.setNextSequence=setNextSequence;
+	
 	// ******************************************************************************
 	// Public Methods Definition
 	// ******************************************************************************
+	
+	function setNextSequence(nextId){
+		m_next_sequence=nextId;	
+	}
 	
 	// This method is used by the controller to set the user answers
 	function setQuizAnswers(answers){

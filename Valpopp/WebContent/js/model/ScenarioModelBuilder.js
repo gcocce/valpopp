@@ -202,22 +202,45 @@ function ScenarioModelBuilder() {
         return true;
       }
       
-      // Method for validate MCQ, y validate that:
-      // It has at least one right answer
+      // Method for validate MCQ, validate that:
+      // It has at least one right answer if it is not a "pathSelector"
       function validateMCQ(mcq) {
-        var valids=0;
+
         
-        for (var x= 0; x < mcq.answers.length; x++) {
-           // Check if the answer is valid
-           if (mcq.answers[x].valid=="y") {
-              valids++;
-           }
-        }
-      
-        if (valids==0) {
-     	   m_output += '<span>MCQ of title: ' + mcq.title + ', must have at least one valid answer.</span><br/>';
-            m_error=htmlBuilder.wrapErrorMsg("MCQ of title: " + mcq.title + ", must have at least one valid answer.");
-           return false;
+        if(mcq.pathSelector){
+        	mcq.pathSelector=true;
+        	
+            var hasNextId=true;
+            
+        	// Every Answer should have a nextId
+            for (var x= 0; x < mcq.answers.length; x++) {
+                // Check if the answer is valid
+                if (!mcq.answers[x].nextId) {
+                	hasNextId=false;
+                }
+             }
+            
+            if (!hasNextId){
+            	m_output += '<span>MCQ of title: ' + mcq.title + ', every answer should has a nextId.</span><br/>';
+           	    m_error=htmlBuilder.wrapErrorMsg("MCQ of title: " + mcq.title + ", every answer must have a nextId element.");
+               return false;            	
+            }
+        	
+        }else{
+            var valids=0;
+            
+            for (var x= 0; x < mcq.answers.length; x++) {
+                // Check if the answer is valid
+                if (mcq.answers[x].valid=="y") {
+                   valids++;
+                }
+             }
+           
+             if (valids==0) {
+          	   m_output += '<span>MCQ of title: ' + mcq.title + ', must have at least one valid answer.</span><br/>';
+                 m_error=htmlBuilder.wrapErrorMsg("MCQ of title: " + mcq.title + ", must have at least one valid answer.");
+                return false;
+             }        	
         }
         
         return true;

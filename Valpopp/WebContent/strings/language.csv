@@ -1,13 +1,14 @@
-CONSTANTS;en:Engish;es:Spanish
-BUTTON_OPEN;Open;Abrir
-BUTTON_START;Start;Ejecutar
-BUTTON_PAUSE;Pause;Pausar
-BUTTON_CONTINUE;Continue;Continuar
-BUTTON_CLEAR;Clear;Limpiar
-BUTTON_DATA;Data;Datos
-BUTTON_SETTINGS;Settings;Ajustes
-BUTTON_QUIZ;Quiz;Examen
-BUTTON_MODE;Continious Mode;Modo continuo
-BUTTON_HIDE_COMMENTS;Hide;Ocultar
-TITLE_SETTINGS_DIALOG;Settings;Ajustes
-TITLE_OPEN_DIALOG;Open Scenario;Abrir Escenario
+CONSTANTS;en:Engish;es:Spanish;fr:French
+BUTTON_OPEN;Open;Abrir;Ouvrir
+BUTTON_START;Start;Ejecutar;Débuter
+BUTTON_PAUSE;Pause;Pausar;Pauser
+BUTTON_CONTINUE;Continue;Continuar;Poursuivre
+BUTTON_CLEAR;Clear;Limpiar;Nettoyer
+BUTTON_DATA;Data;Datos;Données
+BUTTON_SETTINGS;Settings;Ajustes;Paramètres
+BUTTON_QUIZ;Quiz;Examen;Examen
+BUTTON_CHOOSE;Choose;Elegir;Choisir
+BUTTON_MODE;Continuous Mode;Modo Continuo;Mode Continu
+BUTTON_HIDE_COMMENTS;Hide;Ocultar;Cacher
+TITLE_SETTINGS_DIALOG;Settings;Ajustes;Paramètres
+TITLE_OPEN_DIALOG;Open Scenario;Abrir Escenario;Ouvrir Scénario

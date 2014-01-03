@@ -28,6 +28,8 @@ function HtmlBuilder(){
 	this.getSettingsDialogHtml=getSettingsDialogHtml;
 	
 	this.getScenarioTitleHtml=getScenarioTitleHtml;
+	
+	this.getPathSelectorHTML=getPathSelectorHTML;
 
 	//***************************************************************************
 	// Public Methods Definition	
@@ -226,6 +228,24 @@ function HtmlBuilder(){
 		var html='<div id="mcq" class="MCQcontainer" >' + question + answers + comments + '</div>';
 		
 		return html;		
+	}
+	
+	function getPathSelectorHTML(mcq){
+		var question='<div id="MCQquestion" class="MCQquestion"><h2>'+ mcq.text +'</h2><br></div>';
+		
+		var options='<div id="MCQanswers" class="MCQanswers"><table width="100%" border="0">';
+		
+		for (var i=0; i < mcq.answers.length; i++ ){
+			options+='<tr><td width="5%"></td><td width="5%"><input id="ValpoppMCQanswer'+ (i+1) +'" type="radio" name="path"></td><td width="90%">'+ (i+1) +') '+ mcq.answers[i].text +'</td></tr>';
+		}
+		
+		options+='</table></div>';
+		
+		var comments='<div id="MCQcomments" class="MCQcomments"></div>';
+		
+		var html='<div id="mcq" class="MCQcontainer" >' + question + options + comments + '</div>';
+		
+		return html;			
 	}
 	
 	function getMCQResults(mcq, userRes, validRes, result){

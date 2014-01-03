@@ -1,5 +1,6 @@
 #Scenario Title Name;File in the application directory
 Complete Example;scenario_complete_demo.json
+Path Selector;scenario_demo_pathselector.json
 Two Nodes Example;scenario_demo_two_nodes.json
 Three Nodes Example;scenario_demo_three_nodes.json
 Seven Nodes Example;scenario_demo_seven_nodes.json

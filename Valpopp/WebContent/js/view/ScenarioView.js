@@ -631,10 +631,54 @@ function ScenarioView(){
 	
 	// If the configuration establish that the MCQ is show automatically this functions does it
 	function showScenarioQuizzAutomatic(){
-		//console.log("ScenarioView.showScenarioQuizzAutomatic");
 		if(configModule.getAutomaticOpenMCQ()){
 			showScenarioQuizz();	
 		}
+	}
+	
+	function showScenarioPathSelector(){
+		
+		var mcq = m_scenarioPlay.getMCQ();
+		
+		var mcq_title= mcq.title;
+		
+		var mcq_html= htmlBuilder.getPathSelectorHTML(mcq);
+		
+	    var width = window.innerWidth * 0.8;
+	    var height = window.innerHeight * 0.8;
+	    
+	    if (width > 600){
+	    	width = 600;
+	    }
+	    
+	    if (height > 400){
+	    	height = 400;
+	    }
+	    
+	    m_current_dialog = $("#scenariodialog").dialog({
+			autoOpen: false,
+			modal: true,
+			position: {  my: "center", at: "center", of: "#vScenario"  },
+			resizable: true,	
+			width: width,
+			height: height,			
+			title: mcq_title,
+			buttons: {
+				"Submit": function() {
+					// If the user choose an option
+					$("#scenariodialog").dialog("close");	
+					scenarioController.processPathSelector();
+				}
+			},
+			close: function( event, ui ) {
+				// If the user close the dialog
+				scenarioController.finishQuizz();
+			}
+		});
+		
+	    m_current_dialog.html(mcq_html);
+		
+	    m_current_dialog.dialog("open");		
 	}
 	
 	// Show the MCQ dialog
@@ -883,6 +927,9 @@ function ScenarioView(){
 	
 	// Triggered when there is a Quizz to be shown
 	$(window).on( "ScenarioPlayPracticeQuizz", showScenarioQuizzAutomatic);	
+	
+	// Triggered when there is a pathSelector to be shown
+	$(window).on( "ScenarioPlayPathSelector", showScenarioPathSelector);	
 	
 	// Triggered when the scenario image changes
 	$(window).on( "ScenarioImgChanged", changeScenarioImg);

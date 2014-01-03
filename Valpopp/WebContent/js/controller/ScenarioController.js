@@ -37,6 +37,7 @@ function ScenarioController(){
 	
 	
 	this.processQuizzAnswer=processQuizzAnswer;
+	this.processPathSelector=processPathSelector;
 	this.finishQuizz=finishQuizz;
 	
 	this.processSOAPResult=processSOAPResult;
@@ -67,8 +68,50 @@ function ScenarioController(){
 		var scenarioPlay=m_scenarioContext.getCurrentScenarioPlay();
 		
 		scenarioPlay.setQuizReady(false);
+	
+		var mcq = scenarioPlay.getMCQ();
 		
-		scenarioView.showScenarioQuizz();
+		//IF there is a path selector show again the options
+		if (mcq.pathSelector){
+			var event = $.Event( "ScenarioPlayPathSelector" );
+			$(window).trigger( event );			
+		}else{
+			// if there is a quiz show again the quiz
+			scenarioView.showScenarioQuizz();
+		}
+	}
+	
+	function processPathSelector(){
+		
+		var scenarioPlay=m_scenarioContext.getCurrentScenarioPlay();
+		
+		// Get the current MCQ to be processed
+		var mcq = scenarioPlay.getMCQ();
+		
+		var userChoice = 0;		
+		
+		// Determine it the answer was right
+		for (var i=0; i < mcq.answers.length; i++ ){
+			var userAnswer=document.getElementById("ValpoppMCQanswer" + (i+1));
+
+			// User answers
+			if (userAnswer.checked){
+				userChoice=mcq.answers[i].nextId;
+				if (console && debug){
+					console.log("User option: " + userChoice);
+				}
+			}
+		}
+		
+		// Set the next sequence
+		scenarioPlay.setNextSequence(userChoice);
+		
+		// Set quiz state to ready because the user already answer the quiz
+		scenarioPlay.setQuizReady(true);
+			
+		// Trigger event to inform that the path selector has finished
+		var event = $.Event( "ScenarioPlayQuizzFinished" );
+		$(window).trigger( event );
 	}
 	
 	// Resolve the user answer for a quiz
@@ -120,8 +163,10 @@ function ScenarioController(){
 	}
 	
 	// Executed when the user close a quiz dialog
+	// If there is a path Selector and the user close the dialog this is executed but
+	// as the getQuizReady method returns false it does nothing.
 	function finishQuizz(){
-		//console.log("scenarioController.finishQuiz");
+		console.log("scenarioController.finishQuiz");
 		
 		var scenarioPlay=m_scenarioContext.getCurrentScenarioPlay();	
 		
@@ -158,13 +203,14 @@ function ScenarioController(){
 			  scenarioPlay.continuePlay();		  
 			  break;
 			case scenarioPlay.SCENARIO_QUIZZING:
+			case scenarioPlay.SCENARIO_PATHSELECTING:				
 			  theCommandButton.value=languageModule.getCaption("BUTTON_PAUSE");
 			  var button=document.getElementById("bt_quiz");
 			  button.disabled=true;
 			  button.className="inactive";
-			  scenarioPlay.continuePlay();		
-			  
-			  break;
+			  scenarioPlay.continuePlay();			  
+				
+				break;
 			default:
 				if (console){
 					console.error("ScenarioController.playButton known state");
@@ -354,6 +400,10 @@ function ScenarioController(){
 		// to obligate the user to answer
 		$(window).on( "ScenarioPlayTestQuizz", quizzMandatoryCommandButtons);
 		
+		// If there is a Path Selector this Event is triggered, the controller should arrange the buttons
+		// to obligate the user to choose
+		$(window).on( "ScenarioPlayPathSelector", pathSelectorCommandButtons);		
+		
 		// If the Quiz is not mandatory this Event is triggered, the controller should arrange the buttons
 		// to offer the possibility to answer to the user
 		$(window).on( "ScenarioPlayPracticeQuizz", quizzOfferCommandButtons);
@@ -372,34 +422,7 @@ function ScenarioController(){
 		//***************************************************************************	 
 	  
 		function updateCommandButtonsCaption(){
-			var scenarioPlay=m_scenarioContext.getCurrentScenarioPlay();
-			
-			var state=scenarioPlay.getState();
-			
-			var button = document.getElementById("bt_play");
-		 	
-			// Change the play button caption regarding the ScenarioPlay state
-		    switch (state) {
-			case scenarioPlay.SCENARIO_STOPPED: // Play
-				button.value=languageModule.getCaption("BUTTON_START");
-			  break;
-			case scenarioPlay.SCENARIO_PLAYING: // Pause
-				button.value=languageModule.getCaption("BUTTON_PAUSE");
-			  break;
-			case scenarioPlay.SCENARIO_PAUSED: // Continue
-			  theCommandButton.value=languageModule.getCaption("BUTTON_CONTINUE");  
-			  break;
-			case scenarioPlay.SCENARIO_QUIZZING:
-			  theCommandButton.value=languageModule.getCaption("BUTTON_CONTINUE");
-			  break;
-			default:
-				if (console){
-					console.error("ScenarioController.playButton known state");
-				}
-				break;
-		    }	
-			
-			button=document.getElementById("bt_quiz");
+			var button=document.getElementById("bt_quiz");
 			button.value=languageModule.getCaption("BUTTON_QUIZ");
 			
 			button=document.getElementById("bt_clear");
@@ -409,10 +432,45 @@ function ScenarioController(){
 			button.innerHTML=languageModule.getCaption("BUTTON_MODE");
 			
 			button=document.getElementById("bt_data");
-			button.value=languageModule.getCaption("BUTTON_DATA");	
+			button.value=languageModule.getCaption("BUTTON_DATA");
+			
+			
+			var scenarioPlay=m_scenarioContext.getCurrentScenarioPlay();
+			
+			var state=scenarioPlay.getState();
+			
+			button = document.getElementById("bt_play");
+		 	
+			// Change the play button caption regarding the ScenarioPlay state
+		    switch (state) {
+			case scenarioPlay.SCENARIO_STOPPED: // Play
+				button.value=languageModule.getCaption("BUTTON_START");
+			  break;
+			case scenarioPlay.SCENARIO_PLAYING: // Pause
+				button.value=languageModule.getCaption("BUTTON_PAUSE");
+			    break;
+			case scenarioPlay.SCENARIO_PAUSED: // Continue
+			    theCommandButton.value=languageModule.getCaption("BUTTON_CONTINUE");  
+			    break;
+			case scenarioPlay.SCENARIO_QUIZZING:
+			    theCommandButton.value=languageModule.getCaption("BUTTON_CONTINUE");
+			    break;
+			case scenarioPlay.SCENARIO_PATHSELECTING:
+			    theCommandButton.value=languageModule.getCaption("BUTTON_CONTINUE");
+			    
+				button=document.getElementById("bt_quiz");
+				button.value=languageModule.getCaption("BUTTON_CHOOSE");			    
+				break;
+			default:
+				if (console){
+					console.error("ScenarioController.playButton known state");
+				}
+				break;
+		    }	
 		}
 		
-		function processSimulationResult(){			
+		function processSimulationResult(){
+			
 			var webServiceURL = configModule.getWebServiceURL();
 			var webServiceMethod=configModule.getWebServiceMethod();
 			var testMode=configModule.getTestModeMCQ();
@@ -477,6 +535,20 @@ function ScenarioController(){
 			button.disabled=false;			
 		}
 		
+		function pathSelectorCommandButtons(){
+			var button=document.getElementById("bt_play");
+			button.value=languageModule.getCaption("BUTTON_CONTINUE");
+			button.disabled=true;
+			
+			button=document.getElementById("bt_clear");
+			button.disabled=true;
+			
+			button=document.getElementById("bt_quiz");
+			button.value=languageModule.getCaption("BUTTON_CHOOSE");
+			button.className="active";			
+			button.disabled=false;			
+		}		
+		
 		function quizzOfferCommandButtons(){	
 			var button=document.getElementById("bt_play");
 			button.value=languageModule.getCaption("BUTTON_CONTINUE");
@@ -495,8 +567,6 @@ function ScenarioController(){
 				
 		
 		function quizzFinishedCommandButtons(){
-			//console.log("quizzFinishedCommandButtons");
-			
 			var button=document.getElementById("bt_clear");
 			button.disabled=false;
 			
@@ -504,12 +574,13 @@ function ScenarioController(){
 			button.disabled=false;
 			
 			button=document.getElementById("bt_quiz");
+			button.value=languageModule.getCaption("BUTTON_QUIZ");
 			button.disabled=true;
 			
 			button=document.getElementById("bt_play");
 			button.disabled=false;
 			
-			// Continue Simulation
+			// Continue Simulation automatically if it is set to do that in the configuration
 			if (configModule.getContinueAfterMCQ()){
 				button.value=languageModule.getCaption("BUTTON_PAUSE");
 				playButton();
