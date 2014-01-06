@@ -408,7 +408,6 @@ function ScenarioView(){
 				
 				break;
 			case  m_scenType.TIMER:
-				// TODO: code to display TIMER objects
 				
 				var timerObj=obj.getObject();
 				
@@ -435,9 +434,8 @@ function ScenarioView(){
 					img.width = m_img_sandclock.getWidth() * proportion;
 					
 					// Draw sand clock
-					m_drawing_canvas.drawImage(img, m_nodesPosition[node] + 2, initTime, img.width, img.height);				
+					m_drawing_canvas.drawImage(img, m_nodesPosition[node] + 2, initTime + 4, img.width, img.height);				
 				
-
 					// Display timer line
 					var currentTime=timerObj.getCurrentTime();
 	

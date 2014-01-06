@@ -44,7 +44,7 @@
 				{"srcN": 1, "destN" : 4, "name": "MAP_SEND_AUTHENTIFICATION", "type": "ONEWAY", "length": 2230, "treatment": 0, "dash": "SEMI", "startTime": "", "timer": 100, "action": {"text": "This node does some work..."}, "scenImg": "sameVLRLU.gif"},
 				{"srcN": 4, "destN" : 2, "name": "MAP_SEND_AUTHENTIFICATION", "type": "RESPONSE", "length": 230, "treatment": 20, "dash": "SEMI", "startTime": "", "synchPoint": "A", "action": {"text": "This node does some more work than the other node!!"}},
 				{"srcN": 2, "destN" : 1, "name": "MAP_SEND_AUTHENTIFICATION", "type": "RESPONSE", "length": 230, "treatment": 0, "dash": "SEMI", "startTime": "A", "scenImg": "LU-France1.gif", "comment": {"text": "This messages do some work 2"}},
-				{"srcN": 1, "destN" : 2, "name": "MAP_SEND_AUTHENTIFICATION", "type": "ONEWAY", "length": 230, "treatment": 5, "dash": "SEMI", "startTime": "", "timer": 20, "scenImg": "LU-France2.gif", "comment": {"text": "This messages do some work 3"}},
+				{"srcN": 1, "destN" : 2, "name": "MAP_SEND_AUTHENTIFICATION", "type": "ONEWAY", "length": 230, "treatment": 5, "dash": "SEMI", "startTime": "", "timer": 100, "scenImg": "LU-France2.gif", "comment": {"text": "This messages do some work 3"}},
 				{"srcN": 2, "destN" : 1, "name": "MAP_SEND_AUTHENTIFICATION", "type": "RESPONSE", "length": 230, "treatment": 5, "dash": "FULL", "startTime": "", "scenImg": "LU-France3.gif", "comment": {"text": "This messages do some work 4"}},
 				{"srcN": 1, "destN" : 2, "name": "MAP_SEND_AUTHENTIFICATION", "type": "REQUEST", "length": 230, "treatment": 10, "dash": "FULL", "startTime": "", "timer": 10, "scenImg": "LU-France4.gif"},				
 				{"srcN": 2, "destN" : 4, "name": "MAP_SEND_AUTHENTIFICATION", "type": "RESPONSE", "length": 230, "treatment": 5, "dash": "FULL", "startTime": "A"},
@@ -66,7 +66,7 @@
 				[
 				{"srcN":2,"destN" : 1, "name": "MM_LOCATION_UPDATE", "param": "IMSI, LS1",  "type": "REQUEST", "length": 230, "treatment": 5, "dash": "FULL", "startTime": "", "synchPoint": ""},
 				{"srcN":1,"destN" : 2, "name": "MM_LOCATION_UPDATE", "param": "IMSI, LS1",  "type": "REQUEST", "length": 430, "treatment": 40, "dash": "FULL", "startTime": "", "synchPoint": "B"},
-				{"srcN":2,"destN" : 1, "name": "MM_LOCATION_UPDATE", "param": "IMSI",  "type": "REQUEST", "length": 230, "treatment": 0, "dash": "SEMI", "startTime": "B", "synchPoint": "", "scenImg": "LU-France1.gif"},
+				{"srcN":2,"destN" : 1, "name": "MM_LOCATION_UPDATE", "param": "IMSI",  "type": "REQUEST", "length": 230, "treatment": 0, "dash": "SEMI", "startTime": "B", "timer": 100, "synchPoint": "", "scenImg": "LU-France1.gif"},
 				{"srcN":2,"destN" : 3, "name": "MM_LOCATION_UPDATE", "param": "IMSI",  "type": "REQUEST", "length": 230, "treatment": 0, "dash": "SEMI", "startTime": "B", "synchPoint": "", "scenImg": "LU-France2.gif"},				
 				{"srcN":3,"destN" : 1, "name": "MAP_SEND_AUTHENTIFICATION", "param": "SRS1, Kc",  "type": "RESPONSE", "action": {"text": "This node does some work..."}},
 				{"srcN":1,"destN" : 3, "name": "MAP_SEND_AUTHENTIFICATION", "param": "SRS1, Kc",  "type": "RESPONSE"},
@@ -84,9 +84,9 @@
         {"Id": 130, "nextId":0,
 			"messages":
 				[
-				{"srcN":2,"destN" : 1, "name": "MM_LOCATION_UPDATE", "param": "IMSI, LS1",  "type": "REQUEST", "length": 230, "treatment": 0, "dash": "FULL", "startTime": "C", "synchPoint": ""},
+				{"srcN":2,"destN" : 1, "name": "MM_LOCATION_UPDATE", "param": "IMSI, LS1",  "type": "REQUEST", "length": 230, "treatment": 0, "dash": "FULL", "startTime": "C", "synchPoint": "", "timer": 100},
 				{"srcN":2,"destN" : 3, "name": "MM_LOCATION_UPDATE", "param": "IMSI",  "type": "REQUEST", "length": 230, "treatment": 0, "dash": "SEMI", "startTime": "C", "synchPoint": "", "scenImg": "LU-France3.gif"},		
-				{"srcN":3,"destN" : 1, "name": "MAP_SEND_AUTHENTIFICATION", "param": "SRS1, Kc",  "type": "RESPONSE", "action": {"text": "This node does some work..."}},
+				{"srcN":3,"destN" : 1, "name": "MAP_SEND_AUTHENTIFICATION", "param": "SRS1, Kc",  "type": "RESPONSE", "action": {"text": "This node does some work..."}, "timer": 100},
 				{"srcN":1,"destN" : 3, "name": "MAP_SEND_AUTHENTIFICATION", "param": "SRS1, Kc",  "type": "RESPONSE"}
 				],
 			"mcq": {"title": "Mobilité GPRS","text":"Vrai ou Faux",

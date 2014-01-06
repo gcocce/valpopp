@@ -134,7 +134,9 @@ var languageModule = (function () {
 	function setLanguage(pos){
 		currentlang=langIdList[pos];
 		
-		console.log("setLanguage: " + currentlang );		
+		if (console && debug){
+			console.log("setLanguage: " + currentlang );	
+		}
 	}			
 
   // Return an object exposed to the public

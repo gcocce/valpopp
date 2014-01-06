@@ -584,8 +584,8 @@ function ScenarioPlay(context){
 					// Get next Sequence ID
 					var nextSequence=0;
 					
-					// If there is a path Selector
-					if (m_current_sequence.mcq.pathSelector){
+					// If there is a MCQ and it has a path Selector
+					if (m_current_sequence.mcq && m_current_sequence.mcq.pathSelector){
 						// If the user did not chose an option use default option
 						if (m_next_sequence==0){
 							m_next_sequence=m_current_sequence.nextId;
@@ -719,7 +719,9 @@ function ScenarioPlay(context){
 	
 	// Executed when the Quiz is finished
 	function processMCQ(){
-		console.log("scenarioPlay.processMCQ");
+		if (console && debug){
+			console.log("scenarioPlay.processMCQ");
+		}		
 		
 		var m_current_sequence=m_context.getSequence(m_currentSequenceId);
 		

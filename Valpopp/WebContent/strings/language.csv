@@ -1,14 +1,36 @@
 CONSTANTS;en:Engish;es:Spanish;fr:French
 BUTTON_OPEN;Open;Abrir;Ouvrir
-BUTTON_START;Start;Ejecutar;D�buter
+BUTTON_START;Start;Ejecutar;Débuter
 BUTTON_PAUSE;Pause;Pausar;Pauser
 BUTTON_CONTINUE;Continue;Continuar;Poursuivre
 BUTTON_CLEAR;Clear;Limpiar;Nettoyer
-BUTTON_DATA;Data;Datos;Donn�es
-BUTTON_SETTINGS;Settings;Ajustes;Param�tres
+BUTTON_DATA;Data;Datos;Données
+BUTTON_SETTINGS;Settings;Ajustes;Paramètres
 BUTTON_QUIZ;Quiz;Examen;Examen
 BUTTON_CHOOSE;Choose;Elegir;Choisir
 BUTTON_MODE;Continuous Mode;Modo Continuo;Mode Continu
 BUTTON_HIDE_COMMENTS;Hide;Ocultar;Cacher
-TITLE_SETTINGS_DIALOG;Settings;Ajustes;Param�tres
-TITLE_OPEN_DIALOG;Open Scenario;Abrir Escenario;Ouvrir Sc�nario
+TITLE_SETTINGS_DIALOG;Settings;Ajustes;Paramètres
+TITLE_OPEN_DIALOG;Open Scenario;Abrir Escenario;Ouvrir Scénario
+AC_ERROR_READING_FILE;Error reading file;Error al leer el archivo;Erreur de lecture du fichier
+AC_ERROR_LOADING_EXAMPLE_LIST;Something fail while loading the list;Algo ha fallado al cargar la lista;Quelque chose à coup sûr pendant le chargement de la liste
+AC_ERROR_DOWNLOADING_SCHEMA;There was an error while attempting to download the Schema file;Se produjo un error al descargar el archivo del esquema;Il y avait une erreur en essayant de télécharger le fichier de schéma
+SCHEMA_ERROR_SCHEMA_NOT_VALID_JSON;Schema file is not a valid JSON;El archivo del schema no es un archivo json válido;Fichier de schéma n'est pas un JSON valide
+SCHEMA_ERROR_SCENARIO_NOT_VALID_JSON;Scenario file is not a valid JSON;El archivo del escenario no es un archivo json válido;Fichier de scénario n'est pas un JSON valide
+SCHEMA_ERROR_DOWNLOADING_SCHEMA;Error downloading schema file;Error descargando el archivo del schema;Erreur lors du téléchargement du fichier de schéma
+SCHEMA_MSG_PROBLEM;Problem with;Problema con;Problème avec
+SCHEMA_MSG_REPORTED;Reported by;Reportado por;Rapporté par
+SCHEMA_MSG_ATTRIBUTE;Attribute;Atributo;Attribut
+SB_ERROR_DOWNLOADING_SCENARIO_FILE;There was an error while attempting to download the scenario file;Se produjo un error al intentar descargar el archivo del escenario;Il y avait une erreur en essayant de télécharger le fichier de scénario
+SB_ERROR_NOT_SELECTED_FILE;It seems that there is no selected file;Parece que no hay un archivo seleccionado;Il semble qu'il n'existe pas de fichier sélectionné
+SB_ERROR_SCENARIO_NOT_VALID;Scenario is not valid;El escenario no es válido;Scénario n'est pas valide
+SB_ERROR_SCHEMA_NOT_VALID;Scenario Schema is not valid;El esquema de escenario no es válido;Scénario schéma n'est pas valide
+SB_ERROR_NODE_ID_REPEATED;Node Id repeated, it must be unique;Se repite el nodo Id, debe ser único;Noeud Id répété, il doit être unique
+SB_ERROR_SEQUENCE_ID_INVALID;Sequence Id should be less than nextId, unless nextId is 0. Error for Sequence Id;El Id de la sequencia deber ser menor que el nextId salvo que nextId sea cero. Error para la sequencia de Id;Séquence Id doit être inférieure à nextId, sauf nextId est 0. Erreur dans la séquence de Id
+SB_ERROR_NOTEXISTING_NEXTID;nextId should point to an existing sequence Id. Error for sequence Id;nextId debe apuntar a un Id de sequencia existente. Error para la sequencia de Id;nextId doit pointer vers une Id de séquence existante. Erreur dans la séquence de Id
+SB_ERROR_SEQUENCE_ID_REPEATED;Sequence Id repeated, it must be unique. Error para sequence Id;Id de sequencia repetido, debe ser único. Error para sequence Id;Id séquence répétée, il doit être unique. Erreur dans la séquence de Id
+SB_ERROR_SAME_SRC_DEST_NODE;Source and destination node of a message can not be the same. Error in sequence with Id;EL nodo fuente y destino de un mensaje no puede ser el mismo. Error en la sequencia de Id;Source et noeud de destination d'un message ne ​​peut pas être le même. Erreur dans la séquence de Id
+SB_ERROR_PATHSELECTOR_ANSWER_NEXT_ID;When the MCQ is a pathSelector every answer should has a nextId. Error for MCQ of title;Cuando el MCQ es un pathSelector todas las respuestas deben tener un nextId. Error para MCQ de título;Lorsque le MCQ est un pathSelector chaque réponse doit avoir un nextId. Erreur dans le MCQ de titre
+SB_ERROR_NO_RIGHT_ANSWER;Every MCQ should have at least one valid answer. Error for MCQ of title;Todo MCQ debe tener al menos una respuesta válida. Error para MCQ de título;Chaque MCQ doit avoir au moins une réponse valable. Erreur de MCQ de titre
+SB_ERROR_DOWNLOADING_NODE_IMG;Error while downloading node's image;Error al descargar la imagen de un nodo;Erreur dans le téléchargement de l'image de noeud
+SB_ERROR_DOWNLOADING_SCENARIO_IMG;Error downloading scenario's image;Error al descargar una imagen del escenario;Erreur dans le téléchargement de l'image de scenario

@@ -54,14 +54,14 @@ function Schema(){
            try {
                  schema = schema ? JSON.parse(schema) : undefined;
            } catch (e) {
-        	   m_error='<div id="msg" class="error">Schema File is not a valid JSON<br><br>'+e.toString()+'</div>';
+        	   m_error='<div id="msg" class="error">'+languageModule.getCaption("SCHEMA_ERROR_SCHEMA_NOT_VALID_JSON");+'<br><br>'+e.toString()+'</div>';
         	   return false;
            }
            
            try {
                json = json ? JSON.parse(json) : undefined;
 	       } catch (e) {
-	    	   m_error='<div id="msg" class="error">Scenario File is not a valid JSON<br><br>'+e.toString()+'</div>';
+	    	   m_error='<div id="msg" class="error">'+languageModule.getCaption("SCHEMA_ERROR_SCENARIO_NOT_VALID_JSON")+'<br><br>'+e.toString()+'</div>';
 	    	   return false;
 	       }           
            
@@ -72,13 +72,13 @@ function Schema(){
            if (report.errors.length) {
                    output = "";
                    for (var x = 0, xl = report.errors.length; x < xl; ++x) {
-                           output += '<div id="msg" class="error"><span class="error_uri">Problem with <code>' +
+                           output += '<div id="msg" class="error"><span class="error_uri">'+languageModule.getCaption("SCHEMA_MSG_PROBLEM")+' <code>'+
                                    report.errors[x].uri +
                                    '</code> : </span><span class="error_message">' +
                                    report.errors[x].message +
-                                   '</span><br/><span class="error_schemaUri">Reported by <code>' +
+                                   '</span><br/><span class="error_schemaUri">'+languageModule.getCaption("SCHEMA_MSG_REPORTED")+' <code>'+
                                    report.errors[x].schemaUri +
-                                   '</code></span><br/><span class="error_attribute">Attribute "<code>' +
+                                   '</code></span><br/><span class="error_attribute">'+languageModule.getCaption("SCHEMA_MSG_ATTRIBUTE")+' <code>'+
                                    report.errors[x].attribute + 
                                    '</code>"</span><span class="error_details"> (<code>' +
                                    JSON.stringify(report.errors[x].details) +
@@ -91,6 +91,7 @@ function Schema(){
                return true;
            }
         } catch (e) {
+        	//TODO: Separete user from editor error
            m_error='<div id="msg" class="error">' + e + '</div>';
            
            if (console && debug){
@@ -150,9 +151,7 @@ function Schema(){
 			$(window).trigger( event );		      
 	   })
 	   .error(function() {
-			//console.error("getJSON ERROR. SCHEMA.JSON is not a valid json.");
-			
-		    m_error="getJSON ERROR. SCHEMA.JSON is not a valid json.";
+		    m_error=languageModule.getCaption("SCHEMA_ERROR_DOWNLOADING_SCHEMA");
 		   
 			m_schema_state=SCHEMA_LOADING_ERROR;
 			

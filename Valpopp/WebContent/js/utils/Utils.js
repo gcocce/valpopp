@@ -57,7 +57,7 @@ function HtmlBuilder(){
 		
 		var arrayofLang = languageModule.getAvailableLanguages();
 		
-		console.log(arrayofLang);
+		//console.log(arrayofLang);
 		
 		html+='<ul>';
 		

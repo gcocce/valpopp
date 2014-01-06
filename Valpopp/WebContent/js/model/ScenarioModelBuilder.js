@@ -110,7 +110,7 @@ function ScenarioModelBuilder() {
            var items = jQuery.grep(nodes, function (node) { return node.Id == id; });
            
            if (items.length!=1) {
-        	   m_error = htmlBuilder.wrapErrorMsg("Node Id repeated, it must be unique.");
+        	   m_error = htmlBuilder.wrapErrorMsg(languageModule.getCaption("SB_ERROR_NODE_ID_REPEATED") +".");
               return false;
            }
         }      
@@ -135,7 +135,7 @@ function ScenarioModelBuilder() {
            
            // Check that scenario id is less than nextId
            if (id >= nextId && nextId!=0) {
-        	   m_error=  htmlBuilder.wrapErrorMsg("Sequence Id="+ id +" is greater or equal than nextId "+ nextId +", it must be the opposite unless nextId is 0.");
+        	   m_error=  htmlBuilder.wrapErrorMsg(languageModule.getCaption("SB_ERROR_SEQUENCE_ID_INVALID")+ ": " +id);
                return false;
            }
            
@@ -145,7 +145,7 @@ function ScenarioModelBuilder() {
               var items = jQuery.grep(sequences, function (sequence) { return sequence.Id == nextId; });
               
               if (items.length<1) {
-                 m_error=htmlBuilder.wrapErrorMsg("nextId "+ nextId +" does not point to an existing sequence Id.");
+                 m_error=htmlBuilder.wrapErrorMsg(languageModule.getCaption("SB_ERROR_NOTEXISTING_NEXTID")+ ": " + id);
                  return false;
               }                
            }
@@ -154,12 +154,12 @@ function ScenarioModelBuilder() {
            var items = jQuery.grep(sequences, function (sequence) { return sequence.Id == id; });
            
            if (items.length!=1) {
-              m_error=htmlBuilder.wrapErrorMsg("Sequence Id repeated, it must be unique.");
+              m_error=htmlBuilder.wrapErrorMsg(languageModule.getCaption("SB_ERROR_SEQUENCE_ID_REPEATED")+ ": "+ id);
               return false;
            }         
            
            // Check messages validity
-           if (!validateMessages(m_scenario_obj.sequences[x].messages)) {
+           if (!validateMessages(m_scenario_obj.sequences[x].messages, id)) {
               return false;
            }
            
@@ -177,17 +177,17 @@ function ScenarioModelBuilder() {
       // Method for validate List of Messages validity, y validate that:
       // Source and Destination node are different
       // Source and Destination node number belong to the number of nodes of the model
-      function validateMessages(messages) {      
+      function validateMessages(messages, sequenceId) {      
         for (var y= 0; y < messages.length; y++) {
            
            // Check that a messages does not have same source and destination
            if (messages[y].srcN==messages[y].destN) {
-              m_error=htmlBuilder.wrapErrorMsg("Source and destination node of a message can not be the same.");
+              m_error=htmlBuilder.wrapErrorMsg(languageModule.getCaption("SB_ERROR_SAME_SRC_DEST_NODE")+ ": "+ sequenceId);
               return false;
            }
            
            //TODO:
-           //Source and Destination node number belong to the number of nodes of the model
+           //Check that Source and Destination node number belong to the number of nodes of the model
            
            
            
@@ -221,7 +221,7 @@ function ScenarioModelBuilder() {
              }
             
             if (!hasNextId){
-            	m_output += '<span>MCQ of title: ' + mcq.title + ', every answer should has a nextId.</span><br/>';
+            	m_output += '<span>'+languageModule.getCaption("SB_ERROR_PATHSELECTOR_ANSWER_NEXT_ID")+': ' + mcq.title + ', </span><br/>';
            	    m_error=htmlBuilder.wrapErrorMsg("MCQ of title: " + mcq.title + ", every answer must have a nextId element.");
                return false;            	
             }
@@ -237,8 +237,8 @@ function ScenarioModelBuilder() {
              }
            
              if (valids==0) {
-          	   m_output += '<span>MCQ of title: ' + mcq.title + ', must have at least one valid answer.</span><br/>';
-                 m_error=htmlBuilder.wrapErrorMsg("MCQ of title: " + mcq.title + ", must have at least one valid answer.");
+          	   m_output += '<span>'+languageModule.getCaption("SB_ERROR_NO_RIGHT_ANSWER")+': ' + mcq.title + '.</span><br/>';
+                 m_error=htmlBuilder.wrapErrorMsg(languageModule.getCaption("SB_ERROR_NO_RIGHT_ANSWER")+": "+mcq.title);
                 return false;
              }        	
         }
@@ -420,7 +420,7 @@ function ScenarioModelBuilder() {
 			$(window).trigger(event);
 		})
 		.error(function() {
-			m_error="There was an error while attempting to download the SCENARIO file.";
+			m_error=languageModule.getCaption("SB_ERROR_DOWNLOADING_SCENARIO_FILE")+".";
 			
 			if (console){
 				console.error(m_error);
@@ -484,7 +484,7 @@ function ScenarioModelBuilder() {
 				return false;
 			}
         } else {
-            m_error="It seems that there is no selected file!";
+            m_error=languageModule.getCaption("SB_ERROR_NOT_SELECTED_FILE");
             
             if (console){
             	console.error(m_error);
@@ -565,7 +565,7 @@ function ScenarioModelBuilder() {
 					if (configModule.getUserMode().localeCompare("editor")==0){
 						scenarioView.displayError(scenarioModelBuilder.getError());
 					}else{
-						scenarioView.displayError(htmlBuilder.wrapErrorMsg("Scenario is not Valid!"));
+						scenarioView.displayError(htmlBuilder.wrapErrorMsg(languageModule.getCaption("SB_ERROR_SCENARIO_NOT_VALID")+"."));
 					}
 				}
 			}
@@ -634,7 +634,7 @@ function ScenarioModelBuilder() {
 					m_scenario_state=SCENARIO_IMG_LOADING_ERROR;
 					
 					//console.log("Error downloading image for node number: " + (x + 1) + ", file name: "+ scimg.getName());
-					m_error+="Error downloading image for node number: " + (x + 1)  + ", file name: "+ scimg.getName()+ "<br>";
+					m_error+=languageModule.getCaption("SB_ERROR_DOWNLOADING_NODE_IMG") + ": "+ scimg.getName()+ "<br>";
 				}
 			}
 						
@@ -721,7 +721,7 @@ function ScenarioModelBuilder() {
 				// If the images has not been found
 				if (img.getState()!=img.IMG_OK){
 					there_is_error=true;
-					m_error+="Error downloading image: "+ img.getName() + "<br>";
+					m_error+=languageModule.getCaption("SB_ERROR_DOWNLOADING_SCENARIO_IMG") +": "+ img.getName() + "<br>";
 				}				
 			}			
 			
@@ -755,7 +755,7 @@ function ScenarioModelBuilder() {
 					
 				}else{
 					
-					scenarioView.displayError(htmlBuilder.wrapErrorMsg("Scenario is not Valid!"));
+					scenarioView.displayError(htmlBuilder.wrapErrorMsg(languageModule.getCaption("SB_ERROR_SCENARIO_NOT_VALID")));
 				}
 			}
 		}else{ 
@@ -763,7 +763,7 @@ function ScenarioModelBuilder() {
 				console.error("Schema State: " + scenarioSchema.getState());
 			}
 			
-			scenarioView.displayError(htmlBuilder.wrapErrorMsg("Scenario Schema is not Valid!"));
+			scenarioView.displayError(htmlBuilder.wrapErrorMsg(languageModule.getCaption("SB_ERROR_SCHEMA_NOT_VALID")));
 		}			
 	}
 	

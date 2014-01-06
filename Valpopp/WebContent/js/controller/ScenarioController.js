@@ -166,7 +166,10 @@ function ScenarioController(){
 	// If there is a path Selector and the user close the dialog this is executed but
 	// as the getQuizReady method returns false it does nothing.
 	function finishQuizz(){
-		console.log("scenarioController.finishQuiz");
+		if (console){
+			console.log("scenarioController.finishQuiz");	
+		}
+		
 		
 		var scenarioPlay=m_scenarioContext.getCurrentScenarioPlay();	
 		
@@ -437,36 +440,43 @@ function ScenarioController(){
 			
 			var scenarioPlay=m_scenarioContext.getCurrentScenarioPlay();
 			
-			var state=scenarioPlay.getState();
-			
 			button = document.getElementById("bt_play");
-		 	
-			// Change the play button caption regarding the ScenarioPlay state
-		    switch (state) {
-			case scenarioPlay.SCENARIO_STOPPED: // Play
+			
+			var state=null;
+			
+			// If there is a valid scenario
+			if (scenarioPlay){
+				state=scenarioPlay.getState();
+				
+				// Change the play button caption regarding the ScenarioPlay state
+			    switch (state) {
+				case scenarioPlay.SCENARIO_STOPPED: // Play
+					button.value=languageModule.getCaption("BUTTON_START");
+				  break;
+				case scenarioPlay.SCENARIO_PLAYING: // Pause
+					button.value=languageModule.getCaption("BUTTON_PAUSE");
+				    break;
+				case scenarioPlay.SCENARIO_PAUSED: // Continue
+				    theCommandButton.value=languageModule.getCaption("BUTTON_CONTINUE");  
+				    break;
+				case scenarioPlay.SCENARIO_QUIZZING:
+				    theCommandButton.value=languageModule.getCaption("BUTTON_CONTINUE");
+				    break;
+				case scenarioPlay.SCENARIO_PATHSELECTING:
+				    theCommandButton.value=languageModule.getCaption("BUTTON_CONTINUE");
+				    
+					button=document.getElementById("bt_quiz");
+					button.value=languageModule.getCaption("BUTTON_CHOOSE");			    
+					break;
+				default:
+					if (console){
+						console.error("ScenarioController.playButton known state");
+					}
+					break;
+			    }				
+			}else{
 				button.value=languageModule.getCaption("BUTTON_START");
-			  break;
-			case scenarioPlay.SCENARIO_PLAYING: // Pause
-				button.value=languageModule.getCaption("BUTTON_PAUSE");
-			    break;
-			case scenarioPlay.SCENARIO_PAUSED: // Continue
-			    theCommandButton.value=languageModule.getCaption("BUTTON_CONTINUE");  
-			    break;
-			case scenarioPlay.SCENARIO_QUIZZING:
-			    theCommandButton.value=languageModule.getCaption("BUTTON_CONTINUE");
-			    break;
-			case scenarioPlay.SCENARIO_PATHSELECTING:
-			    theCommandButton.value=languageModule.getCaption("BUTTON_CONTINUE");
-			    
-				button=document.getElementById("bt_quiz");
-				button.value=languageModule.getCaption("BUTTON_CHOOSE");			    
-				break;
-			default:
-				if (console){
-					console.error("ScenarioController.playButton known state");
-				}
-				break;
-		    }	
+			}
 		}
 		
 		function processSimulationResult(){

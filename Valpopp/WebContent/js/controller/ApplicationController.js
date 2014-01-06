@@ -63,10 +63,11 @@ function ApplicationController(){
 		
 		// Set another completion function for the request above
 		jqxhr.fail(function() {
-		  m_error="Error reading file!";
+		  m_error=languageModule.getCaption("AC_ERROR_READING_FILE");;
 		  scenarioExampleListLoaded();		  
 		});	
 	}
+	
 	
 	// Once the scenario list file is loaded build the list to show
 	function scenarioExampleListLoaded(){
@@ -74,7 +75,7 @@ function ApplicationController(){
 		var listElement=document.getElementById("ScenarioList");
 		
 		if (m_error.localeCompare("")!=0){
-			listElement.innerHTML=htmlBuilder.wrapErrorMsg("Ups! Something went worng while loading the list!");
+			listElement.innerHTML=htmlBuilder.wrapErrorMsg(languageModule.getCaption("AC_ERROR_LOADING_EXAMPLE_LIST"));
 		}else{
 
 			m_scenario_filter_list=new Array();
@@ -379,7 +380,7 @@ function ApplicationController(){
 	function schemaFileLoadingError(e){
 		applicationView.removeProgressBar();
 		applicationView.disableApplicationCommands();
-		applicationView.displayError('<div id="msg" class="error">There was an error while attempting to download the Schema file.</div>');		
+		applicationView.displayError('<div id="msg" class="error">' + languageModule.getCaption("AC_ERROR_DOWNLOADING_SCHEMA") + '</div>');		
 	}	
 	
 }

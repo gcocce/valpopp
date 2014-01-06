@@ -101,7 +101,9 @@ function ApplicationView(){
 
 			languageModule.setCurrentLanguage(m_selected_language);
 			
-			console.log("Current Language: " + languageModule.getCurrentLanguage());
+			if (console && debug){
+				console.log("Current Language: " + languageModule.getCurrentLanguage());	
+			}			
 			
 			setApplicationButtonsCaption();
 			
