@@ -55,22 +55,26 @@ function ApplicationView(){
 		
 		var html_content=htmlBuilder.getSettingsDialogHtml(m_selected_language);
 		
+		var dialog_buttons = {};
+		
+		var button_caption_apply=languageModule.getCaption("AV_BUTTON_APPLY");
+		
+		dialog_buttons[button_caption_apply] = function(){	
+			applySettings();
+			$("#applicationdialog").dialog("close");		
+		};
+		
 	    $("#applicationdialog").dialog({ 
 	        modal: true,
 	        width: 300,
 	        height: 300,
 	        position: {  my: "center", at: "center", of: window  },
 	        title: languageModule.getCaption("TITLE_SETTINGS_DIALOG"),
-	        buttons:{
-				"Apply": function() {	
-					applySettings();
-					$("#applicationdialog").dialog("close");		
-				}				
-	        },
 	        close: function( event, ui ) {}
 	    });
 
-        
+	    $('#applicationdialog').dialog({ buttons: dialog_buttons });
+	    
 	    $("#applicationdialog").html(html_content);
 	    
 	    dialog.dialog("open");		
@@ -143,26 +147,29 @@ function ApplicationView(){
 	    
 		var m_open_dialog=$("#applicationdialog").show();
 		
+		var dialog_buttons = {};
+		
+		dialog_buttons[languageModule.getCaption("AV_BUTTON_ACCEPT")] = function(){	
+			applicationController.openLocalScenario();
+		};
+		
+		dialog_buttons[languageModule.getCaption("AV_BUTTON_CANCEL")] = function(){	
+			$("#applicationdialog").dialog("close");
+		};		
+		
 		m_open_dialog.dialog({ 
 	        modal: true,
 	        width: width,
 	        height: height,
 	        position: {  my: "center top+5%", at: "center top+5%", of: window  },
-	        title: "Load Scenario",
-	        buttons:{
-				"Accept": function() {
-					//$("#applicationdialog").dialog("close");			
-					applicationController.openLocalScenario();
-				},
-				"Cancel": function() {
-					$(this).dialog("close");
-				}				
-	        },
+	        title: languageModule.getCaption("AV_DIALOG_TITLE_LOAD_SCENARIO"),
 			close: function( event, ui ) {}
 	    });
 	    
 	    m_open_dialog.html(htmlBuilder.getOpenLocalScenarioDialog());
     
+	    m_open_dialog.dialog({ buttons: dialog_buttons });
+	    
 	    m_open_dialog.dialog("open");		
 	}
 	
@@ -181,23 +188,27 @@ function ApplicationView(){
 	    
 		var m_open_dialog=$("#applicationdialog").show();
 		
+		var dialog_buttons = {};
+
+		dialog_buttons[languageModule.getCaption("AV_BUTTON_SELECT")] = function(){	
+			$("#applicationdialog").dialog("close");					
+			applicationController.openScenarioExample();		
+		};
+		
+		dialog_buttons[languageModule.getCaption("AV_BUTTON_CANCEL")] = function(){	
+			$("#applicationdialog").dialog("close");
+		};			
+		
 		m_open_dialog.dialog({ 
 	        modal: true,
 	        width: width,
 	        height: height,
 	        position: {  my: "center top+5%", at: "center top+5%", of: window  },
-	        title: "Load Scenario",
-	        buttons:{
-				"Select": function() {
-					$("#applicationdialog").dialog("close");					
-					applicationController.openScenarioExample();
-				},
-				"Cancel": function() {
-					$(this).dialog("close");
-				}				
-	        },
+	        title: languageModule.getCaption("AV_DIALOG_TITLE_LOAD_SCENARIO"),
 			close: function( event, ui ) {}
 	    });
+		
+		m_open_dialog.dialog({ buttons: dialog_buttons });
 	    
 	    m_open_dialog.html(htmlBuilder.getScenarioListLoading());
     
@@ -223,7 +234,9 @@ function ApplicationView(){
 		if (div){
 			div.className="visible";
 		}else{
-			alert("null progress bar");
+			if (console && debug){
+				alert("Unexpected error: null progress bar");
+			}
 		}
 	}
 	
@@ -238,13 +251,16 @@ function ApplicationView(){
 			height: 300,
 			position: {  my: "center", at: "center", of: window  },
 			resizable: true,
-			title: "Application Error Message",
-			buttons: {
-				"Close": function(){
-					$(this).dialog("close");
-				}
-			}
+			title: languageModule.getCaption("AV_DIALOG_TITLE_ERROR_MSG")
 		});
+		
+		var dialog_buttons = {};
+		
+		dialog_buttons[languageModule.getCaption("AV_BUTTON_CLOSE")] = function(){	
+			$("#applicationdialog").dialog("close");
+		};
+		
+		$('#applicationdialog').dialog({ buttons: dialog_buttons });
 		
 		$("#applicationdialog").html(html_msg);
 		

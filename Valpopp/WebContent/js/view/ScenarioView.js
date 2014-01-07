@@ -449,8 +449,7 @@ function ScenarioView(){
 						pf= new Point(m_nodesPosition[node], endTime);
 					}
 								
-					m_drawing_canvas.drawTimerLine(pi, pf);				
-				
+					m_drawing_canvas.drawTimerLine(pi, pf);
 				}
 				
 				break;
@@ -493,15 +492,36 @@ function ScenarioView(){
 	
 	this.showQuizFinalResults=showQuizFinalResults;
 	
+	this.updateTransletableCaptions=updateTransletableCaptions;
+	
 	// ******************************************************************************
 	// Public Methods Definition
 	// ******************************************************************************
 	
-
+	//TODO: show a message with the results of the quiz
 	function showQuizFinalResults(){
 		
 	}
 	
+	function updateTransletableCaptions(){
+		
+		// If there is a valid Scenario Play
+		if (m_scenarioPlay){
+			
+			var partialResult=m_scenarioPlay.getScore();
+			
+			// If there is any score
+			if (partialResult.localeCompare("")!=0){
+				m_current_quiz_points = languageModule.getCaption("SV_MSG_SCORE") + ": " + partialResult;
+			}else{
+				m_current_quiz_points = "";
+			}
+		}else{
+			m_current_quiz_points="";
+		}
+		
+		displayScenarioTitle();		
+	}
 	
 	// Hide scenario comments section
 	function hideComments(){
@@ -580,7 +600,7 @@ function ScenarioView(){
 			autoOpen: false,
 			modal: false,
 			resizable: true,
-			title: "Scenario Image",
+			title: languageModule.getCaption("SV_DIALOG_TITLE_SCENARIO_IMG"),
 			buttons: {},
 			close: function( event, ui ) {
 				m_scenario_img_dialog_open=false;
@@ -603,7 +623,7 @@ function ScenarioView(){
 			autoOpen: false,
 			modal: true,
 			resizable: true,		
-			title: "Scenario Messages",
+			title: languageModule.getCaption("SV_DIALOG_TITLE_SCENARIO_MSGS"),
 			buttons: {},
 			close: function( event, ui ) {
 				m_scenario_msg_dialog_open=false;
@@ -631,7 +651,7 @@ function ScenarioView(){
 			autoOpen: false,
 			modal: true,
 			resizable: true,		
-			title: "Scenario References",
+			title: languageModule.getCaption("SV_DIALOG_TITLE_SCENARIO_REFERENCES"),
 			buttons: {},
 			close: function( event, ui ) {
 				m_scenario_msg_dialog_open=false;
@@ -676,7 +696,7 @@ function ScenarioView(){
 			resizable: true,	
 			width: width,
 			height: height,			
-			title: "Scenario Data",
+			title: languageModule.getCaption("SV_DIALOG_TITLE_SCENARIO_DATA"),
 			buttons: {}
 		});
 		
@@ -719,18 +739,20 @@ function ScenarioView(){
 			width: width,
 			height: height,			
 			title: mcq_title,
-			buttons: {
-				"Submit": function() {
-					// If the user choose an option
-					$("#scenariodialog").dialog("close");	
-					scenarioController.processPathSelector();
-				}
-			},
 			close: function( event, ui ) {
 				// If the user close the dialog
 				scenarioController.finishQuizz();
 			}
 		});
+	    
+		var dialog_buttons = {};
+
+		dialog_buttons[languageModule.getCaption("SV_BUTTON_SUBMIT")] = function(){	
+			$("#scenariodialog").dialog("close");	
+			scenarioController.processPathSelector();		
+		};
+		
+		m_current_dialog.dialog({ buttons: dialog_buttons });
 		
 	    m_current_dialog.html(mcq_html);
 		
@@ -766,18 +788,21 @@ function ScenarioView(){
 			width: width,
 			height: height,			
 			title: mcq_title,
-			buttons: {
-				"Submit": function() {
-					// If the user answer the MCQ
-					$("#scenariodialog").dialog("close");	
-					scenarioController.processQuizzAnswer();
-				}
-			},
 			close: function( event, ui ) {
 				// If the user close the dialog
 				scenarioController.finishQuizz();
 			}
 		});
+	    
+		var dialog_buttons = {};
+
+		dialog_buttons[languageModule.getCaption("SV_BUTTON_SUBMIT")] = function(){	
+			// If the user answer the MCQ
+			$("#scenariodialog").dialog("close");	
+			scenarioController.processQuizzAnswer();		
+		};
+		
+		m_current_dialog.dialog({ buttons: dialog_buttons });	    
 		
 	    m_current_dialog.html(mcq_html);
 		
@@ -795,41 +820,52 @@ function ScenarioView(){
 		if (configModule.getTestModeMCQ()){
 			// If the option ShowMCQAnswers is on
 			if (configModule.getShowMCQAnswers()){
-				m_current_dialog.dialog('option', 'buttons', {
-					"Show Answers": function() {
-						showQuizzAnswers(); 
-					}
-				});	
+				
+				var dialog_buttons = {};
+
+				dialog_buttons[languageModule.getCaption("SV_BUTTON_SHOW_ANSWERS")] = function(){	
+					showQuizzAnswers(); 
+				};	
+						
+				m_current_dialog.dialog({ buttons: dialog_buttons });
+				
 			}else{
 				m_current_dialog.dialog('option', 'buttons', {});					
 			}
 		// If it is not in Test Mode
 		}else{
 			if (configModule.getShowMCQAnswers()){
-				m_current_dialog.dialog('option', 'buttons', {
-					"Show Answers": function() {
-						showQuizzAnswers(); 
-					}, 
-					"Back": function(){
-						// If the user choose to go back set the Quiz sate to not ready so he can answer again
-						m_scenarioPlay.setQuizReady(false);
-					
-						$("#scenariodialog").dialog("close");
-					
-						showScenarioQuizz();
-				      }
-			    });					
+				
+				var dialog_buttons = {};
+
+				dialog_buttons[languageModule.getCaption("SV_BUTTON_SHOW_ANSWERS")] = function(){	
+					showQuizzAnswers(); 
+				};
+				
+				dialog_buttons[languageModule.getCaption("SV_BUTTON_BACK")] = function(){	
+					// If the user choose to go back set the Quiz sate to not ready so he can answer again
+					m_scenarioPlay.setQuizReady(false);
+				
+					$("#scenariodialog").dialog("close");
+				
+					showScenarioQuizz();
+				};					
+						
+				m_current_dialog.dialog({ buttons: dialog_buttons });				
 			}else{
-				m_current_dialog.dialog('option', 'buttons', {
-					"Back": function(){
-						// If the user choose to go back set the Quiz sate to not ready so he can answer again
-						m_scenarioPlay.setQuizReady(false);
-					
-						$("#scenariodialog").dialog("close");
-					
-						showScenarioQuizz();
-				      }
-			    });					
+				
+				var dialog_buttons = {};
+			
+				dialog_buttons[languageModule.getCaption("SV_BUTTON_BACK")] = function(){	
+					// If the user choose to go back set the Quiz sate to not ready so he can answer again
+					m_scenarioPlay.setQuizReady(false);
+				
+					$("#scenariodialog").dialog("close");
+				
+					showScenarioQuizz();
+				};					
+						
+				m_current_dialog.dialog({ buttons: dialog_buttons });				
 			}
 		}
 		
@@ -849,7 +885,6 @@ function ScenarioView(){
 	function clearScenarioView(){
 		m_scenarioContext=null;
 		m_scenarioPlay=null;
-		
 	}
 	
 	// Get the current ScenarioPlay and initiate the layout for the current Scenario
@@ -887,13 +922,16 @@ function ScenarioView(){
 			height: 300,
 			position: {  my: "center", at: "center", of: window  },
 			resizable: true,
-			title: "Scenario Message",
-			buttons: {
-				"Close": function(){
-					$(this).dialog("close");
-				}
-			}
+			title: languageModule.getCaption("SV_DIALOG_TITLE_MSG")
 		});
+		
+		var dialog_buttons = {};
+
+		dialog_buttons[languageModule.getCaption("SV_BUTTON_CLOSE")] = function(){	
+			$("#applicationdialog").dialog("close");
+		};
+		
+		$('#applicationdialog').dialog({ buttons: dialog_buttons });
 		
 		$("#scenariodialog").html(htmlBuilder.wrapHtmlMsg(html_msg));
 		
@@ -911,13 +949,16 @@ function ScenarioView(){
 			height: 300,
 			position: {  my: "center", at: "center", of: window  },
 			resizable: true,
-			title: "Scenario Error Message",
-			buttons: {
-				"Close": function(){
-					$(this).dialog("close");
-				}
-			}
+			title: languageModule.getCaption("SV_DIALOG_TITLE_ERROR")
 		});
+		
+		var dialog_buttons = {};
+
+		dialog_buttons[languageModule.getCaption("SV_BUTTON_CLOSE")] = function(){	
+			$("#scenariodialog").dialog("close");
+		};
+		
+		$('#scenariodialog').dialog({ buttons: dialog_buttons });		
 		
 		$("#scenariodialog").html(htmlBuilder.wrapHtmlErrorMsg(html_msg));
 		
@@ -1016,9 +1057,16 @@ function ScenarioView(){
 	
 	function showQuizPartialResults(e){
 
-		var partialResult=e.scorePoints + "/" + e.totalPoints;
+		//var partialResult=e.scorePoints + "/" + e.totalPoints;
 		
-		m_current_quiz_points = "Score: " + partialResult;
+		if (m_scenarioPlay){
+			
+			var partialResult=m_scenarioPlay.getScore();
+			
+			m_current_quiz_points = languageModule.getCaption("SV_MSG_SCORE") + ": " + partialResult;
+		}else{
+			m_current_quiz_points="";
+		}
 		
 		displayScenarioTitle();
 	}

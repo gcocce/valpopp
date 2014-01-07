@@ -34,3 +34,34 @@ SB_ERROR_PATHSELECTOR_ANSWER_NEXT_ID;When the MCQ is a pathSelector every answer
 SB_ERROR_NO_RIGHT_ANSWER;Every MCQ should have at least one valid answer. Error for MCQ of title;Todo MCQ debe tener al menos una respuesta válida. Error para MCQ de título;Chaque MCQ doit avoir au moins une réponse valable. Erreur de MCQ de titre
 SB_ERROR_DOWNLOADING_NODE_IMG;Error while downloading node's image;Error al descargar la imagen de un nodo;Erreur dans le téléchargement de l'image de noeud
 SB_ERROR_DOWNLOADING_SCENARIO_IMG;Error downloading scenario's image;Error al descargar una imagen del escenario;Erreur dans le téléchargement de l'image de scenario
+FH_ERROR_BROWSER_NOT_HTML5;Fail: the browser has not fully implemented the html5 standard;El navegador no implementa completamente el estandard HML5;Défaut: le navigateur n'a pas pleinement mis en œuvre la norme HTML5
+HB_MSG_SELECT_LANGUAGE;Select language;Seleccione el idioma;Choisir la langue
+HB_MSG_RIGHT_ANSWER;Your answer is correct;Su respuesta es correcta;Votre réponse est correcte
+HB_MSG_WRONG_ANSWER;Your answer is wrong;Su respuesta es incorrecta;Votre réponse est fausse
+HB_MSG_OPEN_LOCAL_SCENARIO;Open Local Scenario File;Abrir archivo de escenario local;Ouvrir le fichier de scénario local
+HB_MSG_SELECT_SCENARIO_FILE;Select Scenario File;Seleccione el archivo de escenario;Sélectionnez Fichier de scénario
+HB_MSG_SELECT_SCENARIO_IMAGES;Select Scenario Images (all at the same time);Seleccione las imagenes del escenario (todas al mismo tiempo);Sélectionnez Scénario Images (tous en même temps)
+HB_MSG_SCENARIO_LIST;Scenario Example List;Lista de ejemplos de escenarios;Liste de scénarios exemples
+HB_BUTTON_OPEN_LOCAL;Open Local File;Abrir archivo local;Ouvrir le fichier local
+HB_TEXT_FILTER_LIST;Filter List;Filtrar la lista;Filtrer la liste
+HB_BUTTON_SCENARIO_IMG;Scenario Images;Imagenes del escenario;Image du Scénario
+HB_BUTTON_SCENARIO_MSGS;Scenario Messages;Mensajes del escenario;Messages du scénario
+HB_BUTTON_SCENARIO_REFERENCES;Scenario References;Referencias del escenario;Références du scénario
+AV_BUTTON_APPLY;Apply;Aplicar;Appliquer
+AV_BUTTON_ACCEPT;Accept;Aceptar;Accepter
+AV_BUTTON_SELECT;Select;Seleccionar;Sélectionner
+AV_BUTTON_CANCEL;Cancel;Cancelar;Annuler
+AV_BUTTON_CLOSE;Close;Cerrar;Fermer
+AV_DIALOG_TITLE_LOAD_SCENARIO;Load Scenario;Cargar Escenario;Charger le scénario
+AV_DIALOG_TITLE_ERROR_MSG;Application Error Message;Mensaje de Error de la Aplicación;Message d'erreur d'application
+SV_DIALOG_TITLE_SCENARIO_IMG;Scenario Image;Imagen del Escenario;Image du Scénario
+SV_DIALOG_TITLE_SCENARIO_MSGS;Scenario Messages;Mensajes del Escenario;Messages du Scénario
+SV_DIALOG_TITLE_SCENARIO_REFERENCES;Scenario References;Referencias del Escenario;Références du Scénario
+SV_DIALOG_TITLE_SCENARIO_DATA;Scenario Data;Datos del Escenario;Données du scénario
+SV_DIALOG_TITLE_MSG;Scenario Notification;Notificación del Escenario;Notification de scénario
+SV_DIALOG_TITLE_ERROR;Scenario Error Message;Mensaje de Error del Escenario;Message d'erreur de scénario
+SV_BUTTON_SUBMIT;Submit;Confirmar;Confirmer
+SV_BUTTON_CLOSE;Close;Cerrar;Fermer
+SV_BUTTON_SHOW_ANSWERS;Show Answers;Mostrar Respuestas;Voir les Réponses
+SV_BUTTON_BACK;Back;Volver;Retourner
+SV_MSG_SCORE;Score;Puntaje;Score

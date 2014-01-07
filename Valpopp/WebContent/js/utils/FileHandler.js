@@ -28,7 +28,7 @@ function FileHandler() {
     		console.error("File FileReader FileList Blob not Enabled!");	
     	}
         
-        m_error="The browser has not fully implemented the html5 standard. Try upgrading your browser.";
+        m_error=languageModule.getCaption("FH_ERROR_BROWSER_NOT_HTML5");
     }
     
 	// ******************************************************************************

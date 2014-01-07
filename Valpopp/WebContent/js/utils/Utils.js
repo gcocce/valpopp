@@ -50,7 +50,7 @@ function HtmlBuilder(){
 		html+='<div id="SettingsContainer">';
 
 		html+='<div id="SettingElement">';
-		html+='<span class="SettingTitle">Select Language</span>';
+		html+='<span class="SettingTitle">'+languageModule.getCaption("HB_MSG_SELECT_LANGUAGE")+'</span>';
 
 		// Body with the scenario examples list
 		html+='<div id="LanguageListContainer"><div id="ScenarioList">';
@@ -253,10 +253,10 @@ function HtmlBuilder(){
 		var responses="";
 		
 		if(result){
-			title='<div id="MCQquestion" class="MCQquestion"><h2 style="color:green">Your answer is correct!</h2><br></div>';
+			title='<div id="MCQquestion" class="MCQquestion"><h2 style="color:green">'+languageModule.getCaption("HB_MSG_RIGHT_ANSWER")+'!</h2><br></div>';
 			responses='';
 		}else{
-			title='<div id="MCQquestion" class="MCQquestion"><h2 style="color:red">Your answer is wrong!</h2><br></div>';
+			title='<div id="MCQquestion" class="MCQquestion"><h2 style="color:red">'+languageModule.getCaption("HB_MSG_WRONG_ANSWER")+'!</h2><br></div>';
 			responses='<div id="MCQanswers" class="MCQanswers"><table width="100%" border="0">';
 			
 			// Show feedback
@@ -307,12 +307,12 @@ function HtmlBuilder(){
 	function getOpenLocalScenarioDialog(){
 		var html='<div id="DialogContainer">';
 		
-		html+='<div class="openfileheader" id="OpenFileHeader">Open Local Scenario File</div>';
+		html+='<div class="openfileheader" id="OpenFileHeader">'+languageModule.getCaption("HB_MSG_OPEN_LOCAL_SCENARIO")+'</div>';
 		
 		html+='<div class="openfilebody" id="OpenFileBody"><br>';
-			html+='<p style="font-weight:bold">Select Scenario File</p><br>';
+			html+='<p style="font-weight:bold">'+languageModule.getCaption("HB_MSG_SELECT_SCENARIO_FILE")+'</p><br>';
 			html+='<p><input type="file" name="LocalScenarioFile" id="LocalScenarioFile" size="40" placeholder="Local Scenario File" /></p><br><br>';
-			html+='<p style="font-weight:bold">Select Scenario Images (Select all of them at the same time)</p><br>';
+			html+='<p style="font-weight:bold">'+languageModule.getCaption("HB_MSG_SELECT_SCENARIO_IMAGES")+'</p><br>';
 			html+='<p><input type="file" name="ScenarioImagesFile" id="ScenarioImagesFile" size="40" multiple placeholder="Scenario Images"/></p>';
 		html+='</div>';
 		
@@ -326,11 +326,11 @@ function HtmlBuilder(){
 		
 		// Header with the title, the text fiel for the filter and the button to open a local file
 		html+='<div id="OpenDialogHeader">';
-		html+='<span class="OpenDialogTitle">Scenario Example List</span><input type="button" class="OpenLocalFileButton" name="bt_openlocalfile" id="btscenario_openfile" onClick="applicationController.OpenLocalFile();" value="Open Local File" width="20%"/>';
+		html+='<span class="OpenDialogTitle">'+languageModule.getCaption("HB_MSG_SCENARIO_LIST")+'</span><input type="button" class="OpenLocalFileButton" name="bt_openlocalfile" id="btscenario_openfile" onClick="applicationController.OpenLocalFile();" value="'+languageModule.getCaption("HB_BUTTON_OPEN_LOCAL")+'" width="20%"/>';
 		html+='</div>';
 		
 		html+='<div id="ScenarioFilter" class="Filter">';
-		html+='<input type="text" name="btscenario_filterkeyword" id="btscenario_filterkeyword" placeholder="Filter List" onkeyup="applicationController.FilterList();" maxlength="30" width="80%" />';
+		html+='<input type="text" name="btscenario_filterkeyword" id="btscenario_filterkeyword" placeholder="'+languageModule.getCaption("HB_TEXT_FILTER_LIST")+'" onkeyup="applicationController.FilterList();" maxlength="30" width="80%" />';
 		html+='</div>';
 		
 		// Body with the scenario examples list
@@ -343,11 +343,11 @@ function HtmlBuilder(){
 	function getScenarioDataMenu(){
 		var html='<div id="ScenarioDataDialog">';
 		
-		html+='<div class="ScenarioDataButton"><input type="button" value="Scenario Image" onClick="scenarioView.showScenarioImage();"></div>';
+		html+='<div class="ScenarioDataButton"><input type="button" value="'+languageModule.getCaption("HB_BUTTON_SCENARIO_IMG")+'" onClick="scenarioView.showScenarioImage();"></div>';
 
-		html+='<div class="ScenarioDataButton"><input type="button" value="Scenario Messages" onClick="scenarioView.showScenarioMessages();"></div>';
+		html+='<div class="ScenarioDataButton"><input type="button" value="'+languageModule.getCaption("HB_BUTTON_SCENARIO_MSGS")+'" onClick="scenarioView.showScenarioMessages();"></div>';
 		
-		html+='<div class="ScenarioDataButton"><input type="button" value="Scenario References" onClick="scenarioView.showScenarioReferences();"></div>';
+		html+='<div class="ScenarioDataButton"><input type="button" value="'+languageModule.getCaption("HB_BUTTON_SCENARIO_REFERENCES")+'" onClick="scenarioView.showScenarioReferences();"></div>';
 		
 		html+='</div>';
 		

@@ -503,7 +503,6 @@ function ScenarioPlay(context){
 	 					}
 	 					break;
 	 				case m_scenType.TIMER:
-	 					//TODO: resolve this
 	 					var timerobj=obj.getObject();
 	 					
 	 					var startTime=timerobj.getInitTime();
@@ -692,6 +691,8 @@ function ScenarioPlay(context){
 	
 	this.setNextSequence=setNextSequence;
 	
+	this.getScore=getScore;
+	
 	// ******************************************************************************
 	// Public Methods Definition
 	// ******************************************************************************
@@ -741,16 +742,25 @@ function ScenarioPlay(context){
 		
 		m_current_quiz.finishMCQ();
 		
-		
 		// Trigger Event to inform ScenarioView
 		var event = $.Event( "ScenarioQuizPartialResults" );
-		
-		event.scorePoints=m_current_quiz.getPointsWon();
-		event.totalPoints=m_current_quiz.getTotalPoints();
 		$(window).trigger( event );	
 		
 		m_quizz_processed=true;
 	}	
+	
+	// Return the user's score in the form "PointsWon/CurrentTotalPoints"
+	function getScore(){
+		if (m_current_quiz){
+			if (m_current_quiz.getTotalPoints()==0){
+				return "";
+			}else{
+				return m_current_quiz.getPointsWon() + "/" + m_current_quiz.getTotalPoints();
+			}
+		}else{
+			return "";
+		}
+	}
 	
 	//
 	function getQuizReady(){

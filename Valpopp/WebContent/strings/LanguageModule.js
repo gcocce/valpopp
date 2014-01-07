@@ -104,14 +104,20 @@ var languageModule = (function () {
 				// Do not consider blank lines
 				if (line.length > 1){
 					
+//					// Test that every line has a translation for the number of available languages
+//					if (line.length - 1 < numLanguages){ //(The line has also the Constant that why -1)
+//						m_error="Missing translation for: " + line[0];
+//						return false;
+//					}else if (line.length - 1 > numLanguages){
+//						m_error="LanguageModule: More translation than languages availables("+numLanguages+") for: " + line[0];
+//						return false;
+//					}
+					
 					// Test that every line has a translation for the number of available languages
-					if (line.length - 1 < numLanguages){ //(The line has also the Constant that why -1)
-						m_error="Missing translation for: " + line[0];
-						return false;
-					}else if (line.length - 1 > numLanguages){
+					if (line.length - 1 > numLanguages){
 						m_error="LanguageModule: More translation than languages availables("+numLanguages+") for: " + line[0];
 						return false;
-					}
+					}					
 					
 					numConstants++;
 					
@@ -153,8 +159,12 @@ var languageModule = (function () {
 				
 				text = captions[caption][currentlang];
 				
-				text = text.trim();
-
+				if (text){
+					text = text.trim();
+				}else{
+					text="";
+				}
+				
 				// If the captions is different than ""
 				if (text.localeCompare("")!=0){
 					return text;	
@@ -165,7 +175,12 @@ var languageModule = (function () {
 					}
 					
 					text = captions[caption][configModule.getDefaultLanguage()];
-					text = text.trim();
+					
+					if (text){
+						text = text.trim();
+					}else{
+						text="";
+					}
 					
 					if (text.localeCompare("")!=0){
 						return text;	

@@ -477,6 +477,9 @@ function ScenarioController(){
 			}else{
 				button.value=languageModule.getCaption("BUTTON_START");
 			}
+			
+			//Notify Scenario View to update translatable captions
+			scenarioView.updateTransletableCaptions();
 		}
 		
 		function processSimulationResult(){
