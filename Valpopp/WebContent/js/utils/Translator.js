@@ -1,4 +1,26 @@
 
+var debug=true;
+
+// The language file has been loaded, therefore the module can be initiated
+$(window).on( "LanguageFileLoaded", initializeLanguageModule);
+
+function initializeLanguageModule(e){		
+	
+	// Initialize the Language Module
+	if (languageModule.initialize()){
+		
+		if (console && debug){
+			console.log("Language Module Initialization Succeded");	
+		}
+		
+	}else{
+		alert(languageModule.getError());		
+		
+		if (console){
+			console.error("Language Module Error: " + languageModule.getError());
+		}
+	}
+}
 
 function Translator(){
 	
@@ -338,17 +360,18 @@ function Translator(){
 
 			m_reading_messages=false;
 			
-			var points= new String();
+			var pathSelector= new String();
 			
-			points=line_content[3];
+			pathSelector=line_content[3];
 			
-			points=points.trim();
+			pathSelector=pathSelector.trim();
 			
-			if (parseInt(points)){
-				m_file_translated.sequences[m_current_sequence_id]["mcq"]={"title": line_content[1], "text": line_content[2], "points": parseInt(points)};
+			if (pathSelector.localeCompare("y")==0){
+				m_file_translated.sequences[m_current_sequence_id]["mcq"]={"title": line_content[1], "text": line_content[2], "pathSelector": "y"};				
 			}else{
 				m_file_translated.sequences[m_current_sequence_id]["mcq"]={"title": line_content[1], "text": line_content[2]};
 			}
+			
 			
 			break;
 		case "mcqanswer":
@@ -369,6 +392,7 @@ function Translator(){
 				answer["feedback"]=feedback;
 			}
 			
+			// Get attribut valid if present
 			var valid= new String();
 			valid= line_content[3];
 			valid = valid.trim();
@@ -376,6 +400,24 @@ function Translator(){
 			if (valid.length > 0){
 				answer["valid"]=valid;
 			}
+			
+			//Get attribute points if present
+			var points= new String();
+			points= line_content[4];
+			points = points.trim();
+			
+			if (points.length > 0){
+				answer["points"]=parseInt(points);
+			}
+			
+			// Get attribute nextId if present
+			var nextId= new String();
+			nextId= line_content[5];
+			nextId = nextId.trim();
+			
+			if (nextId.length > 0){
+				answer["nextId"]=parseInt(nextId);
+			}			
 			
 			m_file_translated.sequences[m_current_sequence_id].mcq.answers.push(answer);	
 			
@@ -494,7 +536,6 @@ function Translator(){
 				}
 				
 				message[attribut_name]=parseInt(atribute);
-				
 			}else{
 				// If the attribute is dash ensure that the value is UpperCase
 				if (attribut_name.localeCompare("dash")==0){
@@ -515,7 +556,6 @@ function Translator(){
 
 	this.translate=translate;
 	this.getError=getError;
-
 
 	//***************************************************************************
 	// Public Methods Definition	
