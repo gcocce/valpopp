@@ -164,7 +164,11 @@ function ScenarioView(){
 		var header=document.getElementById("vHeader");
 		
 		//header.innerHTML='<div id="ScenarioTitle">' + m_scenarioContext.getScenarioName() + '</div>';
-		header.innerHTML=htmlBuilder.getScenarioTitleHtml(m_scenarioContext.getScenarioName(), m_current_quiz_points);	
+		if (m_scenarioContext){
+			header.innerHTML=htmlBuilder.getScenarioTitleHtml(m_scenarioContext.getScenarioName(), m_current_quiz_points);	
+		}else{
+			header.innerHTML=htmlBuilder.getScenarioTitleHtml("", m_current_quiz_points);	
+		}
 	}
 	
     
@@ -335,7 +339,7 @@ function ScenarioView(){
 					
 					if (m_scenario_comments){
 						if (msg.getComment()){
-							m_comment_canvas.drawComment(msg.getComment(), 0 , pi.getY(), m_comment_text_size, m_comment_section_width);	
+							m_comment_canvas.drawComment(msg.getComment(), 2 , pi.getY(), m_comment_text_size, m_comment_section_width);	
 						}
 					}
 				}

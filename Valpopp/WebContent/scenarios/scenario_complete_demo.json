@@ -25,7 +25,7 @@
         {"Id": 1, "nextId":2,
 			"messages":
 				[
-				{"srcN":1,"destN" : 2, "name": "MM_LOCATION_UPDATE", "param": "IMSI, LS1",  "type": "REQUEST", "length": 230, "treatment": 0, "dash": "SEMI", "startTime": "", "synchPoint": "", "comment": {"text": "This messages do some work..."}}
+				{"srcN":1,"destN" : 2, "name": "MM_LOCATION_UPDATE", "param": "IMSI, LS1",  "type": "REQUEST", "length": 230, "treatment": 0, "dash": "SEMI", "startTime": "", "synchPoint": "", "comment": {"text": "Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles, weebly ning heekya handango imeem plugg dopplr jibjab, movity jajah plickers sifteo edmodo ifttt zimbra."}}
 				],
 			"mcq": {"title": "Gestion de la mobilité", "text":"Lors de la primier mise sous tension du terminal:",
 				"answers":
@@ -39,13 +39,13 @@
         {"Id": 2, "nextId": 123,
 			"messages":
 				[
-				{"srcN": 1, "destN": 2 , "name": "MM_LOCATION_UPDATE", "param": "IMSI, LS1", "type": "REQUEST", "length": 230, "treatment": 15, "dash": "FULL", "startTime": "", "synchPoint": "", "comment": {"text": "This messages do some work..."}},
+				{"srcN": 1, "destN": 2 , "name": "MM_LOCATION_UPDATE", "param": "IMSI, LS1", "type": "REQUEST", "length": 230, "treatment": 15, "dash": "FULL", "startTime": "", "synchPoint": ""},
 				{"srcN": 2, "destN": 1, "name": "MM_LOCATION_UPDATE", "param": "TMSI", "type": "REQUEST"},
 				{"srcN": 1, "destN" : 4, "name": "MAP_SEND_AUTHENTIFICATION", "type": "ONEWAY", "length": 2230, "treatment": 0, "dash": "SEMI", "startTime": "", "timer": 100, "action": {"text": "This node does some work..."}, "scenImg": "sameVLRLU.gif"},
 				{"srcN": 4, "destN" : 2, "name": "MAP_SEND_AUTHENTIFICATION", "type": "RESPONSE", "length": 230, "treatment": 20, "dash": "SEMI", "startTime": "", "synchPoint": "A", "action": {"text": "This node does some more work than the other node!!"}},
 				{"srcN": 2, "destN" : 1, "name": "MAP_SEND_AUTHENTIFICATION", "type": "RESPONSE", "length": 230, "treatment": 0, "dash": "SEMI", "startTime": "A", "scenImg": "LU-France1.gif", "comment": {"text": "This messages do some work 2"}},
-				{"srcN": 1, "destN" : 2, "name": "MAP_SEND_AUTHENTIFICATION", "type": "ONEWAY", "length": 230, "treatment": 5, "dash": "SEMI", "startTime": "", "timer": 100, "scenImg": "LU-France2.gif", "comment": {"text": "This messages do some work 3"}},
-				{"srcN": 2, "destN" : 1, "name": "MAP_SEND_AUTHENTIFICATION", "type": "RESPONSE", "length": 230, "treatment": 5, "dash": "FULL", "startTime": "", "scenImg": "LU-France3.gif", "comment": {"text": "This messages do some work 4"}},
+				{"srcN": 1, "destN" : 2, "name": "MAP_SEND_AUTHENTIFICATION", "type": "ONEWAY", "length": 230, "treatment": 5, "dash": "SEMI", "startTime": "", "timer": 100, "scenImg": "LU-France2.gif", "comment": {"text": "Babblely odeo kaboodle quora plaxo ideeli hulu weebly balihoo kno vimeo zlio voxy zinch twones zoodles joost, sococo zynga imvu imeem stypi lijit bubbli flickr mog sococo greplin bebo waze voxy."}},
+				{"srcN": 2, "destN" : 1, "name": "MAP_SEND_AUTHENTIFICATION", "type": "RESPONSE", "length": 230, "treatment": 5, "dash": "FULL", "startTime": "", "scenImg": "LU-France3.gif"},
 				{"srcN": 1, "destN" : 2, "name": "MAP_SEND_AUTHENTIFICATION", "type": "REQUEST", "length": 230, "treatment": 10, "dash": "FULL", "startTime": "", "timer": 10, "scenImg": "LU-France4.gif"},				
 				{"srcN": 2, "destN" : 4, "name": "MAP_SEND_AUTHENTIFICATION", "type": "RESPONSE", "length": 230, "treatment": 5, "dash": "FULL", "startTime": "A"},
 				{"srcN": 4, "destN" : 2, "name": "MAP_SEND_AUTHENTIFICATION", "type": "RESPONSE", "length": 230, "treatment": 0, "dash": "SEMI", "startTime": "", "timer": 100},
@@ -68,7 +68,7 @@
 				{"srcN":1,"destN" : 2, "name": "MM_LOCATION_UPDATE", "param": "IMSI, LS1",  "type": "REQUEST", "length": 430, "treatment": 40, "dash": "FULL", "startTime": "", "synchPoint": "B"},
 				{"srcN":2,"destN" : 1, "name": "MM_LOCATION_UPDATE", "param": "IMSI",  "type": "REQUEST", "length": 230, "treatment": 0, "dash": "SEMI", "startTime": "B", "timer": 100, "synchPoint": "", "scenImg": "LU-France1.gif"},
 				{"srcN":2,"destN" : 3, "name": "MM_LOCATION_UPDATE", "param": "IMSI",  "type": "REQUEST", "length": 230, "treatment": 0, "dash": "SEMI", "startTime": "B", "synchPoint": "", "scenImg": "LU-France2.gif"},				
-				{"srcN":3,"destN" : 1, "name": "MAP_SEND_AUTHENTIFICATION", "param": "SRS1, Kc",  "type": "RESPONSE", "action": {"text": "This node does some work..."}},
+				{"srcN":3,"destN" : 1, "name": "MAP_SEND_AUTHENTIFICATION", "param": "SRS1, Kc",  "type": "RESPONSE", "action": {"text": "This node does some work..."}, "comment": {"text": "Spotify kno diigo sifteo dropio sococo chegg meevee empressr kosmix groupon handango, cloudera mzinga chartly plickers loopt xobni airbnb prezi vuvox jiglu omgpop, vimeo jumo eskobo omgpop jabber oooj mobly voki ngmoco blippy."}},
 				{"srcN":1,"destN" : 3, "name": "MAP_SEND_AUTHENTIFICATION", "param": "SRS1, Kc",  "type": "RESPONSE"},
 				{"srcN":3,"destN" : 2, "name": "MM_LOCATION_UPDATE", "param": "IMSI, LS1",  "type": "REQUEST", "length": 430, "treatment": 40, "dash": "FULL", "startTime": "", "synchPoint": "C"}				
 				],

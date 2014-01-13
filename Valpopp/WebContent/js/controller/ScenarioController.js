@@ -170,16 +170,17 @@ function ScenarioController(){
 			console.log("scenarioController.finishQuiz");	
 		}
 		
-		
 		var scenarioPlay=m_scenarioContext.getCurrentScenarioPlay();	
 		
-		// If it has already been answered
-		if (scenarioPlay.getQuizReady()){
-			
-			scenarioPlay.processMCQ();
-			
-			var event = $.Event( "ScenarioPlayQuizzFinished" );
-			$(window).trigger( event );
+		if (scenarioPlay){
+			// If it has already been answered
+			if (scenarioPlay.getQuizReady()){
+				
+				scenarioPlay.processMCQ();
+				
+				var event = $.Event( "ScenarioPlayQuizzFinished" );
+				$(window).trigger( event );
+			}			
 		}
 	}
 	
@@ -378,7 +379,10 @@ function ScenarioController(){
 	  function theContainerWasMouseWheeled(e) {
 		userscroll=true;
 		var scenarioPlay=m_scenarioContext.getCurrentScenarioPlay();
-		scenarioPlay.setUserScroll(true);
+		
+		if (scenarioPlay){
+			scenarioPlay.setUserScroll(true);
+		}
 		
 		//console.log("Container Was MouseWheeled");
 	  }
@@ -386,7 +390,9 @@ function ScenarioController(){
 	  function theContainerWasPressedDown(e) {
 		userscroll=true;
 		var scenarioPlay=m_scenarioContext.getCurrentScenarioPlay();
-		scenarioPlay.setUserScroll(true);
+		if (scenarioPlay){
+			scenarioPlay.setUserScroll(true);
+		}
 		
 		//console.log("Container Was Mouse Pressed Down");		
 	  }		

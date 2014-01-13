@@ -22,7 +22,7 @@ function Canvas(drawing_context){
 	// ******************************************************************************
 
 	// Wrap the line of the comment but no more than two lines are possible (the remaining is not printed)
-	function wrapText(text, x, y, maxWidth, lineHeight) {
+	function wrapText(text, x, y, maxWidth, lineHeight, nlines) {
         var words = text.split(' ');
         var line = '';
         var lines=0;
@@ -38,8 +38,8 @@ function Canvas(drawing_context){
         	  line = words[n] + ' ';
         	  y += lineHeight;
         	  
-        	  // If another line is required go out
-        	  if (lines==2) return;
+        	  // If one more line than selected is required go out cuting the text
+        	  if (lines==nlines) return;
           }
           else {
             line = testLine;
@@ -261,7 +261,7 @@ function Canvas(drawing_context){
 
 		m_context.fillStyle = "black";
 		
-		wrapText(msg, posx, posy, canvasWidth, lineHeight);		
+		wrapText(msg, posx, posy, canvasWidth, lineHeight, 10);		
 	}	
 
 	function drawAction(msg, posx, posy, rectX, rectY, textSize, nodeDist){
@@ -290,7 +290,7 @@ function Canvas(drawing_context){
 		m_context.fillStyle    = "black";
 		//m_context.fillText  ( msg,  posx , posy);
 		
-		wrapText(msg, posx, posy, nodeDist, lineHeight);		
+		wrapText(msg, posx, posy, nodeDist, lineHeight, 2);		
 	}
 	
 }
