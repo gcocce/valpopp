@@ -36,7 +36,7 @@ ImageFile;nationalCall.gif;;;;
 # Line Format:                                                                                               #;;;;
 #defaultmessage;type;lenght;treatment;dash;startTime;synchPoint;                                             #;;;;
 ##############################################################################################################;;;;
-defaultmessage;ONEWAY;40;0;SEMI;;
+defaultmessage;ONEWAY;40;0;SEMI;;;
 ##############################################################################################################;;;;
 # Default propagthroughputs values (Optional)                                                                #;;;;
 # Only one line with this data is possible                                                                   #;;;;
@@ -57,6 +57,7 @@ defaultpropagthroughputs;15;1000
 #scenarioreference;title;link                                                                                #;;;;
 ##############################################################################################################;;;;
 scenarioreference;GSM Reference;http://en.wikipedia.org/wiki/GSM
+scenarioreference;Roaming;http://fr.wikipedia.org/wiki/Roaming
 ##############################################################################################################;;;;
 # Scenario Nodes (Mandatory)                                                                                 #;;;;
 # As meny lines as nodes in the scenario (up to seven nodes)                                                 #;;;;
@@ -129,7 +130,6 @@ sequence;1;20;;;;
 # Line Format:                                                                                               #;;;;
 #srcNode;destNode;name;parameters;type;length;treatment;dash;startTime;syncpoint;timer;scenImg;comment;action#;;;;
 ##############################################################################################################;;;;
-
 1;0;SYSTEM_INFORMATION;;ONEWAY;30;2;full;;;;
 0;1;RR_CHANNEL_REQUEST;;REQUEST;30;2;semi;;;;
 1;0;RR_IMMEDIATE_ASSIGNMENT;signalling channel;RESPONSE;30;2;semi;;;;
@@ -166,8 +166,8 @@ mcq;A mobile phone is calling a fixed phone;Is the call set up secured ?;;;
 # Line Format:                                                                                               #;;;;
 #mcqanswer;answer;feedback;valid;points;nextId;                                                              #;;;;
 ##############################################################################################################;;;;
-mcqanswer;yes;;y;;;
-mcqanswer;no;Yes, the mobile is authenticated and the called number is transmitted in cyphered mode;;;;
+mcqanswer;Yes, (this is the correct answer);There is no feedback;y;;;
+mcqanswer;No, this is not the right anser;Yes, the mobile is authenticated and the called number is transmitted in cyphered mode;;;;
 ##############################################################################################################;;;;
 #    Next Sequence                                                                                           #;;;
 #                                                                                                            #;;;;
@@ -214,3 +214,4 @@ sequence;40;0;;;;
 1;0;RR_ASSIGMENT_COMMAND;Traffic channel;REQUEST;30;2;full;;;
 0;1;RR_ASSIGMENT_COMPLETE;;RESPONSE;30;2;full;;;;
 1;2;BSSMAP_ASSIGMENT_COMPLETE;;RESPONSE;30;2;full;;;
+

@@ -234,8 +234,68 @@ function Translator(){
 			
 			break;
 		case "defaultmessage":
+			if (line_content.length < 7){
+				m_error="The defaultmessage should have at least 6 parameters, they are optionals but the field separator is not.";
+				return false;
+			}
 			
-			m_file_translated["defaultmessage"] = {"type":  line_content[1] ,"length":  parseInt(line_content[2]), "treatment":  parseInt(line_content[3]), "dash":  line_content[4]};
+			var defaultMessage={};
+			
+			// type
+			var field= new String();
+			field= line_content[1];
+			field = field.trim();
+			
+			if (field.length > 0){
+				defaultMessage["type"]=field;
+			}
+			
+			// length
+			field= new String();
+			field= line_content[2];
+			field = field.trim();
+			
+			if (field.length > 0){
+				defaultMessage["length"]=parseInt(line_content[2]);
+			}
+			
+			// treatment
+			field= new String();
+			field= line_content[3];
+			field = field.trim();
+			
+			if (field.length > 0){
+				defaultMessage["treatment"]=parseInt(line_content[3]);
+			}
+			
+			// dash
+			field= new String();
+			field= line_content[4];
+			field = field.trim();
+			
+			if (field.length > 0){
+				defaultMessage["dash"]=field;
+			}
+			
+			// startTime
+			field= new String();
+			field= line_content[5];
+			field = field.trim();
+			
+			if (field.length > 0){
+				defaultMessage["startTime"]=field;
+			}		
+			
+			// synchPoint
+			field= new String();
+			field= line_content[6];
+			field = field.trim();
+			
+			if (field.length > 0){
+				defaultMessage["synchPoint"]=field;
+			}	
+			
+			m_file_translated["defaultmessage"] = defaultMessage;
 			
 			break;
 		case "defaultpropagthroughputs":
@@ -340,7 +400,7 @@ function Translator(){
 	
 	
 	function processSequenceLineContent(line_content){
-		
+			
 		switch (line_content[0]){
 		case "sequence":
 			
@@ -427,7 +487,7 @@ function Translator(){
 			if (m_reading_messages){
 				
 				if (line_content.length < 10){
-					m_error="The message should have at least 10 parameters!";
+					m_error="The message should have at least 10 parameters, if they are optional the field separator is not.";
 					return false;
 				}
 

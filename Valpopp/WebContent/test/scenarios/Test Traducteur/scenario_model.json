@@ -15,6 +15,10 @@
         {
             "title": "GSM Reference",
             "link": "http://en.wikipedia.org/wiki/GSM"
+        },
+        {
+            "title": "Roaming",
+            "link": "http://fr.wikipedia.org/wiki/Roaming"
         }
     ],
     "nodes": [
@@ -186,7 +190,7 @@
     "sequences": [
         {
             "Id": 1,
-            "nextId": 0,
+            "nextId": 20,
             "messages": [
                 {
                     "srcN": 2,
@@ -285,7 +289,28 @@
                     "treatment": 2,
                     "dash": "FULL",
                     "synchPoint": "T2"
-                },
+                }
+            ],
+            "mcq": {
+                "title": "A mobile phone is calling a fixed phone",
+                "text": "Is the call set up secured ?",
+                "answers": [
+                    {
+                        "text": "Yes, (this is the correct answer)",
+                        "feedback": "There is no feedback",
+                        "valid": "y"
+                    },
+                    {
+                        "text": "No, this is not the right anser",
+                        "feedback": "Yes, the mobile is authenticated and the called number is transmitted in cyphered mode"
+                    }
+                ]
+            }
+        },
+        {
+            "Id": 20,
+            "nextId": 30,
+            "messages": [
                 {
                     "srcN": 3,
                     "destN": 4,
@@ -325,7 +350,89 @@
                     "length": 30,
                     "treatment": 2,
                     "dash": "FULL"
+                }
+            ],
+            "mcq": {
+                "title": "A mobile phone is calling a fixed phone",
+                "text": "Which event is related to ACM ?",
+                "pathSelector": "y",
+                "answers": [
+                    {
+                        "text": "Next one",
+                        "feedback": "No feedback",
+                        "valid": "y",
+                        "nextId": 30
+                    },
+                    {
+                        "text": "Last one",
+                        "feedback": "No feedback",
+                        "valid": "y",
+                        "nextId": 40
+                    }
+                ]
+            }
+        },
+        {
+            "Id": 30,
+            "nextId": 40,
+            "messages": [
+                {
+                    "srcN": 3,
+                    "destN": 4,
+                    "name": "ISUP_IAM",
+                    "param": "called PSTN number",
+                    "type": "REQUEST",
+                    "length": 30,
+                    "treatment": 60,
+                    "dash": "FULL",
+                    "synchPoint": "T21"
                 },
+                {
+                    "srcN": 4,
+                    "destN": 5,
+                    "name": "ISUP_IAM",
+                    "param": "called PSTN number",
+                    "type": "REQUEST",
+                    "length": 30,
+                    "treatment": 60,
+                    "dash": "FULL",
+                    "synchPoint": "T3"
+                },
+                {
+                    "srcN": 5,
+                    "destN": 4,
+                    "name": "ISUP_ACM",
+                    "type": "ONEWAY",
+                    "length": 30,
+                    "treatment": 2,
+                    "dash": "FULL"
+                },
+                {
+                    "srcN": 4,
+                    "destN": 3,
+                    "name": "ISUP_ACM",
+                    "type": "ONEWAY",
+                    "length": 30,
+                    "treatment": 2,
+                    "dash": "FULL"
+                }
+            ],
+            "mcq": {
+                "title": "A mobile phone is calling a fixed phone",
+                "text": "Which event is related to ACM ?",
+                "answers": [
+                    {
+                        "text": "The ring of the phone",
+                        "feedback": "No feedback",
+                        "valid": "y"
+                    }
+                ]
+            }
+        },
+        {
+            "Id": 40,
+            "nextId": 0,
+            "messages": [
                 {
                     "srcN": 3,
                     "destN": 1,

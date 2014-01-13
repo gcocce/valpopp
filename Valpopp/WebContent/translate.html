@@ -87,6 +87,24 @@
 		alert(errormsg);
 	}
 	
+	function cleanHtml(){
+		
+		// Clean translation field
+		var result=document.getElementById("translation");
+		
+		result.className = "";
+		result.innerHTML = "";		
+		
+		// Clean validation field
+		result=document.getElementById("validation");
+		result.className = "";
+		result.innerHTML= "";
+			
+		// Clean download link
+		result=document.getElementById("download");
+		result.innerHTML = "";		
+	}
+	
     
     // -->
     </script>
@@ -98,7 +116,7 @@
   </tr>
   <tr>
     <td>
-      <input name="Scenariofile" type="file" id="Scenariofile" size="120" maxlength="120">
+      <input name="Scenariofile" type="file" id="Scenariofile" size="120" maxlength="120" onclick="cleanHtml();">
     </td>
   </tr>
   <tr>
