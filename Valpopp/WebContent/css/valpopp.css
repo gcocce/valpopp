@@ -182,7 +182,7 @@ body {
 }
 
 #Commands input.play{
-  width: 90px;
+  width: 100px;
 }
 
 #Commands input.inactive{

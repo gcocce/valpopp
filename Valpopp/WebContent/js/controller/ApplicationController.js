@@ -337,6 +337,9 @@ function ApplicationController(){
 			// Show progress bar until schema and scenario file are both download
 			applicationView.setProgressBar();
 			
+			// Disable ajax cache
+			$.ajaxSetup({ cache: false });
+			
 			// Load Scenario Schema
 			scenarioSchema=new Schema();
 			scenarioSchema.loadSchema(configModule.getDefaultSchema());
