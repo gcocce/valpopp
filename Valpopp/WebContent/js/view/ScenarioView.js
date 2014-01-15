@@ -85,13 +85,10 @@ function ScenarioView(){
 	// Private Methods
 	// ******************************************************************************
     
-
 	
 	// Set a responsive width for the scenario and comment section
 	function computeWindowSize(){
     	var window_width= $(window).width();
-    	
-//    	console.log("Window width: " + window_width );
 
     	if (window_width <= 768){
     		document.getElementById("vScenario").style.width="99%";

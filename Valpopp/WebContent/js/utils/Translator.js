@@ -452,9 +452,19 @@ function Translator(){
 				answer["feedback"]=feedback;
 			}
 			
+			var link= new String();
+			
+			link=line_content[3];
+			
+			link=link.trim();
+			
+			if (link.length > 0){
+				answer["link"]=link;
+			}			
+			
 			// Get attribut valid if present
 			var valid= new String();
-			valid= line_content[3];
+			valid= line_content[4];
 			valid = valid.trim();
 			
 			if (valid.length > 0){
@@ -463,7 +473,7 @@ function Translator(){
 			
 			//Get attribute points if present
 			var points= new String();
-			points= line_content[4];
+			points= line_content[5];
 			points = points.trim();
 			
 			if (points.length > 0){
@@ -472,7 +482,7 @@ function Translator(){
 			
 			// Get attribute nextId if present
 			var nextId= new String();
-			nextId= line_content[5];
+			nextId= line_content[6];
 			nextId = nextId.trim();
 			
 			if (nextId.length > 0){

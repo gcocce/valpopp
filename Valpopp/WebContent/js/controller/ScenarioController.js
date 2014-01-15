@@ -166,7 +166,7 @@ function ScenarioController(){
 	// If there is a path Selector and the user close the dialog this is executed but
 	// as the getQuizReady method returns false it does nothing.
 	function finishQuizz(){
-		if (console){
+		if (debug && console){
 			console.log("scenarioController.finishQuiz");	
 		}
 		

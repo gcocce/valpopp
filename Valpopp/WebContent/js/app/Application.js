@@ -58,8 +58,6 @@ appImagesNames.push("show.jpg");
 appImagesNames.push("hide.jpg");
 appImagesNames.push("sandclock.gif");
 
-var debug=true;
-
 //*******************************************************************************
 // Detect system
 //*******************************************************************************

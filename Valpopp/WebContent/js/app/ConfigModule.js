@@ -9,12 +9,19 @@
  * 
  */
 
+// This line is necessary for windows IE
+if (!window.console) console = false;
+
+// This is to enable console messages
+var debug=true;
+
+
 var configModule = {
 		studentLastName:"Unknown",
 		studentName:"Unknown",
 		deflang:"en", // must be in the header of the language.csv file
 		lang:"en",  // must be in the header of the language.csv file
-		user: "basic", // must be one of {"basic", "advance", "editor"}
+		user: "basic", // must be one of {"basic", "advanced", "editor"}
 		defScenario:"scenarios/scenario_complete_demo.json",
 		defSchema:"js/model/schema/scenario_schema.json",
 		langFile:"strings/language.csv",
@@ -237,7 +244,7 @@ var configModule = {
 		 },
 		 
 		setUserMode: function(user) {
-			if (user.localeCompare("basic")==0 || user.localeCompare("advance")==0 || user.localeCompare("editor")==0){
+			if (user.localeCompare("basic")==0 || user.localeCompare("advanced")==0 || user.localeCompare("editor")==0){
 				this.user=user;	
 			}else{
 				if (console && debug){

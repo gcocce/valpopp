@@ -1,5 +1,7 @@
 
-
+// Disable ajax cache
+$.ajaxSetup({ cache: false });
+			
 var languageModule = (function () {
 	var DOWNLOADING=0;
 	var LOADED=1;

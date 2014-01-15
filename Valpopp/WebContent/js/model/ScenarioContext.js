@@ -148,7 +148,7 @@ function ScenarioContext(){
 			}
 		}
 		
-		if (console){
+		if (debug && console){
 			console.log("Propagation Array: ");
 			console.log(m_def_prog);			
 		}
@@ -412,14 +412,10 @@ function ScenarioContext(){
 		// Normalize Sequence Object (Messages in the sequences)
 		normalizeSequences();
 		
-		if (console){
+		if (debug && console){
 			console.log("Normalized Scenario:");
 			console.log(m_scenario_object);
 		}
-		
-		// Create the first ScenarioPlay
-		
-		
 	}
 	
 

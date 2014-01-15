@@ -262,10 +262,18 @@ function HtmlBuilder(){
 			// Show feedback
 			for (var i=0; i < mcq.answers.length; i++ ){
 				var feedback="";
+				var link="";
 				if (mcq.answers[i].feedback){
 					feedback=mcq.answers[i].feedback;
+					if (mcq.answers[i].link){
+						link=mcq.answers[i].link;
+					}
 				}
-				responses+='<tr><td width="5%"></td><td width="5%"></td><td width="90%">'+ (i+1) +') '+ feedback +'</td></tr>';
+				if (link.localeCompare("")==0){
+					responses+='<tr><td width="5%"></td><td width="5%"></td><td width="90%">'+ (i+1) +') '+ feedback +'</td></tr>';	
+				}else{
+					responses+='<tr><td width="5%"></td><td width="5%"></td><td width="90%">'+ (i+1) +') <a href="'+ link +'" target="_blank">'+ feedback +'</a></td></tr>';
+				}
 			}
 			
 			responses+='</table></div>';
@@ -323,11 +331,18 @@ function HtmlBuilder(){
 	
 	function getScenarioListLoading(){
 		var html='<div id="DialogContainer">';
-		
+		 
 		// Header with the title, the text fiel for the filter and the button to open a local file
 		html+='<div id="OpenDialogHeader">';
-		html+='<span class="OpenDialogTitle">'+languageModule.getCaption("HB_MSG_SCENARIO_LIST")+'</span><input type="button" class="OpenLocalFileButton" name="bt_openlocalfile" id="btscenario_openfile" onClick="applicationController.OpenLocalFile();" value="'+languageModule.getCaption("HB_BUTTON_OPEN_LOCAL")+'" width="20%"/>';
-		html+='</div>';
+		
+		var userMode=configModule.getUserMode();
+		if (userMode.localeCompare("basic")==0){
+			html+='<span class="OpenDialogTitle">'+languageModule.getCaption("HB_MSG_SCENARIO_LIST")+'</span>';
+		}else{
+			html+='<span class="OpenDialogTitle">'+languageModule.getCaption("HB_MSG_SCENARIO_LIST")+'</span><input type="button" class="OpenLocalFileButton" name="bt_openlocalfile" id="btscenario_openfile" onClick="applicationController.OpenLocalFile();" value="'+languageModule.getCaption("HB_BUTTON_OPEN_LOCAL")+'" width="20%"/>';
+		}
+		
+		html+='</div>';  // End of OpenDialogHeader
 		
 		html+='<div id="ScenarioFilter" class="Filter">';
 		html+='<input type="text" name="btscenario_filterkeyword" id="btscenario_filterkeyword" placeholder="'+languageModule.getCaption("HB_TEXT_FILTER_LIST")+'" onkeyup="applicationController.FilterList();" maxlength="30" width="80%" />';

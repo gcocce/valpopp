@@ -24,7 +24,7 @@ function FileHandler() {
         m_enabled=true;
     }else{
     	
-    	if (console){
+    	if (debug && console){
     		console.error("File FileReader FileList Blob not Enabled!");	
     	}
         
@@ -74,7 +74,7 @@ function FileHandler() {
                
                fReader.onerror = function (e){
             	   
-            	   if (console){
+            	   if (debug && console){
             		   console.log("Error code %s", e.target.error.code);
             	   }
                     
@@ -85,7 +85,7 @@ function FileHandler() {
                     
                 fReader.readAsText(fHandler, m_codification);
                 
-                if (console){
+                if (debug && console){
                 	console.log("FileHandler, file type: "+ fHandler.type);
                 }
         } catch(e) {
@@ -102,7 +102,7 @@ function FileHandler() {
     /* Returns true or false according to result */
     function openImageFile(fHandler) {
    		try {
-   			if (console){
+   			if (debug && console){
    				console.log("FileHandler, process file : "+ fHandler.name);
    			}
             
@@ -110,7 +110,7 @@ function FileHandler() {
             readImage(fHandler, fHandler.name);
             
         }catch(e) {
-        	if (console){
+        	if (debug && console){
         		console.error(e);	
         	}
             
@@ -126,7 +126,7 @@ function FileHandler() {
         
         fReader.onerror = function (e){
         	
-        	if (console){
+        	if (debug && console){
             	console.log("Local Image loading error: ", file_name);
                 console.log("Error code %s", e.target.error.code);
         	}

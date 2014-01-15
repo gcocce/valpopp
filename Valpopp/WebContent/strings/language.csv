@@ -1,4 +1,4 @@
-CONSTANTS;en:Engish;es:Spanish;fr:French
+﻿CONSTANTS;en:Engish;es:Spanish;fr:French
 BUTTON_OPEN;Open;Abrir;Ouvrir
 BUTTON_START;Start;Ejecutar;Débuter
 BUTTON_PAUSE;Pause;Pausar;Pauser
@@ -41,7 +41,7 @@ HB_MSG_WRONG_ANSWER;Your answer is wrong;Su respuesta es incorrecta;Votre répon
 HB_MSG_OPEN_LOCAL_SCENARIO;Open Local Scenario File;Abrir archivo de escenario local;Ouvrir le fichier de scénario local
 HB_MSG_SELECT_SCENARIO_FILE;Select Scenario File;Seleccione el archivo de escenario;Sélectionnez Fichier de scénario
 HB_MSG_SELECT_SCENARIO_IMAGES;Select Scenario Images (all at the same time);Seleccione las imagenes del escenario (todas al mismo tiempo);Sélectionnez Scénario Images (tous en même temps)
-HB_MSG_SCENARIO_LIST;Scenario Example List;Lista de ejemplos de escenarios;Liste de scénarios exemples
+HB_MSG_SCENARIO_LIST;Example List;Lista de ejemplos;Liste de exemples
 HB_BUTTON_OPEN_LOCAL;Open Local File;Abrir archivo local;Ouvrir le fichier local
 HB_TEXT_FILTER_LIST;Filter List;Filtrar la lista;Filtrer la liste
 HB_BUTTON_SCENARIO_IMG;Scenario Images;Imagenes del escenario;Image du Scénario

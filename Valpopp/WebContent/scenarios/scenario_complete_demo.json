@@ -30,7 +30,7 @@
 			"mcq": {"title": "Gestion de la mobilité", "text":"Lors de la primier mise sous tension du terminal:",
 				"answers":
 					[
-					{"text": "La terminal transmit tout son profil au réseau", "feedback": "That's not true", "points": 5},
+					{"text": "La terminal transmit tout son profil au réseau", "feedback": "That's not true", "link":"http://en.wikipedia.org/wiki/GSM", "points": 5},
 					{"text": "Le HLR transmet le profil au VLR ou le terminal se trouve", "valid": "y"},
 					{"text": "Le profil de l'abonné est transmit a tous les VLR de réseau", "feedback": "This is not true", "points":4}
 					]

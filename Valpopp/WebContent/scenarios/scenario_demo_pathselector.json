@@ -1,5 +1,5 @@
 {
-    "name": "Scenario Path Selector Demo",
+    "name": "Scenarïo Path Sèlector Dêmo",
     "img": "firstLU.gif",
 	"defaultmessage":{"type": "ONEWAY", "length": 240, "treatment": 0, "dash": "SEMI"},
     "references":

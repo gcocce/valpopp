@@ -128,7 +128,13 @@ function ApplicationController(){
 		
 		m_selected_example=-1;
 		
-		applicationView.showOpenLocalScenarioDialog();
+		var m_fhandle = new FileHandler();
+		
+		if(m_fhandle.isEnabled()){
+			applicationView.showOpenLocalScenarioDialog();
+		}else{
+			applicationView.displayError(htmlBuilder.wrapErrorMsg(m_fhandle.getError()));
+		}
 	}
 	
 	// Method used to open the local file selected by the user
@@ -138,15 +144,23 @@ function ApplicationController(){
 		
 		var theScenarioImages=document.getElementById('ScenarioImagesFile');
 		
-		if (!scenarioModelBuilder.openLocalFile(theScenariofile, theScenarioImages)){
-			
+		// Check made for IE
+		if (!theScenariofile.files || !theScenarioImages.files){
 			applicationView.closeOpenLocalScenarioDialog();
 			
-			applicationView.displayError(htmlBuilder.wrapErrorMsg(scenarioModelBuilder.getError()));
-			
+			applicationView.displayError(htmlBuilder.wrapErrorMsg(languageModule.getCaption("SB_ERROR_NOT_SELECTED_FILE")));
 		}else{
-			applicationView.closeOpenLocalScenarioDialog();	
+			if (!scenarioModelBuilder.openLocalFile(theScenariofile, theScenarioImages)){
+				
+				applicationView.closeOpenLocalScenarioDialog();
+				
+				applicationView.displayError(htmlBuilder.wrapErrorMsg(scenarioModelBuilder.getError()));
+				
+			}else{
+				applicationView.closeOpenLocalScenarioDialog();	
+			}		
 		}
+		
 	}
 	
 	// Method used to filter the list of scenario examples
