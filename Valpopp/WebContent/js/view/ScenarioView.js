@@ -179,7 +179,7 @@ function ScenarioView(){
 				
 		var img=null;
 		
-		var fontSize = tagHeight -1;
+		var fontSize = tagHeight -3;
 		var fontFace = "serif";
 		//var textFillColor ="#ff0000";
 		var textBaseline = "top";
@@ -214,8 +214,27 @@ function ScenarioView(){
 				// Display the name of the node	        
 				theNodesContext.textBaseline = textBaseline;
 				theNodesContext.textAlign = textAlign;
-				theNodesContext.font = fontWeight + " " + fontStyle + " " + fontSize + "px " + fontFace;
 				theNodesContext.fillStyle    = "black";
+				
+				theNodesContext.font = fontWeight + " " + fontStyle + " " + fontSize + "px " + fontFace;
+		        
+		        // In the case of the first or the last node if the text is long it is necessary to use a smoler font size
+		        if(x==0 || x==m_scenarioContext.getNumberofNodes()-1){
+			        
+			        var metrics = theNodesContext.measureText( m_scenarioContext.getNodeName(x));
+			        var testWidth = metrics.width;
+			        var jumpout=0;
+			        
+			        while (testWidth > 70 && jumpout < 5){
+			        	fontSize=fontSize-1;
+			        	theNodesContext.font = fontWeight + " " + fontStyle + " " + fontSize + "px " + fontFace;
+			        	
+			        	metrics = theNodesContext.measureText( m_scenarioContext.getNodeName(x));
+			        	testWidth = metrics.width;
+			        	jumpout++;
+			        } 		        	
+		        }
+		        	  
 				theNodesContext.fillText  ( m_scenarioContext.getNodeName(x) ,  border + (distNodos * x) , imgHeight);		
 			}catch (e){
 				if (console){

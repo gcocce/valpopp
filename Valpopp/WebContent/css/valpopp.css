@@ -399,6 +399,10 @@ body {
 	#title{
 		font-size: 2.5em;
 	}
+	
+	#ScenarioTitle{
+		font-size: 1.0em;
+	}	
 
 	/* This ruel stops working once the user hide and show the scenario comments sections */
 	/* Therefore it is necessary to solve this with javascript */
@@ -445,6 +449,10 @@ body {
 		display: none;
 	}
 	
+	#ScenarioTitle{
+		font-size: 0.8em;
+	}		
+	
 	#footer {
 		display: none;
 	}
@@ -471,6 +479,10 @@ body {
 	#header {
 		display: none;
 	}
+	
+	#ScenarioTitle{
+		font-size: 0.6em;
+	}		
 	
 	#footer {
 		display: none;

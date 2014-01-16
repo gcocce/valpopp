@@ -80,7 +80,7 @@ function ScenarioContext(){
 		if (def.length){
 			m_default["length"]=def.length;
 		}else{
-			m_default["length"]=4;
+			m_default["length"]=8;
 		}
 		
 		if (def.treatment){

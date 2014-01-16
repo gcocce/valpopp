@@ -13,7 +13,7 @@
 if (!window.console) console = false;
 
 // This is to enable console messages
-var debug=true;
+var debug=false;
 
 
 var configModule = {
